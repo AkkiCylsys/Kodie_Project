@@ -251,7 +251,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-end",
     justifyContent: "flex-end",
-    // marginVertical: 20,
+    marginVertical: 20,
   },
   DoneText: {
     alignSelf: "center",
