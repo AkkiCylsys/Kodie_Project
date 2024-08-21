@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../Themes';
-import TopHeader from '../../../Molecules/Header/Header';
 import {PreRentalQuestionnaireStyle} from './PreRentalQuestionnaireStyle';
 import {_goBack} from '../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -26,26 +25,29 @@ import CustomSingleButton from '../../../Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../Molecules/RowButtons/RowButtons';
 import {Config} from '../../../../Config';
 import axios from 'axios';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import TenantScreeningReportModal from '../../../Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
-import ApplicationSubmitModal from '../../../Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
-import MapScreen from '../../../Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import SearchPlaces from '../../../Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
+import {acceptingLandlord} from '../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
+import {useNavigation} from '@react-navigation/native';
 const PreRentalQuestionnaire = props => {
-  const {accountId, propertyId} = props;
+  const {
+    accountId,
+    propertyId,
+    bid_id,
+    tenant_id,
+    landlord_id,
+    acceptBiddingData,
+  } = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
   console.log('bibId in rental..', bibId);
+  const navigation = useNavigation();
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState('');
   const [filePath, setFilePath] = useState('');
-  const refRBSheet = useRef();
-  const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setFullName] = useState('');
   const [fullNameError, setFullNameError] = useState('');
@@ -63,33 +65,15 @@ const PreRentalQuestionnaire = props => {
   const [leaseConfirmEmailAddress, setLeaseConfirmEmailAddress] = useState('');
   const [leaseConfirmEmailAddressError, setLeaseConfirmEmailAddressError] =
     useState('');
-  const [RentalDetails, setRentalDetails] = useState(false);
-  const [RentalHistory, setRentalHistory] = useState(false);
-  const [TenantRooms, setTenantRooms] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [RentalLeaseData, setRentalLeaseData] = useState([]);
-  const [EmployeeValueData, setEmployeeValueData] = useState(null);
-  const [valueStyingData, setValueStyingData] = useState([]);
-  const [petsData, setPetsData] = useState([]);
-  const [Preferences, setPreferences] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
-  const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
+  const [acceptBiddingBtnId, setAcceptBiddingBtnId] = useState(556);
   // ...
   const [quesHeading, setQuesHeading] = useState([]);
-  const [questionCode, setQuestionCode] = useState('');
   const [expandedItem, setExpandedItem] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [question, setQuestion] = useState([]);
-  const [employeeQues, setEmployeeQues] = useState([]);
-  const [rentailDetails, setRentailDetails] = useState([]);
-  const [rental_History, setRental_History] = useState([]);
-  const [preference, setPreference] = useState([]);
-  const [personalDetails, setPersonalDetails] = useState({});
-  const [employmentStatus, setEmploymentStatus] = useState({});
-  const [income, setIncome] = useState('');
   const [dropdownData, setDropdownData] = useState({});
-  const [allQuestion, setAllQuestion] = useState([]);
   const [numberOccupants, setNumberOccupants] = useState(0);
   const [numberLeaseHolder, setNumberLeaseHolder] = useState(0);
   const [numberYearEmp, setNumberYearEmp] = useState(0);
@@ -97,15 +81,12 @@ const PreRentalQuestionnaire = props => {
   const [toggleOccupants, setToggleOccupants] = useState(false);
   const [toggleLeaseHolder, setToggleLeaseHolder] = useState(false);
   const [selectedButton, setSelectedButton] = useState(false);
-  const [selectedEarnButton, setSelectedEarnButton] = useState(false);
   const [selectedRentalBondButton, setSelectedRentalBondButton] =
     useState(false);
   const [selectedPetsButton, setSelectedPetsButton] = useState(false);
   const [selectedPreviousRentalButton, setSelectedPreviousRentalButton] =
     useState(false);
-  const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
-  const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
   const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
   const [toggleReference, setToggleReference] = useState(false);
 
@@ -121,18 +102,57 @@ const PreRentalQuestionnaire = props => {
   const city = addressParts.join(', ');
   const [occupants, setOccupants] = useState([]);
   const [leaseHolderItem, setLeaseHolderItem] = useState([]);
-  const [selectFile, setSelectFile] = useState([]);
-  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
-  const [peopleStayInPropertyData, setPeopleStayInPropertyData] = useState([]);
-  const [peopleStayInPropertyCode, setPeopleStayInPropertyCode] =
-    useState(null);
-  const [occupantsNames, setOccupantsNames] = useState([]);
-  const [leaseHolderNames, setLeaseHolderNames] = useState([]);
   const [subChildren, setSubChildren] = useState([]);
-  const [finalJsonData, setFinalJsonData] = useState([]);
-  const [editAllQuestion, setEditAllQuestion] = useState([]);
-  const [editData, setEditData] = useState(null);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
+  useEffect(() => {
+    handleTenantQues();
+    getEditAllQuestion();
+  }, [question]);
+
+  useEffect(() => {
+    if (inputValues['PREVIOUS_ADDRESS']) {
+      setLocation(inputValues['PREVIOUS_ADDRESS']);
+    }
+  }, [inputValues]);
+  const handleAcceptingLandlord = async () => {
+    setIsLoading(true);
+
+    const acceptingLandlordData = {
+      property_id: propertyId,
+      bid_id: bid_id,
+      tenant_id: tenant_id,
+      landlord_id: landlord_id,
+      accepting_details: acceptBiddingBtnId,
+    };
+
+    console.log('acceptingLandlordData:', acceptingLandlordData);
+
+    try {
+      const response = await acceptingLandlord(acceptingLandlordData);
+      console.log('Response in handleAcceptingLandlord:', response);
+
+      if (response?.success === true) {
+        alert(response?.data);
+        navigation.navigate('Properties', {
+          tab3: 'tab3',
+        });
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          'Server responded with a status code:',
+          error.response.status,
+        );
+        console.error('Response data:', error.response.data);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error setting up request:', error.message);
+      }
+    } finally {
+      setIsLoading(false); // Stop loading state
+    }
+  };
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -223,16 +243,6 @@ const PreRentalQuestionnaire = props => {
   const onSelectedItemsChange = selectedItems => {
     setTypeOfPetsValue(selectedItems);
   };
-  useEffect(() => {
-    handleTenantQues();
-    getEditAllQuestion();
-  }, [question]);
-
-  useEffect(() => {
-    if (inputValues['PREVIOUS_ADDRESS']) {
-      setLocation(inputValues['PREVIOUS_ADDRESS']);
-    }
-  }, [inputValues]);
 
   const handleLocationChange = text => {
     setLocation(text);
@@ -856,11 +866,7 @@ const PreRentalQuestionnaire = props => {
                   ? decreaseNumberOccupants
                   : decreaseLeaseHolder
               }>
-              <AntDesign
-                name="minus"
-                size={20}
-                color={'black'} // Adjust color as needed
-              />
+              <AntDesign name="minus" size={20} color={'black'} />
             </TouchableOpacity>
             <Text style={PreRentalQuestionnaireStyle.countdata}>
               {section?.tqm_Question_code === 'NOO'
@@ -874,11 +880,7 @@ const PreRentalQuestionnaire = props => {
                   ? increaseNumberOccupants
                   : increaseLeaseHolder
               }>
-              <AntDesign
-                name="plus"
-                size={20}
-                color={'black'} // Adjust color as needed
-              />
+              <AntDesign name="plus" size={20} color={'black'} />
             </TouchableOpacity>
           </TouchableOpacity>
         </View>
@@ -899,14 +901,6 @@ const PreRentalQuestionnaire = props => {
       prevState === itemChildren ? null : itemChildren,
     );
   };
-
-  const onClose = () => {
-    refRBSheet.current.close();
-  };
-  const onClose1 = () => {
-    refRBSheet1.current.close();
-  };
-
   const addOccupant = (fullName, emailAddress, questionId) => {
     if (fullName && emailAddress) {
       const newOccupant = {fullName, emailAddress, questionId};
@@ -928,7 +922,7 @@ const PreRentalQuestionnaire = props => {
         leaseFullName: fullName,
         leaseEmailAddress: emailAddress,
         leaseConfirmEmailAddress: confirmEmailAddress,
-        questionId, // Ensure questionId is included
+        questionId,
       };
       setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
       setLeaseFullName('');
@@ -1109,118 +1103,6 @@ const PreRentalQuestionnaire = props => {
       [questionCode]: value,
     }));
   };
-  const saveAllJson = finalJson => {
-    const url = Config.BASE_URL;
-    const saveJson_url = `${url}save_json_details`;
-    console.log('Request URL:', saveJson_url);
-    setIsLoading(true);
-
-    const saveJsonData = {
-      p_property_id: propertyId,
-      p_account_id: accountId,
-      p_bid_id: bibId,
-      json_data: finalJson.json_data, // Ensure json_data is not stringified here
-    };
-
-    console.log('saveJsonData:', JSON.stringify(saveJsonData));
-
-    axios
-      .post(saveJson_url, saveJsonData)
-      .then(response => {
-        if (response?.data?.success === true) {
-          console.log(
-            'API Response saveJson Data:',
-            JSON.stringify(response?.data),
-          );
-          refRBSheet1.current.open();
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed save Json', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-  const saveBiddingDetails = () => {
-    const url = Config.BASE_URL;
-    const saveBiddingDetails_url = `${url}save_bidding_details`;
-    console.log('Request URL:', saveBiddingDetails_url);
-    setIsLoading(true);
-
-    const saveBiddingDetailsData = new FormData();
-    saveBiddingDetailsData.append('bid_id', bibId);
-    saveBiddingDetailsData.append('account_id', accountId);
-    saveBiddingDetailsData.append('property_id', propertyId);
-    saveBiddingDetailsData.append('amount', 1000);
-    saveBiddingDetailsData.append('screening_report');
-
-    console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
-
-    axios
-      .post(saveBiddingDetails_url, saveBiddingDetailsData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(response => {
-        if (response?.data?.success === true) {
-          console.log(
-            'API Response saveBiddingDetails Data:',
-            JSON.stringify(response?.data),
-          );
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed saveBiddingDetails', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  // Utility function to group items by a specified key
-  const groupBy = (items, key) => {
-    return items.reduce((result, item) => {
-      (result[item[key]] = result[item[key]] || []).push(item);
-      return result;
-    }, {});
-  };
-
-  const addGroupedDataToJsonData = (
-    jsonData,
-    groups,
-    fullNameKey = 'fullName',
-    emailKey = 'emailAddress',
-    confirmEmailKey,
-  ) => {
-    for (const questionId in groups) {
-      const groupData = groups[questionId].map(item => {
-        const data = {
-          fullName: item[fullNameKey],
-          emailAddress: item[emailKey],
-        };
-        if (confirmEmailKey) {
-          data.confirmEmailAddress = item[confirmEmailKey];
-        }
-        return data;
-      });
-
-      jsonData.push({
-        question_id: questionId,
-        question_value: JSON.stringify(groupData),
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-    }
-  };
-
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       case 'Input':
@@ -1283,7 +1165,7 @@ const PreRentalQuestionnaire = props => {
               }}
               _closeButton={toggleModal}
               _ApplyButton={toggleModal}
-              editable={false} 
+              editable={false}
             />
           </View>
         );
@@ -1344,7 +1226,7 @@ const PreRentalQuestionnaire = props => {
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
                   // onPress={decreaseNumberYearEmp}
-                  >
+                >
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1359,7 +1241,7 @@ const PreRentalQuestionnaire = props => {
                   // onPress={() => {
                   //   increaseNumberYearEmp();
                   // }}
-                  >
+                >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1387,7 +1269,7 @@ const PreRentalQuestionnaire = props => {
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
                   // onPress={decreaseNumberPet}
-                  >
+                >
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1402,7 +1284,7 @@ const PreRentalQuestionnaire = props => {
                   // onPress={() => {
                   //   increaseNumberPets();
                   // }}
-                  >
+                >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1413,189 +1295,188 @@ const PreRentalQuestionnaire = props => {
             </View>
           </View>
         );
-        case 'Yes_no':
-          return (
-            <View>
-              {question.id === 13 ? (
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelectedButton(false);
-                    handleInputChange(question.id, 1);
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selectedButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selectedButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selectedButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelectedButton(true);
-                    handleInputChange(question.id, 0);
-                  }}
-                  disabled={true} // Set this to true to make buttons non-interactive
-                />
-              ) : question.id === 20 ? (
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selectedRentalBondButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selectedRentalBondButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selectedRentalBondButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelectedRentalBondButton(false);
-                    handleInputChange(question.id, 1);
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selectedRentalBondButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selectedRentalBondButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selectedRentalBondButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelectedRentalBondButton(true);
-                    handleInputChange(question.id, 0);
-                  }}
-                  disabled={true} // Set this to true to make buttons non-interactive
-                />
-              ) : question.id === 21 ? (
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selectedPreviousRentalButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selectedPreviousRentalButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selectedPreviousRentalButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelectedPreviousRentalButton(false);
-                    handleInputChange(question.id, 1);
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selectedPreviousRentalButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selectedPreviousRentalButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selectedPreviousRentalButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelectedPreviousRentalButton(true);
-                    handleInputChange(question.id, 0);
-                  }}
-                  disabled={true} // Set this to true to make buttons non-interactive
-                />
-              ) : question.id === 24 ? (
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selectedPetsButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selectedPetsButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selectedPetsButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelectedPetsButton(false);
-                    handleInputChange(question.id, 1);
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selectedPetsButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selectedPetsButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selectedPetsButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelectedPetsButton(true);
-                    handleInputChange(question.id, 0);
-                  }}
-                  disabled={true} // Set this to true to make buttons non-interactive
-                />
-              ) : null}
-            </View>
-          );
-        
+      case 'Yes_no':
+        return (
+          <View>
+            {question.id === 13 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedButton(false);
+                  handleInputChange(question.id, 1);
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedButton(true);
+                  handleInputChange(question.id, 0);
+                }}
+                disabled={true} // Set this to true to make buttons non-interactive
+              />
+            ) : question.id === 20 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedRentalBondButton(false);
+                  handleInputChange(question.id, 1);
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedRentalBondButton(true);
+                  handleInputChange(question.id, 0);
+                }}
+                disabled={true} // Set this to true to make buttons non-interactive
+              />
+            ) : question.id === 21 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedPreviousRentalButton(false);
+                  handleInputChange(question.id, 1);
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedPreviousRentalButton(true);
+                  handleInputChange(question.id, 0);
+                }}
+                disabled={true} // Set this to true to make buttons non-interactive
+              />
+            ) : question.id === 24 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedPetsButton(false);
+                  handleInputChange(question.id, 1);
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedPetsButton(true);
+                  handleInputChange(question.id, 0);
+                }}
+                disabled={true} // Set this to true to make buttons non-interactive
+              />
+            ) : null}
+          </View>
+        );
 
       case 'Smoking/Non-smoking':
         return (
@@ -1819,9 +1700,12 @@ const PreRentalQuestionnaire = props => {
               />
               <View style={PreRentalQuestionnaireStyle.textContainer}>
                 <Text style={PreRentalQuestionnaireStyle.pdfName}>
-                  {"Tenant  screening report.pdf"}
+                  {'Tenant  screening report.pdf'}
                 </Text>
-                <Text style={PreRentalQuestionnaireStyle.pdfSize}> {'4.5 MB'}</Text>
+                <Text style={PreRentalQuestionnaireStyle.pdfSize}>
+                  {' '}
+                  {'4.5 MB'}
+                </Text>
               </View>
             </View>
             <TouchableOpacity
@@ -1830,18 +1714,16 @@ const PreRentalQuestionnaire = props => {
                 // setFilePath();
                 // setFileKey();
               }}>
-              <Entypo
-                name="cross"
-                size={25}
-                color={_COLORS.Kodie_GrayColor}
-              />
+              <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
             </TouchableOpacity>
           </View>
         </View>
         <DividerIcon marginTop={5} />
         <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
           <RowButtons
-            LeftButtonText={'Reject'}
+            LeftButtonText={
+              acceptBiddingData[1]?.lookup_description || 'Reject'
+            }
             leftButtonbackgroundColor={
               !submitApplicationBtn
                 ? _COLORS.Kodie_BlackColor
@@ -1859,11 +1741,11 @@ const PreRentalQuestionnaire = props => {
             }
             onPressLeftButton={() => {
               setSubmitApplicationBtn(false);
-              setSubmitApplicationBtnId(0);
-              // handleSubmit();
-              // alert(selectPetFriendlyBtnId)
+              setAcceptBiddingBtnId(555);
             }}
-            RightButtonText={'Accept'}
+            RightButtonText={
+              acceptBiddingData[0]?.lookup_description || 'Accept'
+            }
             RightButtonbackgroundColor={
               submitApplicationBtn
                 ? _COLORS.Kodie_BlackColor
@@ -1881,7 +1763,8 @@ const PreRentalQuestionnaire = props => {
             }
             onPressRightButton={() => {
               setSubmitApplicationBtn(true);
-              setSubmitApplicationBtnId(1);
+              setAcceptBiddingBtnId(556);
+              handleAcceptingLandlord();
             }}
           />
         </View>

@@ -28,10 +28,6 @@ import {useNavigation} from '@react-navigation/native';
 const PropertyRentalOffer = props => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log(
-  //   'login response property rental offer..',
-  //   loginData?.Login_details,
-  // );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
@@ -114,6 +110,35 @@ const PropertyRentalOffer = props => {
       <TouchableOpacity onPress={() => {}}>
         <>
           <View key={index} style={PropertyRentalOfferStyle.flatListContainer}>
+            <View
+              style={[
+                PropertyRentalOfferStyle.flat_MainView,
+                {alignSelf: 'center', marginBottom: 10},
+              ]}>
+              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+                  Accepting bids
+                </Text>
+              </TouchableOpacity>
+              <Text style={PropertyRentalOfferStyle.biddingText}>
+                Bidding closes in:
+              </Text>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'o days'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'6 hrs'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'10 mins'}
+                </Text>
+              </View>
+            </View>
             <View style={PropertyRentalOfferStyle.flat_MainView}>
               <View style={PropertyRentalOfferStyle.flexContainer}>
                 <Text style={PropertyRentalOfferStyle.apartmentText}>
@@ -125,6 +150,7 @@ const PropertyRentalOffer = props => {
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
+                    style={{alignSelf:"center"}}
                   />
                   <Text
                     style={PropertyRentalOfferStyle.locationText}
@@ -300,7 +326,9 @@ const PropertyRentalOffer = props => {
                 setSelectedButtonBid(false);
                 handleWithdrawBid(item?.property_id, item?.bid_id);
               }}
-              RightButtonText={'Edit offer'}
+              RightButtonText={
+                item?.accepting_landlord == 556 ? 'Accept offer' : 'Edit offer'
+              }
               RightButtonbackgroundColor={
                 selectedButtonBid
                   ? _COLORS.Kodie_BlackColor
@@ -318,11 +346,13 @@ const PropertyRentalOffer = props => {
               }
               onPressRightButton={() => {
                 setSelectedButtonBid(true);
-                navigation.navigate('RentalOffer', {
-                  edit_offer: 'edit_offer',
-                  propertyId: item?.property_id,
-                  propertyDetails: item,
-                });
+                item?.accepting_landlord == 556
+                  ? alert('In progess')
+                  : navigation.navigate('RentalOffer', {
+                      edit_offer: 'edit_offer',
+                      propertyId: item?.property_id,
+                      propertyDetails: item,
+                    });
               }}
             />
           </View>
@@ -332,7 +362,7 @@ const PropertyRentalOffer = props => {
     );
   };
   return (
-    <SafeAreaView style={PropertyRentalOfferStyle.mainContainer}>
+    <View style={PropertyRentalOfferStyle.mainContainer}>
       <View style={PropertyRentalOfferStyle.rowButtonView}>
         <RowButtons
           LeftButtonText={'Offers for my properties'}
@@ -355,7 +385,7 @@ const PropertyRentalOffer = props => {
             setSelectedButton(false);
             // alert(selectedButton)
           }}
-          RightButtonText={'My current offers'}
+          RightButtonText={'My rental applications'}
           RightButtonbackgroundColor={
             selectedButton
               ? _COLORS.Kodie_lightGreenColor
@@ -377,48 +407,21 @@ const PropertyRentalOffer = props => {
         />
       </View>
       <DividerIcon borderBottomWidth={5} />
-      <SearchBar
-        filterImage={IMAGES.filter}
-        frontSearchIcon
-        Filter
-        filter={'filter'}
-        marginTop={3}
-        placeholder={'Search offers'}
-        searchData={searchCurrentOffer}
-        textvalue={searchQuery}
-      />
-      <DividerIcon />
       <ScrollView>
         <View style={PropertyRentalOfferStyle.subContainer}>
           {!selectedButton ? null : (
-            <View
-              style={[
-                PropertyRentalOfferStyle.flat_MainView,
-                {alignSelf: 'center', marginBottom: 10},
-              ]}>
-              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                  Accepting bids
-                </Text>
-              </TouchableOpacity>
-              <Text style={PropertyRentalOfferStyle.biddingText}>
-                Bidding closes in:
-              </Text>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'o days'}
-                </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'6 hrs'}
-                </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'10 mins'}
-                </Text>
-              </View>
+            <View>
+              <SearchBar
+                filterImage={IMAGES.filter}
+                frontSearchIcon
+                Filter
+                filter={'filter'}
+                marginTop={3}
+                placeholder={'Search offers'}
+                searchData={searchCurrentOffer}
+                textvalue={searchQuery}
+              />
+              <DividerIcon />
             </View>
           )}
 
@@ -434,7 +437,7 @@ const PropertyRentalOffer = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </SafeAreaView>
+    </View>
   );
 };
 
