@@ -88,7 +88,10 @@ export default CreateJobFirstScreen = props => {
 
   // validation.....
   const handleNextbtn = () => {
-    console.log('selectedAddress?.property_type_id',selectedAddress?.property_type_id);
+    console.log(
+      'selectedAddress?.property_type_id',
+      selectedAddress?.property_type_id,
+    );
     if (selectJobTypeid == '') {
       setSelectJobTypeidError('The type of job you need is required!');
     } else if (servicesValue == '') {
@@ -515,6 +518,9 @@ export default CreateJobFirstScreen = props => {
                 isClick === item?.lookup_key
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
+              borderColor: selectJobTypeidError
+                ? _COLORS?.Kodie_redColor
+                : _COLORS.Kodie_GrayColor,
             },
           ]}
           textColor={[
@@ -867,7 +873,7 @@ export default CreateJobFirstScreen = props => {
           }}
         />
       ) : (
-        <ScrollView keyboardShouldPersistTaps="always">
+        <ScrollView>
           <View style={CreateJobFirstStyle.mainView}>
             <Text style={CreateJobFirstStyle.heading}>{'Job details'}</Text>
             <Text style={CreateJobFirstStyle.servicestext}>
@@ -1032,7 +1038,7 @@ export default CreateJobFirstScreen = props => {
                     location: item.location,
                     property_id: item?.property_id,
                     propertyType: item?.type_id,
-                    property_type_id:item?.property_type_id
+                    property_type_id: item?.property_type_id,
                   });
                   setTakingPlaceError(false);
                 }}

@@ -25,7 +25,7 @@ const ApplicationSubmitModal = props => {
           marginHorizontal: 16,
         }}>
         <Text style={ApplicationSubmitModalStyle.ApplicationText}>
-          {'ApplicationSubmitModal'}
+          {'Application submitted'}
         </Text>
         <Text
           style={[
@@ -34,6 +34,8 @@ const ApplicationSubmitModal = props => {
               fontFamily: FONTFAMILY.K_Regular,
               fontSize: 14,
               color: _COLORS.Kodie_LightGrayColor,
+              marginTop:10,
+              textAlign:"center"
             },
           ]}>
           {
@@ -43,6 +45,7 @@ const ApplicationSubmitModal = props => {
         <View
           style={{
             alignSelf: 'center',
+            marginVertical:10
           }}>
           <Feather
             name="check-circle"
@@ -70,7 +73,7 @@ const ApplicationSubmitModal = props => {
           <Text
             style={[
               ApplicationSubmitModalStyle.ApplicationText,
-              {fontFamily: FONTFAMILY.K_SemiBold},
+              {fontFamily: FONTFAMILY.K_SemiBold,fontSize:16,marginTop:10},
             ]}>
             {'Return'}
           </Text>

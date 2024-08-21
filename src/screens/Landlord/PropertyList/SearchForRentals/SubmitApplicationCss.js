@@ -224,6 +224,7 @@ export const SubmitApplicationCss = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     textAlign: "center",
     alignSelf: "center",
+    marginTop:10
   },
   checkStl: { height: 120, width: 120, alignSelf: "center" },
 });
