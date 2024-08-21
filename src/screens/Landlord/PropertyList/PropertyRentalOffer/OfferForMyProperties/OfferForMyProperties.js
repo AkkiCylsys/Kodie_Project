@@ -24,13 +24,14 @@ import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
+import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
-  const [offerPropertyData, setOfferPropertyData] = useState({});
+  const [offerPropertyData, setOfferPropertyData] = useState([]);
   const [filteredOfferPropertyData, setFilteredOfferPropertyData] = useState(
     [],
   );
@@ -75,6 +76,7 @@ const OfferForMyProperties = () => {
         : 0,
       limit: '10',
     };
+    console.log('Request Payload:', offerPropertyData);
     try {
       const response = await offerForMyProperty(offerPropertyData);
       console.log('response in offerForMyProperty..', response?.data);
@@ -236,8 +238,7 @@ const OfferForMyProperties = () => {
                 propertyId: item?.property_id,
                 bid_id: item?.bid_id,
                 tenant_id: item?.tenant_id,
-                landlord_id : item?.landlord_id
-
+                landlord_id: item?.landlord_id,
               });
             }}
             backgroundColor={_COLORS.Kodie_BlackColor}
@@ -301,8 +302,11 @@ const OfferForMyProperties = () => {
       <DividerIcon />
       <FlatList
         data={searchQuery ? filteredOfferPropertyData : offerPropertyData}
-        keyExtractor={item => item.property_id}
+        keyExtractor={item => item.property_id.toString()}
         renderItem={offerPropertyRender}
+        ListEmptyComponent={() => {
+          return <ListEmptyComponent EmptyText={"You don't have any properties."}/>;
+        }}
       />
       {isLoading ? <CommonLoader /> : null}
     </View>

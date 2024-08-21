@@ -136,5 +136,11 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   expandedView:{
     flex:1,flexDirection:'row',
     justifyContent:"space-between"
-  }
+  },
+  noResultSubtext: {
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+  },
 });

@@ -25,6 +25,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 const PropertyRentalOffer = props => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -80,6 +81,7 @@ const PropertyRentalOffer = props => {
       prevId === property_id ? null : property_id,
     );
   };
+
   useEffect(() => {
     handleGetCurrectOffer();
   }, []);
@@ -93,13 +95,34 @@ const PropertyRentalOffer = props => {
             item.property_type.toLowerCase().includes(query.toLowerCase()),
         )
       : saveCurrentOffer;
-    console.log('filtered.........', filtered);
     setFilteredpropertyData(filtered);
+  };
+  const handlePressLeftButton = (propertyId, bidId) => {
+    setSelectedButtonBid(prev => ({
+      ...prev,
+      [propertyId]: false,
+    }));
+    handleWithdrawBid(propertyId, bidId);
+  };
+
+  const handlePressRightButton = item => {
+    setSelectedButtonBid(prev => ({
+      ...prev,
+      [item.property_id]: true,
+    }));
+    if (item.accepting_landlord == 556) {
+      alert('In progress');
+    } else {
+      navigation.navigate('RentalOffer', {
+        edit_offer: 'edit_offer',
+        propertyId: item.property_id,
+        propertyDetails: item,
+      });
+    }
   };
   const currentOffer_render = ({item, index}) => {
     const isExpanded = expandedPropertyId === item.property_id;
     const keyFeatures = JSON.parse(item.key_features);
-    console.log('keyFeatures..', keyFeatures);
     const parkingSpaceFeature = keyFeatures.find(feature =>
       feature.hasOwnProperty('Parking Space'),
     );
@@ -150,7 +173,7 @@ const PropertyRentalOffer = props => {
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
-                    style={{alignSelf:"center"}}
+                    style={{alignSelf: 'center'}}
                   />
                   <Text
                     style={PropertyRentalOfferStyle.locationText}
@@ -308,52 +331,42 @@ const PropertyRentalOffer = props => {
             <RowButtons
               LeftButtonText={'Withdraw bid'}
               leftButtonbackgroundColor={
-                !selectedButtonBid
+                !selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_WhiteColor
               }
               LeftButtonTextColor={
-                !selectedButtonBid
+                !selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_WhiteColor
                   : _COLORS.Kodie_BlackColor
               }
               LeftButtonborderColor={
-                !selectedButtonBid
+                !selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_BlackColor
               }
-              onPressLeftButton={() => {
-                setSelectedButtonBid(false);
-                handleWithdrawBid(item?.property_id, item?.bid_id);
-              }}
+              onPressLeftButton={() =>
+                handlePressLeftButton(item.property_id, item.bid_id)
+              }
               RightButtonText={
-                item?.accepting_landlord == 556 ? 'Accept offer' : 'Edit offer'
+                item.accepting_landlord == 556 ? 'Accept offer' : 'Edit offer'
               }
               RightButtonbackgroundColor={
-                selectedButtonBid
+                selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_WhiteColor
               }
               RightButtonTextColor={
-                selectedButtonBid
+                selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_WhiteColor
                   : _COLORS.Kodie_BlackColor
               }
               RightButtonborderColor={
-                selectedButtonBid
+                selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_BlackColor
               }
-              onPressRightButton={() => {
-                setSelectedButtonBid(true);
-                item?.accepting_landlord == 556
-                  ? alert('In progess')
-                  : navigation.navigate('RentalOffer', {
-                      edit_offer: 'edit_offer',
-                      propertyId: item?.property_id,
-                      propertyDetails: item,
-                    });
-              }}
+              onPressRightButton={() => handlePressRightButton(item)}
             />
           </View>
           <DividerIcon />
@@ -430,6 +443,15 @@ const PropertyRentalOffer = props => {
               data={searchQuery ? filteredpropertyData : saveCurrentOffer}
               keyExtractor={item => item.property_id.toString()}
               renderItem={currentOffer_render}
+              ListEmptyComponent={() => {
+                return (
+                  <ListEmptyComponent
+                    EmptyText={
+                      "You don't have any rental applications at the moment."
+                    }
+                  />
+                );
+              }}
             />
           ) : (
             <OfferForMyProperties />

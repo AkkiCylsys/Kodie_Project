@@ -2309,7 +2309,7 @@ const RentalOffer = props => {
             <TenantScreeningReportModal onClose={onClose} />
           </RBSheet>
           <RBSheet
-            height={400}
+            height={430}
             ref={refRBSheet1}
             closeOnDragDown={true}
             closeOnPressMask={false}
