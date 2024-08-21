@@ -58,6 +58,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     marginHorizontal: 5,
     fontFamily: FONTFAMILY.K_Bold,
+    alignSelf:"center"
   },
   imageStyle: {
     flex: 0.5,

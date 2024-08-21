@@ -108,7 +108,13 @@ export default SearchResult = props => {
     const keyFeatures = JSON.parse(item.key_features);
     // console.log(keyFeatures);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ViewRentalDetails', {
+            propertyId: propertyId,
+            rentalAmount: rentalAmount,
+          });
+        }}>
         {setKeyFeature(item?.key_features)}
         {item?.image_path && item?.image_path.length != 0 ? (
           <View style={{marginTop: 10}}>
@@ -181,7 +187,7 @@ export default SearchResult = props => {
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
                 setBidId(item?.bid_id);
-                setPropertyDetailsItem(item)
+                setPropertyDetailsItem(item);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -197,7 +203,12 @@ export default SearchResult = props => {
             name="location-pin"
             size={20}
           />
-          <Text style={SearchResultCss.location} numberOfLines={2} ellipsizeMode="tail">{item?.location || ''}</Text>
+          <Text
+            style={SearchResultCss.location}
+            numberOfLines={2}
+            ellipsizeMode="tail">
+            {item?.location || ''}
+          </Text>
         </View>
         <View style={SearchResultCss.availableBtn}>
           <Text style={SearchResultCss.availabletext}>
@@ -264,7 +275,7 @@ export default SearchResult = props => {
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-      </>
+      </TouchableOpacity>
     );
   };
   return (

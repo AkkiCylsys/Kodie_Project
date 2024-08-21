@@ -44,7 +44,7 @@ const PropertyList2 = props => {
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [proteryTypeData, setProteryTypeData] = useState([]);
-  const [proteryTypeValue, setProteryTypeValue] = useState('');
+  const [proteryTypeValue, setProteryTypeValue] = useState(0);
   const [proteryTypeValueError, setProteryTypeValueError] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -480,7 +480,7 @@ const PropertyList2 = props => {
               valueField="lookup_key"
               placeholder="Apartment"
               searchPlaceholder="Search..."
-              value={value}
+              value={proteryTypeValue}
               onChange={item => {
                 setProteryTypeValue(item.lookup_key);
                 setProteryTypeValueError(false);
@@ -629,7 +629,8 @@ const PropertyList2 = props => {
                   </TouchableOpacity>
                 </TouchableOpacity>
               </View>
-              <View style={PropertyList2Css.floorSizeView}>
+              {/* change request ui  */}
+              {/* <View style={PropertyList2Css.floorSizeView}>
                 <Text
                   style={[
                     PropertyList2Css.key_feature_Text,
@@ -664,13 +665,14 @@ const PropertyList2 = props => {
                     style={PropertyList2Css.textInputStyle}
                   />
                 </View>
-              </View>
+              </View> */}
             </View>
 
             <Text style={[PropertyList2Css.inputText]}>
               {'Additional features'}
             </Text>
-            <View style={PropertyList2Css.additionalFeatureView}>
+            {/* change request ui  */}
+            {/* <View style={PropertyList2Css.additionalFeatureView}>
               <View style={PropertyList2Css.featureItem}>
                 <Text
                   style={[
@@ -764,8 +766,11 @@ const PropertyList2 = props => {
                   />
                 </View>
               </View>
-            </View>
-            {/* <Text style={PropertyList2Css.inputText}>
+            </View> */}
+
+            {/* ....... */}
+
+            <Text style={PropertyList2Css.inputText}>
               {'Furnished or unfurnished? '}
             </Text>
             <RowButtons
@@ -899,7 +904,7 @@ const PropertyList2 = props => {
                 setSecureByDepositBtnId(1);
                 // alert(selectPetFriendlyBtnId)
               }}
-            /> */}
+            />
             <Text style={PropertyList2Css.inputText}>
               {'Additional key features'}
             </Text>
