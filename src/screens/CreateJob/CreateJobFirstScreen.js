@@ -1,7 +1,7 @@
 //ScreenNo:143
 //ScreenNo:139
 //ScreenNo:121
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,6 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  PermissionsAndroid,
-  BackHandler,
   SafeAreaView,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
@@ -20,10 +18,8 @@ import {_COLORS, LABEL_STYLES, IMAGES} from '../../Themes/index';
 import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices';
 import {Dropdown} from 'react-native-element-dropdown';
-import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import ServicesBox from '../../components/Molecules/ServicesBox/ServicesBox';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -31,11 +27,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
-//import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -43,8 +36,6 @@ const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
-  const mapRef = useRef(null);
-  const navigation = useNavigation();
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
@@ -54,17 +45,14 @@ export default CreateJobFirstScreen = props => {
   const [location, setLocation] = useState('');
   const [takingPlaceError, setTakingPlaceError] = useState(false);
   const [isClick, setIsClick] = useState(false);
-  const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
-  const [property_valueError, setProperty_valueError] = useState(false);
   const [selectedAddressData, setSelectedAddreeData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
   const [jobPriorityValueError, setJobPriorityValueError] = useState(false);
-
   const [ratingThresholdData, setRatingThresholdData] = useState([]);
   const [ratingThresholdValue, setRatingThresholdValue] = useState([]);
   const [jobTypeData, setJobTypeData] = useState([]);
@@ -99,9 +87,6 @@ export default CreateJobFirstScreen = props => {
     } else if (jobPriorityValue == '') {
       setJobPriorityValueError(true);
     }
-    // else if (property_value == '') {
-    //   setProperty_valueError(true);
-    // }
     else if (selectedAddress == '') {
       setTakingPlaceError(true);
     } else {
@@ -110,7 +95,6 @@ export default CreateJobFirstScreen = props => {
         servicesValue: servicesValue,
         aboutyourNeed: aboutyourNeed,
         jobPriorityValue: jobPriorityValue,
-        // property_value: property_value,
         property_value: selectedAddress?.property_type_id,
         location: location || selectedAddress.location,
         ratingThresholdValue: ratingThresholdValue,
@@ -149,10 +133,8 @@ export default CreateJobFirstScreen = props => {
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -174,7 +156,6 @@ export default CreateJobFirstScreen = props => {
         console.log('addressComponent2.....', addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
       })
       .catch(error => console.warn(error));

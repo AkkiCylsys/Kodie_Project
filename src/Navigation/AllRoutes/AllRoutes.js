@@ -40,7 +40,6 @@ import SignUpVerification from '../../screens/Authentication/SignUpScreen/SignUp
 import Location from '../../screens/Authentication/SignUpScreen/Location';
 import AboutYou from '../../screens/Authentication/SignUpScreen/AboutYou/AboutYou';
 import CreateJobTermsScreen from '../../screens/CreateJob/CreateJobTermsScreen/CreateJobTermsScreen';
-import ConfirmJobCompletion from '../../screens/CreateJob/ConfirmJobCompletion/ConfirmJobCompletion';
 import Account from '../../screens/Authentication/SignUpScreen/Account/Account';
 import FirstProperty from '../../screens/Authentication/SignUpScreen/FirstProperty/FirstProperty';
 import PropertyDetails from '../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails';
@@ -591,11 +590,7 @@ const AllStackRouts = props => {
           component={CreateJobTermsScreen}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
-          name={'ConfirmJobCompletion'}
-          component={ConfirmJobCompletion}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
+       
         <Stack.Screen
           name={'SignUpSteps'}
           component={SignUpSteps}
