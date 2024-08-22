@@ -16,6 +16,7 @@ const ApplicationSubmitModal = props => {
   const onClose = () => {
     props.onClose();
   };
+  const{biddingDetailsMessage}=props
   return (
     <View style={ApplicationSubmitModalStyle.mainConatainer}>
       {/* <ScrollView> */}
@@ -39,7 +40,7 @@ const ApplicationSubmitModal = props => {
             },
           ]}>
           {
-            'Congratulations! You have successfully submitted your rental application. The property owner will contact you soon.'
+            biddingDetailsMessage ||'Congratulations! You have successfully submitted your rental application. The property owner will contact you soon.'
           }
         </Text>
         <View

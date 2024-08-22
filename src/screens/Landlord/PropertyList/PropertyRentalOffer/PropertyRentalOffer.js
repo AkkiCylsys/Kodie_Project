@@ -20,14 +20,16 @@ import {
   getCurrentOffer,
   withdowBid,
   withdowBidServices,
+  acceptTenants,
 } from '../../../../services/PropertyRentalOfferApi/PropertyRentalOfferApi';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 const PropertyRentalOffer = props => {
   const navigation = useNavigation();
+  const isFocus = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
@@ -40,11 +42,9 @@ const PropertyRentalOffer = props => {
   const handleGetCurrectOffer = async () => {
     setIsLoading(true);
     const current_Data = {
-      // account_id: 724,
       account_id: loginData?.Login_details?.user_account_id,
       limit: 10,
     };
-
     try {
       const response = await getCurrentOffer(current_Data);
       console.log('response in currect offer..', response);
@@ -62,7 +62,6 @@ const PropertyRentalOffer = props => {
     const WithdrawData = {
       bid_id: bid_id,
       account_id: loginData?.Login_details?.user_account_id,
-      // account_id: 724,
       property_id: property_id,
     };
     try {
@@ -74,17 +73,43 @@ const PropertyRentalOffer = props => {
       }
     } catch (error) {
       console.error('Error fetching WithdrawBid:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
-  const handleExpandToggle = property_id => {
-    setExpandedPropertyId(prevId =>
-      prevId === property_id ? null : property_id,
-    );
+
+  const handleAcceptTenants = async (
+    tenant_id,
+    landlord_id,
+    bid_id,
+    property_id,
+  ) => {
+    setIsLoading(true);
+    const acceptTenantsData = {
+      property_id: property_id,
+      bid_id: bid_id,
+      tenant_id: tenant_id,
+      landlord_id: landlord_id,
+    };
+    console.log('acceptTenantsData...', acceptTenantsData);
+    try {
+      const response = await acceptTenants(acceptTenantsData);
+      console.log('response in acceptTenantsData...', response);
+      if (response?.success === true) {
+        alert(response?.data);
+      } else {
+        console.error('Failed to accept tenants:', response?.message);
+      }
+    } catch (error) {
+      console.error('Error fetching acceptTenantsData:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     handleGetCurrectOffer();
-  }, []);
+  }, [isFocus]);
 
   const searchCurrentOffer = query => {
     setSearchQuery(query);
@@ -111,7 +136,12 @@ const PropertyRentalOffer = props => {
       [item.property_id]: true,
     }));
     if (item.accepting_landlord == 556) {
-      alert('In progress');
+      handleAcceptTenants(
+        item?.tenant_id,
+        item?.landlord_id,
+        item?.bid_id,
+        item?.property_id,
+      );
     } else {
       navigation.navigate('RentalOffer', {
         edit_offer: 'edit_offer',
@@ -136,7 +166,7 @@ const PropertyRentalOffer = props => {
             <View
               style={[
                 PropertyRentalOfferStyle.flat_MainView,
-                {alignSelf: 'center', marginBottom: 10},
+                {marginBottom: 10},
               ]}>
               <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
                 <Text style={PropertyRentalOfferStyle.bidsButtonText}>
@@ -332,12 +362,12 @@ const PropertyRentalOffer = props => {
               LeftButtonText={'Withdraw bid'}
               leftButtonbackgroundColor={
                 !selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_BlackColor
+                  ? _COLORS.Kodie_WhiteColor
                   : _COLORS.Kodie_WhiteColor
               }
               LeftButtonTextColor={
                 !selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_WhiteColor
+                  ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_BlackColor
               }
               LeftButtonborderColor={
@@ -354,12 +384,12 @@ const PropertyRentalOffer = props => {
               RightButtonbackgroundColor={
                 selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
               }
               RightButtonTextColor={
                 selectedButtonBid[item.property_id]
                   ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
               }
               RightButtonborderColor={
                 selectedButtonBid[item.property_id]
