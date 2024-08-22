@@ -34,6 +34,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -987,14 +988,14 @@ export default PropertyReviewDetails = props => {
                 onPress={() => {
                   setLike(!like);
                 }}>
-                <Entypo
-                  name={like ? 'heart' : 'heart-outlined'}
+                <AntDesign
+                  name={like ? 'heart' : 'hearto'}
                   color={
                     like
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor
                   }
-                  size={22}
+                  size={24}
                 />
               </TouchableOpacity>
             </View>
@@ -1002,7 +1003,7 @@ export default PropertyReviewDetails = props => {
           <Text style={PropertyReviewStyle.melbourne_Text}>
             {property_Detail?.state || property_Detail?.city || ''}
           </Text>
-          <View style={PropertyReviewStyle.share_View}>
+          <View style={PropertyReviewStyle.location_View}>
             <Entypo
               name="location-pin"
               size={20}
@@ -1013,7 +1014,6 @@ export default PropertyReviewDetails = props => {
             </Text>
           </View>
         </View>
-
         <View
           style={{
             borderBottomWidth: 3,

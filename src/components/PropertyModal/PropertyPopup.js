@@ -39,7 +39,7 @@ const reminder_data = [
 ];
 const PropertyPopup = props => {
   const [value, setValue] = useState(null);
-  const [selectedCommDate, setselectedCommDate] = useState("");
+  const [selectedCommDate, setselectedCommDate] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [listPrice, setListPrice] = useState(0);
   const [rentalBond, setRentalBond] = useState('');
@@ -106,7 +106,7 @@ const PropertyPopup = props => {
   };
   const handleSaveClick = () => {
     setIsSaveClicked(true);
-    props.saveClicked("true");
+    props.saveClicked('true');
   };
   const handleClosePopup = () => {
     props.onClose();
@@ -159,17 +159,15 @@ const PropertyPopup = props => {
         setBidData(response?.data);
 
         if (response?.data?.message === 'Inserted successfully') {
-          // Handle success case here
           // Alert.alert('Success!', response?.data.message);
           handleSaveClick();
         } else {
-          // Handle other cases
           Alert.alert('Already enabled', response?.data?.message);
         }
       })
       .catch(error => {
         console.error('API failed in add_Bid', error);
-        alert(error); // Alert for general errors
+        alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -325,7 +323,7 @@ const PropertyPopup = props => {
               <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
               <View style={PropertyPopupStyle.datePickerView}>
                 <CalendarModal
-                current={selectedCommDate}
+                  current={selectedCommDate}
                   SelectDate={
                     selectedCommDate ? selectedCommDate : 'Start Date'
                   }
@@ -470,7 +468,7 @@ const PropertyPopup = props => {
                       placeholder="30 days"
                       value={open_reminder_Value}
                       onChange={item => {
-                          setopen_reminder_Value(item.lookup_key);
+                        setopen_reminder_Value(item.lookup_key);
                       }}
                       disabled={!Toggle_open} // Disable dropdown if Toggle_open is false
                     />
@@ -576,6 +574,7 @@ const PropertyPopup = props => {
                   ]}
                   onPress={() => {
                     handleOptionClick('cancel');
+                    handleClosePopup();
                   }}>
                   <Text
                     style={[
@@ -596,6 +595,7 @@ const PropertyPopup = props => {
                   ]}
                   onPress={() => {
                     handle_addlease_Bid();
+                    handleClosePopup();
                   }}>
                   <Text
                     style={[
@@ -605,7 +605,7 @@ const PropertyPopup = props => {
                         color: _COLORS.Kodie_WhiteColor,
                       },
                     ]}>
-                    {' Save'}
+                    {'Save'}
                   </Text>
                 </TouchableOpacity>
               </View>

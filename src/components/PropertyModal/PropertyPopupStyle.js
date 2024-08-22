@@ -96,7 +96,7 @@ export const PropertyPopupStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
-  notification_view: {flexDirection: 'row', justifyContent: 'space-between'},
+  notification_view: {flexDirection: 'row', justifyContent: 'space-between',marginTop:10},
   notification_text: {
     // borderWidth:1,
     flex: 1,
@@ -108,7 +108,7 @@ export const PropertyPopupStyle = StyleSheet.create({
     height: 18,
     borderRadius: 20,
     padding: 5,
-    marginTop: 18,
+    marginTop: 16,
     alignItems: 'center',
   },
   toggle_circle: {
@@ -141,6 +141,7 @@ export const PropertyPopupStyle = StyleSheet.create({
     // flex:1,
     marginLeft: 5,
     alignSelf: 'center',
+    marginTop:8,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
@@ -169,7 +170,7 @@ export const PropertyPopupStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_BlackColor,
     paddingHorizontal: 30,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: 4,
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
