@@ -158,6 +158,9 @@ const Chats = (props) => {
         type: 'group',
       }));
 
+ const userGroups = groups.filter(group => 
+      group.members.some(member => member.user_id == loginData?.Login_details?.user_id)
+    );
       // Combine users and groups
       const sortedUsers = updatedUsers.sort((a, b) => {
         if (a.lastMessageTimestamp && b.lastMessageTimestamp) {
@@ -166,14 +169,15 @@ const Chats = (props) => {
         return 0;
       });
 
-      const combinedData = [...sortedUsers, ...groups];
-      setFilteredUsers(
-        searchQuery
-          ? combinedData.filter(item =>
-            item.name?.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-          : combinedData
-      );
+      const combinedData = [...sortedUsers, ...userGroups];
+    setFilteredUsers(
+      searchQuery
+        ? combinedData.filter(item =>
+          item.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          item.groupName?.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        : combinedData
+    );
 
       setIsLoading(false);
     } catch (error) {

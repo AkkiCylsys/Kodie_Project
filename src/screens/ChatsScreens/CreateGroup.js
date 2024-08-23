@@ -51,13 +51,14 @@ const CreateGroup = () => {
       const newGroup = {
         groupName,
         members: selectedUsers.map(user => ({
-          user_id: user.user_id, // Use user_id here
+          
+          user_id: user.user_key, // Use user_id here
           userName: user.name,   // Include user name
         })),
         createdBy: loginData.Login_details.user_id,
         createdAt: firestore.FieldValue.serverTimestamp(),
       };
-
+console.log(JSON.stringify(newGroup));
       await firestore().collection('groups').add(newGroup);
       alert('Group created successfully!');
       navigation.goBack();
