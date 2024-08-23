@@ -39,6 +39,8 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
     marginLeft: 3,
+    alignSelf: 'center',
+    marginHorizontal:7
   },
   daysViewStl: {
     borderWidth: 1,
@@ -58,7 +60,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     marginHorizontal: 5,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf:"center"
+    alignSelf: 'center',
   },
   imageStyle: {
     flex: 0.5,
@@ -112,7 +114,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   locationView: {
     flexDirection: 'row',
     marginTop: 5,
-    marginLeft:10
+    marginLeft: 10,
   },
   bedcont: {
     fontSize: 14,
@@ -131,11 +133,12 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
-  expandedView:{
-    flex:1,flexDirection:'row',
-    justifyContent:"space-between"
+  expandedView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   noResultSubtext: {
     fontSize: 11,
