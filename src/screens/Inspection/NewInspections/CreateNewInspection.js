@@ -593,6 +593,8 @@ const CreateNewInspection = props => {
             : 'Create new inspections'
         }
       />
+
+    <ScrollView>
       <KeyboardAvoidingView
         // style={CreateNewInspectionStyle.mainConatainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -883,10 +885,11 @@ const CreateNewInspection = props => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading ? true : false}
             onPress={handleSubmit}
-            marginBottom={Platform.OS === 'ios' ? 0 : '29%'}
+            marginBottom={Platform.OS === 'ios' ? 0 : '35%'}
           />
         </ScrollView>
       </KeyboardAvoidingView>
+      </ScrollView>
       <RBSheet
         ref={refRBSheet}
         height={500}

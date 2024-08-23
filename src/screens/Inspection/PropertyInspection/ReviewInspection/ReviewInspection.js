@@ -108,7 +108,7 @@ const ReviewInspection = () => {
         <Text style={ReviewInspectionCss.inspections}>{'Notes'}</Text>
         <Text style={ReviewInspectionCss.MBText}>{'No notes'}</Text>
         <CustomSingleButton
-          _ButtonText={'Share inspection report'}
+          _ButtonText={'port'}
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           height={45}
