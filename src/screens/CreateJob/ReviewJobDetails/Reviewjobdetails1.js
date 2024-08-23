@@ -19,7 +19,10 @@ import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 const Reviewjobdetails1 = props => {
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
+  console.log('createJobId in reviewjobDetails.....', createJobId);
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -32,7 +35,8 @@ const Reviewjobdetails1 = props => {
   console.log('View_Job_Details_sdfsdf.....', props.View_Job_Details);
   console.log('JOB_IDfsdfsdfs.....', props.JOB_ID);
   console.log('JOB_IDfsdfsdfs small.....', props.job_id);
-  const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
+  // const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
+  const F_job_id = props.View_Job_Details ? props.JOB_ID : createJobId;
   console.log('F_job_id....', F_job_id);
 
   useEffect(() => {

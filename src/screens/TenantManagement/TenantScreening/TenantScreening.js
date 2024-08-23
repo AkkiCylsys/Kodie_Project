@@ -1,14 +1,14 @@
 import {View, Text, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
-import {TenantListStyle} from './TenantListStyle';
-import {_COLORS} from '../../Themes';
-import {_goBack} from '../../services/CommonServices';
-import CustomTabNavigator from '../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import TopHeader from '../../components/Molecules/Header/Header';
-import CurrentTenant from './CurrentTenant/CurrentTenant';
-import ProspectsTenant from '../TenantManagement/ProspectsTenant/ProspectsTenant';
-import PreviousTenant from './PreviousTenant/PreviousTenant';
-const TenantList = props => {
+import { TenantScreeningStyle } from './TenantScreeningStyle';
+import {_COLORS} from '../../../Themes';
+import {_goBack} from '../../../services/CommonServices';
+import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import CurrentTenant from '../../Tenant/CurrentTenant/CurrentTenant';
+import ProspectsTenant from '../ProspectsTenant/ProspectsTenant';
+import PreviousTenant from '../../Tenant/PreviousTenant/PreviousTenant';
+const TenantScreening = props => {
   const [activeTab, setActiveTab] = useState('Tab1');
   const checkTabs = () => {
     switch (activeTab) {
@@ -26,11 +26,8 @@ const TenantList = props => {
     }
   };
   return (
-    <SafeAreaView style={TenantListStyle.Container}>
-      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
-
+    <SafeAreaView style={TenantScreeningStyle.Container}>
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate('Dashboard')}
         MiddleText={'Tenants'}
       />
@@ -59,14 +56,14 @@ const TenantList = props => {
             ? _COLORS.Kodie_BlackColor
             : _COLORS.Kodie_MediumGrayColor
         }
-        styleTab1={activeTab === 'Tab1' && TenantListStyle.activeTab}
-        styleTab2={activeTab === 'Tab2' && TenantListStyle.activeTab}
-        styleTab3={activeTab === 'Tab3' && TenantListStyle.activeTab}
+        styleTab1={activeTab === 'Tab1' && TenantScreeningStyle.activeTab}
+        styleTab2={activeTab === 'Tab2' && TenantScreeningStyle.activeTab}
+        styleTab3={activeTab === 'Tab3' && TenantScreeningStyle.activeTab}
       />
-      <View style={TenantListStyle.Line} />
+      <View style={TenantScreeningStyle.Line} />
       {checkTabs()}
     </SafeAreaView>
   );
 };
 
-export default TenantList;
+export default TenantScreening;

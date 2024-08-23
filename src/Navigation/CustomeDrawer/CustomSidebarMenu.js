@@ -50,7 +50,7 @@ const CustomSidebarMenu = props => {
         break;
       case 'Tetants':
         setselectedId('Tetants');
-        props.navigation.navigate('TenantList');
+        props.navigation.navigate('TenantScreening');
         break;
       case 'MaintenanceJobs':
         setselectedId('MaintenanceJobs');

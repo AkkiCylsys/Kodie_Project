@@ -16,12 +16,14 @@ import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
 import {useNavigation} from '@react-navigation/native';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import {getTenantAllDetailsService} from '../../../services/TenantManagementsServices/TenantScreeningServices/TenantScreeningServices';
 
 export default ProspectsTenant = props => {
   const navigation = useNavigation();
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
-  const [inviteTenant, setInviteTenant] = useState([]);
+  const [TenantAllDetails, setTenantAllDetails] = useState([]);
   const [inviteTenantALl, setInviteTenantAll] = useState([]);
   const [selectedBtnId, setSelectedBtnId] = useState(null);
   const refRBSheet = useRef();
@@ -29,34 +31,27 @@ export default ProspectsTenant = props => {
   const searchInviteTenant = () => {};
 
   useEffect(() => {
-    get_Tenent_Details();
+    handleTenantScreening();
   }, []);
-  const get_Tenent_Details = async () => {
-    const url = Config.BASE_URL;
-    const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
+
+  const handleTenantScreening = async () => {
     setIsLoading(true);
-    console.log('Request URL:', Invite_Tenant_url);
-    await axios
-      .get(Invite_Tenant_url)
-      .then(response => {
-        console.log('API Response InviteTenant_url:', response?.data);
-        if (response?.data?.success === true) {
-          setInviteTenant(response?.data?.data);
-          console.log('Invite Tenant Data..', response?.data?.data);
-          // alert(response?.data?.data.UAD_KEY)
-          setIsLoading(false);
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed Tenent_Details', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const TenantAllDetailsData = {
+      filter: 'Prospects',
+      account_id: 730,
+    };
+    try {
+      const response = await getTenantAllDetailsService(TenantAllDetailsData);
+      // console.log('response in TenantAllDetails..', response);
+      if (response?.success === true) {
+        setTenantAllDetails(response?.data);
+        console.log('TenantAllDetails..', JSON.stringify(response?.data));
+      }
+    } catch (error) {
+      console.error('Error fetching TenantAllDetails ', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -221,6 +216,95 @@ export default ProspectsTenant = props => {
       </>
     );
   };
+  const tenantAllDetailRender = ({item}) => {
+    const accountDetails = item?.account_details?.[0] || {};
+    const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
+    return (
+      <>
+        <View style={ProspectsTenantStyle.subContainer}>
+          <View style={ProspectsTenantStyle.userMainView}>
+            <TouchableOpacity style={ProspectsTenantStyle.usericon}>
+              <Image
+                source={
+                  // UAD_PROFILE_PHOTO_PATH
+                  //   ? {uri: UAD_PROFILE_PHOTO_PATH}
+                  //   : 
+                    IMAGES.userImage
+                }
+              />
+            </TouchableOpacity>
+
+            <View style={{marginHorizontal: 16}}>
+              <View style={ProspectsTenantStyle.flexRowView}>
+                <Text style={ProspectsTenantStyle.userName}>
+                  {UAD_FIRST_NAME || 'N/A'}{' '}
+                  {/* Fallback to 'N/A' if first name is missing */}
+                </Text>
+                <View style={ProspectsTenantStyle.flexRowView}>
+                  <AntDesign
+                    name="checkcircle"
+                    size={11}
+                    color={_COLORS?.Kodie_GreenColor}
+                    style={ProspectsTenantStyle.checkIconStyle}
+                  />
+                  <Text style={ProspectsTenantStyle.verifyText}>
+                    {'Verified'}
+                  </Text>
+                </View>
+              </View>
+              <View style={ProspectsTenantStyle.ratingView}>
+                <AntDesign
+                  name="star"
+                  size={20}
+                  color={_COLORS?.Kodie_GreenColor}
+                />
+                <Text style={ProspectsTenantStyle.ratingText}>
+                  {'4.2 (101)'}
+                </Text>
+              </View>
+            </View>
+            <View style={ProspectsTenantStyle.threeDotView}>
+              <TouchableOpacity>
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={25}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
+              <View style={ProspectsTenantStyle.screeningView}>
+                <Entypo
+                  name="dot-single"
+                  size={25}
+                  color={_COLORS.Kodie_DarkOrange}
+                  style={{
+                    alignSelf: 'center',
+                  }}
+                />
+                <Text style={ProspectsTenantStyle.screeningText}>
+                  {'Failed screening'}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={ProspectsTenantStyle.RowBtnView}>
+            <RowButtons
+              leftButtonHeight={50}
+              RightButtonHeight={50}
+              LeftButtonText="View Profile"
+              onPressLeftButton={() => {}}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              RightButtonText="Add to property"
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              onPressRightButton={() => {}}
+            />
+          </View>
+        </View>
+        <DividerIcon />
+      </>
+    );
+  };
   return (
     <View style={ProspectsTenantStyle.mainContainer}>
       <SearchBar
@@ -235,16 +319,23 @@ export default ProspectsTenant = props => {
         iconSet="AntDesign"
       />
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
+      <View style={{marginHorizontal: 16}}>
+        <CustomSingleButton
+          _ButtonText={'+ Add tenant'}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          text_Size={14}
+          backgroundColor={_COLORS.Kodie_BlackColor}
+          //   onPress={props.propertyDetail}
+          disabled={isLoading ? true : false}
+        />
+      </View>
       <FlatList
-        data={inviteTenant}
-        // data={inviteTenantALl}
+        data={TenantAllDetails || []}
         scrollEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{}}
-        keyExtractor={item => item?.id}
-        renderItem={tenantData}
+        keyExtractor={item => item?.property_id}
+        renderItem={tenantAllDetailRender}
       />
-
       <RBSheet
         ref={refRBSheet}
         height={240}

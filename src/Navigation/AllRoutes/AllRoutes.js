@@ -25,7 +25,7 @@ import JobCompletion from '../../screens/Contractor/JobCompletion/JobCompletion'
 import ContractorProfile from '../../screens/Contractor/ContractorProfile/ContractorProfile';
 import DocumentList from '../../screens/DocumentList/DocumentList';
 import RejectConfirm from '../../screens/Landlord/RejectConfirm/RejectConfirm';
-import ProspectsTenant from '../../screens/Landlord/ProspectsTenant/ProspectsTenant';
+import ProspectsTenant from '../../screens/TenantManagement/ProspectsTenant/ProspectsTenant';
 import Notice from '../../screens/NotiesList/Notice';
 import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
@@ -145,6 +145,7 @@ import PropertyViewApplication from '../../screens/Landlord/PropertyList/Propert
 import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
 import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
 import GroupChat from '../../screens/ChatsScreens/GroupChat';
+import TenantScreening from '../../screens/TenantManagement/TenantScreening/TenantScreening';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1102,6 +1103,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'GroupChat'}
           component={GroupChat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantScreening'}
+          component={TenantScreening}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
