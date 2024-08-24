@@ -15,7 +15,7 @@ const VacantPropertiesList = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order is descending
+  const [sortOrder, setSortOrder] = useState('desc');
   const [vacantData, setVacantData] = useState([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const VacantPropertiesList = props => {
   }, []);
 
   const swipeVacantList = async () => {
-    const newData = [...vacantData];
+    const newData = [...vacantData].reverse();
     if (newData.length > 1) {
       const firstIndex = 0;
       const lastIndex = newData.length - 1;
@@ -33,9 +33,8 @@ const VacantPropertiesList = props => {
       ];
     }
     setVacantData(newData);
-    setFilteredUsers(newData); // Update filteredUsers after swapping
+    setFilteredUsers(newData);
   };
-
   const searchVacantProperty = query => {
     setSearchQuery(query);
     const filtered = query
@@ -71,8 +70,8 @@ const VacantPropertiesList = props => {
   const toggleSortOrder = () => {
     const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newOrder);
-    // Optionally trigger sorting or swapping
-    swipeVacantList(); // Example: swapping data for demo purpose
+    
+    swipeVacantList();
   };
 
   return (
