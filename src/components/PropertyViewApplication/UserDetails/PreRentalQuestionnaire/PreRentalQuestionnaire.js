@@ -91,11 +91,6 @@ const PreRentalQuestionnaire = props => {
   const [toggleReference, setToggleReference] = useState(false);
 
   const [location, setLocation] = useState('');
-  const [IsMap, setIsMap] = useState(false);
-  const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('');
   const addressParts = location ? location.split(', ') : [];
   const country = addressParts.pop();
   const state = addressParts.pop();
@@ -153,57 +148,6 @@ const PreRentalQuestionnaire = props => {
       setIsLoading(false); // Stop loading state
     }
   };
-  // location....
-  const ConfirmAddress = () => {
-    setIsMap(false);
-    setLocation(currentLocation);
-  };
-  const openMapandClose = text => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = Region => {
-    // alert(JSON.stringify(Region));
-    console.log('Region....', JSON.stringify(Region));
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
-    getAddress(Region.latitude, Region.longitude);
-  };
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then(json => {
-        console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
-        const formatedAddress = json.results[0].formatted_address;
-        setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
-        let MainFullAddress =
-          json.results[0].address_components[1].long_name +
-          ', ' +
-          json.results[0].address_components[2].long_name +
-          ', ' +
-          json.results[0].address_components[3].long_name +
-          ', ' +
-          json.results[0].address_components[4].long_name +
-          ', ' +
-          json.results[0].address_components[5].long_name +
-          ', ' +
-          json.results[0].address_components[6].long_name +
-          ', ' +
-          json.results[0].address_components[7].long_name +
-          ', ' +
-          json.results[0].address_components[8].long_name;
-
-        var addressComponent2 = json.results[0].address_components[1];
-        console.log('addressComponent2.....', addressComponent2);
-        setUserCurrentCity(addressComponent2.long_name);
-        console.log('UserCurrentCity....', UserCurrentCity);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        console.log('mainFullAddress....', MainFullAddress);
-      })
-      .catch(error => console.warn(error));
-  };
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
     setToggleOccupants(true);
@@ -224,26 +168,6 @@ const PreRentalQuestionnaire = props => {
       setToggleLeaseHolder(false);
     }
   };
-  const increaseNumberYearEmp = () => {
-    setNumberYearEmp(prevCount => prevCount + 1);
-  };
-  const decreaseNumberYearEmp = () => {
-    if (numberYearEmp > 0) {
-      setNumberYearEmp(prevCount => prevCount - 1);
-    }
-  };
-  const decreaseNumberPet = () => {
-    if (numberPets > 0) {
-      setNumberPets(prevCount => prevCount - 1);
-    }
-  };
-  const increaseNumberPets = () => {
-    setNumberPets(prevCount => prevCount + 1);
-  };
-  const onSelectedItemsChange = selectedItems => {
-    setTypeOfPetsValue(selectedItems);
-  };
-
   const handleLocationChange = text => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
@@ -258,7 +182,7 @@ const PreRentalQuestionnaire = props => {
     const QuesData = {
       p_account_id: accountId,
       //   p_property_id: propertyId,
-      p_property_id: 1734,
+      p_property_id: propertyId,
     };
 
     try {
@@ -1225,7 +1149,6 @@ const PreRentalQuestionnaire = props => {
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={decreaseNumberYearEmp}
                 >
                   <AntDesign
                     name="minus"
@@ -1238,9 +1161,6 @@ const PreRentalQuestionnaire = props => {
                 </Text>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={() => {
-                  //   increaseNumberYearEmp();
-                  // }}
                 >
                   <AntDesign
                     name="plus"
@@ -1268,7 +1188,6 @@ const PreRentalQuestionnaire = props => {
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={decreaseNumberPet}
                 >
                   <AntDesign
                     name="minus"
@@ -1281,9 +1200,6 @@ const PreRentalQuestionnaire = props => {
                 </Text>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={() => {
-                  //   increaseNumberPets();
-                  // }}
                 >
                   <AntDesign
                     name="plus"

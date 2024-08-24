@@ -146,6 +146,7 @@ import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
 import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
 import GroupChat from '../../screens/ChatsScreens/GroupChat';
 import TenantScreening from '../../screens/TenantManagement/TenantScreening/TenantScreening';
+import PreScreeningQuestinnaire from '../../screens/TenantManagement/TenantScreening/PreScreeningQuestionnaire/PreScreeningQuestinnaire';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1108,6 +1109,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'TenantScreening'}
           component={TenantScreening}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PreScreeningQuestinnaire'}
+          component={PreScreeningQuestinnaire}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

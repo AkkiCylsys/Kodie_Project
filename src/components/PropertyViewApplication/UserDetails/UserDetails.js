@@ -7,31 +7,47 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {UserDetailsStyle} from './UserDetailsStyle';
 const UserDetails = props => {
   const {tenantAccountDetails} = props;
-  console.log('tenantAccountDetails..', tenantAccountDetails);
+  console.log("tenantAccountDetails...",tenantAccountDetails)
   return (
     <View style={UserDetailsStyle.container}>
       <View
         style={{
           flexDirection: 'row',
         }}>
-        {Array.isArray(tenantAccountDetails.UAD_PROFILE_PHOTO_PATH) &&
-        tenantAccountDetails.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
-          <Image
-            source={{uri: tenantAccountDetails.UAD_PROFILE_PHOTO_PATH[0]}}
-            resizeMode={'cover'}
-            style={UserDetailsStyle.userImg}
-          />
+        {tenantAccountDetails ? (
+          Array.isArray(tenantAccountDetails.UAD_PROFILE_PHOTO_PATH) &&
+          tenantAccountDetails.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+            <Image
+              source={{uri: tenantAccountDetails.UAD_PROFILE_PHOTO_PATH[0]}}
+              resizeMode={'cover'}
+              style={UserDetailsStyle.userImg}
+            />
+          ) : (
+            <EvilIcons
+              color={_COLORS.Kodie_GrayColor}
+              name={'user'}
+              size={60}
+            />
+          )
         ) : (
           <EvilIcons color={_COLORS.Kodie_GrayColor} name={'user'} size={60} />
         )}
-        <View style={UserDetailsStyle.userNameView}>
-          <Text style={UserDetailsStyle.username}>
-            {tenantAccountDetails?.UAD_FIRST_NAME || ' '}
-          </Text>
-          <Text style={UserDetailsStyle.username}>
-            {tenantAccountDetails?.UAD_LAST_NAME || ' '}
-          </Text>
-        </View>
+
+        {tenantAccountDetails ? (
+          <View style={UserDetailsStyle.userNameView}>
+            <Text style={UserDetailsStyle.username}>
+              {tenantAccountDetails?.UAD_FIRST_NAME || ' '}
+            </Text>
+            <Text style={UserDetailsStyle.username}>
+              {tenantAccountDetails?.UAD_LAST_NAME || ' '}
+            </Text>
+          </View>
+        ) : (
+          <View style={UserDetailsStyle.userNameView}>
+            <Text style={UserDetailsStyle.username}>{'NA'}</Text>
+            <Text style={UserDetailsStyle.username}>{'NA'}</Text>
+          </View>
+        )}
       </View>
       <View>
         <View
