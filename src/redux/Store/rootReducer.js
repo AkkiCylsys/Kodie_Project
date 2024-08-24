@@ -1,11 +1,13 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
-import authenticationReducer from '../Reducers/AuthenticationReducer/AuthenticationReducer'
-//  import xyzReducer from '../Reducers/xyzReducer/xyzReducer'
-
-
+import authenticationReducer from '../Reducers/AuthenticationReducer/AuthenticationReducer';
+import subscriptionReducer from '../Reducers/SubscriptionReducer/SubscriptionReducer';
+import AddPropertyStepsReducer from '../Reducers/AddPropertyStepReducer/AddPropertyStepReducer';
+import AddCreateJobReducer from '../Reducers/cretaeJobReducer/CreateJobReducer';
 const appReducers = combineReducers({
   authenticationReducer,
-  // xyzReducer,
+   subscriptionReducer,
+   AddPropertyStepsReducer,
+   AddCreateJobReducer
   // abcReducer
 
 });

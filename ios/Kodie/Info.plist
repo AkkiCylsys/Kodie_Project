@@ -2,10 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key> UIFileSharingEnabled</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Kodie</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MKDirectionsRequest</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.maps.directionsrequest</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,10 +35,27 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1095041111738-eml343q3fd04m0nrurdj1vh59gef0naj</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>MKDirectionsApplicationSupportedModes</key>
+	<array>
+		<string>MKDirectionsModeOther</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -35,22 +67,45 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Kodie requires Bluetooth access to allows you quick and secure access.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Kodie requires Bluetooth access to allows you quick and secure access.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Kodie requires Calender access to allows you quick and secure access.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Kodie requires Camera access to allows you quick and secure access.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw</key>
+		<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kodie requires Microphone access to allows you quick and secure access.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Kodie requires Motion access to allows you quick and secure access.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kodie requires PhotoLibrary Add access to allows you quick and secure access.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Kodie requires PhotoLibrary access to allows you quick and secure access.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Kodie requires Reminders access to allows you quick and secure access.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Kodie requires  access to allows you quick and secure access.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Kodie requires SpeechRecognition access to allows you quick and secure access.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>
@@ -99,6 +154,39 @@
 		<string>Poppins-SemiBoldItalic.ttf</string>
 		<string>Poppins-Thin.ttf</string>
 		<string>Poppins-ThinItalic.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>FontAwesome6_Brands.ttf</string>
+		<string>FontAwesome6_Regular.ttf</string>
+		<string>FontAwesome6_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

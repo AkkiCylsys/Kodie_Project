@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1095041111738",
+    "firebase_url": "https://kodiedemo-default-rtdb.firebaseio.com",
+    "project_id": "kodiedemo",
+    "storage_bucket": "kodiedemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095041111738:android:2b2f4d18466898fe0ad483",
+        "android_client_info": {
+          "package_name": "com.kodie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095041111738-1mhgvv3fn3keb6bc965ufqpt5orjnfim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kodie",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtZn35PtCrPf8L76kPiORE1SlLuFRj7eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095041111738-eml343q3fd04m0nrurdj1vh59gef0naj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.kodie"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
