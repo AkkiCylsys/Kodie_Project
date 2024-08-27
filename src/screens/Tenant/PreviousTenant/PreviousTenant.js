@@ -156,31 +156,6 @@ const PreviousTenant = props => {
   };
   return (
     <View style={PreviousTenantStyle.mainContainer}>
-      {/* <SearchBar
-        filterImage={IMAGES.filter}
-        isFilterImage
-        height={48}
-        marginTop={20}
-        placeholder={'Search tenants'}
-        frontSearchIcon
-        searchData={searchprevioustenant}
-        filterIcon="filter"
-        iconSet="AntDesign"
-      />
-      <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} /> */}
-      {/* <View style={PreviousTenantStyle.Container}>
-        <CustomSingleButton
-          _ButtonText={'+ Add tenant'}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          text_Size={14}
-          backgroundColor={_COLORS.Kodie_BlackColor}
-          height={38}
-          marginTop={3}
-          //   onPress={props.propertyDetail}
-          disabled={isLoading ? true : false}
-        />
-      </View> */}
-      <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
       <FlatList
         data={searchQuery ? filterpreviousTenant : previousTenant}
         scrollEnabled

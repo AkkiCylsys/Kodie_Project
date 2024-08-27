@@ -147,6 +147,9 @@ import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
 import GroupChat from '../../screens/ChatsScreens/GroupChat';
 import TenantScreening from '../../screens/TenantManagement/TenantScreening/TenantScreening';
 import PreScreeningQuestinnaire from '../../screens/TenantManagement/TenantScreening/PreScreeningQuestionnaire/PreScreeningQuestinnaire';
+import TenantProfile from '../../screens/TenantManagement/TenantScreening/TenantProfile/TenantProfile';
+import ManagingTenantsScreen from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingTenantsScreen';
+import TenantDocuments from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantDocuments';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1114,6 +1117,21 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'PreScreeningQuestinnaire'}
           component={PreScreeningQuestinnaire}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantProfile'}
+          component={TenantProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'ManagingTenantsScreen'}
+          component={ManagingTenantsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantDocuments'}
+          component={TenantDocuments}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

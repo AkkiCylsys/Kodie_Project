@@ -40,6 +40,7 @@ const PreRentalQuestionnaire = props => {
     tenant_id,
     landlord_id,
     acceptBiddingData,
+    tenantProfile,
   } = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
@@ -1148,8 +1149,7 @@ const PreRentalQuestionnaire = props => {
               <TouchableOpacity
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1160,8 +1160,7 @@ const PreRentalQuestionnaire = props => {
                   {numberYearEmp}
                 </Text>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1187,8 +1186,7 @@ const PreRentalQuestionnaire = props => {
               <TouchableOpacity
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1199,8 +1197,7 @@ const PreRentalQuestionnaire = props => {
                   {numberPets}
                 </Text>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1601,89 +1598,97 @@ const PreRentalQuestionnaire = props => {
           keyExtractor={(item, index) => item.id}
           renderItem={QuesHeadingRender}
         />
-        <View style={{marginHorizontal: 16}}>
-          <Text style={PreRentalQuestionnaireStyle.inspections}>
-            {'Tenant  screening report (recommended)'}
-          </Text>
+        {tenantProfile == 'tenantProfile' ? null : (
+          <View style={{marginHorizontal: 16}}>
+            <Text style={PreRentalQuestionnaireStyle.inspections}>
+              {'Tenant  screening report (recommended)'}
+            </Text>
 
-          <View style={PreRentalQuestionnaireStyle.container}>
-            <View style={PreRentalQuestionnaireStyle.pdfInfo}>
-              <FontAwesome
-                name="file-pdf-o"
-                size={35}
-                color={_COLORS.Kodie_BlackColor}
-                resizeMode={'contain'}
-              />
-              <View style={PreRentalQuestionnaireStyle.textContainer}>
-                <Text style={PreRentalQuestionnaireStyle.pdfName}>
-                  {'Tenant  screening report.pdf'}
-                </Text>
-                <Text style={PreRentalQuestionnaireStyle.pdfSize}>
-                  {' '}
-                  {'4.5 MB'}
-                </Text>
+            <View style={PreRentalQuestionnaireStyle.container}>
+              <View style={PreRentalQuestionnaireStyle.pdfInfo}>
+                <FontAwesome
+                  name="file-pdf-o"
+                  size={35}
+                  color={_COLORS.Kodie_BlackColor}
+                  resizeMode={'contain'}
+                />
+                <View style={PreRentalQuestionnaireStyle.textContainer}>
+                  <Text style={PreRentalQuestionnaireStyle.pdfName}>
+                    {'Tenant  screening report.pdf'}
+                  </Text>
+                  <Text style={PreRentalQuestionnaireStyle.pdfSize}>
+                    {' '}
+                    {'4.5 MB'}
+                  </Text>
+                </View>
               </View>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.crossIcon}
+                onPress={() => {
+                  // setFilePath();
+                  // setFileKey();
+                }}>
+                <Entypo
+                  name="cross"
+                  size={25}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={PreRentalQuestionnaireStyle.crossIcon}
-              onPress={() => {
-                // setFilePath();
-                // setFileKey();
-              }}>
-              <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
-            </TouchableOpacity>
           </View>
-        </View>
-        <DividerIcon marginTop={5} />
-        <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
-          <RowButtons
-            LeftButtonText={
-              acceptBiddingData[1]?.lookup_description || 'Reject'
-            }
-            leftButtonbackgroundColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            LeftButtonborderColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressLeftButton={() => {
-              setSubmitApplicationBtn(false);
-              setAcceptBiddingBtnId(555);
-            }}
-            RightButtonText={
-              acceptBiddingData[0]?.lookup_description || 'Accept'
-            }
-            RightButtonbackgroundColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            RightButtonborderColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressRightButton={() => {
-              setSubmitApplicationBtn(true);
-              setAcceptBiddingBtnId(556);
-              handleAcceptingLandlord();
-            }}
-          />
-        </View>
+        )}
+        {/* <DividerIcon marginTop={5} /> */}
+        {acceptBiddingData ? (
+          <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
+            <RowButtons
+              LeftButtonText={
+                acceptBiddingData[1]?.lookup_description || 'Reject'
+              }
+              leftButtonbackgroundColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              LeftButtonborderColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setAcceptBiddingBtnId(555);
+              }}
+              RightButtonText={
+                acceptBiddingData[0]?.lookup_description || 'Accept'
+              }
+              RightButtonbackgroundColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setAcceptBiddingBtnId(556);
+                handleAcceptingLandlord();
+              }}
+            />
+          </View>
+        ) : null}
       </ScrollView>
       {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>

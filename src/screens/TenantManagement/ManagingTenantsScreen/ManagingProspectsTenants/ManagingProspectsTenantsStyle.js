@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {FONTFAMILY, _COLORS} from '../../../Themes/index';
-export const ProspectsTenantStyle = StyleSheet.create({
+import { _COLORS,FONTFAMILY } from '../../../../Themes';
+export const ManagingProspectsTenantsStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -10,7 +10,6 @@ export const ProspectsTenantStyle = StyleSheet.create({
     width: 56,
     borderRadius: 56 / 2,
     borderColor: _COLORS.Kodie_GrayColor,
-    borderWidth:1
   },
   usermainView: {
     marginHorizontal: 16,
@@ -82,12 +81,6 @@ export const ProspectsTenantStyle = StyleSheet.create({
     alignSelf: 'center',
     marginLeft:4
   },
-  threeDotView:{flex: 1, alignItems: 'flex-end'},
-  Img_found: {
-    fontSize: 12,
-    color: _COLORS?.Kodie_BlackColor,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
+  threeDotView:{flex: 1, alignItems: 'flex-end'}
 });
 

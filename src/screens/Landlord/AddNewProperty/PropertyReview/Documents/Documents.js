@@ -24,13 +24,6 @@ import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
 import FileViewer from 'react-native-file-viewer';
 
-const handleApply = selectedOptions => {
-  console.log('Clear Action');
-};
-const handleClear = () => {
-  console.log('Clear Action');
-};
-
 export default Documents = props => {
   const isfocused = useIsFocused();
   const navigation = useNavigation();
@@ -45,7 +38,6 @@ export default Documents = props => {
   }, [isfocused]);
   const property_id = props.property_id;
   console.log('property_id..', property_id);
-  // alert(props.property_id);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
@@ -100,11 +92,6 @@ export default Documents = props => {
           err && console.log(err);
         });
     }, 300);
-    // try {
-    //   await Share.open({url: filePath});
-    // } catch (error) {
-    //   console.error('Error sharing PDF file:', error);
-    // }
   };
   // delete Document...
   const deleteHandler = fileKey => {
@@ -198,18 +185,15 @@ export default Documents = props => {
   };
 
   const getExtention = fileName => {
-    // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
   const DocumentsData = ({item, index}) => {
-    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
 
     return (
       <>
         <View style={DocumentsStyle.container}>
           <View style={DocumentsStyle.pdfInfo}>
-            {/* <Image source={IMAGES.document} style={DocumentsStyle.pdfIcon} /> */}
             <FontAwesome
               name="file-pdf-o"
               size={35}

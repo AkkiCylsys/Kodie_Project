@@ -1,6 +1,6 @@
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {TenantScreeningStyle} from './TenantScreeningStyle';
+import { ManagingTenantsScreenStyle } from './ManagingTenantsScreenStyle';
 import {_COLORS, IMAGES} from '../../../Themes';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -14,8 +14,9 @@ import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
+import ManagingProspectsTenants from './ManagingProspectsTenants/ManagingProspectsTenants';
 
-const TenantScreening = props => {
+const ManagingTenantsScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const isFocus = useIsFocused();
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -74,14 +75,14 @@ const TenantScreening = props => {
       case 'Tab2':
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
       case 'Tab3':
-        return <ProspectsTenant TenantAllDetails={dataToPass} />;
+        return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       default:
-        return <CurrentTenant TenantAllDetails={dataToPass} />;
+        return <ProspectsTenant TenantAllDetails={dataToPass} />;
     }
   };
 
   return (
-    <SafeAreaView style={TenantScreeningStyle.Container}>
+    <SafeAreaView style={ManagingTenantsScreenStyle.Container}>
       <TopHeader
         onPressLeftButton={() => props.navigation.navigate('Dashboard')}
         MiddleText={'Tenants'}
@@ -111,11 +112,11 @@ const TenantScreening = props => {
             ? _COLORS.Kodie_BlackColor
             : _COLORS.Kodie_MediumGrayColor
         }
-        styleTab1={activeTab === 'Tab1' && TenantScreeningStyle.activeTab}
-        styleTab2={activeTab === 'Tab2' && TenantScreeningStyle.activeTab}
-        styleTab3={activeTab === 'Tab3' && TenantScreeningStyle.activeTab}
+        styleTab1={activeTab === 'Tab1' && ManagingTenantsScreenStyle.activeTab}
+        styleTab2={activeTab === 'Tab2' && ManagingTenantsScreenStyle.activeTab}
+        styleTab3={activeTab === 'Tab3' && ManagingTenantsScreenStyle.activeTab}
       />
-      <View style={TenantScreeningStyle.Line} />
+      <View style={ManagingTenantsScreenStyle.Line} />
       <SearchBar
         filterImage={IMAGES.filter}
         isFilterImage={true}
@@ -149,4 +150,4 @@ const TenantScreening = props => {
   );
 };
 
-export default TenantScreening;
+export default ManagingTenantsScreen;
