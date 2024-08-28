@@ -391,11 +391,19 @@ export default PropertyReviewDetails = props => {
   const goBack = () => {
     props.navigation.pop();
   };
-  const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
-  const parkingSpaceValue = parkingSpaceValueObj
-    ? parkingSpaceValueObj['Parking Space']
-    : null;
+  // const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+  // const parkingSpaceValue = parkingSpaceValueObj
+  //   ? parkingSpaceValueObj['Parking Space']
+  //   : null;
+  let parkingSpaceValue = null;
 
+  if (Array.isArray(Detail)) {
+    const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+    parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj['Parking Space'] : null;
+  } else {
+    console.error('Detail is not an array:', Detail);
+  }
+  
   console.log('Parking Space value:', parkingSpaceValue);
   const checkTabs = () => {
     switch (activeTab) {

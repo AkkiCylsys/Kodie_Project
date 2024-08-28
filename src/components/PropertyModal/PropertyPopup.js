@@ -68,7 +68,7 @@ const PropertyPopup = props => {
   const [selected_payment_id, setselected_payment_id] = useState(319);
   const [BidData, setBidData] = useState([]);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
-
+  const [showValidation, setShowValidation] = useState(false);
   const propertyId = props.propertyId;
   console.log('sheet propertyId', propertyId);
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -103,10 +103,19 @@ const PropertyPopup = props => {
   };
   const handleDayPress = day => {
     setselectedCommDate(day.dateString);
+    setShowValidation(false);
   };
-  const handleSaveClick = () => {
-    setIsSaveClicked(true);
-    props.saveClicked('true');
+  // const handleSaveClick = () => {
+  //   setIsSaveClicked(true);
+  //   props.saveClicked('true');
+  // };
+  const handleSave = () => {
+    if (!selectedCommDate) {
+      setShowValidation(true);
+    } else {
+      handle_addlease_Bid();
+      handleClosePopup();
+    }
   };
   const handleClosePopup = () => {
     props.onClose();
@@ -160,7 +169,7 @@ const PropertyPopup = props => {
 
         if (response?.data?.message === 'Inserted successfully') {
           // Alert.alert('Success!', response?.data.message);
-          handleSaveClick();
+          handleSave();
         } else {
           Alert.alert('Already enabled', response?.data?.message);
         }
@@ -237,7 +246,20 @@ const PropertyPopup = props => {
     setNewbid(res?.lookup_details);
     setIsLoading(false);
   };
-
+  const handlePriceChange = text => {
+    if (text && text[0] !== '$') {
+      setListPrice(`$ ${text}`);
+    } else {
+      setListPrice(text);
+    }
+  };
+  const handleBondChange = text => {
+    if (text && text[0] !== '$') {
+      setRentalBond(`$ ${text}`);
+    } else {
+      setRentalBond(text);
+    }
+  };
   const notification_render = item => {
     return (
       <View
@@ -320,7 +342,10 @@ const PropertyPopup = props => {
           </View>
           <ScrollView>
             <View style={PropertyPopupStyle.card}>
-              <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Bidding commencement date'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <View style={PropertyPopupStyle.datePickerView}>
                 <CalendarModal
                   current={selectedCommDate}
@@ -347,8 +372,12 @@ const PropertyPopup = props => {
                   _ApplyButton={toggleModal}
                 />
               </View>
+
+              {showValidation && (
+                <Text style={{color: 'red'}}>Please select a date!</Text>
+              )}
               <View style={PropertyPopupStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>{'Duration'}</Text>
+                <Text style={LABEL_STYLES.commontext}>{'Bidding period'}</Text>
                 <Dropdown
                   style={PropertyPopupStyle.dropdown1}
                   placeholderStyle={[
@@ -371,11 +400,11 @@ const PropertyPopup = props => {
                 />
               </View>
               <View style={PropertyPopupStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>{'List price'}</Text>
+                <Text style={LABEL_STYLES.commontext}>{'Minimum price'}</Text>
                 <TextInput
                   style={PropertyPopupStyle.input}
                   value={listPrice}
-                  onChangeText={setListPrice}
+                  onChangeText={handlePriceChange}
                   placeholder="Enter the starting bid amount"
                   placeholderTextColor="#D9D9D9"
                   keyboardType="number-pad"
@@ -388,7 +417,7 @@ const PropertyPopup = props => {
                 <TextInput
                   style={PropertyPopupStyle.input}
                   value={rentalBond}
-                  onChangeText={setRentalBond}
+                  onChangeText={handleBondChange}
                   placeholder="The amount which you are prepared to accept"
                   placeholderTextColor="#D9D9D9"
                   keyboardType="number-pad"
@@ -593,10 +622,7 @@ const PropertyPopup = props => {
                       backgroundColor: _COLORS.Kodie_BlackColor,
                     },
                   ]}
-                  onPress={() => {
-                    handle_addlease_Bid();
-                    handleClosePopup();
-                  }}>
+                  onPress={handleSave}>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
