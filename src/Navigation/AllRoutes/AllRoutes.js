@@ -25,7 +25,7 @@ import JobCompletion from '../../screens/Contractor/JobCompletion/JobCompletion'
 import ContractorProfile from '../../screens/Contractor/ContractorProfile/ContractorProfile';
 import DocumentList from '../../screens/DocumentList/DocumentList';
 import RejectConfirm from '../../screens/Landlord/RejectConfirm/RejectConfirm';
-import ProspectsTenant from '../../screens/Landlord/ProspectsTenant/ProspectsTenant';
+import ProspectsTenant from '../../screens/TenantManagement/ProspectsTenant/ProspectsTenant';
 import Notice from '../../screens/NotiesList/Notice';
 import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
@@ -144,6 +144,11 @@ import PropertyViewApplication from '../../screens/Landlord/PropertyList/Propert
 import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
 import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
 import GroupChat from '../../screens/ChatsScreens/GroupChat';
+import TenantScreening from '../../screens/TenantManagement/TenantScreening/TenantScreening';
+import PreScreeningQuestinnaire from '../../screens/TenantManagement/TenantScreening/PreScreeningQuestionnaire/PreScreeningQuestinnaire';
+import TenantProfile from '../../screens/TenantManagement/TenantScreening/TenantProfile/TenantProfile';
+import ManagingTenantsScreen from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingTenantsScreen';
+import TenantDocuments from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantDocuments';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1097,6 +1102,31 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'GroupChat'}
           component={GroupChat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantScreening'}
+          component={TenantScreening}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PreScreeningQuestinnaire'}
+          component={PreScreeningQuestinnaire}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantProfile'}
+          component={TenantProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'ManagingTenantsScreen'}
+          component={ManagingTenantsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantDocuments'}
+          component={TenantDocuments}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

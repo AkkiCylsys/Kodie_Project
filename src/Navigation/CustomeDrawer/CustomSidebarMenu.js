@@ -50,7 +50,11 @@ const CustomSidebarMenu = props => {
         break;
       case 'Tetants':
         setselectedId('Tetants');
-        props.navigation.navigate('TenantList');
+        props.navigation.navigate('TenantScreening');
+        break;
+      case 'ManagingTenants':
+        setselectedId('ManagingTenants');
+        props.navigation.navigate('ManagingTenantsScreen');
         break;
       case 'MaintenanceJobs':
         setselectedId('MaintenanceJobs');
@@ -182,6 +186,21 @@ const CustomSidebarMenu = props => {
             />
           </View>
           <Text style={DrawerStyle.SubHeading}>{'Tenants'}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[DrawerStyle.rowFlex]}
+          onPress={() => check('ManagingTenants')}>
+          <View style={DrawerStyle.IconView}>
+            <MaterialCommunityIcons
+              name="shield-account-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+              style={{alignSelf: 'center'}}
+            />
+          </View>
+          <Text style={DrawerStyle.SubHeading}>{'Managing tenants'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
 

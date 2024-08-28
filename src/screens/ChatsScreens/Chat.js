@@ -653,7 +653,7 @@ const clearChat = async () => {
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={
-          route.params.chatname ? route.params.name : `${userData.name}`
+          route.params.chatname ? `${userData.UAD_FIRST_NAME} ${userData.UAD_LAST_NAME}` : `${userData.name}`
         }
         onPressLeftButton={() => _goBack(props)}
         ManurightIcon

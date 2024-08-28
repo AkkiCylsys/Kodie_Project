@@ -40,6 +40,7 @@ const PreRentalQuestionnaire = props => {
     tenant_id,
     landlord_id,
     acceptBiddingData,
+    tenantProfile,
   } = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
@@ -91,11 +92,6 @@ const PreRentalQuestionnaire = props => {
   const [toggleReference, setToggleReference] = useState(false);
 
   const [location, setLocation] = useState('');
-  const [IsMap, setIsMap] = useState(false);
-  const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('');
   const addressParts = location ? location.split(', ') : [];
   const country = addressParts.pop();
   const state = addressParts.pop();
@@ -153,57 +149,6 @@ const PreRentalQuestionnaire = props => {
       setIsLoading(false); // Stop loading state
     }
   };
-  // location....
-  const ConfirmAddress = () => {
-    setIsMap(false);
-    setLocation(currentLocation);
-  };
-  const openMapandClose = text => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = Region => {
-    // alert(JSON.stringify(Region));
-    console.log('Region....', JSON.stringify(Region));
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
-    getAddress(Region.latitude, Region.longitude);
-  };
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then(json => {
-        console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
-        const formatedAddress = json.results[0].formatted_address;
-        setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
-        let MainFullAddress =
-          json.results[0].address_components[1].long_name +
-          ', ' +
-          json.results[0].address_components[2].long_name +
-          ', ' +
-          json.results[0].address_components[3].long_name +
-          ', ' +
-          json.results[0].address_components[4].long_name +
-          ', ' +
-          json.results[0].address_components[5].long_name +
-          ', ' +
-          json.results[0].address_components[6].long_name +
-          ', ' +
-          json.results[0].address_components[7].long_name +
-          ', ' +
-          json.results[0].address_components[8].long_name;
-
-        var addressComponent2 = json.results[0].address_components[1];
-        console.log('addressComponent2.....', addressComponent2);
-        setUserCurrentCity(addressComponent2.long_name);
-        console.log('UserCurrentCity....', UserCurrentCity);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        console.log('mainFullAddress....', MainFullAddress);
-      })
-      .catch(error => console.warn(error));
-  };
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
     setToggleOccupants(true);
@@ -224,26 +169,6 @@ const PreRentalQuestionnaire = props => {
       setToggleLeaseHolder(false);
     }
   };
-  const increaseNumberYearEmp = () => {
-    setNumberYearEmp(prevCount => prevCount + 1);
-  };
-  const decreaseNumberYearEmp = () => {
-    if (numberYearEmp > 0) {
-      setNumberYearEmp(prevCount => prevCount - 1);
-    }
-  };
-  const decreaseNumberPet = () => {
-    if (numberPets > 0) {
-      setNumberPets(prevCount => prevCount - 1);
-    }
-  };
-  const increaseNumberPets = () => {
-    setNumberPets(prevCount => prevCount + 1);
-  };
-  const onSelectedItemsChange = selectedItems => {
-    setTypeOfPetsValue(selectedItems);
-  };
-
   const handleLocationChange = text => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
@@ -258,7 +183,7 @@ const PreRentalQuestionnaire = props => {
     const QuesData = {
       p_account_id: accountId,
       //   p_property_id: propertyId,
-      p_property_id: 1734,
+      p_property_id: propertyId,
     };
 
     try {
@@ -1224,9 +1149,7 @@ const PreRentalQuestionnaire = props => {
               <TouchableOpacity
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={decreaseNumberYearEmp}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1237,11 +1160,7 @@ const PreRentalQuestionnaire = props => {
                   {numberYearEmp}
                 </Text>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={() => {
-                  //   increaseNumberYearEmp();
-                  // }}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1267,9 +1186,7 @@ const PreRentalQuestionnaire = props => {
               <TouchableOpacity
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={decreaseNumberPet}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1280,11 +1197,7 @@ const PreRentalQuestionnaire = props => {
                   {numberPets}
                 </Text>
                 <TouchableOpacity
-                  style={PreRentalQuestionnaireStyle.menusIconView}
-                  // onPress={() => {
-                  //   increaseNumberPets();
-                  // }}
-                >
+                  style={PreRentalQuestionnaireStyle.menusIconView}>
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1685,89 +1598,97 @@ const PreRentalQuestionnaire = props => {
           keyExtractor={(item, index) => item.id}
           renderItem={QuesHeadingRender}
         />
-        <View style={{marginHorizontal: 16}}>
-          <Text style={PreRentalQuestionnaireStyle.inspections}>
-            {'Tenant  screening report (recommended)'}
-          </Text>
+        {tenantProfile == 'tenantProfile' ? null : (
+          <View style={{marginHorizontal: 16}}>
+            <Text style={PreRentalQuestionnaireStyle.inspections}>
+              {'Tenant  screening report (recommended)'}
+            </Text>
 
-          <View style={PreRentalQuestionnaireStyle.container}>
-            <View style={PreRentalQuestionnaireStyle.pdfInfo}>
-              <FontAwesome
-                name="file-pdf-o"
-                size={35}
-                color={_COLORS.Kodie_BlackColor}
-                resizeMode={'contain'}
-              />
-              <View style={PreRentalQuestionnaireStyle.textContainer}>
-                <Text style={PreRentalQuestionnaireStyle.pdfName}>
-                  {'Tenant  screening report.pdf'}
-                </Text>
-                <Text style={PreRentalQuestionnaireStyle.pdfSize}>
-                  {' '}
-                  {'4.5 MB'}
-                </Text>
+            <View style={PreRentalQuestionnaireStyle.container}>
+              <View style={PreRentalQuestionnaireStyle.pdfInfo}>
+                <FontAwesome
+                  name="file-pdf-o"
+                  size={35}
+                  color={_COLORS.Kodie_BlackColor}
+                  resizeMode={'contain'}
+                />
+                <View style={PreRentalQuestionnaireStyle.textContainer}>
+                  <Text style={PreRentalQuestionnaireStyle.pdfName}>
+                    {'Tenant  screening report.pdf'}
+                  </Text>
+                  <Text style={PreRentalQuestionnaireStyle.pdfSize}>
+                    {' '}
+                    {'4.5 MB'}
+                  </Text>
+                </View>
               </View>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.crossIcon}
+                onPress={() => {
+                  // setFilePath();
+                  // setFileKey();
+                }}>
+                <Entypo
+                  name="cross"
+                  size={25}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={PreRentalQuestionnaireStyle.crossIcon}
-              onPress={() => {
-                // setFilePath();
-                // setFileKey();
-              }}>
-              <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
-            </TouchableOpacity>
           </View>
-        </View>
-        <DividerIcon marginTop={5} />
-        <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
-          <RowButtons
-            LeftButtonText={
-              acceptBiddingData[1]?.lookup_description || 'Reject'
-            }
-            leftButtonbackgroundColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            LeftButtonborderColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressLeftButton={() => {
-              setSubmitApplicationBtn(false);
-              setAcceptBiddingBtnId(555);
-            }}
-            RightButtonText={
-              acceptBiddingData[0]?.lookup_description || 'Accept'
-            }
-            RightButtonbackgroundColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            RightButtonborderColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressRightButton={() => {
-              setSubmitApplicationBtn(true);
-              setAcceptBiddingBtnId(556);
-              handleAcceptingLandlord();
-            }}
-          />
-        </View>
+        )}
+        {/* <DividerIcon marginTop={5} /> */}
+        {acceptBiddingData ? (
+          <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
+            <RowButtons
+              LeftButtonText={
+                acceptBiddingData[1]?.lookup_description || 'Reject'
+              }
+              leftButtonbackgroundColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              LeftButtonborderColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setAcceptBiddingBtnId(555);
+              }}
+              RightButtonText={
+                acceptBiddingData[0]?.lookup_description || 'Accept'
+              }
+              RightButtonbackgroundColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setAcceptBiddingBtnId(556);
+                handleAcceptingLandlord();
+              }}
+            />
+          </View>
+        ) : null}
       </ScrollView>
       {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>
