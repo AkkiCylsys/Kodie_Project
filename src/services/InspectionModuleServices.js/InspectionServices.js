@@ -149,3 +149,41 @@ export const GetInspectioncabinateDetail = (data) => {
       });
   });
 };
+export const GetInspectionAreaDetail = (data) => {
+  const url = `${Config.BASE_URL}get_inspection_area`;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then(response => {
+        if (response?.data?.success) {
+          resolve(response.data.data);
+        } else {
+          reject(new Error(response?.data?.error || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleApiError(error);
+      alert(errorMessage); // Display error message in an alert
+      reject(errorMessage);
+      });
+  });
+};
+export const AddCustomArea = (data) => {
+  const url = `${Config.BASE_URL}inspection_details/CustomArea`;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then(response => {
+        if (response?.data?.success) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response?.data?.error || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleApiError(error);
+      alert(errorMessage); // Display error message in an alert
+      reject(errorMessage);
+      });
+  });
+};

@@ -150,26 +150,63 @@ const Chats = (props) => {
         };
       });
   
-      // Fetch groups
-      const groupsSnapshot = await firestore().collection('groups').get();
-      const groups = groupsSnapshot.docs.map(doc => ({
-        group_key: doc.id,
-        ...doc.data(),
-        type: 'group',
-      }));
+    // Fetch groups and their last messages
+    const groupsSnapshot = await firestore().collection('groups').get();
+    const groups = [];
 
- const userGroups = groups.filter(group => 
-      group.members.some(member => member.user_id == loginData?.Login_details?.user_id)
-    );
-      // Combine users and groups
-      const sortedUsers = updatedUsers.sort((a, b) => {
-        if (a.lastMessageTimestamp && b.lastMessageTimestamp) {
-          return b.lastMessageTimestamp - a.lastMessageTimestamp;
+    for (const doc of groupsSnapshot.docs) {
+      const group = doc.data();
+      const groupId = doc.id;
+
+      // Fetch the last message for the group
+      const messagesSnapshot = await firestore()
+        .collection('groups')
+        .doc(groupId)
+        .collection('groupmessage')
+        .orderBy('createdAt', 'desc')
+        .limit(1)
+        .get();
+
+      let lastMessage = null;
+      let lastMessageTime = '';
+      
+
+      if (!messagesSnapshot.empty) {
+        lastMessage = messagesSnapshot.docs[0].data();
+        lastMessage.createdAt = lastMessage.createdAt.toDate();
+        lastMessageTime = formatDate(lastMessage.createdAt);
+      }
+      let lastMessageText = '';
+      if (lastMessage) {
+        if (lastMessage.image) {
+          lastMessageText = 'Photo';
+        } else if (lastMessage.pdf) {
+          lastMessageText = 'PDF';
+        } else {
+          lastMessageText = lastMessage.text;
         }
-        return 0;
-      });
+      }
+      if (group.members.some(member => member.user_id == loginData?.Login_details?.user_id)) {
+        groups.push({
+          ...group,
+          group_key: groupId,
+          lastMessage: lastMessageText,
+          lastMessageTimestamp: lastMessage?.createdAt || null,
+          lastMessageTime,
+          // unseenCount: lastMessage && !lastMessage.seen && lastMessage.user._id !== loginData.Login_details.user_id ? 1 : 0,
+          type: 'group',
+        });
+      }
+    }
 
-      const combinedData = [...sortedUsers, ...userGroups];
+    // Combine users and groups
+    const combinedData = [...updatedUsers, ...groups].sort((a, b) => {
+      if (a.lastMessageTimestamp && b.lastMessageTimestamp) {
+        return b.lastMessageTimestamp - a.lastMessageTimestamp;
+      }
+      return 0;
+    });
+
     setFilteredUsers(
       searchQuery
         ? combinedData.filter(item =>

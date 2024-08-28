@@ -512,7 +512,7 @@ export default ViewPropertyDetails = props => {
           <Text style={ViewDetailCss.inspections}>{'Inspections'}</Text>
           <CustomSingleButton
             disabled={isLoading ? true : false}
-            _ButtonText={'Request an inspection'}
+            _ButtonText={'inspection'}
             Text_Color={_COLORS.Kodie_WhiteColor}
           />
         </View>

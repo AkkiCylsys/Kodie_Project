@@ -118,6 +118,7 @@ export default PropertyFeature = props => {
         const yesFeatureId = apiAdditionalFeaturesIds.find(id => id == 71);
         setSelectedButtonFurnished(furnishedFeatureId);
         setSelectedButtonDeposit(yesFeatureId);
+        response?.data?.property_details[0]?.floor_size== 0 ? setFlorSize(''):
         setFlorSize(response?.data?.property_details[0]?.floor_size);
         const keyFeaturesId =
           response?.data?.property_details[0]?.additional_key_features_id;
@@ -128,6 +129,7 @@ export default PropertyFeature = props => {
         setAdditionalFeaturesKeyValue(
           Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
         );
+        response?.data?.property_details[0]?.land_area == 0 ? setLandArea(''):
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);

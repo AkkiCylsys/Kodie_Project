@@ -89,9 +89,7 @@ const Logrentalpayment = props => {
   const handleSaveBtn = () => {
     if (paymentTypeValue === '') {
       setPaymentTypeError('Payment type is required!');
-    } else if (totalAmount.trim() === '' || !totalAmount.startsWith('$')) {
-      setTotalAmountError('Total amount is required!');
-    } else if (selectedDate.trim() === '') {
+    }else if (selectedDate.trim() === '') {
       setSelectedDateError('Payment date is required!');
     } else if (selectedpaymetPeriod.trim() === '') {
       setSelectedpaymetPeriodError('Rental payment period is required!');
@@ -307,19 +305,15 @@ const Logrentalpayment = props => {
             <TextInput
               style={[LogrentalPaymentStyle.input,{backgroundColor:_COLORS.Kodie_GrayColor}]}
               value={leaseSummaryData?.RENTAL_AMMOUNT}
-              onChangeText={handleTotalAmount} // Apply formatting on text change
-              onBlur={() => handleTotalAmount(totalAmount)}
+              // onChangeText={handleTotalAmount} // Apply formatting on text change
+              // onBlur={() => handleTotalAmount(totalAmount)}
               placeholder="Enter the total amount of the expense"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="number-pad"
               maxLength={10} // Adjust length based on your needs
             />
           </View>
-          {totalAmountError ? (
-            <Text style={LogrentalPaymentStyle.error_text}>
-              {totalAmountError}
-            </Text>
-          ) : null}
+         
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Payment date'}
             <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>

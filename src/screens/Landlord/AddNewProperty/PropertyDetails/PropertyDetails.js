@@ -179,6 +179,7 @@ export default PropertyDetails = props => {
       setIsLoading(false);
     }
   };
+  console.log(property_Detail?.key_features,'property_Detail?.key_features');
   const updatePropertyDetails = () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
@@ -489,7 +490,7 @@ export default PropertyDetails = props => {
         islocation: 1,
         property_description: propertyDesc,
         property_type: property_value > 0 ? property_value : 0,
-        key_features: 0,
+        key_features: [{"Bedrooms": 0}, {"Bathrooms": 0}, {"Parking Space": 0}, {"Garages": 0}],
         additional_features: 1,
         additional_key_features: 0,
         autolist: selectedButtonId,

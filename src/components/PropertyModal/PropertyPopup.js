@@ -82,7 +82,7 @@ const PropertyPopup = props => {
       lookup_key: 0,
     },
     {
-      lookup_description: 'Notification',
+      lookup_description: 'Kodie Notification',
       lookup_key: 1,
     },
   ];
