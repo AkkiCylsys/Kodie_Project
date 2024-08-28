@@ -26,7 +26,6 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
   const tenantAllDetailRender = ({item}) => {
     const accountDetails = item?.account_details?.[0] || {};
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
-    console.log('UAD_PROFILE_PHOTO_PATH...', UAD_PROFILE_PHOTO_PATH);
     return (
       <>
         <View style={ProspectsTenantStyle.subContainer}>
