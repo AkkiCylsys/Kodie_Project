@@ -57,7 +57,7 @@ const data = [
 ];
 
 const ManagingTenant = props => {
-  const {closeModal} = props;
+  const {closeModal, property_id} = props;
   const navigation = useNavigation();
   const BottomData = ({item, index}) => {
     return (
@@ -71,7 +71,9 @@ const ManagingTenant = props => {
             if (item.id === '2') {
             }
             if (item?.id === '3') {
-              navigation.navigate('TenantDocuments');
+              navigation.navigate('TenantDocuments', {
+                property_id:property_id,
+              });
               closeModal();
             }
           }}>

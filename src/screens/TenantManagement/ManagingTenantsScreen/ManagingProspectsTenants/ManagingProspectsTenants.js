@@ -25,7 +25,6 @@ export default ManagingProspectsTenants = ({TenantAllDetails}) => {
   const tenantAllDetailRender = ({item}) => {
     const accountDetails = item?.account_details?.[0] || {};
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
-    console.log('UAD_PROFILE_PHOTO_PATH...', UAD_PROFILE_PHOTO_PATH);
     return (
       <>
         <View style={ManagingProspectsTenantsStyle.subContainer}>
@@ -158,7 +157,9 @@ export default ManagingProspectsTenants = ({TenantAllDetails}) => {
           }}>
           <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
-        <ManagingTenant closeModal={() => refRBSheet.current.close()}/>
+        <ManagingTenant closeModal={() => refRBSheet.current.close()}
+         property_id = {tenantAllDetailsItem?.property_id}
+         />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>
