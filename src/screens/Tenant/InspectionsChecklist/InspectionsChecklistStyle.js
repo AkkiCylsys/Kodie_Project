@@ -23,6 +23,18 @@ export const InspectionsChecklistStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     fontSize: 14,
   },
+  buttonText:{
+    fontSize: 12,
+    alignSelf: 'center',
+    color: _COLORS.Kodie_GrayColor,
+  },
+  buttonView:{
+    marginTop:10,
+    borderWidth:1,
+    width:48,
+    height:19,
+    borderRadius:21.92,
+    borderColor:_COLORS.Kodie_LightGrayColor},
   starIcon: {
     alignSelf: 'center',
     marginRight: 5,

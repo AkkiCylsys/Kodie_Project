@@ -13,7 +13,7 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import {_COLORS, FONTFAMILY} from '../../../Themes';
 import {_goBack} from '../../../services/CommonServices';
 
-const InspectionDetails = ({
+const InspectionsChecklist = ({
   profile_image,
   loginAccountDetails,
   propertyDetails,
@@ -135,19 +135,9 @@ const InspectionDetails = ({
               Jan 01, 2022
             </Text>
           </View>
-          <View style={{marginTop: 10}}>
+          <View style={InspectionsChecklistStyle.buttonView}>
             <Text
-              style={{
-                  fontSize: 12,
-                  color: _COLORS.Kodie_GrayColor,
-                  fontFamily: FONTFAMILY.K_Bold,
-                  alignSelf: 'center',
-                  borderWidth:1,
-                  width:48,
-                  height:19,
-                  borderRadius:21.92,
-                  borderColor:_COLORS.Kodie_LightGrayColor
-              }}>
+              style={InspectionsChecklistStyle.buttonText}>
               1 year
             </Text>
           </View>
@@ -283,4 +273,4 @@ const InspectionDetails = ({
   );
 };
 
-export default InspectionDetails;
+export default InspectionsChecklist;
