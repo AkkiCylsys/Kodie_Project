@@ -302,7 +302,7 @@ const OfferForMyProperties = () => {
       <DividerIcon />
       <FlatList
         data={searchQuery ? filteredOfferPropertyData : offerPropertyData}
-        keyExtractor={item => item.property_id.toString()}
+        keyExtractor={item => item?.property_id}
         renderItem={offerPropertyRender}
         ListEmptyComponent={() => {
           return <ListEmptyComponent EmptyText={"You don't have any properties."}/>;

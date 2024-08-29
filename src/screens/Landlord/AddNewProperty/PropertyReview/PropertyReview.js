@@ -28,6 +28,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -154,7 +155,7 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor area' ? (
+      ) : item === '' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -984,14 +985,14 @@ export default PropertyReview = props => {
                 onPress={() => {
                   setLike(!like);
                 }}>
-                <Entypo
-                  name={like ? 'heart' : 'heart-outlined'}
+                <AntDesign
+                  name={like ? 'heart' : 'hearto'}
                   color={
                     like
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor
                   }
-                  size={22}
+                  size={24}
                 />
               </TouchableOpacity>
             </View>

@@ -105,14 +105,16 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
+    console.log(item,"details");
     const keyFeatures = JSON.parse(item.key_features);
     // console.log(keyFeatures);
     return (
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('ViewRentalDetails', {
-            propertyId: propertyId,
-            rentalAmount: rentalAmount,
+            propertyId: item?.property_id,
+            rentalAmount: item?.rental_amount,
+            searchRentalData:item
           });
         }}>
         {setKeyFeature(item?.key_features)}

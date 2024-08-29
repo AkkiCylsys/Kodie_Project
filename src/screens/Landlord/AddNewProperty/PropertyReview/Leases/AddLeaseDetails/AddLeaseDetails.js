@@ -776,7 +776,7 @@ export default AddLeaseDetails = props => {
         return (
           <View style={{flex: 1}}>
             <CalendarModal
-              current={paymentDueDay}
+              // current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }

@@ -14,6 +14,7 @@ export const ScheduleCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     marginBottom: 10,
   },
+  
   margin: { marginTop: 20 },
   DetailsView: {
     flex: 1,

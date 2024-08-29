@@ -40,7 +40,6 @@ import SignUpVerification from '../../screens/Authentication/SignUpScreen/SignUp
 import Location from '../../screens/Authentication/SignUpScreen/Location';
 import AboutYou from '../../screens/Authentication/SignUpScreen/AboutYou/AboutYou';
 import CreateJobTermsScreen from '../../screens/CreateJob/CreateJobTermsScreen/CreateJobTermsScreen';
-import ConfirmJobCompletion from '../../screens/CreateJob/ConfirmJobCompletion/ConfirmJobCompletion';
 import Account from '../../screens/Authentication/SignUpScreen/Account/Account';
 import FirstProperty from '../../screens/Authentication/SignUpScreen/FirstProperty/FirstProperty';
 import PropertyDetails from '../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails';
@@ -150,6 +149,7 @@ import PreScreeningQuestinnaire from '../../screens/TenantManagement/TenantScree
 import TenantProfile from '../../screens/TenantManagement/TenantScreening/TenantProfile/TenantProfile';
 import ManagingTenantsScreen from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingTenantsScreen';
 import TenantDocuments from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantDocuments';
+import InspectionsChecklist from '../../screens/Tenant/InspectionsChecklist/InspectionsChecklist';
 import TenantAllDocumentsFolder from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantAllDocumentsFolder/TenantAllDocumentsFolder';
 import TenantDocumentsDetails from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenentDocumentsDetails/TenantDocumentsDetails';
 import ManagingProspectsTenants from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingProspectsTenants/ManagingProspectsTenants';
@@ -599,11 +599,7 @@ const AllStackRouts = props => {
           component={CreateJobTermsScreen}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
-          name={'ConfirmJobCompletion'}
-          component={ConfirmJobCompletion}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
+       
         <Stack.Screen
           name={'SignUpSteps'}
           component={SignUpSteps}
@@ -1135,6 +1131,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'TenantDocuments'}
           component={TenantDocuments}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name={'InspectionsChecklist'}
+          component={InspectionsChecklist}
           options={{headerShown: false}}
         />
         <Stack.Screen

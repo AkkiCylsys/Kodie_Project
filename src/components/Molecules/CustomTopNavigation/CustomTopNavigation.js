@@ -18,17 +18,14 @@ const CustomTabNavigator = (props) => {
       >
         <Text
           style={[
-            TopNavigationstyles.tabText,
+            TopNavigationstyles.tabText,props.TabTextStyle,
             {
               color: props.colorTab1,
+              fontFamily:props.FONTFAMILY1
               // activeTab === "Tab1"
               //   ? _COLORS.Kodie_BlackColor
               //   : _COLORS.Kodie_MediumGrayColor,
             },
-            {
-              fontFamily:props.FONTFAMILY1
-            }
-          
 
           ]}
           numberOfLines={1}
@@ -46,7 +43,7 @@ const CustomTabNavigator = (props) => {
         numberOfLines={1}
         ellipsizeMode="tail"
           style={[
-            TopNavigationstyles.tabText,
+            TopNavigationstyles.tabText,props.TabTextStyle,
             {
               color: props.colorTab2,
             },
@@ -67,7 +64,7 @@ const CustomTabNavigator = (props) => {
           numberOfLines={1}
           ellipsizeMode="tail"
             style={[
-              TopNavigationstyles.tabText,
+              TopNavigationstyles.tabText,props.TabTextStyle,
               {
                 color: props.colorTab3,
               },
@@ -89,7 +86,7 @@ const CustomTabNavigator = (props) => {
           numberOfLines={1}
           ellipsizeMode="tail"
             style={[
-              TopNavigationstyles.tabText,
+              TopNavigationstyles.tabText,props.TabTextStyle,
               {
                 color: props.colorTab4,
               },

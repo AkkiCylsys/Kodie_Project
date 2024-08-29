@@ -25,7 +25,8 @@ export const ExpensesStyle = StyleSheet.create({
   btn_View: {
     flex:1,
     marginHorizontal: 16,
-    marginBottom:10
+    marginBottom:10,
+    marginTop:10
   },
   bottomModal_container: {
     borderWidth: 0.5,
@@ -83,16 +84,17 @@ export const ExpensesStyle = StyleSheet.create({
     fontSize: 10,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
-    marginRight: 5,
   },
   paid_Date_View: {
     flexDirection: "row",
+    marginLeft:5
   },
   rent_received_text: {
     color: _COLORS.Kodie_DarkOrange,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
+    marginBottom:3
   },
   rent_received_view: {
     alignSelf: "center",

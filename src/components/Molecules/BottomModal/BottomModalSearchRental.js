@@ -92,6 +92,16 @@ const BottomModalSearchRental = props => {
             });
             handleClose();
           }
+          if (item?.id == '4') {
+            navigation.navigate('Chat', { 
+              data: props?.propertyDetails, 
+              userid: props?.propertyDetails.landlord_id,
+              chatname:'chatname'
+              
+            });
+
+            handleClose();
+          }
         }}>
         <View style={BottomModalSearchRentalStyle.IconView}>{item.Icon}</View>
         <Text style={BottomModalSearchRentalStyle.text}>{item.Data}</Text>

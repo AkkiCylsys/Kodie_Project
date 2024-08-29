@@ -13,9 +13,11 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import ManagingTenant from '../../../components/Molecules/ManagingTenant/ManagingTenant';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import {Config} from '../../../Config';
 const CurrentTenant = props => {
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [currentTenant, setCurrentTenant] = useState([]);
   const [filterCurrentTenant, setFilterCurrentTenant] = useState([]);
