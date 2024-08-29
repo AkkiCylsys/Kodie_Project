@@ -77,6 +77,7 @@ export const InspectionCss = StyleSheet.create({
   inputContainer: {
     marginVertical: 16,
   },
+  errorText: {color: 'red',},
   cardHeight: {marginBottom: 8},
   emailinput: {
     borderWidth: 1,
@@ -90,6 +91,16 @@ export const InspectionCss = StyleSheet.create({
     alignSelf: 'flex-end',
     justifyContent: 'flex-end',
     marginVertical: 20,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
   },
   cancelView: {alignSelf: 'center'},
   cancelText: {
@@ -116,7 +127,7 @@ export const InspectionCss = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginBottom: 24,
+    // marginBottom: 24,
     borderRadius: 8,
   },
 

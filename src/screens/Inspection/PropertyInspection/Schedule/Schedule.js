@@ -120,7 +120,7 @@ console.log("newStatus",newStatus);
 
  
   const Detail_render = ({ item, index }) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY]; 
+   
      return (
       <View style={ScheduleCss.DetailsView} key={item?.area_key_id}>
         <TouchableOpacity 

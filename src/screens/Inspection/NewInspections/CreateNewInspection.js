@@ -66,8 +66,10 @@ const CreateNewInspection = props => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [tempSelectedValues, setTempSelectedValues] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [showcustomAreaNameError, setShowcustomAreaNameError] = useState('');
   const [selectedDateError, setSelectedDateError] = useState(false);
   const [errorInspection, setErrorInspection] = useState(false);
+  const [errorSimiarArea, setErrorSimiarArea] = useState(false);
   const [Inspection_Detail, setInspection_Details] = useState([]);
   const [displaySelectedValues, setDisplaySelectedValues] = useState('');
   const [selectedButtonStandard, setSelectedButtonStandard] = useState(false);
@@ -95,10 +97,6 @@ const CreateNewInspection = props => {
   };
   const handleAddCustomArea = async () => {
     refRBSheet1.current.close();
-    if (customAreaName.trim() === '') {
-      Alert.alert('Validation', 'Custom area name cannot be empty.');
-      return;
-    }
     const data = {
       custom_area_name: customAreaName,
       is_standard_check_inspection: selectedButtonStandardId,
@@ -116,9 +114,26 @@ const CreateNewInspection = props => {
     setCustomeAreaValue([]);
     setCustomAreaName('')
   };
-
+  const handleCustomName = text => {
+    setCustomAreaName(text);
+    if (text.trim() === '') {
+      setShowcustomAreaNameError('Custom area name cannot be empty!');
+    } else {
+      setShowcustomAreaNameError('');
+    }
+  };
+  const SubmitCustomArea =()=>{
+  if (customAreaName.trim() === '') {
+      // Alert.alert('Validation', 'Custom area name cannot be empty.');
+      setShowcustomAreaNameError('Custom area name cannot be empty!')
+    }else if (customeAreavalue ==''){
+      setErrorSimiarArea(true);
+    }else{
+      handleAddCustomArea();
+    }
+  }
   const Detail_render = ({ item }) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY];
+    const isChecked = checkedItems[item?.TAM_AREA_KEY];
     return (
       <View style={CreateNewInspectionStyle.DetailsView}>
         <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
@@ -163,8 +178,6 @@ const CreateNewInspection = props => {
   };
 
   const checkedItemIds = getCheckedItemIds();
-  console.log(checkedItemIds, 'checkedItemIds');
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -243,19 +256,16 @@ const CreateNewInspection = props => {
           setSelectedAddreeData(response?.data?.property_details);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Selected_Address error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
 
   useEffect(() => {
-    const allSelectedValues = [...displaySelectedValues, ...selectedValues];
     const selectedValuesString = selectedValues
       .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
       .join(', ');
@@ -319,10 +329,38 @@ const CreateNewInspection = props => {
       </View>
     );
   };
+  const Customarea_render = item => {
+    return (
+      <View
+        style={[
+          CreateNewInspectionStyle.itemView,
+          {
+            backgroundColor:
+              item?.TAM_AREA_KEY === customeAreavalue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item?.TAM_AREA_KEY === customeAreavalue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={CreateNewInspectionStyle.textItem}>
+          {item?.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
   const Selected_Time_render = item => {
-    // const isSelected =
-    //   item?.longitude === selectedAddress.longitude &&
-    //   item?.latitude === selectedAddress.latitude;
     const isSelected = selectedAddress?.property_id === item.property_id;
     return (
       <View contentContainerStyle={{ flex: 1, height: '100%' }}>
@@ -353,9 +391,7 @@ const CreateNewInspection = props => {
       </View>
     );
   };
-
   const SubmitInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
@@ -413,7 +449,6 @@ const CreateNewInspection = props => {
     }
   };
   const UpdateInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
@@ -485,11 +520,8 @@ const CreateNewInspection = props => {
           : SubmitInspection();
     }
   };
-
   const fetchResults = async searchQuery => {
-    // alert(searchQuery)
     setIsLoading(true);
-
     try {
       const Url = Config.BASE_URL;
       const search_Url = Url + 'add_attendees/search';
@@ -505,22 +537,19 @@ const CreateNewInspection = props => {
       console.error('Error fetching results:', error);
     }
   };
-
   const debouncedFetchResults = debounce(searchQuery => {
     if (searchQuery) {
       fetchResults(searchQuery);
     } else {
       setResults([]);
     }
-  }, 100); // Delay in milliseconds
-
+  }, 100); 
   useEffect(() => {
     debouncedFetchResults(query);
     return () => {
       debouncedFetchResults.cancel();
     };
   }, [query]);
-
   const handleSelect = user => {
     setTempSelectedValues(prevSelectedUsers => {
       const isSelected = prevSelectedUsers.find(
@@ -544,9 +573,6 @@ const CreateNewInspection = props => {
     refRBSheet.current.close();
     refRBSheet1.current.close();
   };
-  // const displaySelectedValues = selectedValues
-  //   .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
-  //   .join(', ');
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
@@ -559,7 +585,6 @@ const CreateNewInspection = props => {
               : 'Create new inspections'
         }
       />
-
     <ScrollView>
       <KeyboardAvoidingView
         // style={CreateNewInspectionStyle.mainConatainer}
@@ -761,7 +786,6 @@ const CreateNewInspection = props => {
               onPressLeftButton={() => {
                 setSelectedButtonFurnished(false);
                 setSelectedButtonFurnishedId(67);
-                // alert(selectedButtonId)
               }}
               RightButtonText={'Unfurnished'}
               RightButtonbackgroundColor={
@@ -851,7 +875,7 @@ const CreateNewInspection = props => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading ? true : false}
             onPress={handleSubmit}
-            marginBottom={Platform.OS === 'ios' ? 0 : '35%'}
+            // marginBottom={Platform.OS === 'ios' ? 0 : '35%'}
           />
         </ScrollView>
       </KeyboardAvoidingView>
@@ -912,16 +936,26 @@ const CreateNewInspection = props => {
                 CreateNewInspectionStyle.cardHeight,
               ]}>
               {'Name of area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <TextInput
               style={CreateNewInspectionStyle.emailinput}
               value={customAreaName}
-              onChangeText={setCustomAreaName}
+              onChangeText={handleCustomName}
               placeholder="Create a name for your custom area"
               placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
               keyboardType="email-address"
+              onBlur={()=>{
+                handleCustomName(customAreaName)
+              }}
             />
+              {showcustomAreaNameError ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {showcustomAreaNameError}
+            </Text>
+          ) : null}
           </View>
+        
           <Text style={CreateNewInspectionStyle.cancelText}>
             {'Would you like to use a standard inspection checklist?'}
           </Text>
@@ -946,14 +980,11 @@ const CreateNewInspection = props => {
               onPressLeftButton={() => {
                 setSelectedButtonStandard(false);
                 setSelectedButtonStandardId(1);
-                // alert(selectedButtonStandard)
               }}
               RightButtonText={'No'}
               onPressRightButton={() => {
                 setSelectedButtonStandard(true);
                 setSelectedButtonStandardId(0);
-
-                // alert(selectedButtonStandard)
               }}
               RightButtonbackgroundColor={
                 selectedButtonStandard
@@ -975,6 +1006,7 @@ const CreateNewInspection = props => {
           <View style={{ marginBottom: 15 }}>
             <Text style={CreateNewInspectionStyle.cancelText}>
               {' Select the area most similar to your custom area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
               style={CreateNewInspectionStyle.dropdown}
@@ -992,8 +1024,15 @@ const CreateNewInspection = props => {
               value={customeAreavalue}
               onChange={item => {
                 setCustomeAreaValue(item.TAM_AREA_KEY);
+                setErrorSimiarArea(false)
               }}
+              renderItem={Customarea_render}
             />
+ {errorSimiarArea ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a most similar to your custom area!'}
+            </Text>
+          ) : null}
           </View>
           <Text style={CreateNewInspectionStyle.cancelText}>
             {'Make this a standard area for future inspections?'}
@@ -1003,7 +1042,6 @@ const CreateNewInspection = props => {
             onPressLeftButton={() => {
               setSelectedButtonFutue(false);
               setSelectedButtonFutueId(1);
-              // alert(selectedButtonFutue)
             }}
             leftButtonbackgroundColor={
               !selectedButtonFutue
@@ -1023,7 +1061,6 @@ const CreateNewInspection = props => {
             RightButtonText={'No'}
             onPressRightButton={() => {
               setSelectedButtonFutue(true);
-              // alert(selectedButtonFutue)
               setSelectedButtonFutueId(0);
             }}
             RightButtonbackgroundColor={
@@ -1050,7 +1087,7 @@ const CreateNewInspection = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={CreateNewInspectionStyle.SaveView}
-              onPress={handleAddCustomArea}
+              onPress={SubmitCustomArea}
               disabled={isLoading}>
               <Text style={CreateNewInspectionStyle.DoneText}>Done</Text>
             </TouchableOpacity>

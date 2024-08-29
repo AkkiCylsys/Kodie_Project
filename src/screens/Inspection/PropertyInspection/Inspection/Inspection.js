@@ -16,6 +16,7 @@ import {
 import {InspectionCss} from './InspectionCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,6 +55,9 @@ const Inspection = props => {
   const [getinspection, setGetInspection] = useState([]);
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const [getAreaKey, setGetAreaKey] = useState([]);
+  const [showcustomAreaNameError, setShowcustomAreaNameError] = useState('');
+  const [errorSimiarArea, setErrorSimiarArea] = useState(false);
+
   console.log('getinspection', getinspection);
   const TIM_KEY = props?.TIM_KEY;
 
@@ -134,7 +138,37 @@ const Inspection = props => {
         setIsLoading(false);
       });
   };
-
+  const Customarea_render = item => {
+    return (
+      <View
+        style={[
+          InspectionCss.itemView,
+          {
+            backgroundColor:
+              item?.TAM_AREA_KEY === customeAreavalue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item?.TAM_AREA_KEY === customeAreavalue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={InspectionCss.textItem}>
+          {item?.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
   const handleDone = async () => {
     // alert(value);
     setIsLoading(true);
@@ -147,7 +181,7 @@ const Inspection = props => {
       area_future_inspection: selectedButtonFutueId,
       property_id: PropertyId,
       inspection_id: TIM_KEY,
-      created_by: 543,
+      created_by: loginData?.Login_details?.user_account_id.toString(),
     };
     console.log('InspectionData.....', InspectionData);
     try {
@@ -258,6 +292,24 @@ const Inspection = props => {
       setIsLoading(false);
     }
   };
+  const handleCustomName = text => {
+    setEmail(text);
+    if (text.trim() === '') {
+      setShowcustomAreaNameError('Custom area name cannot be empty!');
+    } else {
+      setShowcustomAreaNameError('');
+    }
+  };
+  const SubmitCustomArea =()=>{
+    if (email.trim() === '') {
+        // Alert.alert('Validation', 'Custom area name cannot be empty.');
+        setShowcustomAreaNameError('Custom area name cannot be empty!')
+      }else if (customeAreavalue ==''){
+        setErrorSimiarArea(true);
+      }else{
+        handleDone();
+      }
+    }
   const Inspection_render = ({item}) => {
     console.log(item.area_key_id);
     let IconComponent;
@@ -306,6 +358,7 @@ const Inspection = props => {
         iconName = 'home'; // Default icon
         break;
     }
+ 
     return (
       <>
         <View style={InspectionCss.mainView} key={item?.area_key_id}>
@@ -442,15 +495,24 @@ const Inspection = props => {
               <Text
                 style={[LABEL_STYLES._texinputLabel, InspectionCss.cardHeight]}>
                 {'Name of area:'}
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <TextInput
                 style={InspectionCss.emailinput}
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={handleCustomName}
                 placeholder="Create a name for your custom area"
                 placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
                 keyboardType="email-address"
+                onBlur={()=>{
+                  handleCustomName(email)
+                }}
               />
+               {showcustomAreaNameError ? (
+            <Text style={InspectionCss.errorText}>
+              {showcustomAreaNameError}
+            </Text>
+          ) : null}
             </View>
             <Text style={InspectionCss.cancelText}>
               {'Would you like to use a standard inspection checklist?'}
@@ -500,8 +562,10 @@ const Inspection = props => {
                   : _COLORS.Kodie_LightWhiteColor
               }
             />
-            <Text style={[InspectionCss.cancelText, {marginVertical: 12}]}>
+            <View style={ {marginVertical: 12}}>
+            <Text style={[InspectionCss.cancelText,{marginBottom:12}]}>
               {' Select the area most similar to your custom area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
               style={InspectionCss.dropdown}
@@ -519,8 +583,16 @@ const Inspection = props => {
               value={customeAreavalue}
               onChange={item => {
                 setCustomeAreaValue(item.TAM_AREA_KEY);
+                setErrorSimiarArea(false)
               }}
+              renderItem={Customarea_render}
             />
+            {errorSimiarArea ? (
+            <Text style={InspectionCss.errorText}>
+              {'Please select a most similar to your custom area!'}
+            </Text>
+          ) : null}
+          </View>
             <Text style={InspectionCss.cancelText}>
               {'Make this a standard area for future inspections?'}
             </Text>
@@ -576,7 +648,7 @@ const Inspection = props => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={InspectionCss.SaveView}
-                onPress={handleDone}
+                onPress={SubmitCustomArea}
                 disabled={isLoading}>
                 <Text style={InspectionCss.DoneText}>Done</Text>
               </TouchableOpacity>

@@ -43,6 +43,8 @@ const AddCabinatItems = (props) => {
   const [comment, setComment] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
 console.log(isCheckId);
   const refRBSheet = useRef();
 useEffect(()=>{
@@ -54,6 +56,10 @@ useEffect(() => {
   setIsChecked(isCheckId === 1);
 }, [isCheckId]);
 const CreateCabinate = async () => {
+  if (selectedImages.length === 0) {
+    setImageError(true);
+    return;
+  }
   const formData = new FormData();
   formData.append('created_by', Created_Id);
   formData.append('TIM_Key', Tim_Key);
@@ -104,7 +110,7 @@ const getCabinate = async () => {
   console.log('getData', getData);
   const url = Config.BASE_URL;
   const getCabinate_url = url + 'get/CabinateInspectionDetails';
-  setIsLoading(true);
+  // setIsLoading(true);
   try {
     console.log('Request URL:', getCabinate_url);
     const response = await axios.post(getCabinate_url, getData);
@@ -116,7 +122,7 @@ const getCabinate = async () => {
     setStatusDataValue(parseFloat(response?.data?.data[0].TIMC_STATUS))
    
    
-    setIsLoading(false);
+    // setIsLoading(false);
   } catch (error) {
     // alert(error);
     console.log('CreateCabinate_error...', error);
@@ -131,13 +137,14 @@ const clearState =()=>{
   setSelectedImages([]);
   setStatusDataValue([]);
 }
-  const handleImageSelect = (images) => {
-    console.log(images,"cabinate image");
-    setSelectedImages(images);
-    refRBSheet.current.close();
-  };
+const handleImageSelect = (images) => {
+  console.log(images, "cabinate image");
+  setSelectedImages(images);
+  setImageError(false); // Clear the error when an image is selected
+  refRBSheet.current.close();
+};
   const handle_Status = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
       const data = {
         P_PARENT_CODE: 'STATUS',
@@ -149,7 +156,7 @@ const clearState =()=>{
       console.error('API call setStatusData failed:', error.message);
       alert(error.message); 
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
   const statusRender = item => {
@@ -260,7 +267,7 @@ const clearState =()=>{
         <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
           {'Upload clear images of the item'}
         </Text>
-        {selectedImages.length >0 ? 
+        {selectedImages.length > 0 ? 
         <View style={{flex:1}}>
         <FlatList
           data={selectedImages}
@@ -269,7 +276,7 @@ const clearState =()=>{
           renderItem={({ item }) => (
             
             <Image
-              source={{ uri: item.path }}
+              source={{ uri: item }}
               style={{ width: 80, height: 80, marginTop: 10,borderRadius:20,margin:5 }}
             />
         )}
@@ -283,6 +290,11 @@ const clearState =()=>{
           size={15}
           onPress={() => refRBSheet.current.open()}
         />
+        {imageError && (
+  <Text style={{ color: 'red', marginTop: 10 }}>
+    Please upload at least one image.
+  </Text>
+)}
         <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
           {'Comment'}
         </Text>

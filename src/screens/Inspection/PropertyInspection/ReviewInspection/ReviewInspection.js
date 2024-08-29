@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   FlatList,
+  Alert,
 } from 'react-native';
 import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -20,6 +21,8 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import { GetInspectioncabinateDetail } from '../../../../services/InspectionModuleServices.js/InspectionServices';
 import { useNavigation } from '@react-navigation/native';
 import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { Config } from '../../../../Config';
+import axios from 'axios';
 
 const ReviewInspection = (props) => {
   const navigation = useNavigation();
@@ -30,13 +33,33 @@ const ReviewInspection = (props) => {
   const [isFileVisible, setIsFileVisible] = useState(true);
   const [Damaged_ItemStatus, setDamaged_ItemStatus] = useState([]);
   const [Urgent_ItemStatus, setUrgent_ItemStatus] = useState([]);
+  const [Inspection_Details, setInspection_Details] = useState([]);
   const TIM_KEY = props?.TIM_KEY;
   const handleCloseModal = () => {
     refRBSheet.current.close();
   };
   useEffect(()=>{
     handlePostRequest();
+    getInspectionDetails();
   },[])
+  const getInspectionDetails = () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+
+    const apiUrl =
+      url + `get_inspection_details/${TIM_KEY}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        setInspection_Details(response?.data?.data[0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
   const handlePostRequest = async () => {
     setIsLoading(true);
 
@@ -116,7 +139,7 @@ const ReviewInspection = (props) => {
         <TouchableOpacity>
           <View style={ReviewInspectionCss.TextInputView}>
             <TextInput
-              value={contractor}
+              value={Inspection_Details.v_TIM_ADD_ATTENDENCE}
               placeholder={'Add people attending the inspection'}
               style={ReviewInspectionCss.input}
               onChange={text => setContractor(text)}
@@ -140,7 +163,7 @@ const ReviewInspection = (props) => {
        
         <DividerIcon />
         <Text style={ReviewInspectionCss.inspections}>{'Notes'}</Text>
-        <Text style={ReviewInspectionCss.MBText}>{'No notes'}</Text>
+        <Text style={ReviewInspectionCss.MBText}>{Inspection_Details.v_TIM_DESCRIPTION ? Inspection_Details.v_TIM_DESCRIPTION: 'No notes'}</Text>
         <CustomSingleButton
           _ButtonText={'port'}
           Text_Color={_COLORS.Kodie_WhiteColor}
@@ -148,7 +171,8 @@ const ReviewInspection = (props) => {
           height={45}
           marginBottom={90}
           onPress={() => {
-            refRBSheet.current.open();
+            // refRBSheet.current.open();
+            Alert.alert('Coming soon')
           }}
           disabled={isLoading ? true : false}
         />
