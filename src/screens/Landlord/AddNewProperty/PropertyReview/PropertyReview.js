@@ -155,7 +155,7 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor area' ? (
+      ) : item === '' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}

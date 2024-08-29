@@ -13,11 +13,7 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import {_COLORS, FONTFAMILY} from '../../../Themes';
 import {_goBack} from '../../../services/CommonServices';
 
-const InspectionDetails = ({
-  profile_image,
-  loginAccountDetails,
-  propertyDetails,
-}) => {
+const InspectionDetails = (props) => {
   const [contractor, setContractor] = useState('');
   const [isFileVisible, setIsFileVisible] = useState(true);
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -59,7 +55,7 @@ const InspectionDetails = ({
             />
             <View>
               <Text style={InspectionsChecklistStyle.username}>
-                {loginAccountDetails?.UAD_FIRST_NAME || 'Jack Black'}
+                {'Jack Black'}
               </Text>
               <View
                 style={{
@@ -108,7 +104,7 @@ const InspectionDetails = ({
         <View style={{marginHorizontal: 35}}>
           <Text style={InspectionsChecklistStyle.Apartmenttext}>Apartment</Text>
           <Text style={InspectionsChecklistStyle.Citytext}>
-            {propertyDetails?.city || 'Sydney'}
+            { 'Sydney'}
           </Text>
           <View
             style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
@@ -118,7 +114,7 @@ const InspectionDetails = ({
               color={_COLORS.Kodie_GreenColor}
             />
             <Text style={{color: _COLORS.Kodie_GrayColor}}>
-              {propertyDetails?.location || '2118 Thornridge Cir. Syracuse'}
+              {'2118 Thornridge Cir. Syracuse'}
             </Text>
           </View>
         </View>

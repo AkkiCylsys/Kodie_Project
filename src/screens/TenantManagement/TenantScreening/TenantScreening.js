@@ -136,6 +136,7 @@ const TenantScreening = props => {
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading}
+            onPress= {()=>props.navigation.navigate('InspectionsChecklist')}
           />
         </View>
         <DividerIcon

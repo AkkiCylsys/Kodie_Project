@@ -110,7 +110,7 @@ const DATA = [
     value: 3,
   },
   {
-    label: 'Outdoor Area',
+    label: 'Outdoor area',
     value: 4,
   },
   {
@@ -126,15 +126,15 @@ const DATA = [
     value: 7,
   },
   {
-    label: 'Built in Robes',
+    label: 'Built in robes',
     value: 8,
   },
   {
-    label: 'Air Conditioning',
+    label: 'Air conditioning',
     value: 9,
   },
   {
-    label: 'Solar Panels',
+    label: 'Solar panels',
     value: 10,
   },
   {
@@ -142,7 +142,7 @@ const DATA = [
     value: 11,
   },
   {
-    label: 'Hight Energy Efficiency',
+    label: 'Hight energy efficiency',
     value: 12,
   },
 ];
