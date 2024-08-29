@@ -1,21 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
-import {ProspectsTenantStyle} from './ProspectsTenantStyle';
-import {_goBack} from '../../../services/CommonServices';
-import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes/index';
+import {_goBack} from '../../../../services/CommonServices';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
-import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import TenantData from '../../../components/TenantScreen/TenantData';
+import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useNavigation} from '@react-navigation/native';
-import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
-
-export default ProspectsTenant = ({TenantAllDetails}) => {
-  console.log('TenantAllDetails in prospects:', JSON.stringify(TenantAllDetails));
-
+import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import ManagingTenant from '../../../../components/Molecules/ManagingTenant/ManagingTenant';
+import {ManagingPreviousTenantsStyle} from './ManagingPreviousTenantStyle';
+const ManagingPreviousTenant = ({TenantAllDetails}) => {
+  console.log('TenantAllDetails in Previous:', TenantAllDetails);
   const navigation = useNavigation();
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,8 +26,8 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
     return (
       <>
-        <View style={ProspectsTenantStyle.subContainer}>
-          <View style={ProspectsTenantStyle.userMainView}>
+        <View style={ManagingPreviousTenantsStyle.subContainer}>
+          <View style={ManagingPreviousTenantsStyle.userMainView}>
             <Image
               source={
                 UAD_PROFILE_PHOTO_PATH && UAD_PROFILE_PHOTO_PATH.length > 0
@@ -37,40 +35,41 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                   : IMAGES.userImage
               }
               resizeMode={'cover'}
-              style={ProspectsTenantStyle.usericon}
+              style={ManagingPreviousTenantsStyle.usericon}
             />
+
             <View style={{marginHorizontal: 16}}>
-              <View style={ProspectsTenantStyle.flexRowView}>
-                <Text style={ProspectsTenantStyle.userName}>
+              <View style={ManagingPreviousTenantsStyle.flexRowView}>
+                <Text style={ManagingPreviousTenantsStyle.userName}>
                   {UAD_FIRST_NAME || 'N/A'}{' '}
                 </Text>
-                <View style={ProspectsTenantStyle.flexRowView}>
+                <View style={ManagingPreviousTenantsStyle.flexRowView}>
                   <AntDesign
                     name="checkcircle"
                     size={11}
                     color={_COLORS?.Kodie_GreenColor}
-                    style={ProspectsTenantStyle.checkIconStyle}
+                    style={ManagingPreviousTenantsStyle.checkIconStyle}
                   />
-                  <Text style={ProspectsTenantStyle.verifyText}>
+                  <Text style={ManagingPreviousTenantsStyle.verifyText}>
                     {'Verified'}
                   </Text>
                 </View>
               </View>
-              <View style={ProspectsTenantStyle.ratingView}>
+              <View style={ManagingPreviousTenantsStyle.ratingView}>
                 <AntDesign
                   name="star"
                   size={20}
                   color={_COLORS?.Kodie_GreenColor}
                 />
-                <Text style={ProspectsTenantStyle.ratingText}>
-                  {'0.0'}
+                <Text style={ManagingPreviousTenantsStyle.ratingText}>
+                  {'4.2'}
                   <Text style={{color: _COLORS?.Kodie_GrayColor}}>
-                    {'(0)'}
+                    {'(231)'}
                   </Text>
                 </Text>
               </View>
             </View>
-            <View style={ProspectsTenantStyle.threeDotView}>
+            <View style={ManagingPreviousTenantsStyle.threeDotView}>
               <TouchableOpacity
                 onPress={() => {
                   refRBSheet.current.open();
@@ -83,7 +82,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                 />
               </TouchableOpacity>
 
-              <View style={ProspectsTenantStyle.screeningView}>
+              <View style={ManagingPreviousTenantsStyle.screeningView}>
                 <Entypo
                   name="dot-single"
                   size={25}
@@ -92,13 +91,13 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                     alignSelf: 'center',
                   }}
                 />
-                <Text style={ProspectsTenantStyle.screeningText}>
+                <Text style={ManagingPreviousTenantsStyle.screeningText}>
                   {'Failed screening'}
                 </Text>
               </View>
             </View>
           </View>
-          <View style={ProspectsTenantStyle.RowBtnView}>
+          <View style={ManagingPreviousTenantsStyle.RowBtnView}>
             <RowButtons
               leftButtonHeight={50}
               RightButtonHeight={50}
@@ -112,7 +111,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
               RightButtonText="Add to property"
               RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
               RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-              onPressRightButton={()=>{}}
+              onPressRightButton={() => {}}
             />
           </View>
         </View>
@@ -121,7 +120,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
     );
   };
   return (
-    <View style={ProspectsTenantStyle.mainContainer}>
+    <View style={ManagingPreviousTenantsStyle.mainContainer}>
       {TenantAllDetails?.length > 0 ? (
         <FlatList
           data={TenantAllDetails?.length > 0 ? TenantAllDetails : []}
@@ -129,13 +128,16 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => item?.property_id?.toString()}
           renderItem={tenantAllDetailRender}
+          ListEmptyComponent={()=>{
+            <ListEmptyComponent EmptyText={"You don't have any Data."} />
+          }}
         />
       ) : (
         <ListEmptyComponent EmptyText={"You don't have any Data."} />
       )}
       <RBSheet
         ref={refRBSheet}
-        height={210}
+        height={260}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
@@ -145,7 +147,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
-          container: ProspectsTenantStyle.bottomModal_container,
+          container: ManagingPreviousTenantsStyle.bottomModal_container,
         }}>
         <TouchableOpacity
           style={{
@@ -158,12 +160,14 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           }}>
           <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
-        <TenantData
+        <ManagingTenant
           closeModal={() => refRBSheet.current.close()}
-          TenantAllDetails={tenantAllDetailsItem}
+          property_id={tenantAllDetailsItem?.property_id}
         />
       </RBSheet>
-      {/* {isLoading ? <CommonLoader /> : null} */}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
+
+export default ManagingPreviousTenant;

@@ -527,7 +527,7 @@ const RentalOffer = props => {
   const handleValidFullName = text => {
     setFullName(text);
     if (fullName === '') {
-      setFullNameError('Full name is required.');
+      setFullNameError('Full name is required!');
     } else {
       setFullNameError('');
     }
@@ -546,12 +546,12 @@ const RentalOffer = props => {
   };
   const handleAddOccupant = (fullName, emailAddress, questionId) => {
     if (fullName === '') {
-      setFullNameError('Full name is required.');
+      setFullNameError('Full name is required!');
     } else if (emailAddress === '') {
-      setEmailAddressError('Email address is required.');
+      setEmailAddressError('Email address is required!');
     } else if (!validateResetEmail(emailAddress)) {
       setEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       addOccupant(fullName, emailAddress, questionId);
@@ -562,7 +562,7 @@ const RentalOffer = props => {
   const validLeaseFullName = text => {
     setLeaseFullName(text);
     if (leaseFullName === '') {
-      setLeaseFullNameError('Lease fullName is required.');
+      setLeaseFullNameError('Lease fullName is required!');
     } else {
       setLeaseFullNameError('');
     }
@@ -570,10 +570,10 @@ const RentalOffer = props => {
   const validLeaseEmailAddress = text => {
     setleaseEmailAddress(text);
     if (leaseEmailAddress === '') {
-      setleaseEmailAddressError('Lease Email Address is required.');
+      setleaseEmailAddressError('Lease Email Address is required!');
     } else if (!validateResetEmail(leaseEmailAddress)) {
       setleaseEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setleaseEmailAddressError('');
@@ -583,11 +583,11 @@ const RentalOffer = props => {
     setLeaseConfirmEmailAddress(text);
     if (leaseConfirmEmailAddress === '') {
       setLeaseConfirmEmailAddressError(
-        'Lease Confirm Email Address is required.',
+        'Lease Confirm Email Address is required!',
       );
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
       setLeaseConfirmEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setLeaseConfirmEmailAddressError('');
@@ -595,24 +595,24 @@ const RentalOffer = props => {
   };
   const handleValidLeaseHolder = () => {
     if (leaseFullName === '') {
-      setLeaseFullNameError('Lease full name is required.');
+      setLeaseFullNameError('Lease full name is required!');
     } else if (leaseEmailAddress === '') {
-      setleaseEmailAddressError('Lease email address is required.');
+      setleaseEmailAddressError('Lease email address is required!');
     } else if (!validateResetEmail(leaseEmailAddress)) {
       setleaseEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (leaseConfirmEmailAddress === '') {
       setLeaseConfirmEmailAddressError(
-        'Lease confirm email address is required.',
+        'Lease confirm email address is required!',
       );
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
       setLeaseConfirmEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (leaseEmailAddress !== leaseConfirmEmailAddress) {
       setLeaseConfirmEmailAddressError(
-        'Email address and confirm email address do not match.',
+        'Email address and confirm email address do not match!',
       );
     } else {
       // Find the question with id 30
@@ -1240,7 +1240,11 @@ const RentalOffer = props => {
   const QuesHeadingRender = ({item}) => {
     return (
       <View style={{marginTop: 5}}>
-        <View style={RentalOfferStyle.propety_details_view}>
+        <TouchableOpacity
+          style={RentalOfferStyle.propety_details_view}
+          onPress={() => {
+            toggleItem(item?.children);
+          }}>
           <Text style={RentalOfferStyle.propery_det}>
             {item?.tqm_Question_description}
           </Text>
@@ -1248,7 +1252,6 @@ const RentalOffer = props => {
             style={RentalOfferStyle.down_Arrow_icon}
             onPress={() => {
               toggleItem(item?.children);
-              console.log('QuestionChildren...', item?.children);
             }}>
             <AntDesign
               name={expandedItem === item?.children ? 'up' : 'down'}
@@ -1256,7 +1259,7 @@ const RentalOffer = props => {
               color={_COLORS.Kodie_GrayColor}
             />
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
         <DividerIcon />
         {expandedItem === item?.children && (
           <FlatList
@@ -2138,7 +2141,7 @@ const RentalOffer = props => {
                   color={_COLORS.Kodie_lightGreenColor}
                   style={RentalOfferStyle.starIcon}
                 />
-                <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
+                <Text style={[RentalOfferStyle.username]}>{'0.0 (0)'}</Text>
               </View>
               <View
                 style={{
@@ -2218,7 +2221,10 @@ const RentalOffer = props => {
           />
           <View style={{marginHorizontal: 16}}>
             <Text style={RentalOfferStyle.inspections}>
-              {'Tenant  screening report (recommended)'}
+              {'Tenant  screening report '}
+              <Text style={[RentalOfferStyle.inspections, {fontSize: 14}]}>
+                {'(recommended)'}
+              </Text>
             </Text>
             {/* ... */}
             {selectFile.length > 0 && (
@@ -2237,9 +2243,11 @@ const RentalOffer = props => {
                     <Text style={RentalOfferStyle.pdfSize}>{fileSizeInMB}</Text>
                   </View>
                 </View>
-                <TouchableOpacity style={RentalOfferStyle.crossIcon}>
+                <TouchableOpacity style={RentalOfferStyle.crossIcon} onPress={()=>{
+                  setSelectFile([])
+                }}>
                   <Entypo
-                    name="dots-three-vertical"
+                    name="circle-with-cross"
                     size={20}
                     color={_COLORS.Kodie_GrayColor}
                   />
@@ -2260,44 +2268,19 @@ const RentalOffer = props => {
           <DividerIcon marginTop={5} />
           <View style={RentalOfferStyle.submitApplicationbtn}>
             <RowButtons
-              LeftButtonText={'Cancel'}
-              leftButtonbackgroundColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              LeftButtonborderColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
+              leftButtonHeight={50}
+              RightButtonHeight={50}
+              LeftButtonText="Cancel"
               onPressLeftButton={() => {
                 setSubmitApplicationBtn(false);
                 setSubmitApplicationBtnId(0);
-                // handleSubmit();
-                // alert(selectPetFriendlyBtnId)
+                props.navigation.pop();
               }}
-              RightButtonText={'Submit'}
-              RightButtonbackgroundColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonborderColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              RightButtonText="Submit"
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
               onPressRightButton={() => {
                 setSubmitApplicationBtn(true);
                 setSubmitApplicationBtnId(1);

@@ -20,12 +20,13 @@ import {useSelector} from 'react-redux';
 import {PropertyViewApplicationService} from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import { acceptingLandlord } from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
+import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 const PropertyViewApplication = props => {
   const propertyId = props.route.params.propertyId;
   const bid_id = props.route.params.bid_id;
   const tenant_id = props.route.params.tenant_id;
   const landlord_id = props.route.params.landlord_id;
+  const Pre_screening = props.route.params.Pre_screening;
   console.log('bid_id..', bid_id);
   const [isLoading, setIsLoading] = useState(false);
   const [tenantDetails, setTenantDetails] = useState(false);
@@ -88,12 +89,12 @@ const PropertyViewApplication = props => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <SafeAreaView style={PropertyViewApplicationStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={'View application'}
+        MiddleText={Pre_screening ? 'Pre-screening' : 'View application'}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <UserDetails tenantAccountDetails={tenantAccountDetails} />

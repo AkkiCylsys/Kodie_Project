@@ -193,7 +193,7 @@ const CustomSidebarMenu = props => {
           onPress={() => check('ManagingTenants')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
-              name="shield-account-outline"
+              name="shield-account"
               size={25}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}

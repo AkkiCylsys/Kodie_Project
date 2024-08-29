@@ -66,13 +66,16 @@ const ManagingTenant = props => {
           style={ManagingTenantStyle.container}
           onPress={() => {
             if (item.id === '1') {
-              // navigation.navigate("ViewPropertyDetails");
+              navigation.navigate("Renthistory");
+              closeModal();
             }
             if (item.id === '2') {
+              navigation.navigate('InspectionsChecklist');
+              closeModal();
             }
             if (item?.id === '3') {
               navigation.navigate('TenantDocuments', {
-                property_id:property_id,
+                property_id: property_id,
               });
               closeModal();
             }

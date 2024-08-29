@@ -22,7 +22,6 @@ const ApplicationSubmitModal = props => {
       {/* <ScrollView> */}
       <View
         style={{
-          alignSelf: 'center',
           marginHorizontal: 16,
         }}>
         <Text style={ApplicationSubmitModalStyle.ApplicationText}>

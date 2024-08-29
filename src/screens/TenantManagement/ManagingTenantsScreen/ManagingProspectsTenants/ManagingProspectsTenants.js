@@ -12,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import {ManagingProspectsTenantsStyle} from './ManagingProspectsTenantsStyle';
 import ManagingTenant from '../../../../components/Molecules/ManagingTenant/ManagingTenant';
+import TenantData from '../../../../components/TenantScreen/TenantData';
 export default ManagingProspectsTenants = ({TenantAllDetails}) => {
   console.log('TenantAllDetails in prospects:', TenantAllDetails);
 
@@ -122,19 +123,20 @@ export default ManagingProspectsTenants = ({TenantAllDetails}) => {
   };
   return (
     <View style={ManagingProspectsTenantsStyle.mainContainer}>
-      <FlatList
-        data={TenantAllDetails || []}
-        scrollEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item?.property_id}
-        renderItem={tenantAllDetailRender}
-        ListEmptyComponent={() => {
-          return <ListEmptyComponent EmptyText={"You don't have any Data."} />;
-        }}
-      />
+     {TenantAllDetails?.length > 0 ? (
+        <FlatList
+          data={TenantAllDetails?.length > 0 ? TenantAllDetails : []}
+          scrollEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item?.property_id?.toString()}
+          renderItem={tenantAllDetailRender}
+        />
+      ) : (
+        <ListEmptyComponent EmptyText={"You don't have any Data."} />
+      )}
       <RBSheet
         ref={refRBSheet}
-        height={260}
+        height={210}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
@@ -157,9 +159,10 @@ export default ManagingProspectsTenants = ({TenantAllDetails}) => {
           }}>
           <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
-        <ManagingTenant closeModal={() => refRBSheet.current.close()}
-         property_id = {tenantAllDetailsItem?.property_id}
-         />
+        <TenantData
+          closeModal={() => refRBSheet.current.close()}
+          TenantAllDetails={tenantAllDetailsItem}
+        />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>
