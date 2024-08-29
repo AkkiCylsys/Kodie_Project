@@ -153,6 +153,7 @@ import InspectionsChecklist from '../../screens/Tenant/InspectionsChecklist/Insp
 import TenantAllDocumentsFolder from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantAllDocumentsFolder/TenantAllDocumentsFolder';
 import TenantDocumentsDetails from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenentDocumentsDetails/TenantDocumentsDetails';
 import ManagingProspectsTenants from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingProspectsTenants/ManagingProspectsTenants';
+import Renthistory from '../../screens/Tenant/Renthistory/Renthistory';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -599,7 +600,7 @@ const AllStackRouts = props => {
           component={CreateJobTermsScreen}
           options={{headerShown: false, gestureEnabled: false}}
         />
-       
+
         <Stack.Screen
           name={'SignUpSteps'}
           component={SignUpSteps}
@@ -1133,7 +1134,7 @@ const AllStackRouts = props => {
           component={TenantDocuments}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={'InspectionsChecklist'}
           component={InspectionsChecklist}
           options={{headerShown: false}}
@@ -1151,6 +1152,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'ManagingProspectsTenants'}
           component={ManagingProspectsTenants}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Renthistory'}
+          component={Renthistory}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
