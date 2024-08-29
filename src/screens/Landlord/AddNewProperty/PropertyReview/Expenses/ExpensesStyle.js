@@ -76,7 +76,7 @@ export const ExpensesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   Amount_Text: {
-    fontSize: 10,
+    fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
   },

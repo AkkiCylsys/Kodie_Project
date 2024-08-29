@@ -152,6 +152,7 @@ import TenantDocuments from '../../screens/TenantManagement/ManagingTenantsScree
 import InspectionsChecklist from '../../screens/Tenant/InspectionsChecklist/InspectionsChecklist';
 import TenantAllDocumentsFolder from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantAllDocumentsFolder/TenantAllDocumentsFolder';
 import TenantDocumentsDetails from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenentDocumentsDetails/TenantDocumentsDetails';
+import Renthistory from '../../screens/Tenant/Renthistory/Renthistory';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1145,6 +1146,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'TenantDocumentsDetails'}
           component={TenantDocumentsDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Renthistory'}
+          component={Renthistory}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
