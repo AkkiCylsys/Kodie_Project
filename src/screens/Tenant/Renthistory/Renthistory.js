@@ -4,19 +4,28 @@ import {
   SafeAreaView,
   TouchableOpacity,
   FlatList,
-  ScrollView
+  ScrollView,
 } from 'react-native';
-import React from 'react';
+import React,{useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {RenthistoryStyle} from './RenthistoryStyle';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import moment from 'moment';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { _COLORS } from '../../../Themes';
+import {_COLORS} from '../../../Themes';
+import {_goBack} from '../../../services/CommonServices';
 
-const Renthistory = () => {
+const HorizontalData = [
+  'All',
+  'Paid',
+  'Rent pending',
+  'Late payment'
+];
+const Renthistory = props => {
+  const [selectedFilter, setSelectedFilter] = useState('All');
   const expenseCategory = 'Rental';
   const responsiblePaying = ' Week 2, August';
   const amountStatus = 'Amount due';
@@ -38,10 +47,57 @@ const Renthistory = () => {
         </View>
       </View>
       <TouchableOpacity style={RenthistoryStyle.menuButton}>
-        <MaterialIcons name="more-vert" size={24} color={_COLORS.Kodie_LightGrayColor}/>
+        <MaterialIcons
+          name="more-vert"
+          size={24}
+          color={_COLORS.Kodie_LightGrayColor}
+        />
       </TouchableOpacity>
     </View>
   );
+  const horizontal_render = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={[
+          RenthistoryStyle.flatlistView,
+          {
+            backgroundColor:
+              selectedFilter === item
+                ? _COLORS?.Kodie_BlackColor
+                : _COLORS?.Kodie_WhiteColor,
+          },
+        ]}
+        onPress={() => setSelectedFilter(item)}>
+        {selectedFilter === item ? null : (
+          <View
+            style={[
+              RenthistoryStyle.round,
+              {
+                backgroundColor:
+                  selectedFilter === item
+                    ? _COLORS?.Kodie_WhiteColor
+                    : _COLORS?.Kodie_BlackColor,
+              },
+            ]}
+          />
+        )}
+        <Text
+          style={[
+            RenthistoryStyle.item_style,
+            {color: selectedFilter === item ? 'white' : 'black'},
+          ]}>
+          {item}
+        </Text>
+        {selectedFilter === item ? (
+          <MaterialCommunityIcons
+            name={'check'}
+            size={18}
+            color={_COLORS.Kodie_WhiteColor}
+          />
+        ) : null}
+      </TouchableOpacity>
+    );
+  };
   return (
     <SafeAreaView style={RenthistoryStyle.mainContainer}>
       <TopHeader
@@ -56,23 +112,19 @@ const Renthistory = () => {
 
         <View style={RenthistoryStyle.row}>
           <View style={RenthistoryStyle.boxContainer1}>
-            <View style={RenthistoryStyle.textContainer}>
-              <Text style={RenthistoryStyle.label}>Total Rent</Text>
-              <Text style={RenthistoryStyle.valueGreen}>$5600.00</Text>
-              <Text style={RenthistoryStyle.datetext}>
-                As of 21-September 2023
-              </Text>
-            </View>
+            <Text style={RenthistoryStyle.label}>Total Rent</Text>
+            <Text style={RenthistoryStyle.valueGreen}>$5600.00</Text>
+            <Text style={RenthistoryStyle.datetext}>
+              As of 21-September 2023
+            </Text>
           </View>
 
           <View style={RenthistoryStyle.boxContainer2}>
-            <View style={RenthistoryStyle.textContainer}>
-              <Text style={RenthistoryStyle.label}>Rental payments</Text>
-              <Text style={RenthistoryStyle.valueOrange}>$800.00</Text>
-              <Text style={RenthistoryStyle.datetext}>
-                As of 21-September 2023
-              </Text>
-            </View>
+            <Text style={RenthistoryStyle.label}>Rental payments</Text>
+            <Text style={RenthistoryStyle.valueOrange}>$800.00</Text>
+            <Text style={RenthistoryStyle.datetext}>
+              As of 21-September 2023
+            </Text>
           </View>
 
           <View style={RenthistoryStyle.boxContainer3}>
@@ -81,6 +133,14 @@ const Renthistory = () => {
               <Text style={RenthistoryStyle.valueGrey}>1502********4832</Text>
             </View>
           </View>
+        </View>
+        <View style={RenthistoryStyle.flat_MainView}>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={HorizontalData}
+            renderItem={horizontal_render}
+          />
         </View>
         <DividerIcon />
         <View style={RenthistoryStyle.subContainer}>

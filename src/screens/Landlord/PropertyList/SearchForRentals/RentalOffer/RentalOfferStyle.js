@@ -299,6 +299,7 @@ export const RentalOfferStyle = StyleSheet.create({
   inspections: {
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
+    fontSize:18
   },
   bottomModal_container: {
     borderWidth: 0.5,

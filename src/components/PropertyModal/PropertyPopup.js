@@ -109,6 +109,9 @@ const PropertyPopup = props => {
   //   setIsSaveClicked(true);
   //   props.saveClicked('true');
   // };
+  const handleClosePopup = () => {
+    props.onClose();
+  };
   const handleSave = () => {
     if (!selectedCommDate) {
       setShowValidation(true);
@@ -117,9 +120,7 @@ const PropertyPopup = props => {
       handleClosePopup();
     }
   };
-  const handleClosePopup = () => {
-    props.onClose();
-  };
+ 
   const getCurrentDateTime = () => {
     const now = new Date();
     const date = now.toISOString().slice(0, 10); // Get YYYY-MM-DD part

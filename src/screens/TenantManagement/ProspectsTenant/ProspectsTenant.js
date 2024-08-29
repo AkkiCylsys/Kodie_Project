@@ -23,9 +23,6 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
   const refRBSheet = useRef();
 
   const searchInviteTenant = () => {};
-  const handleRightButtonClick = () => {
-    navigation.navigate('Renthistory');
-  };
   const tenantAllDetailRender = ({item}) => {
     const accountDetails = item?.account_details?.[0] || {};
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
@@ -115,7 +112,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
               RightButtonText="Add to property"
               RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
               RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-              onPressRightButton={handleRightButtonClick}
+              onPressRightButton={()=>{}}
             />
           </View>
         </View>

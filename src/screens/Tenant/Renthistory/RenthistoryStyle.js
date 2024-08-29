@@ -9,6 +9,38 @@ export const RenthistoryStyle = StyleSheet.create({
     // padding: 20,
     backgroundColor:_COLORS.Kodie_WhiteColor,
   },
+  flatlistView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    marginTop: 15,
+    marginHorizontal: 5,
+    borderRadius: 15,
+  },
+  round: {
+    height: 8,
+    width: 8,
+    borderRadius: 8 / 2,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    backgroundColor: _COLORS.Kodie_GrayColor,
+    alignSelf: 'center',
+    marginRight: 5,
+  },
+  item_style: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Regular,
+    marginBottom: 4,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: _COLORS.Kodie_VeryLightGrayColor,
+  },
+  flat_MainView: {flex: 1, flexDirection: 'row', marginTop:15,marginHorizontal:16},
+
   titleView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -43,8 +75,8 @@ export const RenthistoryStyle = StyleSheet.create({
     backgroundColor:_COLORS.Kodie_minDarkGreenColor,
     width: 108,
     height:60,
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal:5
   },
   boxContainer2: {
     borderWidth: 1,
@@ -54,8 +86,8 @@ export const RenthistoryStyle = StyleSheet.create({
     backgroundColor:_COLORS.Kodie_minLiteGrayColor,
     width: 108,
     height:60,
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal:5
   },
   boxContainer3: {
     borderWidth: 1,
@@ -69,24 +101,21 @@ export const RenthistoryStyle = StyleSheet.create({
     justifyContent: 'center',
   },
   textContainer: {
-    alignItems: 'center',
   },
   label: {
     fontSize: 9.45,
     color: _COLORS.Kodie_BlackColor,
-    textAlign: 'center',
+    fontFamily:FONTFAMILY.K_Medium
   },
   valueGreen: {
     fontSize: 13,
     color: _COLORS.Kodie_GreenColor,
     fontFamily:FONTFAMILY.K_Bold,
-    textAlign: 'center',
   },
   valueOrange: {
     fontSize: 13,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily:FONTFAMILY.K_Bold,
-    textAlign: 'center',
   },
   valueGrey: {
     fontSize: 9.45,
@@ -97,7 +126,7 @@ export const RenthistoryStyle = StyleSheet.create({
   datetext: {
     fontSize: 8,
     color:_COLORS.Kodie_GrayColor,
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   subContainer: {
     marginHorizontal: 16,

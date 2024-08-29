@@ -66,7 +66,8 @@ const ManagingTenant = props => {
           style={ManagingTenantStyle.container}
           onPress={() => {
             if (item.id === '1') {
-              // navigation.navigate("ViewPropertyDetails");
+              navigation.navigate("Renthistory");
+              closeModal();
             }
             if (item.id === '2') {
               navigation.navigate('InspectionsChecklist');
