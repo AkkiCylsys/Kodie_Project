@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 
 export default ProspectsTenant = ({TenantAllDetails}) => {
-  console.log('TenantAllDetails in prospects:', TenantAllDetails);
+  console.log('TenantAllDetails in prospects:', JSON.stringify(TenantAllDetails));
 
   const navigation = useNavigation();
   const [rating, setRating] = useState(2);
@@ -63,9 +63,9 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                   color={_COLORS?.Kodie_GreenColor}
                 />
                 <Text style={ProspectsTenantStyle.ratingText}>
-                  {'4.2'}
+                  {'0.0'}
                   <Text style={{color: _COLORS?.Kodie_GrayColor}}>
-                    {'(231)'}
+                    {'(0)'}
                   </Text>
                 </Text>
               </View>
@@ -163,7 +163,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           TenantAllDetails={tenantAllDetailsItem}
         />
       </RBSheet>
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

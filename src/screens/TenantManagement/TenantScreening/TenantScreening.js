@@ -13,9 +13,10 @@ import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 const TenantScreening = props => {
+  const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const isFocus = useIsFocused();
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -26,24 +27,35 @@ const TenantScreening = props => {
 
   useEffect(() => {
     if (isFocus) {
-      handleTenantScreening(); 
+      handleTenantScreening();
     }
   }, [activeTab, isFocus]);
 
   const handleTenantScreening = async () => {
     setIsLoading(true);
     setTenantAllDetails([]);
-    const filterType = activeTab === 'Tab1' ? 'Current' : activeTab === 'Tab2' ? 'Previous' : 'Prospects';
+    setSearchTenantList([])
+    const filterType =
+      activeTab === 'Tab1'
+        ? 'Current'
+        : activeTab === 'Tab2'
+        ? 'Previous'
+        : 'Prospects';
     const TenantAllDetailsData = {
       filter: filterType,
       account_id: loginData?.Login_details?.user_account_id,
     };
-    console.log("TenantAllDetailsData. in payload...",TenantAllDetailsData)
+    console.log('TenantAllDetailsData. in payload...', TenantAllDetailsData);
     try {
       const response = await getTenantAllDetailsService(TenantAllDetailsData);
       console.log('TenantAllDetails in tenant screening:', response);
       if (response?.success) {
+        console.log(
+          'TenantAllDetails in tenant screening data :...',
+          JSON.stringify(response?.data),
+        );
         setTenantAllDetails(response?.data);
+        setSearchTenantList(response?.data); // Initialize search list with the full data set
       }
     } catch (error) {
       console.error('Error fetching TenantAllDetails:', error);
@@ -52,18 +64,22 @@ const TenantScreening = props => {
     }
   };
 
-  const searchTeanant = query => {
+  const searchTenant = query => {
     setSearchQuery(query);
     console.log('Search Query:', query);
+
     const filtered = query
-      ? TenantAllDetails.filter(item => {
-          const firstName =
-            item?.account_details?.[0]?.UAD_FIRST_NAME?.toLowerCase() || '';
-          return firstName.startsWith(query.toLowerCase());
-        })
+      ? TenantAllDetails.filter(
+          item =>
+            item?.account_details[0].UAD_FIRST_NAME &&
+            item?.account_details[0].UAD_FIRST_NAME.toLowerCase().includes(
+              query.toLowerCase(),
+            ),
+        )
       : TenantAllDetails;
+
     setSearchTenantList(filtered);
-    console.log('Filtered Results:', filtered);
+    console.log('Filtered Results:', JSON.stringify(filtered));
   };
 
   const checkTabs = () => {
@@ -76,7 +92,7 @@ const TenantScreening = props => {
       case 'Tab3':
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
       default:
-        return <CurrentTenant TenantAllDetails={dataToPass} />;
+        return <ProspectsTenant TenantAllDetails={dataToPass} />;
     }
   };
 
@@ -123,7 +139,7 @@ const TenantScreening = props => {
         marginTop={20}
         placeholder={'Search tenants'}
         frontSearchIcon
-        searchData={searchTeanant}
+        searchData={searchTenant}
         filterIcon="filter"
         iconSet="AntDesign"
       />
@@ -136,7 +152,7 @@ const TenantScreening = props => {
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading}
-            onPress= {()=>props.navigation.navigate('InspectionsChecklist')}
+            onPress={() => navigation.navigate('Invitefriend')}
           />
         </View>
         <DividerIcon

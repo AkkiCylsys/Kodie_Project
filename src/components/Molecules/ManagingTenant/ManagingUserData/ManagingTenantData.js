@@ -73,7 +73,7 @@ const ManagingTenantData = () => {
           </View>
         </View>
       </View>
-      <DividerIcon />
+      {/* <DividerIcon /> */}
     </View>
   );
 };

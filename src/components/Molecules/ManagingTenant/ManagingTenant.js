@@ -69,10 +69,12 @@ const ManagingTenant = props => {
               // navigation.navigate("ViewPropertyDetails");
             }
             if (item.id === '2') {
+              navigation.navigate('InspectionsChecklist');
+              closeModal();
             }
             if (item?.id === '3') {
               navigation.navigate('TenantDocuments', {
-                property_id:property_id,
+                property_id: property_id,
               });
               closeModal();
             }

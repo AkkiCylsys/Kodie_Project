@@ -13,11 +13,12 @@ import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ManagingProspectsTenants from './ManagingProspectsTenants/ManagingProspectsTenants';
 import ManagingPreviousTenant from './ManagingPreviousTenant/ManagingPreviousTenant';
 
 const ManagingTenantsScreen = props => {
+  const navigation = useNavigation()
   const loginData = useSelector(state => state.authenticationReducer.data);
   const isFocus = useIsFocused();
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -62,20 +63,22 @@ const ManagingTenantsScreen = props => {
       setIsLoading(false);
     }
   };
-
   const searchTenant = query => {
     setSearchQuery(query);
     console.log('Search Query:', query);
 
     const filtered = query
-      ? TenantAllDetails.filter(item => {
-          const firstName = item?.account_details?.[0]?.UAD_FIRST_NAME?.toLowerCase() || '';
-          return firstName.startsWith(query.toLowerCase());
-        })
+      ? TenantAllDetails.filter(
+          item =>
+            item?.account_details[0].UAD_FIRST_NAME &&
+            item?.account_details[0].UAD_FIRST_NAME.toLowerCase().includes(
+              query.toLowerCase(),
+            ),
+        )
       : TenantAllDetails;
 
     setSearchTenantList(filtered);
-    console.log('Filtered Results:', filtered);
+    console.log('Filtered Results:', JSON.stringify(filtered));
   };
 
   const checkTabs = () => {
@@ -149,6 +152,7 @@ const ManagingTenantsScreen = props => {
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading}
+            onPress={() => navigation.navigate('Invitefriend')}
           />
         </View>
         <DividerIcon

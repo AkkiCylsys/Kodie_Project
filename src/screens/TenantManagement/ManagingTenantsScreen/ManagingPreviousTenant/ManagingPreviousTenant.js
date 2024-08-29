@@ -128,11 +128,13 @@ const ManagingPreviousTenant = ({TenantAllDetails}) => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => item?.property_id?.toString()}
           renderItem={tenantAllDetailRender}
+          ListEmptyComponent={()=>{
+            <ListEmptyComponent EmptyText={"You don't have any Data."} />
+          }}
         />
       ) : (
         <ListEmptyComponent EmptyText={"You don't have any Data."} />
       )}
-
       <RBSheet
         ref={refRBSheet}
         height={260}
