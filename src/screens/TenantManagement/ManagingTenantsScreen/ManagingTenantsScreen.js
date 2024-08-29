@@ -1,6 +1,6 @@
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import { ManagingTenantsScreenStyle } from './ManagingTenantsScreenStyle';
+import {ManagingTenantsScreenStyle} from './ManagingTenantsScreenStyle';
 import {_COLORS, IMAGES} from '../../../Themes';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -15,6 +15,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import ManagingProspectsTenants from './ManagingProspectsTenants/ManagingProspectsTenants';
+import ManagingPreviousTenant from './ManagingPreviousTenant/ManagingPreviousTenant';
 
 const ManagingTenantsScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -27,19 +28,28 @@ const ManagingTenantsScreen = props => {
 
   useEffect(() => {
     if (isFocus) {
-      handleTenantScreening(); 
+      handleTenantScreening();
     }
   }, [activeTab, isFocus]);
 
   const handleTenantScreening = async () => {
+    
     setIsLoading(true);
     setTenantAllDetails([]);
-    const filterType = activeTab === 'Tab1' ? 'Current' : activeTab === 'Tab2' ? 'Previous' : 'Prospects';
+    
+    const filterType = activeTab === 'Tab1' 
+                        ? 'Current' 
+                        : activeTab === 'Tab2' 
+                        ? 'Previous' 
+                        : 'Prospects';
+
     const TenantAllDetailsData = {
       filter: filterType,
       account_id: loginData?.Login_details?.user_account_id,
     };
-    console.log("TenantAllDetailsData. in payload...",TenantAllDetailsData)
+
+    console.log('TenantAllDetailsData in payload...', TenantAllDetailsData);
+
     try {
       const response = await getTenantAllDetailsService(TenantAllDetailsData);
       console.log('TenantAllDetails in tenant screening:', response);
@@ -53,31 +63,33 @@ const ManagingTenantsScreen = props => {
     }
   };
 
-  const searchTeanant = query => {
+  const searchTenant = query => {
     setSearchQuery(query);
     console.log('Search Query:', query);
+
     const filtered = query
       ? TenantAllDetails.filter(item => {
-          const firstName =
-            item?.account_details?.[0]?.UAD_FIRST_NAME?.toLowerCase() || '';
+          const firstName = item?.account_details?.[0]?.UAD_FIRST_NAME?.toLowerCase() || '';
           return firstName.startsWith(query.toLowerCase());
         })
       : TenantAllDetails;
+
     setSearchTenantList(filtered);
     console.log('Filtered Results:', filtered);
   };
 
   const checkTabs = () => {
     const dataToPass = searchQuery ? searchTenantList : TenantAllDetails;
+
     switch (activeTab) {
       case 'Tab1':
-        return <ProspectsTenant TenantAllDetails={dataToPass} />;
+        return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       case 'Tab2':
-        return <ProspectsTenant TenantAllDetails={dataToPass} />;
+        return <ManagingPreviousTenant TenantAllDetails={dataToPass} />;
       case 'Tab3':
         return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       default:
-        return <ProspectsTenant TenantAllDetails={dataToPass} />;
+        return <CurrentTenant TenantAllDetails={dataToPass} />;
     }
   };
 
@@ -93,10 +105,10 @@ const ManagingTenantsScreen = props => {
         Tab1={'Current'}
         Tab2={'Previous'}
         Tab3={'Prospects'}
-        TAB3
         onPressTab1={() => setActiveTab('Tab1')}
         onPressTab2={() => setActiveTab('Tab2')}
         onPressTab3={() => setActiveTab('Tab3')}
+        TAB3
         colorTab1={
           activeTab === 'Tab1'
             ? _COLORS.Kodie_BlackColor
@@ -124,7 +136,7 @@ const ManagingTenantsScreen = props => {
         marginTop={20}
         placeholder={'Search tenants'}
         frontSearchIcon
-        searchData={searchTeanant}
+        searchData={searchTenant}
         filterIcon="filter"
         iconSet="AntDesign"
       />

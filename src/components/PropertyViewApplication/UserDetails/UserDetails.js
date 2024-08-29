@@ -7,7 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {UserDetailsStyle} from './UserDetailsStyle';
 const UserDetails = props => {
   const {tenantAccountDetails} = props;
-  console.log("tenantAccountDetails...",tenantAccountDetails)
+  console.log('tenantAccountDetails...', tenantAccountDetails);
   return (
     <View style={UserDetailsStyle.container}>
       <View
@@ -60,7 +60,7 @@ const UserDetails = props => {
             color={_COLORS.Kodie_lightGreenColor}
             style={UserDetailsStyle.starIcon}
           />
-          <Text style={[UserDetailsStyle.username]}>{'3.9 (81)'}</Text>
+          <Text style={[UserDetailsStyle.username]}>{'0.0 (0)'}</Text>
         </View>
         <View
           style={{

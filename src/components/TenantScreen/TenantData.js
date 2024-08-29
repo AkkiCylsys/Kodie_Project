@@ -51,6 +51,7 @@ const TenantData = props => {
                 bid_id: TenantAllDetails?.bid_id,
                 tenant_id: TenantAllDetails?.tenant_id,
                 landlord_id: TenantAllDetails?.landlord_id,
+                Pre_screening: 'Pre-screening',
               });
               props.closeModal();
             }
