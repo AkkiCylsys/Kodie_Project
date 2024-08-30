@@ -90,7 +90,7 @@ const data1 = [
 
 const PropertyModal = props => {
   const propertyId = props?.propertyId;
-  const [isSaveClick, setIsSaveClick] = useState("");
+  const [isSaveClick, setIsSaveClick] = useState(isSaveClick == true ? 400 : 650);
   const refRBSheet = useRef();
   const navigation = useNavigation();
   const handleCloseModal = () => {
@@ -103,6 +103,7 @@ const PropertyModal = props => {
     console.log('saveClick...', saveClick);
     setIsSaveClick(saveClick);
   };
+ 
   const BottomData = ({item}) => {
     return (
       <TouchableOpacity
@@ -164,7 +165,7 @@ const PropertyModal = props => {
       {/* RBSheet for additional actions */}
       <RBSheet
         ref={refRBSheet}
-        height={isSaveClick == true ? 450 : 650}
+        height={isSaveClick == true ? 400 : 650}
         closeOnDragDown={true}
         customStyles={{
           wrapper: {

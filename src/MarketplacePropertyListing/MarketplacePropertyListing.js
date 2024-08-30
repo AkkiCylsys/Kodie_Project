@@ -123,10 +123,10 @@ const MarketplacePropertyListing = props => {
     axios
       .post(PropertyListing_url, PropertyListing_id)
       .then(response => {
-        console.log(
-          'Property Market Details Retrieve Successfully:',
-          JSON.stringify(response?.data),
-        );
+        // console.log(
+        //   'Property Market Details Retrieve Successfully:',
+        //   JSON.stringify(response?.data),
+        // );
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
           // console.log("Vacent Details Data..", response?.data?.data);

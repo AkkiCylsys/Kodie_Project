@@ -69,6 +69,7 @@ const PropertyPopup = props => {
   const [BidData, setBidData] = useState([]);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
+  const [bidResponse, setBidResponse] = useState({});
   const propertyId = props.propertyId;
   console.log('sheet propertyId', propertyId);
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -105,10 +106,10 @@ const PropertyPopup = props => {
     setselectedCommDate(day.dateString);
     setShowValidation(false);
   };
-  // const handleSaveClick = () => {
-  //   setIsSaveClicked(true);
-  //   props.saveClicked('true');
-  // };
+  const handleSaveClick = () => {
+    setIsSaveClicked(true);
+    props.saveClicked(300);
+  };
   const handleClosePopup = () => {
     props.onClose();
   };
@@ -117,10 +118,9 @@ const PropertyPopup = props => {
       setShowValidation(true);
     } else {
       handle_addlease_Bid();
-      handleClosePopup();
     }
   };
- 
+
   const getCurrentDateTime = () => {
     const now = new Date();
     const date = now.toISOString().slice(0, 10); // Get YYYY-MM-DD part
@@ -139,7 +139,6 @@ const PropertyPopup = props => {
     console.log('Request URL:', add_Bid_url);
     setIsLoading(true);
     const currentDate = new Date().toISOString().slice(0, 10);
-    console.log('currentDate...', currentDate);
     const Bid_Data = {
       user_id: loginData?.Login_details?.user_id,
       account_id: loginData?.Login_details?.user_account_id,
@@ -167,12 +166,11 @@ const PropertyPopup = props => {
       .then(response => {
         console.log('API Response add_bid:', response?.data);
         setBidData(response?.data);
-
-        if (response?.data?.message === 'Inserted successfully') {
-          // Alert.alert('Success!', response?.data.message);
-          handleSave();
+        if (response?.data?.success === true) {
+          handleSaveClick();
+          setBidResponse(response?.data);
         } else {
-          Alert.alert('Already enabled', response?.data?.message);
+          Alert.alert('Bid inserted', response?.data?.message);
         }
       })
       .catch(error => {
@@ -341,7 +339,7 @@ const PropertyPopup = props => {
               />
             </TouchableOpacity>
           </View>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={PropertyPopupStyle.card}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Bidding commencement date'}
@@ -644,9 +642,7 @@ const PropertyPopup = props => {
         <View style={PropertyPopupStyle.modalContainer}>
           <Text style={PropertyPopupStyle.modalMainText}>Bidding enabled</Text>
           <Text style={PropertyPopupStyle.modalSubText}>
-            {
-              'Congratulations! You have successfully enabled the property bidding feature. You will be notified once a  tenant places a bid .'
-            }
+            {bidResponse?.message}
           </Text>
           <Image
             source={IMAGES.CheckIcon}

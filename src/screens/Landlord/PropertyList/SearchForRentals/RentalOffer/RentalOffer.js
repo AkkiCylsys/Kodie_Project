@@ -1453,7 +1453,7 @@ const RentalOffer = props => {
 
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
-    saveBiddingDetails();
+    edit_offer == 'edit_offer' ? null : saveBiddingDetails();
     resetDynamicFields();
   };
 
@@ -2243,9 +2243,11 @@ const RentalOffer = props => {
                     <Text style={RentalOfferStyle.pdfSize}>{fileSizeInMB}</Text>
                   </View>
                 </View>
-                <TouchableOpacity style={RentalOfferStyle.crossIcon} onPress={()=>{
-                  setSelectFile([])
-                }}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.crossIcon}
+                  onPress={() => {
+                    setSelectFile([]);
+                  }}>
                   <Entypo
                     name="circle-with-cross"
                     size={20}

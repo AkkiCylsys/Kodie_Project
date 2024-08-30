@@ -3,7 +3,7 @@ import {_COLORS, FONTFAMILY} from '../../Themes';
 
 export const PropertyPopupStyle = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     marginBottom: 50,
   },
@@ -157,7 +157,8 @@ export const PropertyPopupStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight: 10,
-    marginTop: 20,
+    marginVertical: 20,
+
   },
   closeText: {
     paddingHorizontal: 25,
