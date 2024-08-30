@@ -40,6 +40,7 @@ export default CreateJobFirstScreen = props => {
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
   const job_sub_type = props.route.params?.job_sub_type;
+  const ReviewInspection = props.route.params?.ReviewInspection;
   const [currentPage, setCurrentPage] = useState(0);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
@@ -772,7 +773,7 @@ export default CreateJobFirstScreen = props => {
     <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
         onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : ReviewInspection? _goBack(props): goBack();
         }}
         MiddleText={
           IsMap || IsSearch

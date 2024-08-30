@@ -27,7 +27,7 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
 import moment from 'moment';
-const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancel"];
+const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancelled"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -80,13 +80,13 @@ export default NewInspection = (props) => {
   };
 
   const sortByDate = () => {
-    const sortedData = [...inspectionfilter].sort((a, b) => {
-      const dateA = new Date(a.from_date);
-      const dateB = new Date(b.from_date);
-      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-    setInspectionfilter(sortedData);
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    getInspectionDeatilsByFilter({
+      monthId: _selectedMonthId,
+      year: _selectedYear,
+      page: 1,
+      filter: selectedFilter,
+    });
   };
   const searchInspection = query => {
     setSearchQuery(query);
@@ -115,7 +115,7 @@ export default NewInspection = (props) => {
         v_Filter: filter,
         P_TIM_CREATED_BY: loginData?.Login_details?.user_account_id,
         p_limit: 10,
-        p_order_wise: 'DESC',
+        p_order_wise: sortOrder === 'asc' ? 'ASC' : 'DESC',
         P_TIM_IS_MONTHS: monthId.toString(),
         P_TIM_IS_YEAR: year,
         p_page: 1,
@@ -215,7 +215,7 @@ export default NewInspection = (props) => {
         TAM_AREA_KEYS: getinspection.cur_TAM_AREA_KEY,
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
-      console.log('inspec', Inspectiondata);
+      console.log('inspecdup', Inspectiondata);
       const Url = Config.BASE_URL;
       const Inspection_Url = Url + 'inspection_details/save';
       console.log('Inspection_Url', Inspection_Url);
@@ -369,6 +369,8 @@ export default NewInspection = (props) => {
     const dayOfWeek = daysOfWeek[getDate.getDay()];
     return (
       <>
+      {item?.inspection_id == null ? null:
+        <>
         <TouchableOpacity
           style={NewInspectionStyle.insp_data_View}
           onPress={() => {
@@ -481,6 +483,8 @@ export default NewInspection = (props) => {
           <DividerIcon />
         </View>
       </>
+      }
+     </>
     );
   };
 
