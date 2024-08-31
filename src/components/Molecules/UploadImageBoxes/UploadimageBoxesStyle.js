@@ -36,6 +36,7 @@ export const UploadImageBoxesStyle = StyleSheet.create({
     color: _COLORS.Kodie_GreenColor,
     justifyContent: "center",
     alignSelf: "center",
+    textAlign:'center'
   },
   circleImage: {
     width: 80,

@@ -6,7 +6,9 @@ import {
   TextInput,
   Image,
   FlatList,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import { BedroomCss } from '../../../screens/Inspection/PropertyInspection/Inspection/Bedroom/BedroomCss';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -24,6 +26,7 @@ import { Config } from '../../../Config';
 import axios from 'axios';
 import { set } from 'lodash';
 import { CommonLoader } from '../ActiveLoader/ActiveLoader';
+import { fontSize } from '../../../Themes/FontStyle/FontStyle';
 
 const data = [
   { label: 'Good', value: '1' },
@@ -42,6 +45,7 @@ const AddCabinatItems = (props) => {
   const [statusDataValue, setStatusDataValue] = useState([]);
   const [comment, setComment] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
+  const [CabinateDetail, setCabinateDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -115,7 +119,7 @@ const getCabinate = async () => {
     console.log('Request URL:', getCabinate_url);
     const response = await axios.post(getCabinate_url, getData);
     console.log('getCabinate_url....', response.data.data[0]);
- 
+ setCabinateDetail(response?.data?.data[0])
     setComment(response?.data?.data[0].TIMC_COMMENTS);
     setIscheckId(response?.data?.data[0].TIMC_INSPECTED_ITEMS);
     setSelectedImages(response?.data?.data[0].imageFileNames);
@@ -193,6 +197,11 @@ const handleImageSelect = (images) => {
   };
   return (
     <>
+    <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
+        style={{ flex: 1 }}
+      >
     <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{marginBottom:80}} >
       <View style={BedroomCss.secondModal}>
         <View style={BedroomCss.ModalContainer}>
@@ -257,44 +266,48 @@ const handleImageSelect = (images) => {
                   labelField="lookup_description"
                   valueField="lookup_key"
                   placeholder="Select"
-                  searchPlaceholder="Search..."
+                  searchPlaceholder="Select from drop down"
                   value={statusDataValue}
                   onChange={item => {
                     setStatusDataValue(item.lookup_key);
                   }}
                   renderItem={statusRender}
                 />
+        <View style={{flex:1}}>
         <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
           {'Upload clear images of the item'}
         </Text>
         {selectedImages.length > 0 ? 
-        <View style={{flex:1}}>
         <FlatList
           data={selectedImages}
           keyExtractor={(item, index) => index.toString()}
           horizontal
+          showsHorizontalScrollIndicator={true} // Set to true to visualize if it's scrolling
+          contentContainerStyle={{ paddingHorizontal: 10 }}
+          style={{ height: 100 }} // Ensure it has a height
           renderItem={({ item }) => (
             
             <Image
-              source={{ uri: item }}
+              source={{ uri: CabinateDetail?.imageFileNames?.length > 0 ? item : item.path}}
               style={{ width: 80, height: 80, marginTop: 10,borderRadius:20,margin:5 }}
             />
         )}
         />
-        </View>
         :null}
         <UploadImageBoxes
           Box_Text={'Add Photo'}
           circlestyle={BedroomCss.circleStyle}
           pluacircle={BedroomCss.pluscirclestyle}
-          size={15}
+          size={14}
           onPress={() => refRBSheet.current.open()}
-        />
+          textstyle={{fontSize:8}}
+          />
         {imageError && (
-  <Text style={{ color: 'red', marginTop: 10 }}>
+          <Text style={{ color: 'red', marginTop: 10 }}>
     Please upload at least one image.
   </Text>
 )}
+</View>
         <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
           {'Comment'}
         </Text>
@@ -302,7 +315,7 @@ const handleImageSelect = (images) => {
           style={BedroomCss.input}
           value={comment}
           onChangeText={setComment}
-          placeholder="Enter a description of your property"
+          placeholder="Enter any notes about this item"
           placeholderTextColor="#999"
           multiline
           numberOfLines={5}
@@ -336,6 +349,7 @@ const handleImageSelect = (images) => {
         <UploadCabinateImage heading_Text={'Upload more images'} onImageSelect={handleImageSelect} />
       </RBSheet>
       {isLoading ? <CommonLoader/> :null}
+      </KeyboardAvoidingView>
     </>
   );
 }

@@ -70,6 +70,7 @@ export const BedroomCss = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 0.5,
+    alignSelf:'center'
   },
   YText: {
     fontSize: 14,
@@ -206,12 +207,13 @@ export const BedroomCss = StyleSheet.create({
     alignSelf: 'center',
   },
   secondModal: {flex: 1, marginHorizontal: 16},
-  circleStyle: {height: 38, width: 38, borderRadius: 38 / 2},
+  circleStyle: {height: 40, width: 40, borderRadius: 40 / 2},
   pluscirclestyle: {
     position: 'absolute',
     alignSelf: 'flex-end',
-    top: 27,
-    borderColor: _COLORS.Kodie_LightWhiteColor,
+    top: 29,
+    left:25,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
   },
   input: {
     height: "20%",

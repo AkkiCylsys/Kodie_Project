@@ -60,7 +60,7 @@ const Bedroom = props => {
       // console.log('get_inspection_area_details....', areas);
     } catch (error) {
       console.error('get_inspection_area_details error:', error);
-      Alert.alert('Error', 'Failed to fetch inspection areas');
+      // Alert.alert('Error', 'Failed to fetch inspection areas');
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +100,7 @@ const Bedroom = props => {
       // console.log('handleInspectionuEditItem.....', items);
     } catch (error) {
       console.error('Error:', error);
-      Alert.alert('Error', 'Failed to edit inspection item');
+      // Alert.alert('Error', 'Failed to edit inspection item');
     } finally {
       setIsLoading(false);
     }
@@ -124,6 +124,7 @@ const Bedroom = props => {
       // console.log('API Response:', response);
       handleInspectionudateItem();
       handleInspectionuEditItem();
+      setIsEditing(!isEditing)
       // getInspectionAreas();
     } catch (error) {
       Alert.alert('Error', 'Failed to add custom item');
@@ -151,10 +152,11 @@ const Bedroom = props => {
       Alert.alert('Success', response?.message);
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
+      setIsEditing(!isEditing)
       // handleInspectionuEditItem();
       // getInspectionAreas();
     } catch (error) {
-      Alert.alert('Error', 'Failed to update custom item');
+      // Alert.alert('Error', 'Failed to update custom item');
       console.error('Error update custom item:', error);
     } finally {
       setIsLoading(false);
@@ -244,18 +246,29 @@ const Bedroom = props => {
             </>
           ) : null}
           {!isEditing ? (
+          
             <View style={BedroomCss.bindinputview}>
-              <AntDesign
+                {item?.TIMC_INSPECTED_ITEMS ? 
+                <AntDesign
                 name="checkcircle"
                 size={18}
-                color={item?.TIMC_INSPECTED_ITEMS ?_COLORS.Kodie_GreenColor :_COLORS.Kodie_GrayColor }
-              />
+                color={_COLORS.Kodie_GreenColor }
+              />:
+             
+            <Entypo
+            name="circle-with-cross"
+            size={19}
+            color={_COLORS.Kodie_ExtraLightGrayColor }
+          />
+                }
+             
               <View style={BedroomCss.messageview}>
                 <Text
                   style={{
                     color: _COLORS.Kodie_BlackColor,
                     fontSize: 13,
-                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom:3,
                     fontFamily: FONTFAMILY.K_Regular,
                   }}>
                   {item.TIMC_COMMENTS ? '1' : '0'}
@@ -303,6 +316,8 @@ const Bedroom = props => {
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={AreaName}
+        EditText
+        onPressEdit={() => setIsEditing(!isEditing)}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={BedroomCss.Container}>
@@ -322,9 +337,6 @@ const Bedroom = props => {
           ) : null}
           <View style={BedroomCss.TableView}>
             <Text style={BedroomCss.HeaderText}>{'Inspection items'}</Text>
-            <TouchableOpacity onPress={() => setIsEditing(!isEditing)}>
-              <Text style={BedroomCss.bedText}>{'Edit'}</Text>
-            </TouchableOpacity>
           </View>
           <DividerIcon marginTop={5} />
           {isEditing ? (

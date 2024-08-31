@@ -96,7 +96,8 @@ const TimePicker = (props) => {
 
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          value={selectedItime ? selectedItime : new Date()}
+          // value={selectedItime ? selectedItime : new Date()}
+          value={'12:09'}
           display={"spinner"}
           mode={"time"}
           is24Hour={false}

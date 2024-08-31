@@ -13,7 +13,7 @@ const UploadImageBoxes = (props) => {
       >
         <View>
           <View style={[UploadImageBoxesStyle.circle, props.circlestyle]}>
-            <Text style={UploadImageBoxesStyle.circleText}>
+            <Text style={[UploadImageBoxesStyle.circleText,props.textstyle]}>
               {props.Box_Text}
             </Text>
           </View>
@@ -23,7 +23,8 @@ const UploadImageBoxes = (props) => {
             <AntDesign
               name="pluscircle"
               size={props.size ? props.size : 25}
-              color={_COLORS.Kodie_LightWhiteColor}
+              color={_COLORS.Kodie_GrayColor}
+              style={{alignSelf:'center'}}
             />
           </View>
         </View>

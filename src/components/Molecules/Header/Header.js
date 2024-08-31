@@ -186,6 +186,23 @@ const TopHeader = props => {
       :  null
     }
     </TouchableOpacity>
+    <TouchableOpacity
+              onPress={props?.onPressEdit}
+              style={{alignSelf: 'center'}}>
+            {props.EditText ? 
+        
+        
+      <Text style={{ fontSize: 16,
+        fontFamily: FONTFAMILY.K_Bold,
+        color: _COLORS.Kodie_BlackColor,
+        marginLeft:'60%'
+        }}>
+          {'Edit'}
+        </Text>
+      :  null
+    }
+    </TouchableOpacity>
+
           </View>
         )}
        

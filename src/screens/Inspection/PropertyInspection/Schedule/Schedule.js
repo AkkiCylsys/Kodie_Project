@@ -198,7 +198,7 @@ console.log("newStatus",newStatus);
         />
         <DividerIcon />
         <Text style={ScheduleCss.inspections}>{'Notes'}</Text>
-        <Text style={ScheduleCss.MBText}>{Inspection_Detail?.v_TIM_DESCRIPTION}</Text>
+        <Text style={ScheduleCss.MBText}>{Inspection_Detail?.v_TIM_DESCRIPTION? Inspection_Detail?.v_TIM_DESCRIPTION: 'No notes'}</Text>
         <DividerIcon />
 </>
         ):null}

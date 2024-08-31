@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {_COLORS, FONTFAMILY, IMAGES} from '../../Themes';
 
 const GuestSelectionContent = ({
@@ -106,25 +107,15 @@ const GuestSelectionContent = ({
                 ) : (
                   <View
                     style={[{
-                      height: 50,
-                      width: 50,
-                      borderRadius: 50 / 2,
-                      borderWidth: 1,
                       borderColor: _COLORS?.Kodie_GrayColor,
                       justifyContent: "center",
-                      paddingHorizontal: 7
                     }]}
                   >
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        color: _COLORS?.Kodie_BlackColor,
-                        textAlign: "center",
-                        alignSelf: "center",
-                      }}
-                    >
-                      {"Image not found"}
-                    </Text>
+                  <FontAwesome
+                    name="user-circle"
+                    size={48}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
                   </View>
                 )}
                 <Text

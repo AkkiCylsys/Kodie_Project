@@ -76,6 +76,8 @@ const CreateNewInspection = props => {
   const [selectedButtonStandardId, setSelectedButtonStandardId] = useState(1);
   const [selectedButtonFutue, setSelectedButtonFutue] = useState(false);
   const [selectedButtonFutueId, setSelectedButtonFutueId] = useState(1);
+  const [validationMessage, setValidationMessage] = useState('');
+
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [customAreaName, setCustomAreaName] = useState('');
@@ -164,6 +166,7 @@ const CreateNewInspection = props => {
       console.log(newCheckedItems, 'newCheckedItems');
       return newCheckedItems;
     });
+    setValidationMessage('')
   };
   const handlePress = () => {
     refRBSheet.current.open();
@@ -512,6 +515,9 @@ const CreateNewInspection = props => {
       setSelectedDateError(true);
     } else if (selectedAddress == '') {
       setShowError(true);
+    }else if (checkedItemIds.length === 0) {
+      setValidationMessage('Please select at least one area!.');
+      
     } else {
       InspectionView
         ? UpdateInspection()
@@ -813,6 +819,8 @@ const CreateNewInspection = props => {
           <View style={{ marginBottom: 15 }}>
             <Text style={LABEL_STYLES.commontext}>
               {'Select the areas you would like to include:'}
+            <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+
             </Text>
             <View style={{ marginTop: 10 }}>
               <FlatList
@@ -851,6 +859,9 @@ const CreateNewInspection = props => {
                 }}
               />
             </View>
+            {validationMessage ? (
+          <Text style={{ color: 'red', marginTop: 10 }}>{validationMessage}</Text>
+        ) : null}
           </View>
           <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
           <TextInput

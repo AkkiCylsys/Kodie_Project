@@ -10,9 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
-  Button,
   Keyboard,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
   PermissionsAndroid,
   Alert,
@@ -22,7 +20,6 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { userSubscribedCreator } from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import { logos } from '../../../Themes/CommonVectors/Images';
 import { LoginStyles } from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -32,27 +29,22 @@ import BottomTextsButton from './../../../components/Molecules/BottomTextsButton
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  FONTFAMILY,
   LABEL_STYLES,
   IMAGES,
   _COLORS,
 } from './../../../Themes/index';
-import { useFocusEffect, useTheme } from '@react-navigation/native';
+import { useFocusEffect} from '@react-navigation/native';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchLoginSuccess } from '../../../redux/Actions/Authentication/AuthenticationApiAction';
+import { useDispatch} from 'react-redux';
 import axios from 'axios';
 import { Config } from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
-// import CryptoJS from "crypto-js";
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
-// import {NavigationActions, StackActions} from 'react-navigation';
 import { loginApiActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import Geolocation from '@react-native-community/geolocation';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import Geocoder from 'react-native-geocoding';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
 export default Login = props => {
   const dispatch = useDispatch();
@@ -70,21 +62,17 @@ export default Login = props => {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isClick, setIsClick] = useState(0);
   const [IsSusscessPasswordScreen, setIsSusscessPasswordScreen] = useState(550);
-  
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
-  const [loginResponse, setLoginResponse] = useState(true);
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
   const [googleSignIn, setGoogleSignIn] = useState([]);
-
   // Login with google here ......
-
   useEffect(() => {
     handlemessage();
     requestUserPermission();
@@ -105,111 +93,21 @@ export default Login = props => {
     } catch (error) {
       console.log('Error during signIn:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
         console.log('SIGN_IN_CANCELLED');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
         console.log('IN_PROGRESS');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
         console.log('PLAY_SERVICES_NOT_AVAILABLE');
       } else {
-        // some other error happened
         console.log('Error occurred:', error.message);
         console.log('Error stack trace:', error.stack);
         console.log('Full error object:', error);
       }
     }
   };
-
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('you are here.');
-        const { latitude, longitude } = position.coords;
-        console.log('position.coords in map components....', position.coords);
-        // setlatitude(latitude);
-        // setLat(latitude);
-        // setLong(longitude);
-        setIsLoading(false);
-        // setlongitude(longitude);
-        // animateToCoordinate(latitude, longitude)
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 30000,
-        maximumAge: 1000,
-      },
-    );
-  };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-          result => {
-            if (result === RNSettings.ENABLED) {
-              console.log('location is enabled');
-            }
-          },
-        );
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
-  console.log('Device ID:', deviceId);
-  console.log('Device type:', deviceType);
-  // const Login_response = useSelector(
-  //   (state) => state?.authenticationReducer?.data
-  // );
-  // console.log("Login_response.....", Login_response);
   const buttonLabels = [
     'Send verification code',
     'Next',
@@ -313,7 +211,7 @@ export default Login = props => {
       setResetEmailError('Email is required!');
     } else if (!validateResetEmail(resetEmail)) {
       setResetEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       send_verification_code();
@@ -334,7 +232,7 @@ export default Login = props => {
       setResetEmailError('Email is required!');
     } else if (!validateResetEmail(text)) {
       setResetEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setResetEmailError('');
@@ -353,11 +251,11 @@ export default Login = props => {
   //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === '') {
-      setNewPasswordError('Please enter a new password');
+      setNewPasswordError('Please enter a new password!');
     } else if (confirmPassword.trim() === '') {
-      setConfirmPasswordError('Please enter a confirmation password');
+      setConfirmPasswordError('Please enter a confirmation password!');
     } else if (newpassword !== confirmPassword) {
-      setConfirmPasswordError('Password do not match');
+      setConfirmPasswordError('Password do not match!');
     } else {
       setConfirmPasswordError('');
       create_password();
@@ -393,28 +291,16 @@ export default Login = props => {
       setEmailError('Email is required!');
     } else if (!validateEmail(text)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setEmailError('');
     }
   };
-
-  //... inner reset password password variable define here
-  const handlePasswordChange = text => {
-    setPassword(text);
-    if (text.trim() === '') {
-      setPasswordError('Password is required!.');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  //... inner reset password new password variable define here
   const handleNewPassword = text => {
     setNewPassword(text);
     if (text.trim() === '') {
-      setNewPasswordError('New password is required.');
+      setNewPasswordError('New password is required!');
     } else {
       setNewPasswordError('');
     }
@@ -424,9 +310,9 @@ export default Login = props => {
   const handleConfirmpassword = text => {
     setConfirmPassword(text);
     if (text.trim() === '') {
-      setConfirmPasswordError('Please enter a confirmation password.');
+      setConfirmPasswordError('Please enter a confirmation password!');
     } else if (newpassword !== text) {
-      setConfirmPasswordError('Password do not match.');
+      setConfirmPasswordError('Password do not match!');
     } else {
       setConfirmPasswordError(''); // Clear the error message
     }
@@ -438,7 +324,7 @@ export default Login = props => {
       setEmailError('Email is required!');
     } else if (!validateEmail(email)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (password.trim() === '') {
       setPasswordError('Password is required!.');
@@ -454,12 +340,11 @@ export default Login = props => {
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      /// alert(JSON.stringify(res));
       setIsLoading(false);
       if (res === 401) {
         setIsLoading(false);
         setPasswordError(
-          'Hmm, it seems like the credentials you entered are invalid. Please try again.',
+          'Hmm, it seems like the credentials you entered are invalid. Please try again!',
         );
       } else if (res?.LoginStatuscode == 6) {
         props.navigation.navigate('SignUpSteps', {
@@ -467,7 +352,6 @@ export default Login = props => {
           user_key: res?.User_key,
         });
       } else if (res?.data?.code === 2) {
-        // Alert.alert('Account suspension', res?.data?.message);
         Alert.alert('Account suspension', res?.data?.message, [
           {
             text: 'Cancel',
@@ -505,7 +389,7 @@ export default Login = props => {
       } else {
         setIsLoading(false);
         setPasswordError(
-          'Hmm, it seems like the credentials you entered are invalid. Please try again.',
+          'Hmm, it seems like the credentials you entered are invalid. Please try again!',
         );
       }
       // }
@@ -518,9 +402,9 @@ export default Login = props => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === '') {
-      setVerificationcodeError('Verification code is required!.');
+      setVerificationcodeError('Verification code is required!');
     } else if (!regex.test(text)) {
-      setVerificationcodeError('Verification code must contain only numbers.');
+      setVerificationcodeError('Verification code must contain only numbers!');
     } else {
       setVerificationcodeError('');
     }
@@ -562,11 +446,9 @@ export default Login = props => {
         if (error?.response || error?.response?.status === 400) {
           alert('Failed to send OTP via email. Please try again later.');
         } else {
-          // alert('An error occurred. Please try again later.');
         }
         console.error('sendotp error:', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -576,8 +458,6 @@ export default Login = props => {
   //verify_otp Api code here.....
   const verify_Otp = () => {
     const url = Config.BASE_URL;
-    // const verify_Otp_url = url + "user_signup_verifyotp";
-    // const url = "https://e3.cylsys.com/api/v1/verifyotp";
     const verify_Otp_url = url + 'verifyotp';
     console.log('Request URL:', verify_Otp_url);
     setIsLoading(true);
@@ -593,11 +473,11 @@ export default Login = props => {
           setIsClick(isClick + 1);
         } else if (verificationcode.length < 6) {
           setVerificationcodeError(
-            'Verification code must be at least 6 digits.',
+            'Verification code must be at least 6 digits!',
           );
         } else {
           setVerificationcodeError(
-            'The Verification Code You’ve Entered is Incorrect. Please Try Again.',
+            'The Verification Code You’ve Entered is Incorrect. Please Try Again!',
           );
         }
       })
@@ -642,26 +522,19 @@ export default Login = props => {
       setPasswordError('');
     }
   };
-  //------ create_password Api code here
   const create_password = async () => {
 
     try {
       const encryptedPassword = await encryptPassword(newpassword, secretKey);
       console.log('encryptedPassword', encryptedPassword);
       const url = Config.BASE_URL;
-      // const url = "https://e3.cylsys.com/api/v1/forgetpassword";
       const create_password_url = url + 'forgetpassword';
       console.log('Request URL:', create_password_url);
-
       setIsLoading(true);
-
       const response = await axios.post(create_password_url, {
         email: resetEmail,
         password: encryptedPassword,
       });
-
-      console.log('API Response create_password:', response?.data);
-
       if (response?.data?.success === true) {
         openSheetWithHeight(400)
         if (
@@ -677,11 +550,7 @@ export default Login = props => {
         alert('Password not created.');
       }
     } catch (error) {
-      // if (error.response && error.response.status == 500) {
-      //   alert("Your password is old. Please enter new password.");
-      // }
       console.error('API failed create_password', error);
-      // Handle errors appropriately
       alert(error?.message || 'An error occurred during the API call');
     } finally {
       setIsLoading(false);
@@ -733,7 +602,7 @@ export default Login = props => {
               <Text style={LoginStyles.error_text}>{emailError}</Text>
             ) : null}
             <View style={LoginStyles.inputContainer}>
-              <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
+              <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
               <View
                 style={[
                   LoginStyles.passwordContainer,
@@ -755,7 +624,7 @@ export default Login = props => {
                   value={password}
                   onChangeText={setPassword}
                   onBlur={() => handleLoginPassword(password)}
-                  placeholder="Password"
+                  placeholder="Enter Password"
                   placeholderTextColor="#999"
                   secureTextEntry={!showPassword}
                 />
@@ -825,9 +694,9 @@ export default Login = props => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() =>
-                 props.navigation.navigate("PointofInterest")
+                //  props.navigation.navigate("PointofInterest")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
-               // Alert.alert('Login with Facebook', 'Coming soon')
+               Alert.alert('Login with Facebook', 'Coming soon')
                 // onFacebookButtonPress()
               }
               leftImage={IMAGES.FacebookIcon}

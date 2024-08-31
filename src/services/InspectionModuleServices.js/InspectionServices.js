@@ -16,7 +16,7 @@ export const GetInspectionDeatilsByFilter = (data) => {
       })
       .catch(error => {
         const errorMessage = handleApiError(error);
-      alert(errorMessage); // Display error message in an alert
+      // alert(errorMessage); // Display error message in an alert
       reject(errorMessage);
       });
   });
@@ -34,7 +34,7 @@ export const GetInspectionAreas = (teamKey) => {
         })
         .catch(error => {
           const errorMessage = handleApiError(error);
-        alert(errorMessage); // Display error message in an alert
+        // alert(errorMessage); // Display error message in an alert
         reject(errorMessage); // Reject with the error message for further handling if needed
      
         });
@@ -55,7 +55,7 @@ export const GetInspectionAreas = (teamKey) => {
         })
         .catch(error => {
           const errorMessage = handleApiError(error);
-        alert(errorMessage); // Display error message in an alert
+        // alert(errorMessage); // Display error message in an alert
         reject(errorMessage);
         });
     });
@@ -75,7 +75,7 @@ export const GetInspectionAreas = (teamKey) => {
         })
         .catch(error => {
           const errorMessage = handleApiError(error);
-        alert(errorMessage); // Display error message in an alert
+        // alert(errorMessage); // Display error message in an alert
         reject(errorMessage);
         });
     });
@@ -99,7 +99,7 @@ export const GetInspectionAreas = (teamKey) => {
         })
         .catch(error => {
           const errorMessage = handleApiError(error);
-          alert(errorMessage); // Display error message in an alert
+          // alert(errorMessage); // Display error message in an alert
           reject(errorMessage);
         });
     });
@@ -123,7 +123,7 @@ export const GetInspectionAreas = (teamKey) => {
         })
         .catch(error => {
           const errorMessage = handleApiError(error);
-          alert(errorMessage); // Display error message in an alert
+          // alert(errorMessage); // Display error message in an alert
           reject(errorMessage);
         });
     });
@@ -144,7 +144,7 @@ export const GetInspectioncabinateDetail = (data) => {
       })
       .catch(error => {
         const errorMessage = handleApiError(error);
-      alert(errorMessage); // Display error message in an alert
+      // alert(errorMessage); // Display error message in an alert
       reject(errorMessage);
       });
   });
@@ -163,7 +163,7 @@ export const GetInspectionAreaDetail = (data) => {
       })
       .catch(error => {
         const errorMessage = handleApiError(error);
-      alert(errorMessage); // Display error message in an alert
+      // alert(errorMessage); // Display error message in an alert
       reject(errorMessage);
       });
   });
@@ -182,7 +182,7 @@ export const AddCustomArea = (data) => {
       })
       .catch(error => {
         const errorMessage = handleApiError(error);
-      alert(errorMessage); // Display error message in an alert
+      // alert(errorMessage); // Display error message in an alert
       reject(errorMessage);
       });
   });

@@ -131,7 +131,7 @@ const ViewRentalDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor area' ? (
+      ) : item === '' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
