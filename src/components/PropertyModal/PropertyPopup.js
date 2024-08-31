@@ -23,34 +23,17 @@ import {Config} from '../../Config';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import axios from 'axios';
 import {SignupLookupDetails} from '../../APIs/AllApi';
-const data = [
-  {label: '3-month', value: '1'},
-  {label: '6-month', value: '2'},
-  {label: '12-month', value: '3'},
-];
-const notification_data = [
-  {label: 'Notification', value: '1'},
-  {label: 'Email', value: '2'},
-];
-const reminder_data = [
-  {label: '30-day', value: '1'},
-  {label: '2-day', value: '2'},
-  {label: '2-day', value: '3'},
-];
 const PropertyPopup = props => {
-  const [value, setValue] = useState(null);
   const [selectedCommDate, setselectedCommDate] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [listPrice, setListPrice] = useState(0);
   const [rentalBond, setRentalBond] = useState('');
-  const [paymentDueDay, setPaymentDueDay] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [on, setOn] = useState(true);
-  const [Visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [kodieDurationData, setkodieDurationData] = useState([]);
   const [duration_value, setDuration_value] = useState(null);
-  // const [notification_type_Data, setNotification_type_Data] = useState([]);
+  const [notification_type_Data, setNotification_type_Data] = useState([]);
   const [notification_type_value, setNotification_type_value] = useState(null);
   const [Toggle_open, setToggle_open] = useState(false);
   const [toggle_Bid_Open, settoggle_Bid_Open] = useState(0);
@@ -64,29 +47,13 @@ const PropertyPopup = props => {
   const [toggle_Bid_Close, settoggle_Bid_Close] = useState(0);
   const [toggle_rental, setToggle_rental] = useState(false);
   const [toggle_New_bid, settoggle_New_bid] = useState(0);
-  const [selected_payment_Button, setselected_payment_Button] = useState(false);
-  const [selected_payment_id, setselected_payment_id] = useState(319);
   const [BidData, setBidData] = useState([]);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
   const [bidResponse, setBidResponse] = useState({});
   const propertyId = props.propertyId;
-  console.log('sheet propertyId', propertyId);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginresponse_jobdetails..', loginData?.Login_details);
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
-
-  const notification_type_Data = [
-    // as discuss with uday this is static for now.
-    {
-      lookup_description: 'Email',
-      lookup_key: 0,
-    },
-    {
-      lookup_description: 'Kodie Notification',
-      lookup_key: 1,
-    },
-  ];
   useEffect(() => {
     handle_notification_type();
     handle_Open_reminder();
@@ -158,13 +125,10 @@ const PropertyPopup = props => {
       new_bid_days: Newbid_Value,
       new_bid_before: '0',
     };
-
-    console.log('Bid_Data:', Bid_Data);
-
     axios
       .post(add_Bid_url, Bid_Data)
       .then(response => {
-        console.log('API Response add_bid:', response?.data);
+        // console.log('API Response add_bid:', response?.data);
         setBidData(response?.data);
         if (response?.data?.success === true) {
           handleSaveClick();
@@ -202,7 +166,6 @@ const PropertyPopup = props => {
       P_PARENT_CODE: 'SNT',
       P_TYPE: 'OPTION',
     });
-    console.log('notification_type', res);
     setNotification_type_Data(res?.lookup_details);
     setIsLoading(false);
   };
@@ -214,7 +177,6 @@ const PropertyPopup = props => {
       P_TYPE: 'OPTION',
     });
 
-    console.log('Response expiry reminder', res);
 
     setopen_reminder_Data(res?.lookup_details);
     setIsLoading(false);
@@ -226,9 +188,6 @@ const PropertyPopup = props => {
       P_PARENT_CODE: 'RPR',
       P_TYPE: 'OPTION',
     });
-
-    console.log('Response payment reminder', res);
-
     setClose_reminder_Data(res?.lookup_details);
     setIsLoading(false);
   };
@@ -239,9 +198,6 @@ const PropertyPopup = props => {
       P_PARENT_CODE: 'NEW_BID',
       P_TYPE: 'OPTION',
     });
-
-    console.log('Response rental reminder', res);
-
     setNewbid(res?.lookup_details);
     setIsLoading(false);
   };

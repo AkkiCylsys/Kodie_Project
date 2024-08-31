@@ -11,7 +11,7 @@ import {
   Keyboard,
   Platform,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import {SignUpStyles} from './SignUpStyle';
@@ -105,7 +105,7 @@ export default SignUp = props => {
       setEmailError('Email is required!');
     } else if (!validateSignUpEmail(text)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setEmailError('');
@@ -198,10 +198,10 @@ export default SignUp = props => {
       if (error?.response || error?.response?.status === 400) {
         Alert.alert(
           'Warning!',
-          'Failed to send OTP via email. Please try again later.',
+          'Failed to send OTP via email. Please try again later!',
         );
       } else if (error?.response || error?.response?.status === 401) {
-        Alert.alert('Warning!', 'Your Password is Wrong.');
+        Alert.alert('Warning!', 'Your password is wrong!');
       } else {
         // alert('An error occurred. Please try again later.');
       }
@@ -217,225 +217,234 @@ export default SignUp = props => {
       setEmailError('Email is required!');
     } else if (!validateSignUpEmail(email)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (password.trim() === '') {
       setPasswordError('Password is required!');
     } else if (!term && !privacy) {
       alert(
-        'Please read and accept both Terms & Conditions and Privacy Policy.',
+        'Please read and accept both Terms & Conditions and Privacy Policy!',
       );
     } else if (!term) {
-      alert('Please read and accept Terms & Conditions.');
+      alert('Please read and accept Terms & Conditions!');
     } else if (!privacy) {
-      alert('Please read and accept our Privacy Policy.');
+      alert('Please read and accept our Privacy Policy!');
     } else {
       Signuphandle();
     }
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-    <KeyboardAvoidingView
-      style={SignUpStyles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
-        <View style={SignUpStyles.logoContainer}>
-          <Image source={BANNERS.BannerFirst} style={SignUpStyles.logo} />
-        </View>
-        <View style={SignUpStyles.maintextView}>
-          <Text style={SignUpStyles.title}>Welcome to Kodie</Text>
-          <Text style={SignUpStyles.discription}>
-            Your personal solution to managing your rental properties. No fuss,
-            no hassle.
-          </Text>
-        </View>
-
-        {/*.............. signup input field start here ..................*/}
-        <View style={SignUpStyles.card}>
-          <View style={SignUpStyles.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>Email address*</Text>
-            <TextInput
-              style={[
-                SignUpStyles.input,
-                {
-                  borderColor: emailError
-                    ? _COLORS.Kodie_lightRedColor
-                    : _COLORS.Kodie_GrayColor,
-                },
-              ]}
-              value={email}
-              onChangeText={setEmail}
-              onBlur={() => handleSignUpEmail(email)}
-              placeholder="Enter your email address"
-              placeholderTextColor="#999"
-              maxLength={30}
-              autoCapitalize={'none'}
-              keyboardType="email-address"
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor}}>
+      <KeyboardAvoidingView
+        style={SignUpStyles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+        showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flexGrow: 1}}
+          keyboardShouldPersistTaps="handled">
+          <View style={SignUpStyles.logoContainer}>
+            <Image
+              source={BANNERS.BannerFirst}
+              style={SignUpStyles.logo}
+              resizeMode="contain"
             />
-            {emailError ? (
-              <Text style={SignUpStyles.error_text}>{emailError}</Text>
-            ) : null}
           </View>
-
-          <View style={SignUpStyles.inputContainer}>
-            <Text
-              style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
-              Password*
+          <View style={SignUpStyles.maintextView}>
+            <Text style={SignUpStyles.title}>Welcome to Kodie</Text>
+            <Text style={SignUpStyles.discription}>
+              Your personal solution to managing your rental properties. No
+              fuss, no hassle.
             </Text>
-            <View
-              style={[
-                SignUpStyles.passwordContainer,
-                {
-                  borderColor: passwordError
-                    ? _COLORS.Kodie_lightRedColor
-                    : _COLORS.Kodie_GrayColor,
-                },
-              ]}>
+          </View>
+
+          {/*.............. signup input field start here ..................*/}
+          <View style={SignUpStyles.card}>
+            <View style={SignUpStyles.inputContainer}>
+              <Text style={LABEL_STYLES._texinputLabel}>Email address*</Text>
               <TextInput
-                style={SignUpStyles.passwordInput}
-                value={password}
-                onChangeText={setPassword}
-                onBlur={() => handleSignUpPassword(password)}
-                placeholder="Password"
-                placeholderTextColor="#999"
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity onPress={handleTogglePassword}>
-                <MaterialCommunityIcons
-                  name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                  size={20}
-                  color={
-                    passwordError
+                style={[
+                  SignUpStyles.input,
+                  {
+                    borderColor: emailError
                       ? _COLORS.Kodie_lightRedColor
-                      : _COLORS.Kodie_BlackColor
-                  }
-                  style={SignUpStyles.eyeIcon}
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
+                value={email}
+                onChangeText={setEmail}
+                onBlur={() => handleSignUpEmail(email)}
+                placeholder="Enter your email address"
+                placeholderTextColor="#999"
+                maxLength={30}
+                autoCapitalize={'none'}
+                keyboardType="email-address"
+              />
+              {emailError ? (
+                <Text style={SignUpStyles.error_text}>{emailError}</Text>
+              ) : null}
+            </View>
+
+            <View style={SignUpStyles.inputContainer}>
+              <Text
+                style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
+                Password*
+              </Text>
+              <View
+                style={[
+                  SignUpStyles.passwordContainer,
+                  {
+                    borderColor: passwordError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}>
+                <TextInput
+                  style={SignUpStyles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  onBlur={() => handleSignUpPassword(password)}
+                  placeholder="Enter your password"
+                  placeholderTextColor="#999"
+                  secureTextEntry={!showPassword}
                 />
-              </TouchableOpacity>
-            </View>
-            {passwordError ? (
-              <Text style={SignUpStyles.error_text}>{passwordError}</Text>
-            ) : null}
-          </View>
-          <Text style={SignUpStyles.accept_Text}>
-            {'Accept the terms of use'}
-          </Text>
-          {/*.............. checkbox field start here ..................*/}
-          <View style={SignUpStyles.termView}>
-            <TouchableOpacity
-              onPress={() => {
-                setTerm(!term);
-              }}>
-              <View style={SignUpStyles.CheckBox_View}>
-                {term && (
-                  <FontAwesome
-                    name="check"
-                    size={15}
-                    value={term}
-                    onChangeText={setTerm}
-                    color={_COLORS.Kodie_GreenColor}
-                    style={SignUpStyles.checkbox_BG}
+                <TouchableOpacity onPress={handleTogglePassword}>
+                  <MaterialCommunityIcons
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    size={20}
+                    color={
+                      passwordError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_BlackColor
+                    }
+                    style={SignUpStyles.eyeIcon}
                   />
-                )}
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-
-            <View style={SignUpStyles.termsConView}>
-              <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
-              <TouchableOpacity>
-                <Text
-                  style={[
-                    SignUpStyles.termsText,
-                    SignUpStyles.terms_Condition,
-                  ]}>
-                  {' Terms & Conditions '}
-                </Text>
+              {passwordError ? (
+                <Text style={SignUpStyles.error_text}>{passwordError}</Text>
+              ) : null}
+            </View>
+            <Text style={SignUpStyles.accept_Text}>
+              {'Accept the terms of use'}
+            </Text>
+            {/*.............. checkbox field start here ..................*/}
+            <View style={SignUpStyles.termView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setTerm(!term);
+                }}>
+                <View style={SignUpStyles.CheckBox_View}>
+                  {term && (
+                    <FontAwesome
+                      name="check"
+                      size={15}
+                      value={term}
+                      onChangeText={setTerm}
+                      color={_COLORS.Kodie_GreenColor}
+                      style={SignUpStyles.checkbox_BG}
+                    />
+                  )}
+                </View>
               </TouchableOpacity>
-              <Text style={SignUpStyles.termsText}>{' and agree'}</Text>
+
+              <View style={SignUpStyles.termsConView}>
+                <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
+                <TouchableOpacity>
+                  <Text
+                    style={[
+                      SignUpStyles.termsText,
+                      SignUpStyles.terms_Condition,
+                    ]}>
+                    {' Terms & Conditions '}
+                  </Text>
+                </TouchableOpacity>
+                <Text style={SignUpStyles.termsText}>{' and agree.'}</Text>
+              </View>
+            </View>
+            <View style={SignUpStyles.termView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setPrivacy(!privacy);
+                }}>
+                <View style={SignUpStyles.CheckBox_View}>
+                  {privacy && (
+                    <FontAwesome
+                      name="check"
+                      size={15}
+                      value={privacy}
+                      onChangeText={setPrivacy}
+                      color={_COLORS.Kodie_GreenColor}
+                      style={SignUpStyles.checkbox_BG}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
+
+              <View style={SignUpStyles.termsConView}>
+                <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
+                <TouchableOpacity>
+                  <Text
+                    style={[
+                      SignUpStyles.termsText,
+                      SignUpStyles.terms_Condition,
+                    ]}>
+                    {' Privacy Policy '}
+                  </Text>
+                </TouchableOpacity>
+                <Text style={SignUpStyles.termsText}>{'and agree.'}</Text>
+              </View>
             </View>
           </View>
-          <View style={SignUpStyles.termView}>
-            <TouchableOpacity
+
+          {/*.............. signup button  here ..................*/}
+          <View style={SignUpStyles.signBtnView}>
+            <CustomSingleButton
+              disabled={isLoading ? true : false}
+              _ButtonText={'Sign up now'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              onPress={handleSubmit}
+            />
+            <DividerIcon
+              DeviderText={'or'}
+              style={{marginTop: 32, marginBottom: 30}}
+            />
+
+            {/*.............. signup option field here ..................*/}
+            <CustomSingleButton
+              leftImage={IMAGES.GoogleIcon}
+              isLeftImage={true}
+              _ButtonText={'Sign up with Google'}
+              backgroundColor={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
               onPress={() => {
-                setPrivacy(!privacy);
-              }}>
-              <View style={SignUpStyles.CheckBox_View}>
-                {privacy && (
-                  <FontAwesome
-                    name="check"
-                    size={15}
-                    value={privacy}
-                    onChangeText={setPrivacy}
-                    color={_COLORS.Kodie_GreenColor}
-                    style={SignUpStyles.checkbox_BG}
-                  />
-                )}
-              </View>
-            </TouchableOpacity>
-
-            <View style={SignUpStyles.termsConView}>
-              <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
-              <TouchableOpacity>
-                <Text
-                  style={[
-                    SignUpStyles.termsText,
-                    SignUpStyles.terms_Condition,
-                  ]}>
-                  {' Privacy Policy '}
-                </Text>
-              </TouchableOpacity>
-              <Text style={SignUpStyles.termsText}>{'and agree'}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/*.............. signup button  here ..................*/}
-        <View style={SignUpStyles.signBtnView}>
-          <CustomSingleButton
-            disabled={isLoading ? true : false}
-            _ButtonText={'Sign up now'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={handleSubmit}
-          />
-          <DividerIcon
-            DeviderText={'or'}
-            style={{marginTop: 32, marginBottom: 30}}
-          />
-
-          {/*.............. signup option field here ..................*/}
-          <CustomSingleButton
-            leftImage={IMAGES.GoogleIcon}
-            isLeftImage={true}
-            _ButtonText={'Sign up with Google'}
-            backgroundColor={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-            onPress={() => {
-              Alert.alert('Sign with Google', 'Coming soon');
-            }}
-          />
-          <CustomSingleButton
-            disabled={isLoading ? true : false}
-            leftImage={IMAGES.FacebookIcon}
-            isLeftImage={true}
-            _ButtonText={'Sign up with Facebook'}
-            backgroundColor={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              Alert.alert('Sign with Facebook', 'Coming soon');
-            }}
-          />
-          <View style={SignUpStyles.already_account_login}>
-            <BottomTextsButton
-              _LeftButtonText={'Already have an account?'}
-              _RightButtonText={'  Login'}
-              onPress={() => {
-                props.navigation.navigate('LoginScreen');
+                Alert.alert('Sign with Google', 'Coming soon');
               }}
             />
+            <View style={{marginTop:30}}>
+              <CustomSingleButton
+                disabled={isLoading ? true : false}
+                leftImage={IMAGES.FacebookIcon}
+                isLeftImage={true}
+                _ButtonText={'Sign up with Facebook'}
+                backgroundColor={_COLORS.Kodie_WhiteColor}
+                onPress={() => {
+                  Alert.alert('Sign with Facebook', 'Coming soon');
+                }}
+              />
+            </View>
+            <View style={SignUpStyles.already_account_login}>
+              <BottomTextsButton
+                _LeftButtonText={'Already have an account?'}
+                _RightButtonText={'  Login'}
+                onPress={() => {
+                  props.navigation.navigate('LoginScreen');
+                }}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

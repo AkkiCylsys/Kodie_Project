@@ -14,7 +14,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from './../../../../services/CommonServices/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -32,7 +31,6 @@ export default SearchResult = props => {
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
-  const [searchRentalData, setSearchRentalData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [rentalAmount, setRentalAmount] = useState('');
   const [bibId, setBidId] = useState('');
@@ -44,22 +42,10 @@ export default SearchResult = props => {
   });
   const [propertyId, setPropertyId] = useState('');
   const [keyFeature, setKeyFeature] = useState([]);
-  console.log('keyFeature......', keyFeature);
   const searchRentalResponse = props?.route?.params?.searchRentalResponse;
-  console.log('searchRentalResponse.....', searchRentalResponse);
   const searchInputData = props?.route?.params?.searchInputData;
-  console.log('searchInputData....', searchInputData);
-  console.log('searchInputData....', searchInputData?.input_Fur_unFurnished);
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
-  console.log('AllCountsData...in result', AllCountsData);
-  // const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
-  // console.log('addtional_keyFeature.....', addtional_keyFeature);
-  // const additionalKeyFeaturesString = addtional_keyFeature.map(
-  //   key => keyFeatureMapping[key],
-  // );
-  // console.log('additionalKeyFeaturesString.....', additionalKeyFeaturesString);
-  // useEffect....
   useEffect(() => {
     additional_key_features();
   }, []);
@@ -94,190 +80,206 @@ export default SearchResult = props => {
           );
         } else {
           console.error('additional_features_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('additional_features error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
   const propertyData2_render = ({item, index}) => {
-    console.log(item,"details");
+    console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
-    // console.log(keyFeatures);
     return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('ViewRentalDetails', {
-            propertyId: item?.property_id,
-            rentalAmount: item?.rental_amount,
-            searchRentalData:item
-          });
-        }}>
-        {setKeyFeature(item?.key_features)}
-        {item?.image_path && item?.image_path.length != 0 ? (
-          <View style={{marginTop: 10}}>
-            <SliderBox
-              images={item?.image_path}
-              sliderBoxHeight={200}
-              onCurrentImagePressed={index =>
-                console.warn(`image ${index} pressed`)
-              }
-              inactiveDotColor={_COLORS.Kodie_GrayColor}
-              dotColor={_COLORS.Kodie_GreenColor}
-              // autoplay={false}
-              circleLoop
-              resizeMethod={'resize'}
-              resizeMode={'cover'}
-              dotStyle={SearchResultCss.dotStyle}
-              ImageComponentStyle={{
-                flex: 1,
-                resizeMode: 'cover',
-              }}
-            />
+      <>
+        {/* This is important comment we will uncomment this in the future */}
+
+        {/* <View style={[SearchResultCss.flat_MainView]}>
+          <TouchableOpacity style={SearchResultCss.bidsButton}>
+            <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
+          </TouchableOpacity>
+          <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
+          <View style={SearchResultCss.daysViewStl}>
+            <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
           </View>
-        ) : (
-          <View>
-            <Image
-              source={BANNERS?.imageNotFound} // Set your default image path
-              style={{width: '100%', height: 200, resizeMode: 'cover'}}
-            />
+          <View style={SearchResultCss.daysViewStl}>
+            <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
           </View>
-        )}
-        <View style={SearchResultCss.apartmentmainView}>
-          <View>
-            <Text
-              style={[
-                SearchResultCss.propertyHeading,
-                {fontFamily: FONTFAMILY.K_Regular},
-              ]}>
-              {item?.property_type || ''}
-            </Text>
-            <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
-              {`$ ${item?.rental_amount || '0'}`}
-            </Text>
+          <View style={SearchResultCss.daysViewStl}>
+            <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
           </View>
-          <View style={SearchResultCss.shareIcon}>
-            <TouchableOpacity>
-              <Entypo
-                color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                name="share"
-                size={25}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                toggleLike(item.property_id);
-              }}>
-              <AntDesign
-                color={
-                  likedItems[item.property_id]
-                    ? _COLORS.Kodie_GreenColor
-                    : _COLORS.Kodie_ExtraminLiteGrayColor
+        </View> */}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ViewRentalDetails', {
+              propertyId: item?.property_id,
+              rentalAmount: item?.rental_amount,
+              searchRentalData: item,
+            });
+          }}>
+          {setKeyFeature(item?.key_features)}
+          {item?.image_path && item?.image_path.length != 0 ? (
+            <View style={{borderWidth: 1}}>
+              <SliderBox
+                images={item?.image_path}
+                sliderBoxHeight={200}
+                onCurrentImagePressed={index =>
+                  console.warn(`image ${index} pressed`)
                 }
-                name={likedItems[item.property_id] ? 'heart' : 'hearto'}
-                size={25}
-                style={{marginHorizontal: 20}}
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                // autoplay={false}
+                circleLoop
+                resizeMethod={'resize'}
+                resizeMode={'cover'}
+                dotStyle={SearchResultCss.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: 'cover',
+                }}
               />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.open();
-                setPropertyId(item?.property_id);
-                setRentalAmount(item?.rental_amount);
-                setBidId(item?.bid_id);
-                setPropertyDetailsItem(item);
-              }}>
-              <Entypo
-                color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                name="dots-three-horizontal"
-                size={25}
+            </View>
+          ) : (
+            <View>
+              <Image
+                source={BANNERS?.imageNotFound} // Set your default image path
+                style={{width: '100%', height: 200, resizeMode: 'cover'}}
               />
-            </TouchableOpacity>
+            </View>
+          )}
+          <View style={SearchResultCss.apartmentmainView}>
+            <View>
+              <Text
+                style={[
+                  SearchResultCss.propertyHeading,
+                  {fontFamily: FONTFAMILY.K_Regular},
+                ]}>
+                {item?.property_type || ''}
+              </Text>
+              <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
+                {`$ ${item?.rental_amount || '0'}`}
+              </Text>
+            </View>
+            <View style={SearchResultCss.shareIcon}>
+              <TouchableOpacity>
+                <Entypo
+                  color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                  name="share"
+                  size={25}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  toggleLike(item.property_id);
+                }}>
+                <AntDesign
+                  color={
+                    likedItems[item.property_id]
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_ExtraminLiteGrayColor
+                  }
+                  name={likedItems[item.property_id] ? 'heart' : 'hearto'}
+                  size={25}
+                  style={{marginHorizontal: 20}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                  setPropertyId(item?.property_id);
+                  setRentalAmount(item?.rental_amount);
+                  setBidId(item?.bid_id);
+                  setPropertyDetailsItem(item);
+                }}>
+                <Entypo
+                  color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                  name="dots-three-horizontal"
+                  size={25}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View style={SearchResultCss.locationView}>
-          <Entypo
-            color={_COLORS.Kodie_GreenColor}
-            name="location-pin"
-            size={20}
+          <View style={SearchResultCss.locationView}>
+            <Entypo
+              color={_COLORS.Kodie_GreenColor}
+              name="location-pin"
+              size={20}
+            />
+            <Text
+              style={SearchResultCss.location}
+              numberOfLines={2}
+              ellipsizeMode="tail">
+              {item?.location || ''}
+            </Text>
+          </View>
+          <View style={SearchResultCss.availableBtn}>
+            <Text style={SearchResultCss.availabletext}>
+              {'AVAILABLE: 1 OCT'}
+            </Text>
+          </View>
+
+          <View style={SearchResultCss.bedCountView}>
+            <View style={SearchResultCss.locationView}>
+              <Ionicons
+                color={_COLORS.Kodie_GreenColor}
+                name="bed-outline"
+                size={20}
+                style={SearchResultCss.bedIconView}
+              />
+              <Text style={SearchResultCss.bedcont}>
+                {
+                  keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
+                    ?.Bedrooms
+                }
+              </Text>
+            </View>
+            <View style={SearchResultCss.locationView}>
+              <MaterialCommunityIcons
+                color={_COLORS.Kodie_GreenColor}
+                name="shower-head"
+                size={20}
+                style={SearchResultCss.bedIconView}
+              />
+              <Text style={SearchResultCss.bedcont}>
+                {
+                  keyFeatures.find(obj =>
+                    obj.hasOwnProperty('Parking Space'),
+                  )?.['Parking Space']
+                }
+              </Text>
+            </View>
+            <View style={SearchResultCss.locationView}>
+              <Ionicons
+                color={_COLORS.Kodie_GreenColor}
+                name="car"
+                size={20}
+                style={SearchResultCss.bedIconView}
+              />
+              <Text style={SearchResultCss.bedcont}>
+                {
+                  keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
+                    ?.Bathrooms
+                }
+              </Text>
+            </View>
+            <View style={SearchResultCss.locationView}>
+              <MaterialCommunityIcons
+                color={_COLORS.Kodie_GreenColor}
+                name="floor-plan"
+                size={20}
+                style={SearchResultCss.bedIconView}
+              />
+              <Text style={SearchResultCss.bedcont}>{item?.floor_size}</Text>
+            </View>
+          </View>
+
+          <DividerIcon
+            borderBottomWidth={3}
+            color={_COLORS.Kodie_LiteWhiteColor}
           />
-          <Text
-            style={SearchResultCss.location}
-            numberOfLines={2}
-            ellipsizeMode="tail">
-            {item?.location || ''}
-          </Text>
-        </View>
-        <View style={SearchResultCss.availableBtn}>
-          <Text style={SearchResultCss.availabletext}>
-            {'AVAILABLE: 1 OCT'}
-          </Text>
-        </View>
-
-        <View style={SearchResultCss.bedCountView}>
-          <View style={SearchResultCss.locationView}>
-            <Ionicons
-              color={_COLORS.Kodie_GreenColor}
-              name="bed-outline"
-              size={20}
-              style={SearchResultCss.bedIconView}
-            />
-            <Text style={SearchResultCss.bedcont}>
-              {
-                keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
-                  ?.Bedrooms
-              }
-            </Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <MaterialCommunityIcons
-              color={_COLORS.Kodie_GreenColor}
-              name="shower-head"
-              size={20}
-              style={SearchResultCss.bedIconView}
-            />
-            <Text style={SearchResultCss.bedcont}>
-              {
-                keyFeatures.find(obj => obj.hasOwnProperty('Parking Space'))?.[
-                  'Parking Space'
-                ]
-              }
-            </Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <Ionicons
-              color={_COLORS.Kodie_GreenColor}
-              name="car"
-              size={20}
-              style={SearchResultCss.bedIconView}
-            />
-            <Text style={SearchResultCss.bedcont}>
-              {
-                keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
-                  ?.Bathrooms
-              }
-            </Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <MaterialCommunityIcons
-              color={_COLORS.Kodie_GreenColor}
-              name="floor-plan"
-              size={20}
-              style={SearchResultCss.bedIconView}
-            />
-            <Text style={SearchResultCss.bedcont}>{item?.floor_size}</Text>
-          </View>
-        </View>
-
-        <DividerIcon
-          borderBottomWidth={3}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </>
     );
   };
   return (
@@ -286,7 +288,6 @@ export default SearchResult = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Search results'}
       />
-      {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
       <View style={SearchResultCss.propertyRentMainView}>
         <View style={SearchResultCss.LeftTextView}>
           <Text style={SearchResultCss.LeftText}>
@@ -332,22 +333,7 @@ export default SearchResult = props => {
           </TouchableOpacity>
         </View>
       </View>
-      <DividerIcon borderBottomWidth={4} color={_COLORS.Kodie_LiteWhiteColor} />
-      <View style={[SearchResultCss.flat_MainView]}>
-        <TouchableOpacity style={SearchResultCss.bidsButton}>
-          <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
-        </TouchableOpacity>
-        <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
-        <View style={SearchResultCss.daysViewStl}>
-          <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
-        </View>
-        <View style={SearchResultCss.daysViewStl}>
-          <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
-        </View>
-        <View style={SearchResultCss.daysViewStl}>
-          <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
-        </View>
-      </View>
+      <DividerIcon borderBottomWidth={5} color={_COLORS.Kodie_LiteWhiteColor} />
       <View style={{flex: 1}}>
         {searchRentalResponse?.data &&
         searchRentalResponse?.data?.length > 0 ? (

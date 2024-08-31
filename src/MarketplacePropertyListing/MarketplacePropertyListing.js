@@ -19,7 +19,6 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {Config} from '../Config';
 import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import PropertyPopup from '../components/PropertyModal/PropertyPopup';
 import PropertyModal from '../components/PropertyModal/PropertyModal';
 import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';
@@ -38,7 +37,6 @@ const HorizontalData = [
 ];
 const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();
@@ -129,20 +127,16 @@ const MarketplacePropertyListing = props => {
         // );
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
-          // console.log("Vacent Details Data..", response?.data?.data);
           setIsLoading(false);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         if (error?.response?.status === 400) {
           setPropertyListingData([]);
-          // console.log("Vacent Details Data..", response?.data?.data);
           setIsLoading(false);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
         console.error('API failed PropertyListing', error);
@@ -215,9 +209,6 @@ const MarketplacePropertyListing = props => {
                     MarketplacePropertyListingStyle.imageStyle,
                     {justifyContent: 'center'},
                   ]}>
-                  {/* <Text style={MarketplacePropertyListingStyle.Img_found}>
-                  {'Image not found'}
-                </Text> */}
                   <Ionicons
                     name="images-outline"
                     size={60}
@@ -334,7 +325,6 @@ const MarketplacePropertyListing = props => {
           </View>
         )}
         <DividerIcon />
-        {/* three dot click popup menu */}
       </View>
     );
   };
