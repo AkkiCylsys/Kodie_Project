@@ -605,7 +605,7 @@ export default Login = props => {
             {emailError ? (
               <Text style={LoginStyles.error_text}>{emailError}</Text>
             ) : null}
-            <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
+            <View style={[LoginStyles.inputContainer,]}>
               <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
               <View
                 style={[
@@ -649,7 +649,7 @@ export default Login = props => {
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
             ) : null}
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' ,marginTop:20}}>
               <TouchableOpacity
                 onPress={() => {
                   openSheetWithHeight(550)
