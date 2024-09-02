@@ -9,7 +9,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import PropertyPopup from './PropertyPopup';
 import {useNavigation} from '@react-navigation/native';
-import AddBiddingDetails from '../Molecules/AddBiddingDetails/AddBiddingDetails';
 import {useState} from 'react';
 // Define data for FlatList
 const data = [
@@ -66,31 +65,11 @@ const data = [
     ),
   },
 ];
-
-const data1 = [
-  {
-    id: '6',
-    Data: 'Confirm delete property',
-    Icon: (
-      <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
-    ),
-  },
-  {
-    id: '7',
-    Data: 'Archive instead',
-    Icon: (
-      <Ionicons
-        name="file-tray-full-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
-
 const PropertyModal = props => {
   const propertyId = props?.propertyId;
-  const [isSaveClick, setIsSaveClick] = useState("");
+  const [isSaveClick, setIsSaveClick] = useState(
+    isSaveClick == true ? 400 : 650,
+  );
   const refRBSheet = useRef();
   const navigation = useNavigation();
   const handleCloseModal = () => {
@@ -103,6 +82,7 @@ const PropertyModal = props => {
     console.log('saveClick...', saveClick);
     setIsSaveClick(saveClick);
   };
+
   const BottomData = ({item}) => {
     return (
       <TouchableOpacity
@@ -117,7 +97,6 @@ const PropertyModal = props => {
           }
           if (item.id === '2') {
             refRBSheet.current.open();
-            // Alert.alert('Alert!', "Coming soon");
           }
           if (item.id === '3') {
             navigation.navigate('PropertyReview', {
@@ -132,8 +111,25 @@ const PropertyModal = props => {
             handleCloseModal();
           }
           if (item.id == '5') {
-            deleteMarketplace();
-            handleCloseModal();
+            Alert.alert(
+              'Delete Property',
+              'Are you sure you want to delete this property?',
+              [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'OK',
+                  onPress: () => {
+                    deleteMarketplace(); 
+                    handleCloseModal();
+                  },
+                },
+              ],
+              { cancelable: true }
+            );
           }
         }}>
         <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
@@ -153,7 +149,6 @@ const PropertyModal = props => {
         onPress={handleCloseModal}
       />
       <FlatList
-        // data={props?.isDeletePropertyClicked ? data1 : data}
         data={data}
         scrollEnabled
         showsVerticalScrollIndicator={false}
@@ -164,7 +159,7 @@ const PropertyModal = props => {
       {/* RBSheet for additional actions */}
       <RBSheet
         ref={refRBSheet}
-        height={isSaveClick == true ? 450 : 650}
+        height={isSaveClick == true ? 400 : 650}
         closeOnDragDown={true}
         customStyles={{
           wrapper: {

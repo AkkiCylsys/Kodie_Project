@@ -10,9 +10,8 @@ export const SignUpStyles = StyleSheet.create({
     marginTop: 50,
   },
   logo: {
-    width: 220,
-    height: 180,
-    resizeMode: "contain",
+    width: 300,
+    height: 260,
   },
   title: {
     fontSize: 24,
@@ -111,7 +110,8 @@ export const SignUpStyles = StyleSheet.create({
   },
   already_account_login: {
     flex: 1,
-    alignSelf: "center",
+    alignSelf: "flex-start",
+    marginTop:20
   },
   terms_Condition: { color: _COLORS.Kodie_GreenColor },
   error_text: { color: "red", marginLeft: 10 },

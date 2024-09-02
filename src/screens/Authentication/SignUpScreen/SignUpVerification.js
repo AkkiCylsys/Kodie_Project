@@ -75,10 +75,12 @@ export default SignUpVerification = props => {
         }
       })
       .catch(error => {
-        if (error.message.includes('404')) {
-          Alert.alert("Warning!", 'Incorrect OTP. Please try again.');
-        } else if (error.message.includes('422')) {
-          Alert.alert("Warning!", 'Time up. Please try again.');
+        if (error?.response && error?.response?.status === 404) {
+          Alert.alert("Warning!",'Incorrect OTP. Please try again!');
+          setValue('');
+        } else if (error?.response && error?.response?.status === 422) {
+          Alert.alert("Warning!",'Time up. Please try again!');
+          setValue('');
         } else {
           Alert.alert("Error!", error.message);
         }
@@ -104,9 +106,9 @@ export default SignUpVerification = props => {
     if (value.trim() === '') {
       setValueError('OTP is required!');
     } else if (value.trim().length < 6) {
-      setValueError('incomplete OTP. Please enter a valid OTP.');
+      setValueError('Incomplete OTP. Please enter a valid OTP!');
     } else if (!regex.test(value.trim())) {
-      setValueError('Invalid OTP. Please enter only digits.');
+      setValueError('Invalid OTP. Please enter only digits!');
     } else {
       handle_Signup_verification();
     }
