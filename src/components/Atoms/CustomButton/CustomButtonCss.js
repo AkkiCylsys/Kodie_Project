@@ -18,9 +18,9 @@ export const CustomButtonstyles = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   leftIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 4,
+    width: 28,
+    height: 28,
+    marginRight: 10,
     alignSelf: "center",
   },
 });

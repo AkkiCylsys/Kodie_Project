@@ -32,6 +32,7 @@ import {
   LABEL_STYLES,
   IMAGES,
   _COLORS,
+  FONTFAMILY,
 } from './../../../Themes/index';
 import { useFocusEffect} from '@react-navigation/native';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
@@ -253,7 +254,7 @@ export default Login = props => {
     if (newpassword.trim() === '') {
       setNewPasswordError('Please enter a new password!');
     } else if (confirmPassword.trim() === '') {
-      setConfirmPasswordError('Please enter a confirmation password!');
+      setConfirmPasswordError('Please enter the confirmation password!');
     } else if (newpassword !== confirmPassword) {
       setConfirmPasswordError('Password do not match!');
     } else {
@@ -483,11 +484,13 @@ export default Login = props => {
       })
       .catch(error => {
         if (error?.response && error?.response?.status === 404) {
-          alert('Incorrect OTP. Please try again.');
+          // alert('Incorrect OTP. Please try again.');
+          setVerificationcodeError('The verification code is incorrect!')
+
         } else if (error?.response && error?.response?.status === 401) {
           alert(error?.response?.message || 'User Unauthorized');
         } else {
-          alert('An error occurred. Please try again later.');
+          alert('An error occurred. Please try again later!');
         }
         console.error('signup Verification error:', error);
         setIsLoading(false);
@@ -536,13 +539,14 @@ export default Login = props => {
         password: encryptedPassword,
       });
       if (response?.data?.success === true) {
-        openSheetWithHeight(400)
+        
         if (
           response?.data?.message ==
           'Try again with a password you haven’t used before'
         ) {
           alert(response?.data?.message);
         } else {
+          openSheetWithHeight(400)
           alert(response?.data?.message);
           setIsClick(isClick + 1);
         }
@@ -577,7 +581,7 @@ export default Login = props => {
         <View style={LoginStyles.formContainer}>
           <Text style={LoginStyles.title}>Login</Text>
           <View style={LoginStyles.card}>
-            <View style={LoginStyles.inputContainer}>
+            <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
               <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
               <TextInput
                 style={[
@@ -601,7 +605,7 @@ export default Login = props => {
             {emailError ? (
               <Text style={LoginStyles.error_text}>{emailError}</Text>
             ) : null}
-            <View style={LoginStyles.inputContainer}>
+            <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
               <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
               <View
                 style={[
@@ -690,6 +694,7 @@ export default Login = props => {
               isLeftImage={true}
               _ButtonText={'Login with Google'}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              marginBottom={25}
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
@@ -701,8 +706,10 @@ export default Login = props => {
               }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
-              _ButtonText={'Login with Facebook'}
+              _ButtonText={'Connect with Facebook'}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              marginBottom={25}
+
             />
             <BottomTextsButton
               _LeftButtonText={"Don't have an account yet? "}
@@ -779,6 +786,7 @@ export default Login = props => {
                   placeholderTextColor="#999"
                   maxLength={30}
                   autoCapitalize={'none'}
+                  editable={isLoading?false:true}
                 />
               </View>
               {resetEmailError ? (
@@ -790,7 +798,7 @@ export default Login = props => {
           {/* ------ Reset passowrd 1 section start code  here ........... */}
           {isClick === 1 && (
             <>
-              <View style={LoginStyles.inputContainer}>
+              <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
                   style={[
@@ -805,7 +813,7 @@ export default Login = props => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1}]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -830,7 +838,7 @@ export default Login = props => {
                 </View>
                 <View style={LoginStyles.codeMargin} />
 
-                <View style={LoginStyles.getButtonView}>
+                <TouchableOpacity onPress={send_verification_code} style={LoginStyles.getButtonView}>
                   {isTimeron ? (
                     <CountdownCircleTimer
                       isPlaying
@@ -842,7 +850,7 @@ export default Login = props => {
                         setIsTimeron(false);
                       }}>
                       {({ remainingTime }) => (
-                        <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
+                        <Text style={{ color: _COLORS.Kodie_WhiteColor,fontSize:14,fontFamily:FONTFAMILY.K_Bold}}>
                           {remainingTime} S
                         </Text>
                       )}
@@ -852,7 +860,7 @@ export default Login = props => {
                       <Text style={LoginStyles.getButton}>{'Resend'}</Text>
                     </TouchableOpacity>
                   )}
-                </View>
+                </TouchableOpacity>
               </View>
 
               {verificationcodeError ? (
@@ -869,7 +877,7 @@ export default Login = props => {
               contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled">
-              <View style={LoginStyles.inputContainer}>
+              <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}>
                   New password
@@ -954,7 +962,7 @@ export default Login = props => {
               <View style={LoginStyles.inputContainer}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.passchange]}>
-                  Password successfully updated
+                  {'Password successfully updated'}
                 </Text>
                 <Image
                   source={IMAGES.CheckIcon}
@@ -998,6 +1006,8 @@ export default Login = props => {
             onPress={handleButtonPress}
             _ButtonText={buttonLabels[isClick]}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            marginBottom={30}
+
           />
         </View>
       </RBSheet>
