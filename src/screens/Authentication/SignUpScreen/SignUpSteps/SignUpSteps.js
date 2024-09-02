@@ -18,6 +18,7 @@ import {
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -180,7 +181,7 @@ const SignUpSteps = props => {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
       setFirstNameError(
-        'First name should contain only alphabetic characters, spaces, or hyphens.',
+        'First name should contain only alphabetic characters, spaces, or hyphens!',
       );
     } else {
       setFirstNameError('');
@@ -192,7 +193,7 @@ const SignUpSteps = props => {
       setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
       setLastNameError(
-        'Last name should contain only alphabetic characters, spaces, or hyphens.',
+        'Last name should contain only alphabetic characters, spaces, or hyphens!',
       );
     } else {
       setLastNameError('');
@@ -207,7 +208,7 @@ const SignUpSteps = props => {
     if (text === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!validMobileNumber(text)) {
-      setMobileNumberError('Invalid phone number format.');
+      setMobileNumberError('Invalid phone number format!');
     } else {
       setMobileNumberError('');
     }
@@ -224,24 +225,24 @@ const SignUpSteps = props => {
     setMobileNumber(remainingNumber);
     console.log(country_Code_Get, 'country_Code_Get');
   } else {
-    console.error('Invalid phone number format');
+    console.error('Invalid phone number format!');
   }
 
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
-      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens.');
+      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens!');
     }
      else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
-      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens.');
+      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens!');
     }
      else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
-      setMobileNumberError('Invalid phone number format.');
+      setMobileNumberError('Invalid phone number format!');
     } else {
       props.navigation.navigate('AboutYou', {
         firstName: firstName,
@@ -286,7 +287,7 @@ const SignUpSteps = props => {
         : position === 1
         ? 'About you'
         : position === 2
-        ? 'First Property'
+        ? 'First property'
         : 'circle';
 
     return (
@@ -355,10 +356,10 @@ const SignUpSteps = props => {
             )}
 
             <View style={AccountStyle.editlogoview}>
-              <FontAwesome
-                name="edit"
-                color={_COLORS.Kodie_GreenColor}
-                size={15}
+              <Fontisto
+                name="camera"
+                color={_COLORS.Kodie_WhiteColor}
+                size={14}
                 style={{alignSelf: 'center'}}
               />
             </View>
@@ -405,7 +406,7 @@ const SignUpSteps = props => {
           </View>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
-              Phone number* (mobile preferred)
+              Phone number* <Text style={{fontSize:14}}>(mobile preferred)</Text>
             </Text>
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput
@@ -414,6 +415,8 @@ const SignUpSteps = props => {
                 defaultCode="AU"
                 layout="second"
                 Country={false}
+                disabled
+                // disableArrowIcon={true}
                 textInputProps={{
                   maxLength: 9,
                   keyboardType: 'number-pad',
@@ -424,7 +427,7 @@ const SignUpSteps = props => {
                   if (text === '') {
                     setMobileNumberError('Phone number is required!');
                   } else if (checkValid == false) {
-                    setMobileNumberError('Invalid phone number format.');
+                    setMobileNumberError('Invalid phone number format!');
                   } else {
                     setMobileNumberError('');
                   }
@@ -449,6 +452,7 @@ const SignUpSteps = props => {
                     ? _COLORS.Kodie_lightRedColor
                     : _COLORS.Kodie_GrayColor,
                   borderRadius: Platform.OS == 'ios' ? 6 : 10,
+                  backgroundColor:_COLORS.Kodie_LightGrayColor
                 }}
               />
             </View>
@@ -464,7 +468,7 @@ const SignUpSteps = props => {
               value={bio}
               onChangeText={setBio}
               placeholder="Tell us a bit more about yourself"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               multiline
               numberOfLines={5}
               maxLength={1000}
@@ -472,7 +476,7 @@ const SignUpSteps = props => {
             />
           </View>
 
-          <View style={[AccountStyle.inputContainer, {marginTop: 15}]}>
+          <View style={[AccountStyle.inputContainer, {marginTop: 25}]}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
             </Text>
@@ -485,7 +489,7 @@ const SignUpSteps = props => {
                   onFocus={() => {
                     setIsSearch(true);
                   }}
-                  placeholder="Enter new location"
+                  placeholder="Search new location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
               </View>
@@ -620,7 +624,7 @@ const SignUpSteps = props => {
                 style={{
                   marginHorizontal: 16,
                   backgroundColor: _COLORS.Kodie_WhiteColor,
-                  marginBottom: 10,
+                  // marginBottom: 10,
                 }}>
                 <View
                   style={{
@@ -630,6 +634,8 @@ const SignUpSteps = props => {
                   <CustomSingleButton
                     disabled={isLoading ? true : false}
                     _ButtonText={'Next'}
+                    marginBottom={25}
+                    marginTop={1}
                     Text_Color={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
                       handleNextBtn();

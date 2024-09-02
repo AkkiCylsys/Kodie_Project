@@ -17,6 +17,7 @@ export const SignUpStepStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginVertical: 12,
+    justifyContent:'center'
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -26,6 +27,7 @@ export const SignUpStepStyle = StyleSheet.create({
   },
   backIcon: {
     borderWidth: 1,
+    alignSelf:'center',
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },

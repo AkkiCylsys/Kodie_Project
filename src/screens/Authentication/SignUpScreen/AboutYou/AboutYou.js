@@ -705,7 +705,7 @@ export default AboutYou = props => {
         : position === 1
         ? 'About you'
         : position === 2
-        ? 'First Property'
+        ? 'First property'
         : 'circle';
 
     return (
