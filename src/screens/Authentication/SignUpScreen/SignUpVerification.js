@@ -1,5 +1,5 @@
 //ScreenNo:8
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,27 +7,32 @@ import {
   SafeAreaView,
   ScrollView,
   Alert,
+  Keyboard,
+  KeyboardAvoidingView
 } from 'react-native';
-import { SignUpVerificationStyle } from './SignUpVerificationStyle';
+import {SignUpVerificationStyle} from './SignUpVerificationStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../services/CommonServices';
-import { LABEL_STYLES, _COLORS } from '../../../Themes';
+import {_goBack} from '../../../services/CommonServices';
+import {LABEL_STYLES, _COLORS} from '../../../Themes';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import { SignupVerification, signupSendCode } from '../../../services/Authentication/Authentication';
+import {
+  SignupVerification,
+  signupSendCode,
+} from '../../../services/Authentication/Authentication';
 const CELL_COUNT = 6;
 export default SignUpVerification = props => {
   const [value, setValue] = useState('');
   const [valueError, setValueError] = useState('');
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -36,6 +41,7 @@ export default SignUpVerification = props => {
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
+  let password = props?.route?.params?.password;
   const send_verification_code = async () => {
     setIsLoading(true);
     try {
@@ -45,6 +51,7 @@ export default SignUpVerification = props => {
       const response = await signupSendCode(SignUpData);
       alert(response?.message);
       setIsTimerActive(true);
+      setValue('');
     } catch (error) {
       console.error('Signup error:', error);
     } finally {
@@ -67,7 +74,7 @@ export default SignUpVerification = props => {
           props.navigation.navigate('SignUpSteps', {
             email: email,
             user_key: user_key,
-            password:password
+            password: password,
           });
         } else {
           setValueError(responseData?.message);
@@ -76,13 +83,14 @@ export default SignUpVerification = props => {
       })
       .catch(error => {
         if (error?.response && error?.response?.status === 404) {
-          Alert.alert("Warning!",'Incorrect OTP. Please try again!');
+          setValueError('Incorrect OTP. Please try again!');
           setValue('');
         } else if (error?.response && error?.response?.status === 422) {
-          Alert.alert("Warning!",'Time up. Please try again!');
+          Alert.alert('Warning!', 'Time up. Please try again!');
           setValue('');
         } else {
-          Alert.alert("Error!", error.message);
+          console.log('error in verify...', error);
+          setValueError('Incorrect OTP. Please try again!');
         }
         setValue('');
         console.error('signup Verification error:', error);
@@ -119,112 +127,115 @@ export default SignUpVerification = props => {
 
   return (
     <SafeAreaView style={SignUpVerificationStyle.mainContainer}>
-      <TopHeader
-        MiddleText={'Verify your email'}
-        Text_Color={_COLORS.Kodie_BlackColor}
-        onPressLeftButton={() => _goBack(props)}
-      />
-      <ScrollView
-        style={SignUpVerificationStyle.container}
-        showsVerticalScrollIndicator={false}>
-        <Text style={SignUpVerificationStyle.checkEmail_Text}>
-          {'Check your email'}
-        </Text>
-        <Text style={SignUpVerificationStyle.verify_Text}>
-          {
-            'Please confirm your account by entering the 6-digit verification  code sent to your email.'
-          }
-        </Text>
+      <KeyboardAvoidingView style={{flex:1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TopHeader
+          MiddleText={'Verify your email'}
+          Text_Color={_COLORS.Kodie_BlackColor}
+          onPressLeftButton={() => _goBack(props)}
+        />
+        <ScrollView
+          style={SignUpVerificationStyle.container}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled">
+          <Text style={SignUpVerificationStyle.checkEmail_Text}>
+            {'Check your email'}
+          </Text>
+          <Text style={SignUpVerificationStyle.verify_Text}>
+            {
+              'Please confirm your account by entering the 6-digit verification  code sent to your email.'
+            }
+          </Text>
 
-        <View style={SignUpVerificationStyle.otp_view}>
-          <CodeField
-            ref={ref}
-            {...prop}
-            value={value}
-            onChangeText={setValue}
-            onBlur={() => handleverification_code(value)}
-            onPaste={clipboard => handlePaste(clipboard)}
-            cellCount={CELL_COUNT}
-            rootStyle={SignUpVerificationStyle.CodeField}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <Text
-                key={index}
-                style={[
-                  SignUpVerificationStyle.cell,
-                  isFocused && SignUpVerificationStyle.focusCell,
-                ]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
-        </View>
-        {valueError ? (
-          <Text style={SignUpVerificationStyle.error_text}>{valueError}</Text>
-        ) : null}
-        <Text
-          style={[
-            LABEL_STYLES.commonMidtext,
-            SignUpVerificationStyle.textcode,
-          ]}>
-          {'It may take a few minutes to receive your code. '}
-        </Text>
+          <View style={SignUpVerificationStyle.otp_view}>
+            <CodeField
+              ref={ref}
+              {...prop}
+              value={value}
+              onChangeText={setValue}
+              onBlur={() => handleverification_code(value)}
+              onPaste={clipboard => handlePaste(clipboard)}
+              cellCount={CELL_COUNT}
+              rootStyle={SignUpVerificationStyle.CodeField}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={({index, symbol, isFocused}) => (
+                <Text
+                  key={index}
+                  style={[
+                    SignUpVerificationStyle.cell,
+                    isFocused && SignUpVerificationStyle.focusCell,
+                  ]}
+                  onLayout={getCellOnLayoutHandler(index)}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              )}
+            />
+          </View>
+          {valueError ? (
+            <Text style={SignUpVerificationStyle.error_text}>{valueError}</Text>
+          ) : null}
+          <Text
+            style={[
+              LABEL_STYLES.commonMidtext,
+              SignUpVerificationStyle.textcode,
+            ]}>
+            {'It may take a few minutes to receive your code. '}
+          </Text>
 
-        <View style={SignUpVerificationStyle.getBindButtonView}>
-          <View style={SignUpVerificationStyle.getButtonView}>
-            {isTimerActive ? (
-              <CountdownCircleTimer
-                isPlaying
-                trailColor={_COLORS.Kodie_lightGreenColor}
-                duration={50}
-                size={45}
-                colors={_COLORS.Kodie_lightGreenColor}
-                onComplete={() => {
-                  setIsTimerActive(false);
-                }}>
-                {({ remainingTime }) => (
-                  <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
-                    {remainingTime} S
-                  </Text>
-                )}
-              </CountdownCircleTimer>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  send_verification_code();
-                }}>
+          <View style={SignUpVerificationStyle.getBindButtonView}>
+            <TouchableOpacity
+              style={SignUpVerificationStyle.getButtonView}
+              onPress={() => {
+                send_verification_code();
+              }}>
+              {isTimerActive ? (
+                <CountdownCircleTimer
+                  isPlaying
+                  trailColor={_COLORS.Kodie_lightGreenColor}
+                  duration={50}
+                  size={45}
+                  colors={_COLORS.Kodie_lightGreenColor}
+                  onComplete={() => {
+                    setIsTimerActive(false);
+                  }}>
+                  {({remainingTime}) => (
+                    <Text style={{color: _COLORS.Kodie_WhiteColor}}>
+                      {remainingTime}s
+                    </Text>
+                  )}
+                </CountdownCircleTimer>
+              ) : (
                 <Text style={SignUpVerificationStyle.getButton}>
                   {'Resend'}
                 </Text>
-              </TouchableOpacity>
-            )}
+              )}
+            </TouchableOpacity>
           </View>
-        </View>
 
-        <View style={SignUpVerificationStyle.customBtn}>
-          <CustomSingleButton
-            _ButtonText={'Verify email'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={handleSubmit}
-          />
-        </View>
-        <TouchableOpacity
-          style={SignUpVerificationStyle.goBack_View}
-          onPress={() => {
-            props.navigation.navigate('SignUp');
-          }}>
-          <View style={SignUpVerificationStyle.backIcon}>
-            <Ionicons
-              name="chevron-back"
-              size={22}
-              color={_COLORS.Kodie_MediumGrayColor}
+          <View style={SignUpVerificationStyle.customBtn}>
+            <CustomSingleButton
+              _ButtonText={'Verify email'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              onPress={handleSubmit}
             />
           </View>
-          <Text style={SignUpVerificationStyle.goBack_Text}>{'Go back'}</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            style={SignUpVerificationStyle.goBack_View}
+            onPress={() => {
+              props.navigation.navigate('SignUp');
+            }}>
+            <View style={SignUpVerificationStyle.backIcon}>
+              <Ionicons
+                name="chevron-back"
+                size={22}
+                color={_COLORS.Kodie_MediumGrayColor}
+              />
+            </View>
+            <Text style={SignUpVerificationStyle.goBack_Text}>{'Go back'}</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
