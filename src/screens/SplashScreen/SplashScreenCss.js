@@ -3,7 +3,6 @@ import { StyleSheet, Dimensions, Platform, PixelRatio } from "react-native";
 const { width, height } = Dimensions.get("window");
 const scaleFactor = PixelRatio.get();
 
-// Use scaleFactor to adjust styles dynamically
 const adjustedWidth = width / scaleFactor;
 const adjustedHeight = height / scaleFactor;
 import { _COLORS, FONTFAMILY } from "../../Themes";
@@ -13,11 +12,11 @@ export const SplashStyles = StyleSheet.create({
   },
   mainIcon: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
   },
   mainSmallIcon: {
-    height: Platform.OS == "android" ? 50 : "20%",
-    marginTop: 250,
+    height: Platform.OS == "android" ? 44 : "20%",
+    // marginTop: 250,
     width: "90%",
     resizeMode: "center",
   },
@@ -26,22 +25,27 @@ export const SplashStyles = StyleSheet.create({
     textAlign: "center",
     color: _COLORS.Kodie_WhiteColor,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom:5,
+    letterSpacing:0.4
   },
   subtext: {
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
     color: _COLORS.Kodie_WhiteColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   logoContainer: {
     flex: 1,
-    justifyContent: "center",
+    marginTop:'5%',
+    // justifyContent: 'center',
     alignItems: "center",
+
   },
   bottomTextContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: 20,
+    flex: 0.8,
+    alignItems:'center',
+    // justifyContent: "flex-end",
+    // marginBottom: 20,
 
     paddingHorizontal: 15,
   },
