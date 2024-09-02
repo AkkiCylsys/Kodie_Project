@@ -226,10 +226,10 @@ const SignUp = (props) => {
         });
       } else if (response?.code === 1) {
         Alert.alert('Success!', response?.message);
-        setEmail('');
-        setPassword('');
-        setTerm(false);
-        setPrivacy(false);
+        // setEmail('');
+        // setPassword('');
+        // setTerm(false);
+        // setPrivacy(false);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,

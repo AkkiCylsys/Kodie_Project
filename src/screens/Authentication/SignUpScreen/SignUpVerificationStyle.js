@@ -15,7 +15,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
-    marginTop: 10,
+    marginTop: 29,
   },
   verify_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -27,7 +27,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
     marginTop: 24,
   },
   customBtn: {
-    marginTop: 50,
+    marginTop: 30,
   },
   goBack_View: {
     flexDirection: "row",
@@ -39,11 +39,14 @@ export const SignUpVerificationStyle = StyleSheet.create({
     fontSize: 16,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 5,
+    alignSelf:'center'
   },
   backIcon: {
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
+    alignSelf:"center",
+    marginTop:2
   },
   codeFieldRoot: {
     alignSelf: "center",
@@ -66,7 +69,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
     color: _COLORS.Kodie_GrayColor,
     alignSelf: "center",
   },
-  otp_view: { marginTop: 24 },
+  otp_view: { marginTop:12 },
   error_text: { color: "red", marginLeft: 10,marginTop:5 },
   getBindButtonView:{
     flexDirection:'row',
