@@ -960,6 +960,7 @@ console.log(propertyView);
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Select the type of notice you want to create'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
                 style={AddNewNoticeStyle.dropdown}
@@ -989,7 +990,9 @@ console.log(propertyView);
               </Text>
             ) : null}
             <View style={AddNewNoticeStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{'Notice title'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Notice title'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <TextInput
                 style={[AddNewNoticeStyle.input]}
                 value={noticeTittle}
@@ -1070,6 +1073,8 @@ console.log(propertyView);
             <View style={AddNewNoticeStyle.datetimeview}>
               <View style={AddNewNoticeStyle.dateview}>
                 <CalendarModal
+                    current={selectedDate}
+
                   // SelectDate={selectedDate ? selectedDate : "Select Date"}
                   SelectDate={
                     selectedDate
@@ -1129,6 +1134,8 @@ console.log(propertyView);
               <View style={AddNewNoticeStyle.dateview}>
                 <View style={{flex: 1}}>
                   <CalendarModal
+                    current={selectedToDate}
+
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedToDate

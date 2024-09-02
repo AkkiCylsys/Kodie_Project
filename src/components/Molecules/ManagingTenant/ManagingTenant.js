@@ -6,23 +6,24 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {useNavigation} from '@react-navigation/native';
 
 const data = [
   {
     id: '1',
-    Data: 'View / edit tenant details',
+    Data: 'Rent history',
     Icon: (
-      <MaterialIcons
-        name="preview"
-        size={25}
+      <FontAwesome5
+        name="house-user"
+        size={24}
         color={_COLORS.Kodie_GreenColor}
       />
     ),
   },
   {
     id: '2',
-    Data: 'Rent history',
+    Data: 'Inspections checklist',
     Icon: (
       <MaterialIcons
         name="history"
@@ -44,17 +45,6 @@ const data = [
   },
   {
     id: '4',
-    Data: 'Notices & reminders',
-    Icon: (
-      <Ionicons
-        name="mail-unread-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '5',
     Data: 'Delete tenant',
     Icon: (
       <MaterialCommunityIcons
@@ -67,9 +57,8 @@ const data = [
 ];
 
 const ManagingTenant = props => {
-  const handleCloseModal = () => {
-    props.onClose();
-  };
+  const {closeModal, property_id} = props;
+  const navigation = useNavigation();
   const BottomData = ({item, index}) => {
     return (
       <>
@@ -77,9 +66,18 @@ const ManagingTenant = props => {
           style={ManagingTenantStyle.container}
           onPress={() => {
             if (item.id === '1') {
-              // navigation.navigate("ViewPropertyDetails");
+              navigation.navigate("Renthistory");
+              closeModal();
             }
             if (item.id === '2') {
+              navigation.navigate('InspectionsChecklist');
+              closeModal();
+            }
+            if (item?.id === '3') {
+              navigation.navigate('TenantDocuments', {
+                property_id: property_id,
+              });
+              closeModal();
             }
           }}>
           <Text style={ManagingTenantStyle.IconView}>
@@ -92,11 +90,6 @@ const ManagingTenant = props => {
   };
   return (
     <View style={ManagingTenantStyle.mainContainer}>
-      <TouchableOpacity
-        style={ManagingTenantStyle.closeicon}
-        onPress={handleCloseModal}>
-        {/* <Icon name={"close"} size={22} color={_COLORS?.Kodie_BlackColor} /> */}
-      </TouchableOpacity>
       <FlatList
         data={data}
         scrollEnabled

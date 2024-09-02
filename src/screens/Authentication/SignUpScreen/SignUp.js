@@ -374,8 +374,8 @@ const SignUp = (props) => {
           </View>
         </View>
       </ScrollView>
-      {isLoading ? <CommonLoader /> : null}
     </KeyboardAvoidingView>
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };

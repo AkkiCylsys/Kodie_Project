@@ -36,7 +36,7 @@ const subscriptionData = [
     rule_desc: 'You get:',
     rule_no_1: 'Easily manage up to 3 properties',
     rule_no_2: 'Single user',
-    rule_no_3: 'Standard financial dashboards(revenues & expenses)',
+    rule_no_3: 'Standard financial dashboards (revenues & expenses)',
     rule_no_4: 'Service & maintenance requests with ease',
     rule_no_5: 'Standard access to contractors',
     rule_no_6: 'Income & expense tracking',
@@ -50,7 +50,7 @@ const subscriptionData = [
     cardHeading: 'Portfolio Pioneer',
     amount: 149,
     duration: 'Month',
-    description: 'The best place to get started',
+    description: 'For the property up-and-comer',
     rule_desc: 'You get:',
     rule_no_1: 'Up to 10 properties',
     rule_no_2: 'Up to 3 users',
@@ -206,8 +206,8 @@ const ManageSubscription = props => {
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
               onPressLeftButton={() =>
-                // props.navigation.navigate("ContractorProfile")
-                alert('Coming soon')
+                props.navigation.navigate("Contactus")
+                // alert('Coming soon')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}
@@ -225,8 +225,8 @@ const ManageSubscription = props => {
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
               onPressLeftButton={() =>
-                // props.navigation.navigate("ContractorProfile")
-                alert('Contact us pressed')
+                props.navigation.navigate("Contactus")
+                // alert('Contact us pressed')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}
@@ -417,7 +417,7 @@ const ManageSubscription = props => {
           )}
           {SubscriptionStatus == 'active' ? null : (
             <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
-              14-days unlimited FREE trial, then only $69 / month
+              14-days unlimited FREE trial. Thereafter, only S69 / month
             </Text>
           )}
           <View style={ManageSubscriptionStyle.RangeSliderView}>

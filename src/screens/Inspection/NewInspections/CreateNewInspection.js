@@ -12,41 +12,38 @@ import {
   ScrollView,
   FlatList,
   SafeAreaView,
-  Button,
+  KeyboardAvoidingView,
+  Alert,
+  Platform,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import { Dropdown } from 'react-native-element-dropdown';
 import { CreateNewInspectionStyle } from './CreateNewInspectionCss';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
-import { LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY } from '../../../Themes';
+import { LABEL_STYLES, _COLORS, FONTFAMILY } from '../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import { _goBack } from '../../../services/CommonServices';
-import CustomDropdown from '../../../components/Molecules/CustomDropdown/CustomDropdown';
 import { Config } from '../../../Config';
 import axios from 'axios';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
-import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
-import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
-import Geocoder from 'react-native-geocoding';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
 import { useNavigation } from '@react-navigation/native';
-import { clockRunning } from 'react-native-reanimated';
+import { AddCustomArea, GetInspectionAreaDetail } from '../../../services/InspectionModuleServices.js/InspectionServices';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const isVisible = useNavigation();
   const [inspectionType, setInspectionType] = useState([]);
   const [Inspection_value, setInspection_value] = useState(0);
@@ -69,70 +66,129 @@ const CreateNewInspection = props => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [tempSelectedValues, setTempSelectedValues] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [showcustomAreaNameError, setShowcustomAreaNameError] = useState('');
+  const [selectedDateError, setSelectedDateError] = useState(false);
+  const [errorInspection, setErrorInspection] = useState(false);
+  const [errorSimiarArea, setErrorSimiarArea] = useState(false);
   const [Inspection_Detail, setInspection_Details] = useState([]);
   const [displaySelectedValues, setDisplaySelectedValues] = useState('');
+  const [selectedButtonStandard, setSelectedButtonStandard] = useState(false);
+  const [selectedButtonStandardId, setSelectedButtonStandardId] = useState(1);
+  const [selectedButtonFutue, setSelectedButtonFutue] = useState(false);
+  const [selectedButtonFutueId, setSelectedButtonFutueId] = useState(1);
+  const [validationMessage, setValidationMessage] = useState('');
 
   const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
+  const [customAreaName, setCustomAreaName] = useState('');
+  const [customeAreavalue, setCustomeAreaValue] = useState([]);
   const TIM_KEY = props?.route?.params?.TIM_KEY;
   const InspectionView = props?.route?.params?.InspectionView;
   const Ins_editMode = props?.route?.params?.Ins_editMode;
   console.log(InspectionView, Ins_editMode, TIM_KEY);
   const Area_key = async () => {
-    const url = Config.BASE_URL;
-    const AreaGetUrl = url + 'get_inspection_area';
-    console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    await axios
-      .get(AreaGetUrl)
-      .then(response => {
-        console.log('area response', response?.data);
-        if (response?.data?.success === true) {
-          setIsLoading(false);
-          console.log('area response....', response?.data?.data);
-          setAreaKey(response?.data?.data[0]);
-          console.log("setAreaKey..", AreaKey)
-        } else {
-          console.error('area response_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('area response error:', error);
-        // alert(error);
-        setIsLoading(false);
-      });
+    const AreaData = {
+      p_TIM_KEY: 0,
+      p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
+    };
+    const response = await GetInspectionAreaDetail(AreaData);
+    setAreaKey(response);
+    console.log('setAreaKey:', response);
+    setIsLoading(false)
   };
+  const handleAddCustomArea = async () => {
+    refRBSheet1.current.close();
+    const data = {
+      custom_area_name: customAreaName,
+      is_standard_check_inspection: selectedButtonStandardId,
+      area_similar: customeAreavalue,
+      area_future_inspection: selectedButtonFutueId,
+      property_id: 0,
+      inspection_id: 0,
+      created_by: loginData?.Login_details?.user_account_id.toString(),
+    };
+    console.log('data', data);
+    const response = await AddCustomArea(data);
+  Alert.alert('Success',response?.message)
+    console.log('handleAddCustomArea',response?.message);
+    Area_key(); // Refresh the area list
+    setCustomeAreaValue([]);
+    setCustomAreaName('')
+  };
+  const handleCustomName = text => {
+    setCustomAreaName(text);
+    if (text.trim() === '') {
+      setShowcustomAreaNameError('Custom area name cannot be empty!');
+    } else {
+      setShowcustomAreaNameError('');
+    }
+  };
+  const SubmitCustomArea =()=>{
+  if (customAreaName.trim() === '') {
+      // Alert.alert('Validation', 'Custom area name cannot be empty.');
+      setShowcustomAreaNameError('Custom area name cannot be empty!')
+    }else if (customeAreavalue ==''){
+      setErrorSimiarArea(true);
+    }else{
+      handleAddCustomArea();
+    }
+  }
+  const Detail_render = ({ item }) => {
+    const isChecked = checkedItems[item?.TAM_AREA_KEY];
+    return (
+      <View style={CreateNewInspectionStyle.DetailsView}>
+        <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
+          <MaterialIcons
+            name={isChecked ? 'check-box' : 'check-box-outline-blank'}
+            size={25}
+            color={
+              isChecked
+                ? _COLORS?.Kodie_GreenColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+          />
+        </TouchableOpacity>
+        <Text style={CreateNewInspectionStyle.details_text}>
+          {item.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
+  
   const toggleCheckBox = itemId => {
-    console.log(itemId, "itemIditemId");
+    console.log(itemId, 'itemIditemId');
     setCheckedItems(prevCheckedItems => {
       const newCheckedItems = {
         ...prevCheckedItems,
         [itemId]: !prevCheckedItems[itemId],
       };
-      console.log(newCheckedItems, "newCheckedItems");
+      console.log(newCheckedItems, 'newCheckedItems');
       return newCheckedItems;
     });
+    setValidationMessage('')
   };
-  
+  const handlePress = () => {
+    refRBSheet.current.open();
+  };
+  const handleRemove = () => {
+    setDisplaySelectedValues('');
+  };
   const getCheckedItemIds = () => {
     return Object.keys(checkedItems)
       .filter(itemId => checkedItems[itemId] && itemId !== '0' && itemId !== '')
       .join(',');
   };
-  
+
   const checkedItemIds = getCheckedItemIds();
-  console.log(checkedItemIds, "checkedItemIds");
-  
-  
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
+    setSelectedDateError(false);
   };
   const getInspectionDetails = async () => {
-    // alert(TIM_KEY)
     setIsLoading(true);
     const url = Config.BASE_URL;
 
@@ -141,7 +197,6 @@ const CreateNewInspection = props => {
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:get_inspection_details', response?.data?.data[0]);
         setInspection_Details(response?.data?.data[0]);
         setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE);
         setSelectedDate(
@@ -151,7 +206,10 @@ const CreateNewInspection = props => {
         );
         setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
-       console.log(response?.data?.data[0]?.cur_TAM_AREA_KEY,"cur_TAM_AREA_KEY")
+        console.log(
+          response?.data?.data[0]?.cur_TAM_AREA_KEY,
+          'cur_TAM_AREA_KEY',
+        );
         setSelectedAddress({
           latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
           longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
@@ -159,9 +217,8 @@ const CreateNewInspection = props => {
           property_id: response?.data?.data[0]?.v_UPD_KEY,
           user_Id: response?.data?.data[0]?.v_CREATED_BY,
         });
-        setSelectedAddressDetail(response?.data?.data[0]?.v_UPD_KEY
-        );
-        setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE)
+        setSelectedAddressDetail(response?.data?.data[0]?.v_UPD_KEY);
+        setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE);
         setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION);
         setSelectedButtonFurnishedId(
           response?.data?.data[0]?.v_TIM_IS_FURNISHED,
@@ -169,11 +226,9 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails CIP:', error);
       });
   };
-  // alert(JSON.stringify(selectedAddress))
   useEffect(() => {
     if (isVisible) {
       fetchData();
@@ -204,19 +259,16 @@ const CreateNewInspection = props => {
           setSelectedAddreeData(response?.data?.property_details);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Selected_Address error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
 
   useEffect(() => {
-    const allSelectedValues = [...displaySelectedValues, ...selectedValues];
     const selectedValuesString = selectedValues
       .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
       .join(', ');
@@ -280,11 +332,39 @@ const CreateNewInspection = props => {
       </View>
     );
   };
+  const Customarea_render = item => {
+    return (
+      <View
+        style={[
+          CreateNewInspectionStyle.itemView,
+          {
+            backgroundColor:
+              item?.TAM_AREA_KEY === customeAreavalue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item?.TAM_AREA_KEY === customeAreavalue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={CreateNewInspectionStyle.textItem}>
+          {item?.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
   const Selected_Time_render = item => {
-    const isSelected =
-      item?.longitude === selectedAddress.longitude &&
-      item?.latitude === selectedAddress.latitude;
-
+    const isSelected = selectedAddress?.property_id === item.property_id;
     return (
       <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
@@ -314,33 +394,11 @@ const CreateNewInspection = props => {
       </View>
     );
   };
-  const Detail_render = ({ item, index }) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
-    return (
-      <View style={CreateNewInspectionStyle.DetailsView}>
-        <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
-          <MaterialIcons
-            name={isChecked ? 'check-box' : 'check-box-outline-blank'}
-            size={25}
-            color={
-              isChecked
-                ? _COLORS?.Kodie_GreenColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-          />
-        </TouchableOpacity>
-        <Text style={CreateNewInspectionStyle.details_text}>
-          {item.TAM_AREA_NAME}
-        </Text>
-      </View>
-    );
-  };
   const SubmitInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        UPD_KEY: selectedAddress?.property_id,
+        UPD_KEY: selectedAddressDetail,
         TIM_INSPECTION_TYPE: Inspection_value,
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
@@ -361,7 +419,7 @@ const CreateNewInspection = props => {
       console.log('scheduule inspection....', res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
+        console.log('TIM_KEY', res?.data?.data);
         alert(res?.data?.message);
         props?.navigation?.navigate('PropertyInspection', {
           TIM_KEY: res?.data?.data?.TIM_KEY,
@@ -372,7 +430,7 @@ const CreateNewInspection = props => {
         setInspection_value();
         setCurrentTime('');
         setSelectedDate('');
-        setSelectedAddressDetail([]);
+        setSelectedAddressDetail('');
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
@@ -394,12 +452,11 @@ const CreateNewInspection = props => {
     }
   };
   const UpdateInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
         TIM_KEY: TIM_KEY,
-        UPD_KEY: selectedAddress?.property_id,
+        UPD_KEY: selectedAddressDetail,
         TIM_INSPECTION_TYPE: Inspection_value,
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
@@ -409,7 +466,7 @@ const CreateNewInspection = props => {
         TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
-        TAM_AREA_KEYS:checkedItemIds.toString(),
+        TAM_AREA_KEYS: checkedItemIds.toString(),
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
       console.log('inspecsd', Inspectiondata);
@@ -452,16 +509,25 @@ const CreateNewInspection = props => {
     }
   };
   const handleSubmit = () => {
-    if (selectedAddress == '') {
+    if (Inspection_value == '') {
+      setErrorInspection(true);
+    } else if (selectedDate === '') {
+      setSelectedDateError(true);
+    } else if (selectedAddress == '') {
       setShowError(true);
+    }else if (checkedItemIds.length === 0) {
+      setValidationMessage('Please select at least one area!.');
+      
     } else {
-      InspectionView ? UpdateInspection() : Ins_editMode ? UpdateInspection() : SubmitInspection();
+      InspectionView
+        ? UpdateInspection()
+        : Ins_editMode
+          ? UpdateInspection()
+          : SubmitInspection();
     }
   };
   const fetchResults = async searchQuery => {
-    // alert(searchQuery)
     setIsLoading(true);
-
     try {
       const Url = Config.BASE_URL;
       const search_Url = Url + 'add_attendees/search';
@@ -477,22 +543,19 @@ const CreateNewInspection = props => {
       console.error('Error fetching results:', error);
     }
   };
-
   const debouncedFetchResults = debounce(searchQuery => {
     if (searchQuery) {
       fetchResults(searchQuery);
     } else {
       setResults([]);
     }
-  }, 100); // Delay in milliseconds
-
+  }, 100); 
   useEffect(() => {
     debouncedFetchResults(query);
     return () => {
       debouncedFetchResults.cancel();
     };
   }, [query]);
-
   const handleSelect = user => {
     setTempSelectedValues(prevSelectedUsers => {
       const isSelected = prevSelectedUsers.find(
@@ -510,265 +573,324 @@ const CreateNewInspection = props => {
   const applySelection = () => {
     setSelectedValues(tempSelectedValues);
     refRBSheet.current.close();
+    refRBSheet1.current.close();
   };
   const handleClosePopup = () => {
     refRBSheet.current.close();
+    refRBSheet1.current.close();
   };
-  // const displaySelectedValues = selectedValues
-  //   .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
-  //   .join(', ');
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={
-          InspectionView ? 'Reschedule Inspections' : Ins_editMode ? 'Edit Inspections' : 'Create New Inspections'
+          InspectionView
+            ? 'Reschedule Inspections'
+            : Ins_editMode
+              ? 'Edit Inspections'
+              : 'Create new inspections'
         }
       />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={CreateNewInspectionStyle.Container}>
-        <Text style={CreateNewInspectionStyle.HeadingText}>
-          {'Tell us about your inspection'}
-        </Text>
-
-        <View style={{ marginBottom: 15 }}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'What type if inspection is this?'}
+    <ScrollView>
+      <KeyboardAvoidingView
+        // style={CreateNewInspectionStyle.mainConatainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={CreateNewInspectionStyle.Container}>
+          <Text style={CreateNewInspectionStyle.HeadingText}>
+            {'Tell us about your inspection'}
           </Text>
-          <Dropdown
-            style={CreateNewInspectionStyle.dropdown}
-            placeholderStyle={[
-              CreateNewInspectionStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
-            ]}
-            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-            iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={inspectionType}
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="Select inspection type"
-            value={Inspection_value}
-            onChange={item => {
-              setInspection_value(item.lookup_key);
-            }}
-            renderItem={InspectionType_render}
-          />
-        </View>
-        <Text style={LABEL_STYLES.commontext}>
-          {'Schedule time and date of inspection'}
-        </Text>
-        <View style={CreateNewInspectionStyle.datePickerView}>
-          <CalendarModal
-            SelectDate={selectedDate ? selectedDate : 'Select Date'}
-            _textInputStyle={{
-              color: selectedDate
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_GrayColor,
-            }}
-            calenderIcon={toggleModal}
-            onDayPress={handleDayPress}
-            Visible={isModalVisible}
-            onRequestClose={toggleModal}
-            markedDates={{
-              [selectedDate]: {
-                selected: true,
-                selectedColor: _COLORS.Kodie_lightGreenColor,
-                selectedTextColor: _COLORS.Kodie_BlackColor,
-              },
-            }}
-            _closeButton={toggleModal}
-            _ApplyButton={toggleModal}
-          />
 
-          <View style={CreateNewInspectionStyle.spaceView} />
-
-          <TimePicker
-            selectedTime={
-              currentTime && currentTime != ''
-                ? String(currentTime)
-                : 'Select time'
-            }
-            _TextTimeColor={
-              currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-            }
-            data={new Date()}
-            getData={date => {
-              setCurrentTime(moment(date).format('hh:mm A'));
-            }}
-          />
-        </View>
-
-        <View style={{ marginBottom: 15 }}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Where is the inspection taking place?'}
-          </Text>
-          <Dropdown
-            style={CreateNewInspectionStyle.dropdown}
-            placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-            iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={selectedAddressData}
-            search
-            maxHeight={300}
-            labelField="location"
-            valueField="property_id"
-            placeholder="Select property"
-            searchPlaceholder="Search..."
-            value={selectedAddressDetail}
-            onChange={item => {
-              setSelectedAddressDetail(item?.property_id)
-              setSelectedAddress({
-                latitude: item?.latitude,
-                longitude: item?.longitude,
-                location: item?.location,
-                property_id: item?.property_id,
-                user_Id: item?.account_id,
-              });
-              setShowError(false);
-            }}
-            renderItem={Selected_Time_render}
-          />
-        </View>
-        <View style={CreateNewInspectionStyle.locationContainer}>
-          <Octicons
-            name={'location'}
-            size={22}
-            color={_COLORS.Kodie_ExtraLightGrayColor}
-            style={CreateNewInspectionStyle.locationIcon}
-          />
-          <TextInput
-            style={CreateNewInspectionStyle.locationInput}
-            value={selectedAddress?.location}
-            editable={false}
-            placeholder="Enter new location"
-            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-          />
-        </View>
-        {showError ? (
-          <Text style={CreateNewInspectionStyle.errorText}>
-            {'Please select a property.'}
-          </Text>
-        ) : null}
-
-        <View style={{ marginBottom: 15, marginTop: 15 }}>
-          <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
-
-          <TouchableOpacity
-            style={CreateNewInspectionStyle.TextInputView}
-            onPress={() => refRBSheet.current.open()}>
-            <Text
-              style={[CreateNewInspectionStyle.input, { color: displaySelectedValues ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor }]}
-            >
-              {displaySelectedValues ? displaySelectedValues : 'Add people attending the inspection'}
+          <View style={{}}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'What type of inspection is this?'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
-
-            {/* <TextInput
-              value={displaySelectedValues}
-              placeholder={'Add people attending the inspection'}
-              style={CreateNewInspectionStyle.input}
-              palceholderColor={_COLORS.Kodie_MediumGrayColor}
-              editable={false}
-            /> */}
-            <Feather
-              name={'user-plus'}
-              size={22}
-              color={_COLORS.Kodie_GrayColor}
-              style={{ marginRight: 10 }}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={LABEL_STYLES.commontext}>
-          {'Is the place furnished or unfurnished?'}
-        </Text>
-        <View style={CreateNewInspectionStyle.margin}>
-          <RowButtons
-            LeftButtonText={'Furnished'}
-            leftButtonbackgroundColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            LeftButtonborderColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressLeftButton={() => {
-              setSelectedButtonFurnished(false);
-              setSelectedButtonFurnishedId(67);
-              // alert(selectedButtonId)
-            }}
-            RightButtonText={'Unfurnished'}
-            RightButtonbackgroundColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            RightButtonborderColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressRightButton={() => {
-              setSelectedButtonFurnished(true);
-              setSelectedButtonFurnishedId(68);
-              // alert(selectedButtonId)
-            }}
-          />
-        </View>
-        <View style={{ marginBottom: 15 }}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Select the areas you would like to include:'}
-          </Text>
-          <View style={{ marginTop: 10 }}>
-            <FlatList
-              data={AreaKey}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              numColumns={2}
-              keyExtractor={item => item.TAM_AREA_KEY}
-              renderItem={Detail_render}
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={[
+                CreateNewInspectionStyle.placeholderStyle,
+                { color: _COLORS.Kodie_LightGrayColor },
+              ]}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={inspectionType}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Select inspection type"
+              value={Inspection_value}
+              onChange={item => {
+                setInspection_value(item.lookup_key);
+                setErrorInspection(false);
+              }}
+              renderItem={InspectionType_render}
             />
           </View>
-        </View>
-        <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
-        <TextInput
-          style={CreateNewInspectionStyle.NotesInput}
-          value={Notes}
-          onChangeText={setNotes}
-          placeholder="Enter any notes about this item"
-          placeholderTextColor="#999"
-          multiline
-          numberOfLines={5}
-          textAlignVertical={'top'}
-        />
-        <CustomSingleButton
-          _ButtonText={
-            InspectionView ? 'Reschedule Inspection' : Ins_editMode ? 'Edit Inspections' : 'Schedule inspection'
-          }
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          backgroundColor={_COLORS.Kodie_BlackColor}
-          disabled={isLoading ? true : false}
-          onPress={handleSubmit}
-        />
-      </ScrollView>
+          {errorInspection ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a inspection type!'}
+            </Text>
+          ) : null}
+          <Text style={[LABEL_STYLES.commontext, { marginTop: 20 }]}>
+            {'Schedule time and date of inspection'}
+            <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+          </Text>
+          <View style={CreateNewInspectionStyle.datePickerView}>
+            <CalendarModal
+              current={selectedDate}
+              SelectDate={selectedDate ? selectedDate : 'Select Date'}
+              _textInputStyle={{
+                color: selectedDate
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModal}
+              onDayPress={handleDayPress}
+              Visible={isModalVisible}
+              onRequestClose={toggleModal}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModal}
+              _ApplyButton={toggleModal}
+            />
 
+            <View style={CreateNewInspectionStyle.spaceView} />
+
+            <TimePicker
+              selectedTime={
+                currentTime && currentTime !== ''
+                  ? String(currentTime)
+                  : 'Select time'
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={date => {
+                setCurrentTime(moment(date).format('hh:mm A'));
+              }}
+            />
+          </View>
+
+          {selectedDateError && (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a date!'}
+            </Text>
+          )}
+
+          <View style={{ marginBottom: 12, marginTop: 20 }}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Where is the inspection taking place?'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+            </Text>
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={selectedAddressData}
+              search
+              maxHeight={300}
+              labelField="location"
+              valueField="property_id"
+              placeholder="Select property"
+              searchPlaceholder="Search..."
+              value={selectedAddressDetail}
+              onChange={item => {
+                setSelectedAddressDetail(item?.property_id);
+                setSelectedAddress({
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                  location: item.location,
+                  property_id: item?.property_id,
+                  propertyType: item?.type_id,
+                  property_type_id: item?.property_type_id,
+                });
+                setShowError(false);
+              }}
+              renderItem={Selected_Time_render}
+            />
+          </View>
+          <View style={CreateNewInspectionStyle.locationContainer}>
+            <Octicons
+              name={'location'}
+              size={22}
+              color={_COLORS.Kodie_ExtraLightGrayColor}
+              style={CreateNewInspectionStyle.locationIcon}
+            />
+            <TextInput
+              style={CreateNewInspectionStyle.locationInput}
+              value={selectedAddress?.location}
+              editable={false}
+              placeholder="Enter new location"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+            />
+          </View>
+          {showError ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a property!'}
+            </Text>
+          ) : null}
+
+          <View style={{ marginBottom: 15, marginTop: 15 }}>
+            <Text style={LABEL_STYLES.commontext}>Add attendees</Text>
+
+            <TouchableOpacity
+              style={CreateNewInspectionStyle.TextInputView}
+              onPress={handlePress}>
+              <Text
+                style={[
+                  CreateNewInspectionStyle.input,
+                  {
+                    color: displaySelectedValues
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor,
+                  },
+                ]}>
+                {displaySelectedValues || 'Add people attending the inspection'}
+              </Text>
+
+              <Feather
+                name={'user-plus'}
+                size={22}
+                color={_COLORS.Kodie_GrayColor}
+                style={{ marginRight: 10 }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleRemove} />
+          </View>
+          <Text style={LABEL_STYLES.commontext}>
+            {'Is the place furnished or unfurnished?'}
+          </Text>
+          <View style={CreateNewInspectionStyle.margin}>
+            <RowButtons
+              LeftButtonText={'Furnished'}
+              leftButtonbackgroundColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonFurnished(false);
+                setSelectedButtonFurnishedId(67);
+              }}
+              RightButtonText={'Unfurnished'}
+              RightButtonbackgroundColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButtonFurnished(true);
+                setSelectedButtonFurnishedId(68);
+                // alert(selectedButtonId)
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 15 }}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Select the areas you would like to include:'}
+            <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+
+            </Text>
+            <View style={{ marginTop: 10 }}>
+              <FlatList
+                data={[
+                  ...(Array.isArray(AreaKey) ? AreaKey : []),
+                  { TAMAREAKEY: 'add_custom_area' },
+                ]}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                numColumns={2}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => {
+                  if (item.TAMAREAKEY === 'add_custom_area') {
+                    return (
+                      <View>
+                        <TouchableOpacity
+                          style={{ marginRight: 50, marginTop: 10 }}
+                          onPress={() => {
+                            refRBSheet1.current.open();
+                            // Alert.alert('Add custom area', 'Coming soon');
+                          }}>
+                          <Text
+                            style={{
+                              color: _COLORS.Kodie_GreenColor,
+                              fontSize: 14,
+                              fontFamily: FONTFAMILY.K_Bold,
+                            }}>
+                            {'Add custom area...'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }
+                  return <Detail_render item={item} />;
+                }}
+              />
+            </View>
+            {validationMessage ? (
+          <Text style={{ color: 'red', marginTop: 10 }}>{validationMessage}</Text>
+        ) : null}
+          </View>
+          <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
+          <TextInput
+            style={CreateNewInspectionStyle.NotesInput}
+            value={Notes}
+            onChangeText={setNotes}
+            placeholder="Enter any notes about this item"
+            placeholderTextColor="#999"
+            multiline
+            numberOfLines={5}
+            textAlignVertical={'top'}
+          />
+          <CustomSingleButton
+            _ButtonText={
+              InspectionView
+                ? 'Reschedule Inspection'
+                : Ins_editMode
+                  ? 'Edit Inspections'
+                  : 'Schedule inspection'
+            }
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            disabled={isLoading ? true : false}
+            onPress={handleSubmit}
+            // marginBottom={Platform.OS === 'ios' ? 0 : '35%'}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
+      </ScrollView>
       <RBSheet
         ref={refRBSheet}
         height={500}
@@ -794,6 +916,194 @@ const CreateNewInspection = props => {
           handleClosePopup={handleClosePopup}
         />
         {isLoading ? <CommonLoader /> : null}
+      </RBSheet>
+      <RBSheet
+        ref={refRBSheet1}
+        closeOnDragDown={true}
+        closeOnPressMask={true}
+        height={550}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: CreateNewInspectionStyle.bottomModal_container,
+        }}>
+        <View style={CreateNewInspectionStyle.Container}>
+          <View style={CreateNewInspectionStyle.ModalContainer}>
+            <Text style={CreateNewInspectionStyle.ShareText}>
+              {'Add custom area'}
+            </Text>
+            <TouchableOpacity onPress={handleClosePopup}>
+              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+          </View>
+          <View style={CreateNewInspectionStyle.inputContainer}>
+            <Text
+              style={[
+                LABEL_STYLES._texinputLabel,
+                CreateNewInspectionStyle.cardHeight,
+              ]}>
+              {'Name of area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+            </Text>
+            <TextInput
+              style={CreateNewInspectionStyle.emailinput}
+              value={customAreaName}
+              onChangeText={handleCustomName}
+              placeholder="Create a name for your custom area"
+              placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
+              keyboardType="email-address"
+              onBlur={()=>{
+                handleCustomName(customAreaName)
+              }}
+            />
+              {showcustomAreaNameError ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {showcustomAreaNameError}
+            </Text>
+          ) : null}
+          </View>
+        
+          <Text style={CreateNewInspectionStyle.cancelText}>
+            {'Would you like to use a standard inspection checklist?'}
+          </Text>
+          <View style={{ marginBottom: 15 }}>
+            <RowButtons
+              LeftButtonText={'Yes'}
+              leftButtonbackgroundColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonStandard(false);
+                setSelectedButtonStandardId(1);
+              }}
+              RightButtonText={'No'}
+              onPressRightButton={() => {
+                setSelectedButtonStandard(true);
+                setSelectedButtonStandardId(0);
+              }}
+              RightButtonbackgroundColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+            />
+          </View>
+          <View style={{ marginBottom: 15 }}>
+            <Text style={CreateNewInspectionStyle.cancelText}>
+              {' Select the area most similar to your custom area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+            </Text>
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={AreaKey}
+              search
+              maxHeight={300}
+              labelField="TAM_AREA_NAME"
+              valueField="TAM_AREA_KEY"
+              placeholder="Enter address manually"
+              searchPlaceholder="Search ..."
+              value={customeAreavalue}
+              onChange={item => {
+                setCustomeAreaValue(item.TAM_AREA_KEY);
+                setErrorSimiarArea(false)
+              }}
+              renderItem={Customarea_render}
+            />
+ {errorSimiarArea ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a most similar to your custom area!'}
+            </Text>
+          ) : null}
+          </View>
+          <Text style={CreateNewInspectionStyle.cancelText}>
+            {'Make this a standard area for future inspections?'}
+          </Text>
+          <RowButtons
+            LeftButtonText={'Yes'}
+            onPressLeftButton={() => {
+              setSelectedButtonFutue(false);
+              setSelectedButtonFutueId(1);
+            }}
+            leftButtonbackgroundColor={
+              !selectedButtonFutue
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              !selectedButtonFutue
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            LeftButtonborderColor={
+              !selectedButtonFutue
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            RightButtonText={'No'}
+            onPressRightButton={() => {
+              setSelectedButtonFutue(true);
+              setSelectedButtonFutueId(0);
+            }}
+            RightButtonbackgroundColor={
+              selectedButtonFutue
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              selectedButtonFutue
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            RightButtonborderColor={
+              selectedButtonFutue
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+          />
+          <View style={CreateNewInspectionStyle.ButtonView}>
+            <TouchableOpacity
+              style={CreateNewInspectionStyle.cancelView}
+              onPress={handleClosePopup}>
+              <Text style={[CreateNewInspectionStyle.cancelText]}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={CreateNewInspectionStyle.SaveView}
+              onPress={SubmitCustomArea}
+              disabled={isLoading}>
+              <Text style={CreateNewInspectionStyle.DoneText}>Done</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>

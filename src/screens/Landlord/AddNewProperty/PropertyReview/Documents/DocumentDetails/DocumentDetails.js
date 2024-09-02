@@ -68,7 +68,7 @@ const DocumentDetails = props => {
           // DocumentPicker.types.docx,
           // DocumentPicker.types.images,
         ],
-        allowMultiSelection: true,
+        // allowMultiSelection: true,
       });
       //   const doc = await DocumentPicker.pickSingle({
       //     type: [
@@ -417,7 +417,7 @@ const DocumentDetails = props => {
           </Text>
           <Text style={DocumentDetailStyle.upload_doc_sub}>
             {
-              'Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB'
+              'Documents should be formatted .pdf or .jpg or .png. Size per file should not exceed 5 MB.'
             }
           </Text>
         </View>
@@ -436,7 +436,7 @@ const DocumentDetails = props => {
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
             borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={'Upload'}
+            _ButtonText={'Upload documents'}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             onPress={() => {
               // uploadDocument();

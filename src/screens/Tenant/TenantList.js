@@ -6,7 +6,7 @@ import {_goBack} from '../../services/CommonServices';
 import CustomTabNavigator from '../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../components/Molecules/Header/Header';
 import CurrentTenant from './CurrentTenant/CurrentTenant';
-import ProspectsTenant from '../Landlord/ProspectsTenant/ProspectsTenant';
+import ProspectsTenant from '../TenantManagement/ProspectsTenant/ProspectsTenant';
 import PreviousTenant from './PreviousTenant/PreviousTenant';
 const TenantList = props => {
   const [activeTab, setActiveTab] = useState('Tab1');

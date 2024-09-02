@@ -12,6 +12,8 @@ import {
   GoogleMapStyleheet,
   PermissionsAndroid,
   Alert,
+  Linking,
+  AppState,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
@@ -22,8 +24,8 @@ import Geolocation from '@react-native-community/geolocation';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
-//import RNSettings from 'react-native-settings';
- 
+import RNSettings from 'react-native-settings';
+
 import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
   const mapRef = useRef(null);
@@ -44,26 +46,58 @@ const MapScreen = props => {
     // curLocation()
     // checkpermissionlocation()
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+    // Add AppState listener
+    const appStateListener = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      // Remove AppState listener
+      appStateListener.remove();
+    };
   }, []);
+  const handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      console.log('App has come to the foreground!');
+      Platform.OS === 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+    }
+  };
  
+
   // useLayoutEffect(() => {
   //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
   //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
- 
+
   // }, []);
- 
+
   const getLOcation = () => {
-    Geolocation.getCurrentPosition(position => {
-      console.log('you are here.');
-      const {latitude, longitude} = position.coords;
-      console.log('position.coords in map components....', position.coords);
-      // setlatitude(latitude);
-      setLat(latitude);
-      setLong(longitude);
-      setIsLoading(false);
-      // setlongitude(longitude);
-      // animateToCoordinate(latitude, longitude)
-    });
+    // Geolocation.getCurrentPosition(position => {
+    //   console.log('you are here.');
+    //   const {latitude, longitude} = position.coords;
+    //   console.log('position.coords in map components....', position.coords);
+    //   // setlatitude(latitude);
+    //   setLat(latitude);
+    //   setLong(longitude);
+    //   setIsLoading(false);
+    //   // setlongitude(longitude);
+    //   // animateToCoordinate(latitude, longitude)
+    // });
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.log('you are here.');
+        const { latitude, longitude } = position.coords;
+        console.log('position.coords in map components....', position.coords);
+        setLat(latitude);
+        setLong(longitude);
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+      }
+    );
   };
   const fetchCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -85,17 +119,16 @@ const MapScreen = props => {
               console.log('location is enabled');
               getLOcation();
             } else {
-              // alert(
-              //   'You din`t allowed the location, so you are not able to use location.please on location.',
-              // );
               Alert.alert(
                 'Location Alert',
- 
+
                 "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
                 [
                   {
                     text: 'Cancel',
-                    onPress: () => navigation.pop(),
+                    onPress: () => {
+                      props.iscancel ? props.iscancel() : navigation.pop();
+                    },
                     style: 'cancel',
                   },
                   {
@@ -125,68 +158,176 @@ const MapScreen = props => {
       },
     );
   };
- 
- 
- 
+
   const checkpermissionlocation = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
+      // Check if permission is already granted
+      const permissionGranted = await PermissionsAndroid.check(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Allow Location Access?',
-          message:" Allow Kodie to access this device's location?",
-        },
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        // RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-        //   result => {
-        //     if (result === RNSettings.ENABLED) {
-        //       console.log('location is enabled');
-        //     }
-        //   },
-        // );
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
+
+      if (!permissionGranted) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Allow Location Access?',
+            message: "Allow Kodie to access this device's location?",
+          },
+        );
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Location permission denied');
+          alert('Location permission denied');
+          return;
+        }
       }
+
+      console.log('You can use the location');
+
+      // Check if location is enabled
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+        if (result === RNSettings.ENABLED) {
+          console.log('Location is enabled');
+          getLOcation();
+        } else {
+          Alert.alert(
+            'Location Alert',
+            "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+            [
+              {
+                text: 'Cancel',
+                onPress: () =>
+                  props.iscancel ? props.iscancel() : navigation.pop(),
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => {
+                  RNSettings.openSetting(
+                    RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
+                  ).then(result => {
+                    if (result === RNSettings.ENABLED) {
+                      console.log('Location is enabled');
+                      getLOcation();
+                    } else {
+                      Alert.alert(
+                        'Location Alert',
+                        "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () =>
+                              props.iscancel
+                                ? props.iscancel()
+                                : navigation.pop(),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'OK',
+                            onPress: () => {
+                              RNSettings.openSetting(
+                                RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
+                              ).then(result => {
+                                if (result === RNSettings.ENABLED) {
+                                  console.log('Location is enabled');
+                                  getLOcation();
+                                }
+                              });
+                            },
+                          },
+                        ],
+                      );
+                    }
+                  });
+                },
+              },
+            ],
+          );
+        }
+      });
     } catch (err) {
+      // alert("hjhjh")
       console.warn(err);
     }
   };
  
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
+  const CheckIOSMapPermission = async () => {
+    try {
+      const statusWhenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      const statusAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+
+      if (statusWhenInUse === RESULTS.GRANTED || statusAlways === RESULTS.GRANTED) {
+        handlePermissionStatus(RESULTS.GRANTED);
+      } else {
+        const resultWhenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        const resultAlways = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        if (resultWhenInUse === RESULTS.GRANTED || resultAlways === RESULTS.GRANTED) {
+          handlePermissionStatus(RESULTS.GRANTED);
+        } else {
+          handlePermissionStatus(resultWhenInUse);
         }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
- 
+
+  const handlePermissionStatus = (status) => {
+    switch (status) {
+      case RESULTS.UNAVAILABLE:
+        console.log('This feature is not available (on this device / in this context)');
+        showLocationAlert();
+        break;
+      case RESULTS.DENIED:
+        console.log('The permission has not been requested / is denied but requestable');
+        showLocationAlert();
+        break;
+      case RESULTS.LIMITED:
+        console.log('The permission is limited: some actions are possible');
+        showLocationAlert();
+        break;
+      case RESULTS.GRANTED:
+        console.log('The permission is granted');
+        checkLocationServices();
+        break;
+      case RESULTS.BLOCKED:
+        console.log('The permission is denied and not requestable anymore');
+        showLocationAlert();
+        break;
+      default:
+        showLocationAlert();
+    }
+  };
+  const checkLocationServices = () => {
+    // Use RNSettings to check if location services are enabled
+    RNSettings.getSetting(RNSettings.LOCATION_SETTING).then((result) => {
+      if (result === RNSettings.ENABLED) {
+        console.log('Location services enabled');
+        getLOcation();
+      } else {
+        showLocationAlert();
+      }
+    });
+  };
+  const showLocationAlert = () => {
+    Alert.alert(
+      'Location Alert',
+      "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+      [
+        {
+          text: 'Cancel',
+          onPress: () => navigation.pop(),
+          style: 'cancel',
+        },
+        {
+          text: 'Open Settings',
+          onPress: () => {
+            Linking.openSettings().catch(() => console.warn('Cannot open settings'));
+          },
+        },
+      ],
+    );
+  };
   return (
     <>
       {isLoading ? (
@@ -216,7 +357,7 @@ const MapScreen = props => {
             }}
             onPress={props?.onPress}>
             <Icon name="location-pin" size={30} color={'red'} />
- 
+
             <Callout tooltip onPress={props?.onPressTooltip}>
               {/* <View style={GoogleMapStyle.tooltipView}>
       <Text style={GoogleMapStyle.tooltipText}>
@@ -230,5 +371,5 @@ const MapScreen = props => {
     </>
   );
 };
- 
-export default MapScreen
+
+export default MapScreen;

@@ -110,7 +110,7 @@ const DATA = [
     value: 3,
   },
   {
-    label: 'Outdoor Area',
+    label: 'Outdoor area',
     value: 4,
   },
   {
@@ -126,15 +126,15 @@ const DATA = [
     value: 7,
   },
   {
-    label: 'Built in Robes',
+    label: 'Built in robes',
     value: 8,
   },
   {
-    label: 'Air Conditioning',
+    label: 'Air conditioning',
     value: 9,
   },
   {
-    label: 'Solar Panels',
+    label: 'Solar panels',
     value: 10,
   },
   {
@@ -142,7 +142,7 @@ const DATA = [
     value: 11,
   },
   {
-    label: 'Hight Energy Efficiency',
+    label: 'Hight energy efficiency',
     value: 12,
   },
 ];
@@ -1497,7 +1497,7 @@ const AddPropertyMainPage = props => {
                           style={FirstPropertyStyle.flor_input_field}
                           value={buildingFlorSize}
                           onChangeText={setBuildingFlorSize}
-                          placeholder="102m2"
+                          placeholder="m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
                       </View>
@@ -1515,7 +1515,7 @@ const AddPropertyMainPage = props => {
                           style={FirstPropertyStyle.flor_input_field}
                           value={landArea}
                           onChangeText={setLandArea}
-                          placeholder="102m2"
+                          placeholder="m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
                       </View>
@@ -2094,7 +2094,7 @@ const AddPropertyMainPage = props => {
               <View style={DetailsStyle.subContainer}>
                 <View style={DetailsStyle.propety_details_view}>
                   <Text style={DetailsStyle.propery_det}>
-                    {'External featuress'}
+                    {'External features'}
                   </Text>
 
                   <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>

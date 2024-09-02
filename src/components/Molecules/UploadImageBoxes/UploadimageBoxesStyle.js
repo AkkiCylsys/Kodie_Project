@@ -36,6 +36,7 @@ export const UploadImageBoxesStyle = StyleSheet.create({
     color: _COLORS.Kodie_GreenColor,
     justifyContent: "center",
     alignSelf: "center",
+    textAlign:'center'
   },
   circleImage: {
     width: 80,
@@ -46,7 +47,7 @@ export const UploadImageBoxesStyle = StyleSheet.create({
   plusIcon: {
     position: "absolute",
     alignSelf: "flex-end",
-    top: 44,
+    top: 38,
     borderColor: _COLORS.Kodie_LightWhiteColor,
   },
 });

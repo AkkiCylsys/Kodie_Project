@@ -76,10 +76,10 @@ const AddBiddingDetails = props => {
   console.log('sheet JOB_ID', JOB_ID);
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
-  );
+  // console.log(
+  //   'loginresponse_jobdetails..',
+  //   loginData?.Login_details?.user_account_id,
+  // );
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
   useEffect(() => {
     handle_notification_type();
@@ -313,6 +313,7 @@ const AddBiddingDetails = props => {
               <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
               <View style={AddBiddingDetailsCss.datePickerView}>
                 <CalendarModal
+                current={selectedCommDate}
                   SelectDate={
                     selectedCommDate ? selectedCommDate : 'Start Date'
                   }

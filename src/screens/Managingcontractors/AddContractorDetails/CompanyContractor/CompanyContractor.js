@@ -344,7 +344,9 @@ export default CompanyContractor = props => {
       <ScrollView>
         <View style={CompanyContractorStyle.card}>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Organisation name*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Organisation name'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={companyName}
@@ -359,7 +361,8 @@ export default CompanyContractor = props => {
 
           <View style={CompanyContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {'Select the category of contractor*'}
+              {'Select the category of contractor'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
 
             <FlatList
@@ -371,7 +374,8 @@ export default CompanyContractor = props => {
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {'Select the contractor’s profession*'}
+              {'Select the contractor’s profession'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={CompanyContractorStyle.dropdown}
@@ -395,7 +399,9 @@ export default CompanyContractor = props => {
             />
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={email}

@@ -56,10 +56,10 @@ export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
-  );
+  // console.log(
+  //   'loginresponse_jobdetails..',
+  //   loginData?.Login_details?.user_account_id,
+  // );
   // const user_role_id = loginData?.Account_details[0]?.user_role_id;
   // alert(user_role_id);
 
@@ -141,7 +141,7 @@ export default Repair = props => {
       });
 
       setJobData(response?.data?.job_details);
-      console.log('listJobdata', response?.data?.job_details);
+      // console.log('listJobdata', response?.data?.job_details);
       // setJob_sub_type(response?.data?.job_details.job_sub_type);
       console.log('Job_sub_type....', response?.data?.job_details.job_sub_type);
       setIsLoading(false);
@@ -171,7 +171,7 @@ export default Repair = props => {
         order_col: '8',
         order_wise: 'DESC',
       });
-      console.log('response.. job by filter ser....', response?.data);
+      // console.log('response.. job by filter ser....', response?.data);
       setServicingJobData(response?.data?.job_details);
       console.log(
         'listJobdata for servicing.....',
@@ -220,7 +220,7 @@ export default Repair = props => {
     try {
       const response = await axios.delete(jobdelete);
 
-      console.log('API Response:', response.data);
+      // console.log('API Response:', response.data);
       if (response?.data?.success === true) {
         Alert.alert('Job Deleted', response?.data?.message);
         getJobDetailsByFilter(selectedFilter);
@@ -338,7 +338,7 @@ export default Repair = props => {
                             : _COLORS.Kodie_GreenColor,
                         },
                       ]}>
-                      {'Awaiting'}
+                      {'Pending'}
                     </Text>
                   </TouchableOpacity>
                 </View>

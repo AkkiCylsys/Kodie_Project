@@ -82,7 +82,7 @@ const JobDocumentDetails = props => {
           // DocumentPicker.types.docx,
           // DocumentPicker.types.images,
         ],
-        allowMultiSelection: true,
+        // allowMultiSelection: true,
       });
       //   const doc = await DocumentPicker.pickSingle({
       //     type: [
@@ -432,13 +432,13 @@ const JobDocumentDetails = props => {
         style={{
           marginHorizontal: 16,
         }}>
-        <View>
+        <View style={{marginVertical:10}}>
           <Text style={JobDocumentDetailStyle.upload_doc_text}>
             {'Upload documents'}
           </Text>
           <Text style={JobDocumentDetailStyle.upload_doc_sub}>
             {
-              'Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB'
+              'Documents should be formatted .pdf or .jpg or .png. Size per file should not exceed 5 MB.'
             }
           </Text>
         </View>

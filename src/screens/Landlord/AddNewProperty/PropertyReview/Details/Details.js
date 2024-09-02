@@ -155,7 +155,7 @@ export default Details = props => {
         </View>
         <View style={DetailsStyle.subContainer}>
           <View style={DetailsStyle.propety_details_view}>
-            <Text style={DetailsStyle.propery_det}>{'External featuress'}</Text>
+            <Text style={DetailsStyle.propery_det}>{'External features'}</Text>
 
             <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
               <AntDesign

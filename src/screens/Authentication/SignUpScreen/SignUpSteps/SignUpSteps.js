@@ -124,6 +124,7 @@ const SignUpSteps = props => {
 
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
+  let password = props?.route?.params?.password;
   console.log('email...', email);
   console.log('user_key...', user_key);
   console.log('countryCode...', country_Code_Get);
@@ -229,13 +230,15 @@ const SignUpSteps = props => {
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
-      setFirstNameError('First name should contain only alphabetic characters');
-    } else if (lastName.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
+      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens.');
+    }
+     else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
-      setLastNameError('Last name should contain only alphabetic characters');
-    } else if (mobileNumber.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
+      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens.');
+    }
+     else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format.');
@@ -257,6 +260,7 @@ const SignUpSteps = props => {
         image: ImageName,
         Bio: bio,
         country_code: country_Code_Get,
+        password:password
       });
     }
   };

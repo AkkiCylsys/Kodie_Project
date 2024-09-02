@@ -60,7 +60,7 @@ const renderDataItem = item => {
 
 const PreScreening = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData);
+  // console.log('loginData', loginData);
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [RentalDetails, setRentalDetails] = useState(false);
@@ -432,6 +432,8 @@ const PreScreening = props => {
                 </Text>
                 <View style={PreScreeningStyle.datePickerView}>
                   <CalendarModal
+                    current={selectedDate}
+
                     SelectDate={selectedDate ? selectedDate : 'Start Date'}
                     _textInputStyle={{
                       color: selectedDate

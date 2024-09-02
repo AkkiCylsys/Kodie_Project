@@ -92,11 +92,6 @@ const DeshboardNotice = props => {
     // props.onClose();
     setShow(!show);
   };
-  const handletextPress = () => {
-    // alert('Coming soon')
-    // Yaha par aap click event ka logic likh sakte hain
-    console.log('Text clicked!');
-  };
   return (
     <>
       {show ? null : (
@@ -141,9 +136,11 @@ const DeshboardNotice = props => {
                   'We are happy to have you on board. You have almost completed your profile set up.  '
                 }
 
-                <TouchableWithoutFeedback onPress={handletextPress}>
+                <TouchableWithoutFeedback onPress={()=>{
+                  props?.continue()
+                }}>
                   <Text style={[DeshBoardNoticeCss.continueText]}>
-                    {'Tap to continue'}
+                    {'Tap to continue.'}
                   </Text>
                 </TouchableWithoutFeedback>
               </Text>
@@ -152,7 +149,7 @@ const DeshboardNotice = props => {
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>
             <Text style={DeshBoardNoticeCss.trialText}>
-              Your free trial ends in {profileDay} days.
+              Your free trial ends in {profileDay} 30 days.
             </Text>
             {props.ShowUpgradeButton ? (
               <TouchableOpacity

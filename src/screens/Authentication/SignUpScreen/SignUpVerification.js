@@ -66,7 +66,8 @@ export default SignUpVerification = props => {
           setValue('');
           props.navigation.navigate('SignUpSteps', {
             email: email,
-            user_key: user_key
+            user_key: user_key,
+            password:password
           });
         } else {
           setValueError(responseData?.message);

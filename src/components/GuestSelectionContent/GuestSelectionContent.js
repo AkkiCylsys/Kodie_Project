@@ -6,10 +6,13 @@ import {
   TextInput,
   FlatList,
   Image,
-  Keyboard
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {_COLORS, FONTFAMILY, IMAGES} from '../../Themes';
 
 const GuestSelectionContent = ({
@@ -25,7 +28,11 @@ const GuestSelectionContent = ({
 }) => {
   
   return (
-    <View style={{flex: 1}}>
+    
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      style={{flex: 1, marginHorizontal: 16, marginVertical: 16}} >
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
@@ -72,104 +79,102 @@ const GuestSelectionContent = ({
           placeholderTextColor={_COLORS.Kodie_BlackColor}
         />
       </View>
-
-      <FlatList
-        data={results}
-        keyExtractor={item => item.UAD_KEY.toString()}
-        renderItem={({item}) => (
-          <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginVertical: 8,
-          }}>
-              {console.log(item?.image_paths[0],'dfsdfsdfsfsd')}
-            <View style={{flexDirection: 'row'}}>
-            {item.image_paths && item.image_paths.length > 0 ? (
-              <Image
-                source={{uri: item.image_paths[0]}}
-                style={{
-                  height: 50,
-                  width: 50,
-                  borderRadius: 50 / 2,
-                  borderWidth:1,
-                  borderColor:_COLORS?.Kodie_GrayColor,
-                  alignSelf: 'center',
-                }}
-              />
-            ): (<View
-            style={[{
-              height: 50,
-              width: 50,
-              borderRadius: 50 / 2,
-              borderWidth:1,
-              borderColor:_COLORS?.Kodie_GrayColor,
-              justifyContent: "center",
-              paddingHorizontal:7
-            }]}
-          >
-            <Text
+      <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 80}}>
+        <FlatList
+          data={results}
+          keyExtractor={item => item.UAD_KEY.toString()}
+          renderItem={({item}) => (
+            <View
               style={{
-                fontSize: 10,
-                color: _COLORS?.Kodie_BlackColor,
-                textAlign: "center",
-                alignSelf: "center",
-              }}
-            >
-              {"Image not found"}
-            </Text>
-          </View>)}
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: _COLORS?.Kodie_BlackColor,
-                  fontFamily: FONTFAMILY?.K_Bold,
-                  alignSelf: 'center',
-                  marginLeft: 15,
-                }}>
-                {`${item?.UAD_FIRST_NAME} ${item?.UAD_LAST_NAME}`}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {handleSelect(item);
-                Keyboard.dismiss();
-              }}
-              style={{
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                borderRadius: 5,
-                borderWidth: 1,
-                borderColor: tempSelectedValues.some(
-                  user => user.UAD_KEY === item.UAD_KEY,
-                )
-                  ? _COLORS?.Kodie_GreenColor
-                  : _COLORS?.Kodie_MediumGrayColor,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginVertical: 8,
               }}>
-              <Text
+              <View style={{flexDirection: 'row'}}>
+                {item.image_paths && item.image_paths.length > 0 ? (
+                  <Image
+                    source={{uri: item.image_paths[0]}}
+                    style={{
+                      height: 50,
+                      width: 50,
+                      borderRadius: 50 / 2,
+                      borderWidth: 1,
+                      borderColor: _COLORS?.Kodie_GrayColor,
+                      alignSelf: 'center',
+                    }}
+                  />
+                ) : (
+                  <View
+                    style={[{
+                      borderColor: _COLORS?.Kodie_GrayColor,
+                      justifyContent: "center",
+                    }]}
+                  >
+                  <FontAwesome
+                    name="user-circle"
+                    size={48}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                  </View>
+                )}
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: _COLORS?.Kodie_BlackColor,
+                    fontFamily: FONTFAMILY?.K_Bold,
+                    alignSelf: 'center',
+                    marginLeft: 15,
+                  }}>
+                  {`${item?.UAD_FIRST_NAME} ${item?.UAD_LAST_NAME}`}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => {handleSelect(item);
+                  // Keyboard.dismiss();
+                }}
                 style={{
-                  fontSize: 14,
-                  color: tempSelectedValues.some(
+                  paddingHorizontal: 15,
+                  paddingVertical: 10,
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: tempSelectedValues.some(
                     user => user.UAD_KEY === item.UAD_KEY,
                   )
                     ? _COLORS?.Kodie_GreenColor
                     : _COLORS?.Kodie_MediumGrayColor,
-                  fontFamily: FONTFAMILY?.K_Medium,
-                  alignSelf: 'center',
                 }}>
-                {tempSelectedValues.some(user => user.UAD_KEY === item.UAD_KEY)
-                  ? 'Added'
-                  : 'Add'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: tempSelectedValues.some(
+                      user => user.UAD_KEY === item.UAD_KEY,
+                    )
+                      ? _COLORS?.Kodie_GreenColor
+                      : _COLORS?.Kodie_MediumGrayColor,
+                    fontFamily: FONTFAMILY?.K_Medium,
+                    alignSelf: 'center',
+                  }}>
+                  {tempSelectedValues.some(user => user.UAD_KEY === item.UAD_KEY)
+                    ? 'Added'
+                    : 'Add'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </ScrollView>
       <View
         style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
           flexDirection: 'row',
           justifyContent: 'flex-end',
-          alignItems: 'flex-end',
+          alignItems: 'center',
+          backgroundColor: _COLORS?.Kodie_WhiteColor,
+          padding: 16,
         }}>
         <TouchableOpacity
           style={{paddingHorizontal: 20, paddingVertical: 10}}
@@ -201,7 +206,7 @@ const GuestSelectionContent = ({
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

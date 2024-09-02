@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,47 +7,28 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import { PropertyFeatureStyle } from './PropertyFeatureStyle';
+import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-
-import { Dropdown } from 'react-native-element-dropdown';
-import { FONTFAMILY, LABEL_STYLES } from '../../../../Themes';
-import { _COLORS } from '../../../../Themes';
+import {_goBack} from '../../../../services/CommonServices';
+import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import MultiSelect from 'react-native-multiple-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
-
-const renderDataItem = item => {
-  return (
-    <View style={PropertyFeatureStyle.item}>
-      <Text style={PropertyFeatureStyle.selectedTextStyle}>
-        {item.features_name}
-      </Text>
-      {/* <AntDesign
-        style={PropertyFeatureStyle.icon}
-        color={_COLORS.Kodie_BlackColor}
-        name="check"
-        size={20}
-      /> */}
-    </View>
-  );
-};
 export default PropertyFeature = props => {
   const addPropertySecondStepData = useSelector(
     state => state.AddPropertyStepsReducer.data,
   );
-  console.log('addPropertySecondStepData...', addPropertySecondStepData);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,23 +39,17 @@ export default PropertyFeature = props => {
   const latitude = props?.route?.params?.latitude;
   const longitude = props?.route?.params?.longitude;
   const propertyid = props?.route?.params?.propertyid;
-  console.log('dee...', propertyid);
   const city = props?.route?.params?.city;
   const state = props?.route?.params?.state;
   const country = props?.route?.params?.country;
   const editMode = props?.route?.params?.editMode;
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
-
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     [],
   );
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData?.Login_details?.user_id);
-
   console.log('key_features_id............', additionalfeatureskeyvalue);
-  const [value, setValue] = useState(null);
-  const [selected, setSelected] = useState([]);
-  const [selectedButton, setSelectedButton] = useState(false);
+  console.log('propertyid............', propertyid);
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(70);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
@@ -86,33 +61,23 @@ export default PropertyFeature = props => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [florSize, setFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
-  const [selectedAutoList, setSelectedAutoList] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
-  const [savePropertyId, setSavePropertyId] = useState('');
   const [activeColor, setActiveColor] = useState(
     _COLORS.Kodie_MidLightGreenColor,
   );
-  console.log(
-    'propertyDetail....',
-    property_Detail?.additional_key_features_id,
-  );
-
   const keyFeaturesString = property_Detail?.key_features;
 
   useEffect(() => {
-    console.log('step 1');
     additional_features();
-    console.log('step 2');
     setActiveColor(_COLORS.Kodie_MidLightGreenColor);
     propertyid > 0 ||
-      (Array.isArray(addPropertySecondStepData) &&
-        addPropertySecondStepData.length > 0) ||
-      typeof addPropertySecondStepData === 'number'
+    (Array.isArray(addPropertySecondStepData) &&
+      addPropertySecondStepData.length > 0) ||
+    typeof addPropertySecondStepData === 'number'
       ? DetailsData()
       : null;
     try {
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
-
       for (const feature of keyFeaturesArray) {
         if (feature.Bedrooms !== undefined) {
           setCountBedroom(feature.Bedrooms);
@@ -128,27 +93,21 @@ export default PropertyFeature = props => {
       console.error('Error parsing key_features:', error);
     }
   }, [keyFeaturesString]);
-
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-        ? addPropertySecondStepData
-        : propertyid,
+      property_id:
+        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+          ? addPropertySecondStepData
+          : propertyid,
     };
-    console.log('detailData', detailData);
     const url = Config.BASE_URL;
     const property_Detailss = url + 'get_property_details';
-    console.log('Request URL:', property_Detailss);
     setIsLoading(true);
     try {
       const response = await axios.post(property_Detailss, detailData);
-      console.log('step 2.1');
-
-      console.log('propertyDetail', response?.data);
       if (response?.data?.success === true) {
         setIsLoading(false);
         setProperty_Details(response?.data?.property_details[0]);
-
         const apiAdditionalFeaturesIds =
           response?.data?.property_details[0]?.additional_features_id
             .split(',')
@@ -157,19 +116,10 @@ export default PropertyFeature = props => {
           id => id == 68,
         );
         const yesFeatureId = apiAdditionalFeaturesIds.find(id => id == 71);
-
-        console.log(
-          'Furnished Feature ID:',
-          apiAdditionalFeaturesIds,
-          furnishedFeatureId,
-        );
         setSelectedButtonFurnished(furnishedFeatureId);
         setSelectedButtonDeposit(yesFeatureId);
+        response?.data?.property_details[0]?.floor_size== 0 ? setFlorSize(''):
         setFlorSize(response?.data?.property_details[0]?.floor_size);
-        setAdditionalfeatureskey(
-          response?.data?.property_details[0]?.additional_key_features,
-        );
-        console.log('additionalfeatureskey..d', additionalfeatureskey);
         const keyFeaturesId =
           response?.data?.property_details[0]?.additional_key_features_id;
         const parsedKeyFeaturesId =
@@ -179,6 +129,7 @@ export default PropertyFeature = props => {
         setAdditionalFeaturesKeyValue(
           Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
         );
+        response?.data?.property_details[0]?.land_area == 0 ? setLandArea(''):
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
@@ -189,17 +140,13 @@ export default PropertyFeature = props => {
       setIsLoading(false);
     }
   };
-
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Parking Space': CountParking },
-    { Garages: CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Parking Space': CountParking},
+    {Garages: CountParkingStreet},
   ];
-
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
-  console.log(PreFriedly, 'pre friedly............');
-  console.log(AllCountsData);
   const increaseBedroomCount = () => {
     setCountBedroom(prevCount => prevCount + 1);
   };
@@ -208,7 +155,6 @@ export default PropertyFeature = props => {
       setCountBedroom(prevCount => prevCount - 1);
     }
   };
-  // key_features count for Bathroom code here------
   const increaseBathroomCount = () => {
     setCountBathroom(prevCount => prevCount + 1);
   };
@@ -217,8 +163,6 @@ export default PropertyFeature = props => {
       setCountBathroom(prevCount => prevCount - 1);
     }
   };
-
-  // key_features count for Parking code here------
   const increaseParkingCount = () => {
     setCountParking(prevCount => prevCount + 1);
   };
@@ -227,8 +171,6 @@ export default PropertyFeature = props => {
       setCountParking(prevCount => prevCount - 1);
     }
   };
-
-  // key_features count for Parking code here------
   const increaseParkingStreetCount = () => {
     setCountParkingStreet(prevCount => prevCount + 1);
   };
@@ -237,8 +179,7 @@ export default PropertyFeature = props => {
       setCountParkingStreet(prevCount => prevCount - 1);
     }
   };
-
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -291,23 +232,23 @@ export default PropertyFeature = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
+        ? 'Features'
+        : position === 2
+        ? 'Images'
+        : position === 3
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -412,18 +353,19 @@ export default PropertyFeature = props => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
-
-    setIsLoading(true); // Assuming setIsLoading is a state setter function
-
+    setIsLoading(true);
     try {
       const response = await axios.get(additionalApi);
-      console.log('additional_Data:', response.data); // Adjusted to directly access response.data
+      console.log('additional_Data:', response.data);
 
       if (response.data.success) {
         console.log('additional_features:', response.data);
         setAdditionalfeatureskey(response.data.key_features_details);
       } else {
-        console.error('additional_features_error:', response.data.error || 'Unknown error');
+        console.error(
+          'additional_features_error:',
+          response.data.error || 'Unknown error',
+        );
       }
     } catch (error) {
       console.error('additional_features error:', error);
@@ -450,9 +392,10 @@ export default PropertyFeature = props => {
       additional_key_features: additionalfeatureskeyvalue,
       autolist: selectedButtonId,
       property_id:
-        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-          ? addPropertySecondStepData
-          : propertyid,
+        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        //   ? addPropertySecondStepData
+        //   : 
+          propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -470,9 +413,8 @@ export default PropertyFeature = props => {
         if (response?.data?.success === true) {
           setIsLoading(false);
           props.navigation.navigate('PropertyImages', {
-            property_id: addPropertySecondStepData
-              ? addPropertySecondStepData
-              : propertyid,
+            property_id: 
+               propertyid,
             editMode: editMode,
           });
         } else {
@@ -508,7 +450,9 @@ export default PropertyFeature = props => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView
+nestedScrollEnabled={true}
+ >
         <View style={PropertyFeatureStyle.headingView}>
           <Text style={PropertyFeatureStyle.heading}>
             {'Property features'}
@@ -653,7 +597,7 @@ export default PropertyFeature = props => {
               <View style={PropertyFeatureStyle.key_feature_mainView}>
                 <View style={PropertyFeatureStyle.key_feature_subView}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {'Building floor size  (optional)'}
+                    {'Building floor size (optional)'}
                   </Text>
                 </View>
 
@@ -662,7 +606,7 @@ export default PropertyFeature = props => {
                     style={PropertyFeatureStyle.flor_input_field}
                     value={florSize}
                     onChangeText={setFlorSize}
-                    placeholder="102m2"
+                    placeholder="m2"
                     keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
@@ -681,13 +625,14 @@ export default PropertyFeature = props => {
                     style={PropertyFeatureStyle.flor_input_field}
                     value={landArea}
                     onChangeText={setLandArea}
-                    placeholder="102m2"
+                    placeholder="m2"
                     keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
               </View>
             </View>
+
             <View style={PropertyFeatureStyle.addition_featureView}>
               <Text style={PropertyFeatureStyle.additional_Text}>
                 {'Additional features'}
@@ -796,58 +741,30 @@ export default PropertyFeature = props => {
                 items={additionalfeatureskey}
                 uniqueKey="paf_key"
                 noItemsText={
-                  'Feature being searched for is not found on the list.'
+                  'The feature you are searching for is not available on the list'
                 }
                 onSelectedItemsChange={onSelectedItemsChange}
-                selectedItems={
-                  Array.isArray(additionalfeatureskeyvalue)
-                    ? additionalfeatureskeyvalue
-                    : []
-                }
+                selectedItems={additionalfeatureskeyvalue}
+                    
                 selectText="Add features such as pool, aircon, balcony etc."
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
-                  setAdditionalFeaturesKeyValue(item);
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
                 }}
                 tagBorderColor={_COLORS.Kodie_BlackColor}
                 selectedItemTextColor={_COLORS.Kodie_GreenColor}
                 selectedItemIconColor={_COLORS.Kodie_GreenColor}
                 itemTextColor="#000"
                 displayKey="features_name"
-                searchInputStyle={{
-                  color: _COLORS.Kodie_BlackColor,
-                  borderColor: _COLORS.Kodie_GrayColor,
-                  height: 40,
-                  borderRadius: 5,
-                  paddingHorizontal: 10,
-                }}
-                styleListContainer={{
-                  paddingVertical: 10,
-                  height: 200,
-                }}
-                styleRowList={{
-                  height: 40,
-                }}
-                tagContainerStyle={{
-                  borderWidth: 1,
-                  height: 40,
-                  backgroundColor: _COLORS.Kodie_BlackColor,
-                }}
+                searchInputStyle={PropertyFeatureStyle.searchInput}
+                styleListContainer={PropertyFeatureStyle.listContainer}
+                styleRowList={PropertyFeatureStyle.rowList}
+                tagContainerStyle={PropertyFeatureStyle.tagContainer}
                 tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
-                styleTextTag={{
-                  fontSize: 14,
-                  color: _COLORS.Kodie_WhiteColor,
-                  fontFamily: FONTFAMILY.K_Medium,
-                }}
-                styleTextDropdown={{ marginLeft: 20 }}
-                styleDropdownMenu={{
-                  flex: 1,
-                  borderWidth: 1,
-                  height: 50,
-                  borderColor: _COLORS.Kodie_GrayColor,
-                  marginTop: 10,
-                  borderRadius: 8,
-                }}
+                styleTextTag={PropertyFeatureStyle.textTag}
+                styleTextDropdown={PropertyFeatureStyle.textDropdown}
+                styleDropdownMenu={PropertyFeatureStyle.dropdownMenu}
                 submitButtonColor={_COLORS.Kodie_GreenColor}
                 submitButtonText={
                   additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'

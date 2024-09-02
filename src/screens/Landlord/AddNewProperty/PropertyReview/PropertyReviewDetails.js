@@ -34,6 +34,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -157,7 +158,7 @@ export default PropertyReviewDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor area' ? (
+      ) : item === '' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -185,9 +186,9 @@ export default PropertyReviewDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in robes' ? (
+      ) : item === 'Built-in wardrobes' ? (
         <MaterialCommunityIcons
-          name="cupboard"
+          name="wardrobe"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
@@ -390,11 +391,19 @@ export default PropertyReviewDetails = props => {
   const goBack = () => {
     props.navigation.pop();
   };
-  const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
-  const parkingSpaceValue = parkingSpaceValueObj
-    ? parkingSpaceValueObj['Parking Space']
-    : null;
+  // const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+  // const parkingSpaceValue = parkingSpaceValueObj
+  //   ? parkingSpaceValueObj['Parking Space']
+  //   : null;
+  let parkingSpaceValue = null;
 
+  if (Array.isArray(Detail)) {
+    const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+    parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj['Parking Space'] : null;
+  } else {
+    console.error('Detail is not an array:', Detail);
+  }
+  
   console.log('Parking Space value:', parkingSpaceValue);
   const checkTabs = () => {
     switch (activeTab) {
@@ -501,7 +510,7 @@ export default PropertyReviewDetails = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {property_Detail?.floor_size}
+                      {`${property_Detail?.floor_size || ''} m²`}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -657,7 +666,7 @@ export default PropertyReviewDetails = props => {
                   setExternalfeaturesClp(!externalfeaturesClp);
                 }}>
                 <Text style={DetailsStyle.propery_det}>
-                  {'External featuress'}
+                  {'External features'}
                 </Text>
 
                 <TouchableOpacity
@@ -954,8 +963,8 @@ export default PropertyReviewDetails = props => {
               }
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              // circleLoop
+              // autoplay={false}
+              // circleLoop={false}
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={PropertyReviewStyle.dotStyle}
@@ -987,14 +996,14 @@ export default PropertyReviewDetails = props => {
                 onPress={() => {
                   setLike(!like);
                 }}>
-                <Entypo
-                  name={like ? 'heart' : 'heart-outlined'}
+                <AntDesign
+                  name={like ? 'heart' : 'hearto'}
                   color={
                     like
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor
                   }
-                  size={22}
+                  size={24}
                 />
               </TouchableOpacity>
             </View>
@@ -1002,7 +1011,7 @@ export default PropertyReviewDetails = props => {
           <Text style={PropertyReviewStyle.melbourne_Text}>
             {property_Detail?.state || property_Detail?.city || ''}
           </Text>
-          <View style={PropertyReviewStyle.share_View}>
+          <View style={PropertyReviewStyle.location_View}>
             <Entypo
               name="location-pin"
               size={20}
@@ -1013,7 +1022,6 @@ export default PropertyReviewDetails = props => {
             </Text>
           </View>
         </View>
-
         <View
           style={{
             borderBottomWidth: 3,

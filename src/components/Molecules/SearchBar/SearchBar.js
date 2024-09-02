@@ -57,8 +57,9 @@ const SearchBar = props => {
           // onChangeText={(text) =>
           //   text ? handleSearchChange(text) : setSearch()
           // }
-          onChangeText={handleSearchChange}
-          placeholder={truncatePlaceholder(props.placeholder, 15)}
+          // onChangeText={handleSearchChange}
+          onChangeText={props.searchData}
+          placeholder={truncatePlaceholder(props.placeholder, 20)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
         {props.backSearchIcon ? (
@@ -80,6 +81,22 @@ const SearchBar = props => {
           ]}>
           <IconComponent
             name={props?.filterIcon || 'location'}
+            size={28}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+        </TouchableOpacity>
+      ) : null}
+      {props.Filter ? (
+        <TouchableOpacity
+          style={[
+            SearchBarStyle.filterView,
+            {
+              height: props.height,
+              marginTop: props.marginTop ? props.marginTop : 20,
+            },
+          ]}>
+          <FontAwesome
+            name={props?.filter || 'location'}
             size={28}
             color={_COLORS.Kodie_MediumGrayColor}
           />

@@ -331,7 +331,9 @@ export default PersonContractor = props => {
       <ScrollView>
         <View style={PersonContractorStyle.card}>
           <View style={PersonContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'First name*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'First name'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={PersonContractorStyle.input}
               value={firstName}
@@ -345,7 +347,9 @@ export default PersonContractor = props => {
           </View>
 
           <View style={PersonContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Last name*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Last name'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={PersonContractorStyle.input}
               value={lastName}
@@ -357,7 +361,8 @@ export default PersonContractor = props => {
           </View>
           <View style={PersonContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {'Select the category of contractor*'}
+              {'Select the category of contractor'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
 
             <FlatList
@@ -369,7 +374,8 @@ export default PersonContractor = props => {
           </View>
           <View style={PersonContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {'Select the contractor’s profession*'}
+              {'Select the contractor’s profession'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={PersonContractorStyle.dropdown}
@@ -393,7 +399,9 @@ export default PersonContractor = props => {
             />
           </View>
           <View style={[PersonContractorStyle.inputContainer, {}]}>
-            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={PersonContractorStyle.input}
               value={email}

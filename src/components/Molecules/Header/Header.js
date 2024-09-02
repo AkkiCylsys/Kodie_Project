@@ -5,6 +5,7 @@ import {FONTFAMILY, SMALLICON, IMAGES, _COLORS} from './../../../Themes/index';
 import {_goBack} from '../../../services/CommonServices';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
@@ -13,7 +14,7 @@ import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 const TopHeader = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData.Login_details?.profile_photo_path);
+  // console.log('loginData', loginData.Login_details?.profile_photo_path);
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
@@ -126,6 +127,7 @@ const TopHeader = props => {
             </Text>
           )}
         </View>
+       
         {props.isrightImage ? (
           <TouchableOpacity
             onPress={props?.onPressRightButton}
@@ -169,8 +171,41 @@ const TopHeader = props => {
                 )
               ) : null}
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={props?.onPressManurightIcon}
+              style={{alignSelf: 'center'}}>
+            {props.ManurightIcon ? 
+        
+        <Entypo
+              name={'dots-three-vertical'}
+              size={20}
+              color={_COLORS.Kodie_BlackColor}
+              style={[HeaderStyle.MenuIcon,{marginLeft:'70%'}]}
+            />
+      
+      :  null
+    }
+    </TouchableOpacity>
+    <TouchableOpacity
+              onPress={props?.onPressEdit}
+              style={{alignSelf: 'center'}}>
+            {props.EditText ? 
+        
+        
+      <Text style={{ fontSize: 16,
+        fontFamily: FONTFAMILY.K_Bold,
+        color: _COLORS.Kodie_BlackColor,
+        marginLeft:'60%'
+        }}>
+          {'Edit'}
+        </Text>
+      :  null
+    }
+    </TouchableOpacity>
+
           </View>
         )}
+       
       </View>
       <DividerIcon marginTop={2} marginBottom={-0.1} />
     </>

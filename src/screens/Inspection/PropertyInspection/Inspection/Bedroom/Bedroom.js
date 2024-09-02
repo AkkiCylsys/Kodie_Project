@@ -5,147 +5,177 @@
 //ScreenNo:102
 //ScreenNo:103
 //ScreenNo:104
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   FlatList,
   ScrollView,
-  TextInput,
   SafeAreaView,
   Alert,
 } from 'react-native';
 import TopHeader from '../../../../../components/Molecules/Header/Header';
-import {BedroomCss} from './BedroomCss';
+import { BedroomCss } from './BedroomCss';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import {_goBack} from '../../../../../services/CommonServices';
+import { _goBack } from '../../../../../services/CommonServices';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Dropdown} from 'react-native-element-dropdown';
-import {FONTFAMILY, LABEL_STYLES, _COLORS} from '../../../../../Themes';
+import { FONTFAMILY, _COLORS } from '../../../../../Themes';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-import UploadImageBoxes from '../../../../../components/Molecules/UploadImageBoxes/UploadImageBoxes';
-import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {Config} from '../../../../../Config';
-import axios from 'axios';
+import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import AddCustomItems from '../../../../../components/InspectionModul/AddCustomItem';
 import { useNavigation } from '@react-navigation/native';
-const data = [
-  {label: 'Good', value: '1'},
-  {label: 'Ok', value: '2'},
-  {label: 'Bad', value: '3'},
-  {label: 'Damaged', value: '4'},
-  {label: 'Urgent repair', value: '5'},
-  {label: 'Not usable', value: '6'},
-];
-
+import AddCabinatItems from '../../../../../components/Molecules/AddCabinatItems/AddCabinatItems';
+import { EditInspectionItem, GetInspectionAreas, InspectionAddItem, UpdateInspectionItem, UpdateItemMapping } from '../../../../../services/InspectionModuleServices.js/InspectionServices';
 const Bedroom = props => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [remainingItemId, setRemainingItemId] = useState([]);
   const [editGetItem, setEditGetItem] = useState([]);
   const [getItems, setGetItems] = useState([]);
-  const refRBSheet = useRef();
+  const [AreaKey, setAreaKey] = useState([]);
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
-  const [value, setValue] = useState(null);
-  const [name, setName] = useState('');
-  const [comment, setComment] = useState('');
-  const [Description, setDescription] = useState('');
-  const [futureInspection, setfutureInspection] = useState(false);
-  const [futureInspectionId, setfutureInspectionId] = useState(1);
-  const [InspectionStatusType, setInspectionStatusType] = useState([]);
-const navigation= useNavigation()
+  const navigation = useNavigation()
   const AreasKey = props.route.params.TeamAreaKey;
   const Team_Key = props.route.params.TIM_KEY;
-  const Inspection_Key = props.route.params.getinspectionKey;
   const Created_Id = props.route.params.teamCreateId;
   const AreaName = props.route.params.AreaName;
   const PropertyId = props.route.params.PropertyId;
-  console.log('AreasKey', AreasKey);
-  console.log(Team_Key, Inspection_Key, Created_Id, 'get DAta in Bedroom....');
 
   useEffect(() => {
-    handleInspectionItem();
-    handleInsStatus_Type();
-  }, []);
-  const handleInspectionItem = async () => {
+    if (isEditing) { handleInspectionuEditItem() }
+    else { handleInspectionudateItem() }
+    getInspectionAreas();
+  }, [isEditing]);
+  const getInspectionAreas = async () => {
     setIsLoading(true);
-    const url = Config.BASE_URL;
-    const AreaPostUrl = url + `getAreaItemMaster`;
-
     try {
-      const response = await axios.post(AreaPostUrl, {
-        tamAreaKey: AreasKey,
-      });
-      // console.log(response);
-      if (response?.data?.success) {
-        const items = response?.data?.data[0];
-        setGetItems(items);
-        setEditGetItem(items);
-        // setRemainingItemId(items.map(item => item.id));
-        
-        console.log(response?.data?.data[0], 'beroomData.....');
-      } else {
-        console.error('Error:', response?.data?.error || 'Unknown error');
-      }
+      const areas = await GetInspectionAreas(Team_Key);
+      setAreaKey(areas);
+      // console.log('get_inspection_area_details....', areas);
     } catch (error) {
-      console.error('Error:', error.response || error.message);
+      console.error('get_inspection_area_details error:', error);
+      // Alert.alert('Error', 'Failed to fetch inspection areas');
     } finally {
       setIsLoading(false);
     }
   };
+  const getItemStatus = (area_key_id) => {
+    const area = AreaKey.find(area => area.area_key_id === area_key_id);
+    return area ? area.TAIM_ITEM_STATUS : null;
+  };
+  const TAIM_ITEM_STATUS = getItemStatus(AreasKey);
+
   const handleInspectionudateItem = async () => {
     setIsLoading(true);
-    const url = Config.BASE_URL;
-    const AreaPostUrl = url + `getInspectionItemByAreakey`;
-
+    const data = {
+      p_TAM_AREA_KEY: AreasKey,
+      p_TIM_KEY: Team_Key,
+    };
     try {
-      const response = await axios.post(AreaPostUrl, {
-        TAMAREAKEY: AreasKey,
-  TIMKEY: Team_Key
-      });
-      // console.log(response);
-      if (response?.data?.success) {
-        const items = response?.data?.data[0];
-        setGetItems(items);
-        setEditGetItem(items);
-        // setRemainingItemId(items.map(item => item.id));
-        
-        console.log(response?.data?.data[0], 'handleInspectionudateItem.....');
-      } else {
-        console.error('Error:', response?.data?.error || 'Unknown error');
-      }
+      const items = await UpdateInspectionItem(data);
+      setGetItems(items);
+      // console.log('handleInspectionudateItem.....', items);
     } catch (error) {
-      console.error('Error:', error.response || error.message);
+      console.error('Error:', error);
+      // Alert.alert('Error', 'Failed to update inspection item');
     } finally {
       setIsLoading(false);
     }
   };
+  const handleInspectionuEditItem = async () => {
+    setIsLoading(true);
+    const data = {
+      p_TAM_AREA_KEY: AreasKey,
+      p_TIM_KEY: Team_Key,
+    };
+    try {
+      const items = await EditInspectionItem(data);
+      setEditGetItem(items);
+      // console.log('handleInspectionuEditItem.....', items);
+    } catch (error) {
+      console.error('Error:', error);
+      // Alert.alert('Error', 'Failed to edit inspection item');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleAddItem = async () => {
+    setIsLoading(true);
+    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItems.map(item => item.TAIM_ITEM_KEY).join(',');
+    console.log("AddItem", tamAreaKeys);
+    const data = {
+      timKey: Team_Key,
+      taimItemKey: tamAreaKeys.toString(),
+      tamAreaKey: AreasKey,
+      updKey: PropertyId,
+      tiimCreatedBy: Created_Id.toString()
+    };
+    console.log("Item", data);
+
+    try {
+      const response = await InspectionAddItem(data);
+      Alert.alert('Success', response?.message);
+      // console.log('API Response:', response);
+      handleInspectionudateItem();
+      handleInspectionuEditItem();
+      setIsEditing(!isEditing)
+      // getInspectionAreas();
+    } catch (error) {
+      Alert.alert('Error', 'Failed to add custom item');
+      console.error('Error adding custom item:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdateItem = async () => {
+    setIsLoading(true);
+    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItems.map(item => item.TAIM_ITEM_KEY).join(',');
+    console.log("UpdateItem", tamAreaKeys);
+    const data = {
+      p_TIM_KEY: Team_Key,
+      p_TAIM_ITEM_KEY: tamAreaKeys.toString(),
+      p_TAM_AREA_KEY: AreasKey,
+      p_UPD_KEY: PropertyId,
+      p_TIIM_UPDATED_BY: Created_Id.toString()
+    };
+    console.log("Item", data);
+
+    try {
+      const response = await UpdateItemMapping(data);
+      Alert.alert('Success', response?.message);
+      console.log('API Response UpdateItem:', response);
+      handleInspectionudateItem();
+      setIsEditing(!isEditing)
+      // handleInspectionuEditItem();
+      // getInspectionAreas();
+    } catch (error) {
+      // Alert.alert('Error', 'Failed to update custom item');
+      console.error('Error update custom item:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const removeItem = (id) => {
-    const removedItem = getItems.find((item) => item.TAIM_ITEM_KEY === id);
+    const removedItem = editGetItem.find((item) => item.TAIM_ITEM_KEY === id);
     if (!removedItem) {
       console.warn(`Item with ID ${id} not found in getItems.`);
       return;
     }
     console.log(`Removing item with ID ${removedItem.TAIM_ITEM_KEY}`);
 
-    const updatedItems = getItems.filter((item) => item.TAIM_ITEM_KEY !== id);
-    setGetItems(updatedItems);
+    const updatedItems = editGetItem.filter((item) => item.TAIM_ITEM_KEY !== id);
+    setEditGetItem(updatedItems);
   };
 
-  const tamAreaKeys = getItems.map(item => item.TAIM_ITEM_KEY).join(',');
-  console.log("dfdfddffd",tamAreaKeys);
-  const ListItem = ({item,onPressRemove}) => {
+  const ListItem = ({ item, onPressRemove }) => {
     return (
       <View key={item.TAIM_ITEM_KEY}>
         <View style={[BedroomCss.minustextview]} >
@@ -187,8 +217,7 @@ const navigation= useNavigation()
   const renderItem = ({ item }) => (
     <ListItem item={item} onPressRemove={removeItem} />
   );
-  const BedroomDetail_render = ({item}) => {
-    console.log("itemitemitemitem",item);
+  const BedroomDetail_render = ({ item }) => {
     return (
       <>
         <View style={BedroomCss.TableView}>
@@ -211,27 +240,38 @@ const navigation= useNavigation()
                   style={BedroomCss.YText}
                   ellipsizeMode="tail"
                   numberOfLines={1}>
-                  {item.Inspected? item.Inspected: 'Status'}
+                  {item.status_value ? item.status_value : '...'}
                 </Text>
               </View>
             </>
           ) : null}
           {!isEditing ? (
+          
             <View style={BedroomCss.bindinputview}>
-              <AntDesign
+                {item?.TIMC_INSPECTED_ITEMS ? 
+                <AntDesign
                 name="checkcircle"
                 size={18}
-                color={_COLORS.Kodie_GreenColor}
-              />
+                color={_COLORS.Kodie_GreenColor }
+              />:
+             
+            <Entypo
+            name="circle-with-cross"
+            size={19}
+            color={_COLORS.Kodie_ExtraLightGrayColor }
+          />
+                }
+             
               <View style={BedroomCss.messageview}>
                 <Text
                   style={{
                     color: _COLORS.Kodie_BlackColor,
                     fontSize: 13,
-                    alignItems: 'center',
+                    alignSelf: 'center',
+                    marginBottom:3,
                     fontFamily: FONTFAMILY.K_Regular,
                   }}>
-                  1
+                  {item.TIMC_COMMENTS ? '1' : '0'}
                 </Text>
                 <MaterialCommunityIcons
                   name="message-text-outline"
@@ -242,8 +282,12 @@ const navigation= useNavigation()
 
               <TouchableOpacity
                 onPress={() => {
-                  setSelectedItem(item);
-                  refRBSheet2.current.open({item});
+                  if(TAIM_ITEM_STATUS === 1 ) {
+                    setSelectedItem(item);
+                  refRBSheet2.current.open({ item })
+                  }else{
+                  alert('First save the inspection items')
+                  }
                 }}
                 style={BedroomCss.rightIcon}>
                 <Feather
@@ -260,69 +304,20 @@ const navigation= useNavigation()
       </>
     );
   };
-  const HandleOnFirstRbSheet =()=>{
+  const HandleOnFirstRbSheet = () => {
+    handleInspectionuEditItem();
     refRBSheet1.current.close()
   }
-  const handleAddItem = async () => {
-    setIsLoading(true);
-
-    const data ={
-      timKey: Team_Key,
-      taimItemKey:tamAreaKeys.toString(),
-      tamAreaKey: AreasKey,
-      updKey: PropertyId,
-      tiimCreatedBy:Created_Id.toString()
-    };
-    console.log("Item",data);
-const Url = Config.BASE_URL;
-const ItemUrl = Url + 'add/Item'
-    try {
-      const response = await axios.post( ItemUrl,data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      Alert.alert('Success',response?.data?.message);
-      // handleInspectionudateItem();
-      console.log('API Response:', response.data);
-    setIsLoading(false);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to add custom item');
-      console.error('Error adding custom item:', error);
-    }
-  };
-  const handleInsStatus_Type = async () => {
-    const InspectionData = {
-      P_PARENT_CODE: 'STATUS',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const InspectionStatustype = url + 'lookup_details';
-    console.log('Request URL:', InspectionStatustype);
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post(InspectionStatustype, InspectionData);
-      console.log('Inspection_Statustype', response?.data);
-
-      if (response?.data?.status === true) {
-        setIsLoading(false);
-        console.log('InspectionStatusData....', response?.data?.lookup_details);
-        setInspectionStatusType(response?.data?.lookup_details);
-      } else {
-        console.error('Inspection_type_error:', response?.data?.error);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('Inspection_type error:', error);
-      setIsLoading(false);
-    }
-  };
+  
+  
+ 
   return (
     <SafeAreaView style={BedroomCss.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={AreaName}
+        EditText
+        onPressEdit={() => setIsEditing(!isEditing)}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={BedroomCss.Container}>
@@ -342,14 +337,11 @@ const ItemUrl = Url + 'add/Item'
           ) : null}
           <View style={BedroomCss.TableView}>
             <Text style={BedroomCss.HeaderText}>{'Inspection items'}</Text>
-            <TouchableOpacity onPress={() => setIsEditing(!isEditing)}>
-              <Text style={BedroomCss.bedText}>{'Edit'}</Text>
-            </TouchableOpacity>
           </View>
           <DividerIcon marginTop={5} />
           {isEditing ? (
             <FlatList
-              data={getItems}
+              data={editGetItem}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
@@ -379,9 +371,7 @@ const ItemUrl = Url + 'add/Item'
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
                   borderColor={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
-                    navigation.navigate.pop();
-                  }}
+                  onPress={() => setIsEditing(!isEditing)}
                   disabled={isLoading ? true : false}
                   width={'20%'}
                   marginHorizontal={10}
@@ -390,11 +380,12 @@ const ItemUrl = Url + 'add/Item'
                   _ButtonText={'Done'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    // props.navigation.navigate('AboutYou');
-                  handleAddItem();
+                    TAIM_ITEM_STATUS === 1 ?
+                    handleUpdateItem(): handleAddItem();
                   }}
                   disabled={isLoading ? true : false}
                   width={'20%'}
+                  height={'50%'}
                 />
               </View>
             </>
@@ -404,11 +395,15 @@ const ItemUrl = Url + 'add/Item'
                 _ButtonText={'Save'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  handleAddItem();
+                  TAIM_ITEM_STATUS === 1 ?
+                 handleUpdateItem(): handleAddItem();
                 }}
                 disabled={isLoading ? true : false}
               />
-              <TouchableOpacity style={BedroomCss.goBack_View}>
+              <TouchableOpacity style={BedroomCss.goBack_View}
+              onPress={() => {
+                props.navigation.navigate('PropertyInspection');
+              }}>
                 <View style={BedroomCss.backIcon}>
                   <Feather
                     name="chevron-left"
@@ -436,13 +431,12 @@ const ItemUrl = Url + 'add/Item'
           },
           container: BedroomCss.bottomModal_container,
         }}>
-       <AddCustomItems Team_Key={Team_Key} PropertyId={PropertyId} AreasKey={AreasKey} Created_Id={Created_Id} onClose={HandleOnFirstRbSheet}/>
+        <AddCustomItems Team_Key={Team_Key} PropertyId={PropertyId} AreasKey={AreasKey} Created_Id={Created_Id} onClose={HandleOnFirstRbSheet} />
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
         closeOnDragDown={true}
-        closeOnPressMask={true}
-        height={600}
+        height={750}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -452,117 +446,19 @@ const ItemUrl = Url + 'add/Item'
           },
           container: BedroomCss.bottomModal_container,
         }}>
-        <View style={BedroomCss.secondModal}>
-          <View style={BedroomCss.ModalContainer}>
-            <Text style={BedroomCss.ShareText}>
-              {selectedItem ? selectedItem.TAIM_ITEM_NAME : ''}
-            </Text>
-            <TouchableOpacity onPress={()=>refRBSheet2.current.close()}>
-            <AntDesign
-              name="close"
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-            />
-            </TouchableOpacity>
-          </View>
-          <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {'Has this item been inspected?'}
-          </Text>
-          <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
-            {!isChecked ? (
-              <MaterialIcons
-                name="check-box-outline-blank"
-                size={30}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            ) : (
-              <View style={BedroomCss.groupIconView}>
-                <MaterialIcons
-                  name="check-box-outline-blank"
-                  size={30}
-                  color={_COLORS.Kodie_GrayColor}
-                />
-                <Entypo
-                  name="check"
-                  size={18}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={BedroomCss.groupIcon}
-                />
-              </View>
-            )}
-          </TouchableOpacity>
-          <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {'Describe the current state of the item'}
-          </Text>
-          <Dropdown
-            style={BedroomCss.dropdown}
-            placeholderStyle={BedroomCss.placeholderStyle}
-            selectedTextStyle={BedroomCss.selectedTextStyle}
-            inputSearchStyle={BedroomCss.inputSearchStyle}
-            iconStyle={BedroomCss.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Select from drop down"
-            searchPlaceholder="Search..."
-            value={value}
-            onChange={item => {
-              setValue(item.value);
-            }}
-          />
-          <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {'Upload clear images of the item'}
-          </Text>
-          <UploadImageBoxes
-            Box_Text={'Add Photo'}
-            circlestyle={BedroomCss.circleStyle}
-            pluacircle={BedroomCss.pluscirclestyle}
-            size={15}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          />
-          <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {'Comment'}
-          </Text>
-          <TextInput
-            style={BedroomCss.input}
-            value={comment}
-            onChangeText={setComment}
-            placeholder="Enter a description of your property"
-            placeholderTextColor="#999"
-            multiline
-            numberOfLines={5}
-            textAlignVertical={'top'}
-          />
-          <View style={BedroomCss.ButtonView}>
-            <TouchableOpacity style={BedroomCss.cancelView}>
-              <Text style={[BedroomCss.cancelText]}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={BedroomCss.SaveView}>
-              <Text style={BedroomCss.DoneText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <AddCabinatItems
+          ItemName={selectedItem ? selectedItem.TAIM_ITEM_NAME : ''}
+          onCabinateClose={() => {
+            handleInspectionudateItem();
+            refRBSheet2?.current.close()}}
+          Tim_Key={Team_Key}
+          PropertyId={PropertyId}
+          AreasKey={AreasKey}
+          Created_Id={Created_Id}
+          TAIM_ITEM_KEY={selectedItem ? selectedItem.TAIM_ITEM_KEY : ''}
+        />
       </RBSheet>
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        height={180}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: BedroomCss.bottomModal_container,
-        }}>
-        <UploadImageData heading_Text={'Upload more images'} />
-      </RBSheet>
+
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

@@ -162,7 +162,7 @@ const MarketplacePropertyListing = props => {
           'Content-Type': 'application/json',
         },
       });
-      console.log('API Response:', response?.data);
+      // console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
         Alert.alert('Property Deleted', response?.data?.message);
         get_MarketplacePropertyListing();
@@ -336,7 +336,7 @@ const MarketplacePropertyListing = props => {
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => viewMarketPlace?  props.navigation.navigate('VacantPropertiesList'):_goBack(props)}
-        MiddleText={'Propery listings'}
+        MiddleText={'Property listings'}
       />
 
       <SearchBar
@@ -367,7 +367,7 @@ const MarketplacePropertyListing = props => {
       <RBSheet
           ref={refRBSheet1}
           closeOnDragDown={true}
-          height={280}
+          height={300}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {

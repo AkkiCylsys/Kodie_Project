@@ -27,11 +27,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-const staticimage = [
-  // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-];
 export default SearchResult = props => {
   const refRBSheet = useRef();
   const navigation = useNavigation();
@@ -40,7 +35,9 @@ export default SearchResult = props => {
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [rentalAmount, setRentalAmount] = useState('');
+  const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
+  const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
     keyFeatureMapping[detail.paf_key] = detail.features_name;
@@ -108,15 +105,22 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
+    console.log(item,"details");
     const keyFeatures = JSON.parse(item.key_features);
     // console.log(keyFeatures);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ViewRentalDetails', {
+            propertyId: item?.property_id,
+            rentalAmount: item?.rental_amount,
+            searchRentalData:item
+          });
+        }}>
         {setKeyFeature(item?.key_features)}
         {item?.image_path && item?.image_path.length != 0 ? (
           <View style={{marginTop: 10}}>
             <SliderBox
-              // images={staticimage}
               images={item?.image_path}
               sliderBoxHeight={200}
               onCurrentImagePressed={index =>
@@ -184,6 +188,8 @@ export default SearchResult = props => {
                 refRBSheet.current.open();
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
+                setBidId(item?.bid_id);
+                setPropertyDetailsItem(item);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -199,7 +205,12 @@ export default SearchResult = props => {
             name="location-pin"
             size={20}
           />
-          <Text style={SearchResultCss.location}>{item?.location || ''}</Text>
+          <Text
+            style={SearchResultCss.location}
+            numberOfLines={2}
+            ellipsizeMode="tail">
+            {item?.location || ''}
+          </Text>
         </View>
         <View style={SearchResultCss.availableBtn}>
           <Text style={SearchResultCss.availabletext}>
@@ -266,7 +277,7 @@ export default SearchResult = props => {
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-      </>
+      </TouchableOpacity>
     );
   };
   return (
@@ -296,17 +307,17 @@ export default SearchResult = props => {
                 : propertyType === 27
                 ? 'Farm'
                 : ''
-            };$${searchInputData?.input_minRange} to $${
+            }; $${searchInputData?.input_minRange} to $${
               searchInputData?.input_maxRange
-            };${AllCountsData[0]?.Bedrooms}Beds;${
+            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
               AllCountsData[1]?.Bathrooms
-            }Baths;${AllCountsData[2]?.Parking_Space}parking space;${
+            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
               AllCountsData[3]?.StreetParking
-            } on-street parking;${
+            } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
                 : 'unfurnished'
-            };${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'};${
+            }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${
               searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
             }`}
           </Text>
@@ -338,7 +349,8 @@ export default SearchResult = props => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {searchRentalResponse?.data && searchRentalResponse.data.length > 0 ? (
+        {searchRentalResponse?.data &&
+        searchRentalResponse?.data?.length > 0 ? (
           <FlatList
             data={searchRentalResponse.data}
             keyExtractor={(item, index) => `item_${index}`}
@@ -383,6 +395,8 @@ export default SearchResult = props => {
           onClose={onClose}
           propertyId={propertyId}
           rentalAmount={rentalAmount}
+          bibId={bibId}
+          propertyDetails={propertyDetailsItem}
         />
       </RBSheet>
       {/* </ScrollView> */}

@@ -25,7 +25,7 @@ import JobCompletion from '../../screens/Contractor/JobCompletion/JobCompletion'
 import ContractorProfile from '../../screens/Contractor/ContractorProfile/ContractorProfile';
 import DocumentList from '../../screens/DocumentList/DocumentList';
 import RejectConfirm from '../../screens/Landlord/RejectConfirm/RejectConfirm';
-import ProspectsTenant from '../../screens/Landlord/ProspectsTenant/ProspectsTenant';
+import ProspectsTenant from '../../screens/TenantManagement/ProspectsTenant/ProspectsTenant';
 import Notice from '../../screens/NotiesList/Notice';
 import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
@@ -40,7 +40,6 @@ import SignUpVerification from '../../screens/Authentication/SignUpScreen/SignUp
 import Location from '../../screens/Authentication/SignUpScreen/Location';
 import AboutYou from '../../screens/Authentication/SignUpScreen/AboutYou/AboutYou';
 import CreateJobTermsScreen from '../../screens/CreateJob/CreateJobTermsScreen/CreateJobTermsScreen';
-import ConfirmJobCompletion from '../../screens/CreateJob/ConfirmJobCompletion/ConfirmJobCompletion';
 import Account from '../../screens/Authentication/SignUpScreen/Account/Account';
 import FirstProperty from '../../screens/Authentication/SignUpScreen/FirstProperty/FirstProperty';
 import PropertyDetails from '../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails';
@@ -140,6 +139,21 @@ import MarketplacePropertyListing from '../../MarketplacePropertyListing/Marketp
 import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
 import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/RentalOffer/RentalOffer';
 import AddNotices from '../../screens/NotiesList/AddNewNotice/AddNotices';
+import PropertyRentalOffer from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyRentalOffer';
+import PropertyViewApplication from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyViewApplication/PropertyViewApplication';
+import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
+import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
+import GroupChat from '../../screens/ChatsScreens/GroupChat';
+import TenantScreening from '../../screens/TenantManagement/TenantScreening/TenantScreening';
+import PreScreeningQuestinnaire from '../../screens/TenantManagement/TenantScreening/PreScreeningQuestionnaire/PreScreeningQuestinnaire';
+import TenantProfile from '../../screens/TenantManagement/TenantScreening/TenantProfile/TenantProfile';
+import ManagingTenantsScreen from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingTenantsScreen';
+import TenantDocuments from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantDocuments';
+import InspectionsChecklist from '../../screens/Tenant/InspectionsChecklist/InspectionsChecklist';
+import TenantAllDocumentsFolder from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenantAllDocumentsFolder/TenantAllDocumentsFolder';
+import TenantDocumentsDetails from '../../screens/TenantManagement/ManagingTenantsScreen/TenantDocuments/TenentDocumentsDetails/TenantDocumentsDetails';
+import ManagingProspectsTenants from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingProspectsTenants/ManagingProspectsTenants';
+import Renthistory from '../../screens/Tenant/Renthistory/Renthistory';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -200,6 +214,7 @@ const BottomNav = props => {
         name="Properties"
         component={Properties}
         options={{
+          tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIconStyle: {flex: 1},
@@ -585,11 +600,7 @@ const AllStackRouts = props => {
           component={CreateJobTermsScreen}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
-          name={'ConfirmJobCompletion'}
-          component={ConfirmJobCompletion}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
+
         <Stack.Screen
           name={'SignUpSteps'}
           component={SignUpSteps}
@@ -1017,7 +1028,7 @@ const AllStackRouts = props => {
           component={PaymentScreen}
           options={{headerShown: false}}
         /> */}
-      
+
         <Stack.Screen
           name={'CreditCard'}
           component={CreditCard}
@@ -1068,9 +1079,84 @@ const AllStackRouts = props => {
           component={RentalOffer}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={'AddNotices'}
           component={AddNotices}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PropertyRentalOffer'}
+          component={PropertyRentalOffer}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PropertyViewApplication'}
+          component={PropertyViewApplication}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'MultipleDropDwonDummy'}
+          component={MultipleDropDwonDummy}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'CreateGroup'}
+          component={CreateGroup}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'GroupChat'}
+          component={GroupChat}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantScreening'}
+          component={TenantScreening}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PreScreeningQuestinnaire'}
+          component={PreScreeningQuestinnaire}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantProfile'}
+          component={TenantProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'ManagingTenantsScreen'}
+          component={ManagingTenantsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantDocuments'}
+          component={TenantDocuments}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'InspectionsChecklist'}
+          component={InspectionsChecklist}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantAllDocumentsFolder'}
+          component={TenantAllDocumentsFolder}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'TenantDocumentsDetails'}
+          component={TenantDocumentsDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'ManagingProspectsTenants'}
+          component={ManagingProspectsTenants}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Renthistory'}
+          component={Renthistory}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

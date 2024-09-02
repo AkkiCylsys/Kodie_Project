@@ -1,11 +1,11 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const PropertyList2Css = StyleSheet.create({
-  scrollViewStl: { marginBottom:'50%' },
+  scrollViewStl: {marginBottom: '50%'},
   Container: {
     flex: 1,
     marginHorizontal: 16,
-    marginBottom:'20%'
+    marginBottom: '20%',
   },
   dropdown: {
     borderWidth: 1,
@@ -41,32 +41,31 @@ export const PropertyList2Css = StyleSheet.create({
   },
   rowView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   flexContainer: {
     flex: 1,
   },
-  spaceView: { margin: 5 },
+  spaceView: {margin: 5},
   dropdown: {
     height: 48,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 4,
     padding: 12,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop:10
+    marginTop: 10,
   },
   placeholderStyle: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
-    color:_COLORS.Kodie_GrayColor
+    color: _COLORS.Kodie_GrayColor,
   },
   selectedTextStyle: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
-    color:_COLORS.Kodie_BlackColor
-
+    color: _COLORS.Kodie_BlackColor,
   },
   iconStyle: {
     width: 20,
@@ -82,17 +81,17 @@ export const PropertyList2Css = StyleSheet.create({
   },
   item: {
     padding: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   selectedStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 20,
     backgroundColor: _COLORS.Kodie_BlackColor,
-    shadowColor: "#000",
+    shadowColor: '#000',
     marginTop: 8,
     marginRight: 12,
     borderWidth: 1,
@@ -103,7 +102,7 @@ export const PropertyList2Css = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 1.41,
 
     elevation: 2,
@@ -111,7 +110,7 @@ export const PropertyList2Css = StyleSheet.create({
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 12,
-    color:_COLORS.Kodie_WhiteColor
+    color: _COLORS.Kodie_WhiteColor,
   },
   select_item: {
     padding: 17,
@@ -133,7 +132,7 @@ export const PropertyList2Css = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
   },
-  // 
+  //
   mainfeaturesview: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -191,16 +190,11 @@ export const PropertyList2Css = StyleSheet.create({
     justifyContent: 'space-between',
   },
   locationContainer: {
-    // flexDirection: "row",
-    // alignItems: "center",
     flex: 1,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 6,
     shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 2,
   },
   locationInput: {
     flex: 1,
@@ -235,6 +229,71 @@ export const PropertyList2Css = StyleSheet.create({
     marginBottom: 30,
     position: 'absolute',
   },
-  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
+  floorSizeView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  additionalFeatureView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 
+  featureItem: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  textInputStyle: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    color: _COLORS.Kodie_BlackColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 8,
+    width: 103,
+  },
+  btn_main_view: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
+  searchInput: {
+    color: _COLORS.Kodie_BlackColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+    height: 40,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  listContainer: {
+    paddingVertical: 10,
+    height: 200,
+  },
+  rowList: {
+    height: 40,
+  },
+  tagContainer: {
+    borderWidth: 1,
+    height: 40,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+  },
+  textTag: {
+    fontSize: 14,
+    color: _COLORS.Kodie_WhiteColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  textDropdown: {
+    marginLeft: 20,
+  },
+  dropdownMenu: {
+    flex: 1,
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+  },
 });

@@ -7,6 +7,7 @@ import {
   FlatList,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -31,7 +32,9 @@ import ReadMore from '@fawazahmed/react-native-read-more';
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
   const rentalAmount = props?.route?.params?.rentalAmount;
+  const searchRentalData = props?.route?.params?.searchRentalData;
   console.log('propertyId in view...', propertyId);
+  console.log('searchRentalData in view...', searchRentalData);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -128,7 +131,7 @@ const ViewRentalDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor Area' ? (
+      ) : item === '' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -156,21 +159,21 @@ const ViewRentalDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in Robes' ? (
+      ) : item === 'Built in robes' ? (
         <MaterialCommunityIcons
           name="cupboard"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Air Conditioning' ? (
+      ) : item === 'Air conditioning' ? (
         <MaterialCommunityIcons
           name="air-conditioner"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Solar Panels' ? (
+      ) : item === 'Solar panels' ? (
         <MaterialCommunityIcons
           name="solar-panel"
           size={25}
@@ -184,7 +187,7 @@ const ViewRentalDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'High Energy Efficiency' ? (
+      ) : item === 'High energy efficiency' ? (
         <SimpleLineIcons
           name="energy"
           size={25}
@@ -201,48 +204,52 @@ const ViewRentalDetails = props => {
       const detailData = {
         property_id: propertyId,
       };
-      const url = Config.BASE_URL;
-      const property_Detailss = url + 'get_property_details';
-      console.log('url..', property_Detailss);
+      const url = `${Config.BASE_URL}get_property_details`;
+      console.log('url:', url);
       setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
+  
+      const response = await axios.post(url, detailData);
       setIsLoading(false);
-      console.log('response_get_property_details...', response?.data);
-      if (response?.data?.success === true) {
-        setProperty_Details(response?.data?.property_details[0]);
-        console.log(
-          'type of property....',
-          response?.data?.property_details[0],
-        );
-        // Fetch and process key features..........
-        if (response?.data?.property_details[0]?.key_features) {
-          const parsedData = JSON.parse(
-            response?.data?.property_details[0]?.key_features.replace(
-              /\\/g,
-              '',
-            ),
-          );
-          setDetail(parsedData);
-          console.log('parsedData....', parsedData);
+  
+      console.log('response_get_property_details:', response?.data);
+      if (response?.data?.success) {
+        const propertyDetails = response?.data?.property_details?.[0];
+        setProperty_Details(propertyDetails);
+        console.log('type of property:', propertyDetails);
+  
+        // Fetch and process key features
+        if (propertyDetails?.key_features) {
+          try {
+            const parsedData = JSON.parse(propertyDetails.key_features.replace(/\\/g, ''));
+            setDetail(parsedData);
+            console.log('parsedData:', parsedData);
+          } catch (parseError) {
+            console.error('Error parsing key features:', parseError);
+          }
         }
-        const additionalKeyFeatures =
-          response?.data?.property_details[0]?.additional_key_features[0];
+  
+        const additionalKeyFeatures = propertyDetails?.additional_key_features?.[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
+  
+        const additionalFeatures_id = propertyDetails?.additional_features;
+        if (additionalFeatures_id) {
+          const is_additionalFeaturesid = additionalFeatures_id.split(',');
+          setAddtionalFeaturesID(is_additionalFeaturesid);
+          console.log('additionalFeaturesid:', is_additionalFeaturesid);
+        }
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
+        // Uncomment if you want to display an alert to the user
         // alert('Oops something went wrong! Please try again later.');
       }
-      const additionalFeatures_id =
-        response?.data?.property_details[0]?.additional_features;
-      console.log('additionalFeaturesid....', additionalFeatures_id);
-      const is_additionalFeaturesid = additionalFeatures_id.split(',');
-      setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      // alert(error);
       setIsLoading(false);
+      // Uncomment if you want to display an alert to the user
+      // alert('An error occurred while fetching the property details. Please try again.');
     }
   };
+  
   return (
     <SafeAreaView style={ViewRentalDetailsStyle.mainContainer}>
       <TopHeader
@@ -342,7 +349,7 @@ const ViewRentalDetails = props => {
             ViewRentalDetailsStyle.propertyHeading,
             {marginTop: 5, marginHorizontal: 28},
           ]}>
-          {`$${rentalAmount || '0'}`}
+          {`${rentalAmount || '0'}`}
         </Text>
         <DividerIcon
           borderBottomWidth={3}
@@ -378,6 +385,7 @@ const ViewRentalDetails = props => {
             keyExtractor={item => item?.id}
             renderItem={Detail_rander}
           />
+          <DividerIcon/>
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <Text
               style={[
@@ -410,7 +418,7 @@ const ViewRentalDetails = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
-                // props.navigation.navigate('RentalOffer');
+                props.navigation.navigate('CreateNewInspection');
               }}
               disabled={isLoading ? true : false}
             />
@@ -639,7 +647,7 @@ const ViewRentalDetails = props => {
                 setExternalfeaturesClp(!externalfeaturesClp);
               }}>
               <Text style={ViewRentalDetailsStyle.propery_det}>
-                {'External featuress'}
+                {'External features'}
               </Text>
 
               <TouchableOpacity
@@ -787,6 +795,7 @@ const ViewRentalDetails = props => {
                 onPressLeftButton={() => {
                   setSubmitApplicationBtn(false);
                   setSubmitApplicationBtnId(0);
+                  Alert.alert('Coming soon')
                   // alert(selectPetFriendlyBtnId)
                 }}
                 RightButtonText={'Message owner'}
@@ -808,6 +817,11 @@ const ViewRentalDetails = props => {
                 onPressRightButton={() => {
                   setSubmitApplicationBtn(true);
                   setSubmitApplicationBtnId(1);
+                  props.navigation.navigate('Chat', { 
+                    data: searchRentalData, 
+                    userid: searchRentalData.landlord_id,
+                    chatname:'chatname'
+                   });
                   // alert(selectPetFriendlyBtnId)
                 }}
               />

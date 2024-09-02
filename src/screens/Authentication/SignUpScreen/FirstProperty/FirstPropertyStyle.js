@@ -44,6 +44,9 @@ export const FirstPropertyStyle = StyleSheet.create({
   inputContainer: {
     marginBottom: 15,
   },
+  featureText:{
+    marginTop:20
+  },
   input: {
     height: 100,
     borderRadius: 6,
@@ -74,7 +77,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    // marginTop: 10,
     borderRadius: 8,
     // paddingHorizontal: -5,
   },

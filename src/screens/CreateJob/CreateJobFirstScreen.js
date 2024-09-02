@@ -1,7 +1,7 @@
 //ScreenNo:143
 //ScreenNo:139
 //ScreenNo:121
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,80 +10,59 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  PermissionsAndroid,
-  BackHandler,
   SafeAreaView,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
-import StepText from '../../components/Molecules/StepText/StepText';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
-import {
-  VIEW_STYLES,
-  _COLORS,
-  LABEL_STYLES,
-  IMAGES,
-  FONTFAMILY,
-} from '../../Themes/index';
+import {_COLORS, LABEL_STYLES, IMAGES} from '../../Themes/index';
 import TopHeader from '../../components/Molecules/Header/Header';
-import RangeSlider from '../../components/Molecules/RangeSlider/RangeSlider';
 import {_goBack} from '../../services/CommonServices';
 import {Dropdown} from 'react-native-element-dropdown';
-import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import ServicesBox from '../../components/Molecules/ServicesBox/ServicesBox';
-import RowButtons from '../../components/Molecules/RowButtons/RowButtons';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
-//import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {debounce} from 'lodash';
-import MapComponent from '../../components/Molecules/GoogleMap/mapComponets';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
-  const mapRef = useRef(null);
-  const navigation = useNavigation();
-  const [getLat, setGetLat] = useState('');
-  const [getLong, setGetLong] = useState('');
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
   const job_sub_type = props.route.params?.job_sub_type;
+  const ReviewInspection = props.route.params?.ReviewInspection;
   const [currentPage, setCurrentPage] = useState(0);
-  const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
+  const [takingPlaceError, setTakingPlaceError] = useState(false);
   const [isClick, setIsClick] = useState(false);
-  const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
-  const [property_valueError, setProperty_valueError] = useState(false);
   const [selectedAddressData, setSelectedAddreeData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
   const [jobPriorityValueError, setJobPriorityValueError] = useState(false);
-
   const [ratingThresholdData, setRatingThresholdData] = useState([]);
   const [ratingThresholdValue, setRatingThresholdValue] = useState([]);
   const [jobTypeData, setJobTypeData] = useState([]);
   const [selectJobType, setSelectJobType] = useState();
   const [selectJobTypeid, setSelectJobTypeid] = useState('');
+  const [selectJobTypeidError, setSelectJobTypeidError] = useState('');
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
+  const [servicesValueError, setservicesValueError] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState('');
@@ -94,22 +73,30 @@ export default CreateJobFirstScreen = props => {
   const [longitude, setlongitude] = useState('');
   const [arrowIcon, setArrowIcon] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
 
   // validation.....
   const handleNextbtn = () => {
-    if (jobPriorityValue == '') {
+    console.log(
+      'selectedAddress?.property_type_id',
+      selectedAddress?.property_type_id,
+    );
+    if (selectJobTypeid == '') {
+      setSelectJobTypeidError('The type of job you need is required!');
+    } else if (servicesValue == '') {
+      setservicesValueError(true);
+    } else if (jobPriorityValue == '') {
       setJobPriorityValueError(true);
-    } else if (property_value == '') {
-      setProperty_valueError(true);
+    }
+    else if (selectedAddress == '') {
+      setTakingPlaceError(true);
     } else {
       props.navigation.navigate('CreateJobTermsScreen', {
         selectJobType: selectJobTypeid,
         servicesValue: servicesValue,
         aboutyourNeed: aboutyourNeed,
         jobPriorityValue: jobPriorityValue,
-        property_value: property_value,
+        property_value: selectedAddress?.property_type_id,
         location: location || selectedAddress.location,
         ratingThresholdValue: ratingThresholdValue,
         latitude: latitude || selectedAddress.latitude,
@@ -120,6 +107,7 @@ export default CreateJobFirstScreen = props => {
       });
     }
   };
+
   const goBack = () => {
     props.navigation.pop();
     props.navigation.navigate('Jobs', {
@@ -146,10 +134,8 @@ export default CreateJobFirstScreen = props => {
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -171,7 +157,6 @@ export default CreateJobFirstScreen = props => {
         console.log('addressComponent2.....', addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
       })
       .catch(error => console.warn(error));
@@ -179,8 +164,7 @@ export default CreateJobFirstScreen = props => {
   const handleBoxPress = lookup_key => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    // alert(selectJobTypeid);
-    // alert(isClick)
+    setSelectJobTypeidError();
   };
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
@@ -282,7 +266,11 @@ export default CreateJobFirstScreen = props => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
-    JobId > 0 ? getJobDetails() : null; //edit by Deependra..
+    JobId > 0 ||
+    (Array.isArray(createJobId) && createJobId.length > 0) ||
+    typeof createJobId === 'number'
+      ? getJobDetails()
+      : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -301,11 +289,7 @@ export default CreateJobFirstScreen = props => {
     }
   }, [selectJobType]);
   const Selected_Time_render = item => {
-    const isSelected =
-      // item?.longitude === selectedAddress.longitude &&
-      // item?.latitude === selectedAddress.latitude;
-      // item?.property_id;
-      selectedAddress?.property_id === item.property_id;
+    const isSelected = selectedAddress?.property_id === item.property_id;
 
     return (
       <View contentContainerStyle={{flex: 1, height: '100%'}}>
@@ -516,6 +500,9 @@ export default CreateJobFirstScreen = props => {
                 isClick === item?.lookup_key
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
+              borderColor: selectJobTypeidError
+                ? _COLORS?.Kodie_redColor
+                : _COLORS.Kodie_GrayColor,
             },
           ]}
           textColor={[
@@ -535,7 +522,6 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  console.log(selectedAddress.latitude, 'jkhujsdgfhdgsfildsgfliuesfgdsjg');
   // api intrigation.......
   const Selected_Address_Type = () => {
     const Selected_Address = {
@@ -543,18 +529,16 @@ export default CreateJobFirstScreen = props => {
     };
     const url = Config.BASE_URL;
     const Selected_AddressType = url + 'get_property_details_my_acc_id';
-    console.log('Request URL:', Selected_AddressType);
     setIsLoading(true);
     axios
       .post(Selected_AddressType, Selected_Address)
       .then(response => {
-        console.log('Selected_Address', response?.data);
+        // console.log('Selected_Address', response?.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
           console.log('Selected_Address....', response?.data?.property_details);
           setSelectedAddreeData(response?.data?.property_details);
         } else {
-          console.error('Selected_Address_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -576,14 +560,14 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('Job_priority', response?.data);
+        // console.log('Job_priority', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Job_priorityData....', response?.data?.lookup_details);
+          // console.log('Job_priorityData....', response?.data?.lookup_details);
           setJobPriorityData(response?.data?.lookup_details);
         } else {
           console.error('Job_priority_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -604,13 +588,13 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('RatingThreshold...', response?.data);
+        // console.log('RatingThreshold...', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log(
-            'RatingThresholdData....',
-            response?.data?.lookup_details,
-          );
+          // console.log(
+          //   'RatingThresholdData....',
+          //   response?.data?.lookup_details,
+          // );
           setRatingThresholdData(response?.data?.lookup_details);
         } else {
           console.error(
@@ -638,10 +622,10 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('JobType...', response?.data);
+        // console.log('JobType...', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('JobTypeData....', response?.data?.lookup_details);
+          // console.log('JobTypeData....', response?.data?.lookup_details);
           setJobTypeData(response?.data?.lookup_details);
         } else {
           console.error('JobType_error:', response?.data?.error);
@@ -720,15 +704,16 @@ export default CreateJobFirstScreen = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
-      jm_job_id: JobId,
+      jm_job_id:
+        createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
     };
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails:', response?.data);
+        // console.log('API Response JobDetails:', response?.data);
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
-          console.log('jobDetailsData....', response?.data?.data);
+          // console.log('jobDetailsData....', response?.data?.data);
           setSelectJobTypeid(response?.data?.data?.job_type_key);
           setIsClick(parseInt(response?.data?.data?.job_type_key));
           setAboutyourNeed(response?.data?.data?.job_description);
@@ -769,10 +754,10 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response?.data);
+        // console.log('property_type', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response?.data?.lookup_details);
+          // console.log('propertyData....', response?.data?.lookup_details);
           setProperty_Data(response?.data?.lookup_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
@@ -788,7 +773,7 @@ export default CreateJobFirstScreen = props => {
     <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
         onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : ReviewInspection? _goBack(props): goBack();
         }}
         MiddleText={
           IsMap || IsSearch
@@ -875,19 +860,25 @@ export default CreateJobFirstScreen = props => {
             <Text style={CreateJobFirstStyle.heading}>{'Job details'}</Text>
             <Text style={CreateJobFirstStyle.servicestext}>
               {'Select the type of job you need:'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
           </View>
-
           <FlatList
             data={jobTypeData}
             keyExtractor={item => item.lookup_key.toString()}
             renderItem={jobType_render}
             numColumns={2}
           />
+          {selectJobTypeidError ? (
+            <Text style={CreateJobFirstStyle.error_text}>
+              {selectJobTypeidError}
+            </Text>
+          ) : null}
           <View style={CreateJobFirstStyle.formContainer}>
             <View style={{flex: 1}}>
               <Text style={LABEL_STYLES.commontext}>
                 {'What service are you looking for?'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
                 style={[
@@ -914,10 +905,16 @@ export default CreateJobFirstScreen = props => {
                 searchPlaceholder="Search..."
                 onChange={item => {
                   setservicesValue(item.lookup_key);
+                  setservicesValueError(false);
                 }}
                 renderItem={lookingServices_render}
               />
             </View>
+            {servicesValueError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {'Service are you looking for is required!'}
+              </Text>
+            ) : null}
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Tell us more about your needs:'}
@@ -935,7 +932,10 @@ export default CreateJobFirstScreen = props => {
               />
             </View>
             <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Job priority:'}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Job priority'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -955,15 +955,19 @@ export default CreateJobFirstScreen = props => {
                   setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
+                dropdownPosition="bottom"
               />
             </View>
             {jobPriorityValueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Job priority is require.'}
+                {'Job priority is required.'}
               </Text>
             ) : null}
-            <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+            {/* <View style={{marginTop: 12}}>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Property type'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -987,12 +991,13 @@ export default CreateJobFirstScreen = props => {
             </View>
             {property_valueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Property type is require.'}
+                {'Property type is required!'}
               </Text>
-            ) : null}
+            ) : null} */}
             <View style={{marginTop: 12}}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Where is the job taking place?'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -1014,12 +1019,16 @@ export default CreateJobFirstScreen = props => {
                     longitude: item.longitude,
                     location: item.location,
                     property_id: item?.property_id,
+                    propertyType: item?.type_id,
+                    property_type_id: item?.property_type_id,
                   });
+                  setTakingPlaceError(false);
                 }}
                 renderItem={Selected_Time_render}
               />
             </View>
-            {!selectedAddress ? (
+
+            {/* {!selectedAddress ? (
               <View style={CreateJobFirstStyle.locationContainer}>
                 <TextInput
                   style={CreateJobFirstStyle.locationInput}
@@ -1028,18 +1037,13 @@ export default CreateJobFirstScreen = props => {
                   onFocus={() => {
                     setIsSearch(true);
                   }}
-                  // editable={false}
                   placeholder="Enter new location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
                 <TouchableOpacity
                   style={CreateJobFirstStyle.locationIconView}
                   onPress={() => {
-                    // Platform.OS == "ios"
-                    //   ? CheckIOSMapPermission
-                    //   : checkpermissionlocation();
                     setIsMap(true);
-                    // onRegionChange(Region);
                   }}>
                   <Octicons
                     name={'location'}
@@ -1049,8 +1053,26 @@ export default CreateJobFirstScreen = props => {
                   />
                 </TouchableOpacity>
               </View>
+            ) : null} */}
+            {takingPlaceError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {'Job taking place is required!'}
+              </Text>
             ) : null}
-
+            {selectedAddress?.propertyType ? (
+              <View style={{marginTop: 12}}>
+                <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+                <TextInput
+                  style={[
+                    CreateJobFirstStyle.input,
+                    {backgroundColor: _COLORS?.Kodie_GrayColor},
+                  ]}
+                  value={selectedAddress?.propertyType}
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  editable={false}
+                />
+              </View>
+            ) : null}
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{'Rating threshold'}</Text>
               <Dropdown
@@ -1082,14 +1104,16 @@ export default CreateJobFirstScreen = props => {
                 renderItem={ratingThreshold_render}
               />
             </View>
-            <CustomSingleButton
-              disabled={isLoading ? true : false}
-              onPress={() => {
-                handleNextbtn();
-              }}
-              _ButtonText={'Next'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-            />
+            <View style={{marginTop: 27}}>
+              <CustomSingleButton
+                disabled={isLoading ? true : false}
+                onPress={() => {
+                  handleNextbtn();
+                }}
+                _ButtonText={'Next'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+              />
+            </View>
             <TouchableOpacity
               style={CreateJobFirstStyle.goBack_View}
               onPress={() => {

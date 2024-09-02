@@ -75,10 +75,14 @@ export default PropertyDetails = props => {
   const [country, setCountry] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [error, setError] = useState('');
-
+  const [notesError, setNotesError] = useState('');
+  const [propertyError, setPropertyError] = useState('');
+  const loginData = useSelector(state => state.authenticationReducer.data);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
+      setPropertyError('');
+      setNotesError('');
     }
   };
 
@@ -153,6 +157,9 @@ export default PropertyDetails = props => {
           response?.data?.property_details[0]?.auto_list,
         );
         setSelectedButton(autoListValue === 0);
+        setCity(response?.data?.property_details[0]?.city)
+        setCountry(response?.data?.property_details[0]?.country)
+        setState(response?.data?.property_details[0]?.state)
         setPropertyDesc(
           response?.data?.property_details[0]?.property_description,
         );
@@ -171,6 +178,69 @@ export default PropertyDetails = props => {
       // Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
+  };
+  console.log(property_Detail?.key_features,'property_Detail?.key_features');
+  const updatePropertyDetails = () => {
+    const updateData = {
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location: location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value,
+      key_features: property_Detail?.key_features,
+      additional_features: property_Detail?.additional_features_id,
+      UPD_FLOOR_SIZE: property_Detail?.floor_size,
+      UPD_LAND_AREA: property_Detail?.land_area,
+      additional_key_features: property_Detail?.additional_key_features_id,
+      autolist: selectedButtonId,
+      property_id:
+        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        //   ? addPropertySecondStepData
+        //   : 
+          propertyid,
+      p_city: city,
+      p_state: state,
+      p_country: country,
+    };
+    console.log('updateData', updateData);
+    const url = Config.BASE_URL;
+    const update_property_details = url + 'update_property_details';
+    console.log('Request URL:', update_property_details);
+    setIsLoading(true);
+    console.log('updated data in edit mode cgheck...', updateData);
+    axios
+      .put(update_property_details, updateData)
+      .then(response => {
+        console.log('update_property_details', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+          props.navigation.navigate('PropertyFeature', {
+            location: location,
+            property_value: property_value,
+            propertyDesc: propertyDesc,
+            selectedButtonId: selectedButtonId,
+            latitude: latitude,
+            longitude: longitude,
+            city: city,
+            state: state,
+            country: country,
+            propertyid: 
+               propertyid,
+            editMode: editMode,
+          });
+         
+        } else {
+          console.error('update_property_detailserror:', response?.data?.error);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('update_property_details error:', error);
+        setIsLoading(false);
+      });
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -342,6 +412,14 @@ export default PropertyDetails = props => {
     }
   };
 
+  const handleNote = text => {
+    setPropertyDesc(text);
+    if (text.trim() === '') {
+      setNotesError('please enter note!');
+    } else {
+      setNotesError('');
+    }
+  };
   //dropDown render Item....
   const propertyType_render = item => {
     return (
@@ -376,6 +454,86 @@ export default PropertyDetails = props => {
   };
   const goBack = () => {
     props.navigation.pop();
+  };
+  const property_details = async () => {
+    const url = Config.BASE_URL;
+    const additionalApi = url + 'add_property_details';
+    console.log('Request URL:', additionalApi);
+    setIsLoading(true);
+    let data = {
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location: location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value > 0 ? property_value : 0,
+      key_features: 0,
+      additional_features: 0,
+      additional_key_features: 0,
+      autolist: selectedButtonId,
+      UPD_FLOOR_SIZE: 0,
+      UPD_LAND_AREA: 0,
+      p_city: city,
+      p_state: state,
+      p_country: country,
+    };
+    console.log('Property details data..', data);
+    axios
+      .post(additionalApi, {
+        user: loginData?.Login_details?.user_id,
+        user_account_details_id: loginData?.Login_details?.user_account_id,
+        location: location,
+        location_longitude: longitude,
+        location_latitude: latitude,
+        islocation: 1,
+        property_description: propertyDesc,
+        property_type: property_value > 0 ? property_value : 0,
+        key_features: [{"Bedrooms": 0}, {"Bathrooms": 0}, {"Parking Space": 0}, {"Garages": 0}],
+        additional_features: 1,
+        additional_key_features: 0,
+        autolist: selectedButtonId,
+        UPD_FLOOR_SIZE: 0,
+        UPD_LAND_AREA: 0,
+        p_city: city,
+        p_state: state,
+        p_country: country,
+      })
+
+      .then(response => {
+        console.log('property_details', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+
+          console.log(
+            'response?.data?.Property_id',
+            response?.data?.Property_id,
+          );
+
+          props.navigation.navigate('PropertyFeature', {
+            location: location,
+            property_value: property_value,
+            propertyDesc: propertyDesc,
+            selectedButtonId: selectedButtonId,
+            latitude: latitude,
+            longitude: longitude,
+            city: city,
+            state: state,
+            country: country,
+            editMode: editMode,
+            propertyid: response?.data?.Property_id,
+          });
+          console.log('property_details....', response?.data);
+        } else {
+          console.error('property_details_error:', response?.data?.error);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('property_details error:', error);
+        setIsLoading(false);
+      });
   };
   return (
     <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
@@ -500,7 +658,10 @@ export default PropertyDetails = props => {
 
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+                <Text style={LABEL_STYLES._texinputLabel}>
+                  {'Location'}
+                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                </Text>
                 <View style={PropertyDetailsStyle.locationConView}>
                   <View style={PropertyDetailsStyle.locationContainer}>
                     <TextInput
@@ -540,6 +701,8 @@ export default PropertyDetails = props => {
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
                   Property type
+            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
+
                 </Text>
                 <Dropdown
                   style={PropertyDetailsStyle.dropdown}
@@ -558,28 +721,41 @@ export default PropertyDetails = props => {
                   value={property_value}
                   onChange={item => {
                     setProperty_value(item.lookup_key);
+                    setPropertyError('');
                   }}
                   renderItem={propertyType_render}
                 />
+                {propertyError ? (
+                  <Text style={PropertyDetailsStyle.errorText}>
+                    {propertyError}
+                  </Text>
+                ) : null}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
-                  Property description
+                <Text style={LABEL_STYLES._texinputLabel}>Notes 
+            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
+
                 </Text>
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onChangeText={setPropertyDesc}
-                  placeholder="Describe your property here..."
+                  onChangeText={handleNote}
+                  placeholder="Add information about your property"
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
                   maxLength={1000}
                   textAlignVertical={'top'}
+                  onBlur={() => handleNote(propertyDesc)}
                 />
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
                 </Text>
+                {notesError ? (
+                  <Text style={PropertyDetailsStyle.errorText}>
+                    {notesError}
+                  </Text>
+                ) : null}
               </View>
               <View
                 style={{
@@ -641,23 +817,40 @@ export default PropertyDetails = props => {
                   _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
+                    let isValid = true;
+
                     if (!location) {
-                      setError('Please enter a location.');
-                      return;
+                      setError('Please enter a location!');
+                      isValid = false;
+                    } else if (!property_value) {
+                      setError('');
+                      setPropertyError('Please select a property type!');
+                      isValid = false;
+                    } else if (!propertyDesc) {
+                      setPropertyError('');
+                      setNotesError('Please enter notes!');
+                      isValid = false;
                     } else {
-                      props.navigation.navigate('PropertyFeature', {
-                        location: location,
-                        property_value: property_value,
-                        propertyDesc: propertyDesc,
-                        selectedButtonId: selectedButtonId,
-                        latitude: latitude,
-                        longitude: longitude,
-                        propertyid: propertyid,
-                        city: city,
-                        state: state,
-                        country: country,
-                        editMode: editMode,
-                      });
+                      setError('');
+                      setPropertyError('');
+                      setNotesError('');
+                    }
+
+                    if (isValid) {
+                     propertyid? updatePropertyDetails(): property_details();
+                      // props.navigation.navigate('PropertyFeature', {
+                      //   location: location,
+                      //   property_value: property_value,
+                      //   propertyDesc: propertyDesc,
+                      //   selectedButtonId: selectedButtonId,
+                      //   latitude: latitude,
+                      //   longitude: longitude,
+                      //   propertyid: propertyid,
+                      //   city: city,
+                      //   state: state,
+                      //   country: country,
+                      //   editMode: editMode,
+                      // });
                     }
                   }}
                   disabled={isLoading ? true : false}

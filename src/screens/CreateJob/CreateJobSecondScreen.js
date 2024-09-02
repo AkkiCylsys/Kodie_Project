@@ -44,12 +44,14 @@ const images = [
 ];
 const CreateJobSecondScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
+  console.log('createJobId.....', createJobId);
   // console.log('loginResponse.....', loginData);
   // alert(loginData?.Login_details?.user_account_id);
 
   // validation...
   const handleValidate = () => {
-    if (editMode) {
+    if (editMode || (updateAllImage && updateAllImage.length > 0)) {
       if (allImagePaths.length === 0) {
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
@@ -69,7 +71,10 @@ const CreateJobSecondScreen = props => {
   let job_id = props?.route?.params?.job_id;
   let editMode = props?.route?.params?.editMode;
   let JobId = props?.route?.params?.JobId;
-  // console.log('job_id time for create job.....', job_id);
+  console.log('job_id time for create job.....', job_id);
+  console.log('job_id time update job.....', JobId);
+  console.log('job_id editMode.....', editMode);
+
   // alert(editMode);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
@@ -85,7 +90,11 @@ const CreateJobSecondScreen = props => {
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
   useEffect(() => {
-    JobId > 0 ? getJobDetails() : null;
+    JobId > 0 ||
+    (Array.isArray(createJobId) && createJobId.length > 0) ||
+    typeof createJobId === 'number'
+      ? getJobDetails()
+      : null;
   }, []);
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -247,7 +256,7 @@ const CreateJobSecondScreen = props => {
   // Api intrigation......
   const handleuploadJobFiles = async () => {
     const formData = new FormData();
-    formData.append('JM_JOB_ID', job_id);
+    formData.append('JM_JOB_ID', JobId > 0 ? JobId : job_id);
 
     try {
       // Append front images
@@ -325,11 +334,14 @@ const CreateJobSecondScreen = props => {
       if (response?.data && response?.data?.success === true) {
         setIsLoading(false);
         Alert.alert('Success!', response?.data?.message);
-        props.navigation.navigate('JobDetails', {job_id: job_id});
+        // props.navigation.navigate('JobDetails', {job_id: job_id});
+        props.navigation.navigate('JobDetails', {
+          job_id: JobId > 0 ? JobId : job_id,
+        });
         // clear state for image..
-        setMultiImageName([]);
-        setLeftImage([]);
-        setRightImage([]);
+        // setMultiImageName([]);
+        // setLeftImage([]);
+        // setRightImage([]);
       } else {
         const errorMessage = response?.data
           ? response?.data?.error
@@ -345,6 +357,7 @@ const CreateJobSecondScreen = props => {
       setIsLoading(false);
     }
   };
+
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';
@@ -360,26 +373,21 @@ const CreateJobSecondScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData_term....', response?.data?.data);
-          setUpdateAllImage(response?.data?.data?.image_file_path);
-          console.log(
-            'updateAllImage.....',
-            response?.data?.data?.image_file_path,
-          );
+          const images = response?.data?.data?.image_file_path || [];
+          setUpdateAllImage(images);
+          console.log('updateAllImage.....', images);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed jobDetails in edit mode ', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-
   const handleUpdateJobFiles = async () => {
     const formData = new FormData();
     if (MultiImageName && Array.isArray(MultiImageName)) {
@@ -448,7 +456,8 @@ const CreateJobSecondScreen = props => {
     console.log('formData', formData);
     console.log('length data ...', formData.length);
     const url = Config.BASE_URL;
-    const update_uploadFile_url = url + `job/updatejobimages/${JobId}`;
+    const update_uploadFile_url =
+      url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
     console.log('Request URL image:', update_uploadFile_url);
     setIsLoading(true);
     try {
@@ -462,13 +471,14 @@ const CreateJobSecondScreen = props => {
         setIsLoading(false);
         alert(response?.data?.message);
         props.navigation.navigate('JobDetails', {
-          JobId: JobId,
+          // JobId: JobId,
+          JobId: JobId > 0 ? JobId : job_id,
           editMode: editMode,
         });
         console.log('update_uploadJobFilesDatas', response?.data);
-        setMultiImageName([]);
-        setLeftImage([]);
-        setRightImage([]);
+        // setMultiImageName([]);
+        // setLeftImage([]);
+        // setRightImage([]);
       } else {
         console.log('update_uploadJobFilesData', response?.data?.error);
         // alert('Oops Somthing went wrong! please try again later.');
@@ -509,12 +519,12 @@ const CreateJobSecondScreen = props => {
             {(imagePaths && imagePaths.length > 0) ||
             (leftImagePaths && leftImagePaths.length > 0) ||
             (rightImagePaths && rightImagePaths.length > 0) ||
-            (updateAllImage && updateAllImage != 0) ? (
+            editMode ||
+            (updateAllImage && updateAllImage.length > 0) ? (
               <SliderBox
-                // images={editMode ? updateAllImage : allImagePaths}
                 images={
-                  editMode
-                    ? [...(updateAllImage || []), ...allImagePaths]
+                  editMode || (updateAllImage && updateAllImage.length > 0)
+                    ? [...updateAllImage, ...allImagePaths]
                     : [...allImagePaths]
                 }
                 sliderBoxHeight={200}
@@ -523,8 +533,8 @@ const CreateJobSecondScreen = props => {
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
+                // autoplay
+                // circleLoop
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
                 dotStyle={CreateJobSecondStyle.dotStyle}
@@ -540,7 +550,8 @@ const CreateJobSecondScreen = props => {
 
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
-              {'Upload clear images of the front profile *'}
+              {'Upload clear images of the front profile'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <AntDesign
               name="questioncircle"

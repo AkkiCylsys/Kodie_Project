@@ -40,13 +40,14 @@ const AddCustomItems = (props) =>{
             },
           });
           Alert.alert('Success', 'Custom item added successfully');
-          console.log('API Response:', response.data);
+          // console.log('API Response:', response.data);
           props?.onClose()
         } catch (error) {
           Alert.alert('Error', 'Failed to add custom item');
           console.error('Error adding custom item:', error);
         }
       };
+
     return(
         <View style={BedroomCss.Container}>
         <View style={BedroomCss.ModalContainer}>
@@ -130,7 +131,8 @@ const AddCustomItems = (props) =>{
         />
 
         <View style={BedroomCss.ButtonView}>
-          <TouchableOpacity style={BedroomCss.cancelView}>
+          <TouchableOpacity style={BedroomCss.cancelView}
+          onPress={props?.onClose}>
             <Text style={[BedroomCss.cancelText]}>Cancel</Text>
           </TouchableOpacity>
           <TouchableOpacity style={BedroomCss.SaveView} onPress={handleAddItem}>

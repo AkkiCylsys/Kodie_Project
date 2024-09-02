@@ -63,9 +63,12 @@ const data = [
 ];
 const BottomModalSearchRental = props => {
   const navigation = useNavigation();
-  const propertyId = props.propertyId;
-  const rentalAmount = props.rentalAmount;
+  // const propertyId = props.propertyId;
+  // const rentalAmount = props.rentalAmount;
+  // const bibId = props.bibId;
+  const {propertyId, rentalAmount, bibId} = props;
   console.log('propertyId.....', propertyId);
+  console.log('bibId.....', bibId);
   const handleClose = () => {
     props.onClose();
   };
@@ -82,7 +85,21 @@ const BottomModalSearchRental = props => {
             handleClose();
           }
           if (item?.id == '2') {
-            navigation.navigate('RentalOffer');
+            navigation.navigate('RentalOffer', {
+              propertyId: propertyId,
+              bibId: bibId,
+              propertyDetails:props?.propertyDetails
+            });
+            handleClose();
+          }
+          if (item?.id == '4') {
+            navigation.navigate('Chat', { 
+              data: props?.propertyDetails, 
+              userid: props?.propertyDetails.landlord_id,
+              chatname:'chatname'
+              
+            });
+
             handleClose();
           }
         }}>

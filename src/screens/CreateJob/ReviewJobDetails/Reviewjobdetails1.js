@@ -19,7 +19,10 @@ import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 const Reviewjobdetails1 = props => {
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
+  console.log('createJobId in reviewjobDetails.....', createJobId);
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -32,10 +35,10 @@ const Reviewjobdetails1 = props => {
   console.log('View_Job_Details_sdfsdf.....', props.View_Job_Details);
   console.log('JOB_IDfsdfsdfs.....', props.JOB_ID);
   console.log('JOB_IDfsdfsdfs small.....', props.job_id);
-  const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
-console.log("F_job_id....",F_job_id)
-  // alert(props.job_id)
-  // alert(props.update_JOB_ID)
+  // const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
+  const F_job_id = props.View_Job_Details ? props.JOB_ID : createJobId;
+  console.log('F_job_id....', F_job_id);
+
   useEffect(() => {
     if (props.editMode) {
       getUpdateJobDetails();
@@ -49,8 +52,6 @@ console.log("F_job_id....",F_job_id)
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
-      // jm_job_id: 1,
-      // jm_job_id: props.job_id,
       jm_job_id: F_job_id || SearchJobId,
     };
     axios
@@ -60,19 +61,15 @@ console.log("F_job_id....",F_job_id)
         if (response.data.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData....', response?.data?.data);
-          // alert(JSON.stringify(response.data.data))
-          // alert(response.data.message);
           console.log('job_type_my..', response?.data?.data?.job_type_my);
           props.onJobDetailsSuccess(response?.data?.data?.job_type_my);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed JobDetails', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -130,7 +127,9 @@ console.log("F_job_id....",F_job_id)
       <View style={{marginBottom: 50}}>
         <RowTexts
           leftText={'Name'}
-          rightText={`${jobDetailsData.first_name || ""} ${jobDetailsData.last_name || ""}`}
+          rightText={`${jobDetailsData.first_name || ''} ${
+            jobDetailsData.last_name || ''
+          }`}
         />
         <RowTexts
           leftText={'Location'}
@@ -142,25 +141,32 @@ console.log("F_job_id....",F_job_id)
         />
         <RowTexts
           leftText={'Proposed date'}
-          rightText={moment(jobDetailsData.job_date).format('MMM DD, YYYY')}
+          rightText={moment(jobDetailsData.job_date || '').format(
+            'MMM DD, YYYY',
+          )}
         />
         <RowTexts
           leftText={'Proposed time'}
-          // rightText={jobDetailsData.job_time}
-          rightText={`${moment(jobDetailsData.job_time, 'h:mm a').format(
-            'h:mm A',
-          )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
-            'h:mm A',
-          )}`}
+          rightText={
+            jobDetailsData.job_time && jobDetailsData.proposed_time
+              ? `${moment(jobDetailsData.job_time, 'h:mm a').format(
+                  'h:mm A',
+                )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
+                  'h:mm A',
+                )}`
+              : '' // Or use a placeholder like 'N/A'
+          }
         />
         <RowTexts
           leftText={'Number of hours'}
-          rightText={jobDetailsData.number_of_hours}
+          rightText={jobDetailsData.number_of_hours == null ? jobDetailsData.number_of_hours : '' }
         />
-        <RowTexts leftText={'How often'} rightText={jobDetailsData.how_often} />
+        <RowTexts leftText={'How often'} rightText={jobDetailsData.how_often == null ? jobDetailsData.how_often : ' ' } />
         <RowTexts
           leftText={'Budget range'}
-          rightText={`${jobDetailsData.job_min_budget || ""} - ${jobDetailsData.job_max_budget || ""}`}
+          rightText={`${jobDetailsData.job_min_budget == '$1' ?  ' ':jobDetailsData.job_min_budget || ''} - ${
+            jobDetailsData.job_max_budget == '$2000' ?  ' ':jobDetailsData.job_max_budget || ''
+          }`}
         />
         <RowTexts leftText={'Payment'} rightText={jobDetailsData.payment_by} />
         {/* This is hide for now client requirement. */}
@@ -179,9 +185,11 @@ console.log("F_job_id....",F_job_id)
               onPress={props.onPress}
             />
           </View>
-          <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View} onPress={()=>{
-            navigation.pop()
-          }}>
+          <TouchableOpacity
+            style={ReviewjobdetailsStyle1.goBack_View}
+            onPress={() => {
+              navigation.pop();
+            }}>
             <View style={ReviewjobdetailsStyle1.backIcon}>
               <Ionicons
                 name="chevron-back"

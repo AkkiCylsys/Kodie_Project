@@ -16,6 +16,7 @@ import {
 import {InspectionCss} from './InspectionCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,25 +55,27 @@ const Inspection = props => {
   const [getinspection, setGetInspection] = useState([]);
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const [getAreaKey, setGetAreaKey] = useState([]);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
-  );
+  const [showcustomAreaNameError, setShowcustomAreaNameError] = useState('');
+  const [errorSimiarArea, setErrorSimiarArea] = useState(false);
+
+  console.log('getinspection', getinspection);
   const TIM_KEY = props?.TIM_KEY;
 
   console.log(' props?.', TIM_KEY);
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = (id,name) => {
-        navigation.navigate('Bedroom', {
-          TeamAreaKey: id,
-          AreaName:name,
-          TIM_KEY: TIM_KEY,
-          getinspectionKey: getinspection.v_UPD_KEY,
-          PropertyId:PropertyId,
-          teamCreateId: loginData?.Login_details?.user_account_id,
-        });
+  const navigateToScreen = (id, name, TAIM_ITEM_STATUS) => {
+    console.log(TAIM_ITEM_STATUS, 'TAIM_ITEM_STATUS');
+    navigation.navigate('Bedroom', {
+      TeamAreaKey: id,
+      AreaName: name,
+      TIM_KEY: TIM_KEY,
+      getinspectionKey: getinspection.v_UPD_KEY,
+      PropertyId: PropertyId,
+      teamCreateId: loginData?.Login_details?.user_account_id,
+      TAIM_ITEM_STATUS: TAIM_ITEM_STATUS,
+    });
   };
   const handleCloseModal = () => {
     refRBSheet2.current.close();
@@ -86,28 +89,30 @@ const Inspection = props => {
     getInspectionCustomeAreas();
   }, []);
 
-  const getInspectionCustomeAreas = () => {
+  const getInspectionCustomeAreas = async() => {
     const url = Config.BASE_URL;
-    const CustomAreaGetUrl = url + `get_inspection_area`;
-    console.log('Request URL custome area:', CustomAreaGetUrl);
+    const AreaData = {
+      p_TIM_KEY: 0,
+      p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
+    };
+    const AreaGetUrl = `${url}get_inspection_area`;
+    console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    axios
-      .get(CustomAreaGetUrl)
-      .then(response => {
-        console.log('Selected_CustomeArea', response?.data);
-        if (response?.data?.success === true) {
-          console.log('Selected_CustomeArea....', response?.data?.data[0]);
-          setGetCustomeArea(response?.data?.data[0]);
-          setIsLoading(false);
-        } else {
-          console.error('Selected_CustomeArea_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Selected_CustomeArea error:', error);
-        setIsLoading(false);
-      });
+    try {
+      const response = await axios.post(AreaGetUrl, AreaData);
+      console.log('area response', response?.data);
+      if (response?.data?.success === true) {
+        setGetCustomeArea(response?.data?.data || []);
+        console.log('setAreaKey:', response?.data?.data);
+      } else {
+        console.error('area response_error:', response?.data?.error);
+      }
+    } catch (error) {
+      console.error('area response error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+   
   };
   const getInspectionAreas = () => {
     const url = Config.BASE_URL;
@@ -133,23 +138,54 @@ const Inspection = props => {
         setIsLoading(false);
       });
   };
-
+  const Customarea_render = item => {
+    return (
+      <View
+        style={[
+          InspectionCss.itemView,
+          {
+            backgroundColor:
+              item?.TAM_AREA_KEY === customeAreavalue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item?.TAM_AREA_KEY === customeAreavalue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={InspectionCss.textItem}>
+          {item?.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
   const handleDone = async () => {
     // alert(value);
     setIsLoading(true);
     const url = Config.BASE_URL;
     const AreaPostUrl = url + `inspection_details/CustomArea`;
-
+    const InspectionData = {
+      custom_area_name: email,
+      is_standard_check_inspection: selectedButtonStandardId,
+      area_similar: customeAreavalue,
+      area_future_inspection: selectedButtonFutueId,
+      property_id: PropertyId,
+      inspection_id: TIM_KEY,
+      created_by: loginData?.Login_details?.user_account_id.toString(),
+    };
+    console.log('InspectionData.....', InspectionData);
     try {
-      const response = await axios.post(AreaPostUrl, {
-        custom_area_name: email,
-        is_standard_check_inspection: selectedButtonStandardId,
-        area_similar: customeAreavalue,
-        area_future_inspection: selectedButtonFutueId,
-        property_id: PropertyId,
-        inspection_id: TIM_KEY,
-        created_by: 543,
-      });
+      const response = await axios.post(AreaPostUrl, InspectionData);
       console.log(response);
       if (response?.data?.success) {
         Alert.alert('Success', 'Custom area added successfully');
@@ -180,7 +216,8 @@ const Inspection = props => {
       const response = await axios.delete(deleteUrl);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        refRBSheet2.current.close();
+        navigation?.navigate('NewInspection');
+        // refRBSheet2.current.close();
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -199,7 +236,7 @@ const Inspection = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response: getinspection', response?.data?.data[0]);
+        // console.log('API Response: getinspection', response?.data?.data[0]);
         setGetInspection(response?.data?.data[0]);
         setIsLoading(false);
       })
@@ -209,7 +246,6 @@ const Inspection = props => {
   };
 
   const SubmitInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
@@ -240,9 +276,7 @@ const Inspection = props => {
       console.log('scheduule inspection....', res?.data);
       refRBSheet2.current.close();
       if (res?.data?.success == true) {
-        setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
-        alert(res?.data?.message);
+        alert('Inspection duplicate succussfully');
         setIsLoading(false);
       }
     } catch (error) {
@@ -258,6 +292,24 @@ const Inspection = props => {
       setIsLoading(false);
     }
   };
+  const handleCustomName = text => {
+    setEmail(text);
+    if (text.trim() === '') {
+      setShowcustomAreaNameError('Custom area name cannot be empty!');
+    } else {
+      setShowcustomAreaNameError('');
+    }
+  };
+  const SubmitCustomArea =()=>{
+    if (email.trim() === '') {
+        // Alert.alert('Validation', 'Custom area name cannot be empty.');
+        setShowcustomAreaNameError('Custom area name cannot be empty!')
+      }else if (customeAreavalue ==''){
+        setErrorSimiarArea(true);
+      }else{
+        handleDone();
+      }
+    }
   const Inspection_render = ({item}) => {
     console.log(item.area_key_id);
     let IconComponent;
@@ -273,31 +325,31 @@ const Inspection = props => {
         iconName = 'bed';
         break;
       case 'Garden':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'grass';
         break;
       case 'Kitchen':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'kitchen';
         break;
       case 'Dining room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'dinner-dining';
         break;
       case 'Living room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'family-restroom';
         break;
       case 'Exterior':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-assistant';
         break;
       case 'Roof':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-roof';
         break;
       case 'Garage':
-        IconComponent = MaterialIcons;
+        IconComponent = MaterialCommunityIcons;
         iconName = 'garage';
         break;
       // Add cases for other areas if needed
@@ -306,6 +358,7 @@ const Inspection = props => {
         iconName = 'home'; // Default icon
         break;
     }
+ 
     return (
       <>
         <View style={InspectionCss.mainView} key={item?.area_key_id}>
@@ -317,30 +370,36 @@ const Inspection = props => {
                   size={20}
                   color={_COLORS.Kodie_GreenColor}
                   style={{alignSelf: 'center'}}
-                  resizeMode={'center'}
+        
                 />
               </View>
             ) : (
-              <AntDesign
-                name={'minuscircle'}
-                size={20}
-                color={_COLORS.Kodie_lightRedColor}
-                style={InspectionCss.IconStyle}
-              />
+              <TouchableOpacity>
+                <AntDesign
+                  name={'minuscircle'}
+                  size={20}
+                  color={_COLORS.Kodie_lightRedColor}
+                  style={InspectionCss.IconStyle}
+                />
+              </TouchableOpacity>
             )}
             <Text style={InspectionCss.editText}>{item.area_name}</Text>
           </View>
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(item.area_key_id,item?.area_name)
+                navigateToScreen(
+                  item.area_key_id,
+                  item?.area_name,
+                  item?.TAIM_ITEM_STATUS,
+                )
               }
               style={InspectionCss.rightIcon}>
               <Feather
                 name={'chevron-right'}
                 size={20}
                 color={_COLORS.Kodie_BlackColor}
-                style={InspectionCss.IconStyle}
+                style={InspectionCss.rightIconStyle}
               />
             </TouchableOpacity>
           ) : (
@@ -358,7 +417,6 @@ const Inspection = props => {
     );
   };
 
- 
   return (
     <ScrollView>
       <View style={InspectionCss.MainContainer}>
@@ -437,15 +495,24 @@ const Inspection = props => {
               <Text
                 style={[LABEL_STYLES._texinputLabel, InspectionCss.cardHeight]}>
                 {'Name of area:'}
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <TextInput
                 style={InspectionCss.emailinput}
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={handleCustomName}
                 placeholder="Create a name for your custom area"
                 placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
                 keyboardType="email-address"
+                onBlur={()=>{
+                  handleCustomName(email)
+                }}
               />
+               {showcustomAreaNameError ? (
+            <Text style={InspectionCss.errorText}>
+              {showcustomAreaNameError}
+            </Text>
+          ) : null}
             </View>
             <Text style={InspectionCss.cancelText}>
               {'Would you like to use a standard inspection checklist?'}
@@ -470,7 +537,7 @@ const Inspection = props => {
               onPressLeftButton={() => {
                 setSelectedButtonStandard(false);
                 setSelectedButtonStandardId(1);
-                // alert(selectedButtonStandard)
+                // alert(selectedButtonStandardId);
               }}
               RightButtonText={'No'}
               onPressRightButton={() => {
@@ -495,8 +562,10 @@ const Inspection = props => {
                   : _COLORS.Kodie_LightWhiteColor
               }
             />
-            <Text style={[InspectionCss.cancelText, {marginVertical: 12}]}>
+            <View style={ {marginVertical: 12}}>
+            <Text style={[InspectionCss.cancelText,{marginBottom:12}]}>
               {' Select the area most similar to your custom area:'}
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
               style={InspectionCss.dropdown}
@@ -504,18 +573,26 @@ const Inspection = props => {
               selectedTextStyle={InspectionCss.selectedTextStyle}
               inputSearchStyle={InspectionCss.inputSearchStyle}
               iconStyle={InspectionCss.iconStyle}
-              data={getCustomeArea}
+              data={getCustomeArea || []}
               search
               maxHeight={300}
               labelField="TAM_AREA_NAME"
               valueField="TAM_AREA_KEY"
               placeholder="Enter address manually"
-              searchPlaceholder="Search..."
+              searchPlaceholder="Search ..."
               value={customeAreavalue}
               onChange={item => {
                 setCustomeAreaValue(item.TAM_AREA_KEY);
+                setErrorSimiarArea(false)
               }}
+              renderItem={Customarea_render}
             />
+            {errorSimiarArea ? (
+            <Text style={InspectionCss.errorText}>
+              {'Please select a most similar to your custom area!'}
+            </Text>
+          ) : null}
+          </View>
             <Text style={InspectionCss.cancelText}>
               {'Make this a standard area for future inspections?'}
             </Text>
@@ -564,12 +641,14 @@ const Inspection = props => {
               }
             />
             <View style={InspectionCss.ButtonView}>
-              <TouchableOpacity style={InspectionCss.cancelView}>
+              <TouchableOpacity
+                style={InspectionCss.cancelView}
+                onPress={handleCloseModal}>
                 <Text style={[InspectionCss.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={InspectionCss.SaveView}
-                onPress={handleDone}
+                onPress={SubmitCustomArea}
                 disabled={isLoading}>
                 <Text style={InspectionCss.DoneText}>Done</Text>
               </TouchableOpacity>

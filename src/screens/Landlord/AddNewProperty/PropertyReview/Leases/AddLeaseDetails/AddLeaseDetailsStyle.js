@@ -10,6 +10,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   // subContainer: {
   //   marginHorizontal: 16,
   // },
+  error:{marginTop:10,fontSize:14,color:'red'},
   heading_Text: {
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
@@ -139,7 +140,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     marginLeft: 14,
     alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
   },
   ButtonView: {

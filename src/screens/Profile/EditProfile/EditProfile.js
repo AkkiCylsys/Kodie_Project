@@ -174,7 +174,7 @@ const EditProfile = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
@@ -220,7 +220,7 @@ const EditProfile = props => {
     axios
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
-        console.log('kodie_describeYouself_Data', response.data);
+        // console.log('kodie_describeYouself_Data', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(

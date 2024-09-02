@@ -183,7 +183,7 @@ export default ViewPropertyDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor Area' ? (
+      ) : item === 'Outdoor area' ? (
         // (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -227,7 +227,7 @@ export default ViewPropertyDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in Robes' ? (
+      ) : item === 'Built in robes' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -238,7 +238,7 @@ export default ViewPropertyDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Air Conditioning' ? (
+      ) : item === 'Air conditioning' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -249,7 +249,7 @@ export default ViewPropertyDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Solar Panels' ? (
+      ) : item === 'Solar panels' ? (
         // (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -271,7 +271,7 @@ export default ViewPropertyDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'High Energy Efficiency' ? (
+      ) : item === 'High energy efficiency' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -469,7 +469,7 @@ export default ViewPropertyDetails = props => {
             // keyExtractor={(item, index) => index.toString()}
             renderItem={Detail_rander}
           />
-          <DividerIcon />
+          <DividerIcon/>
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <Text style={[DetailsStyle.propery_det]}>
               {'Additional key features'}
@@ -512,7 +512,7 @@ export default ViewPropertyDetails = props => {
           <Text style={ViewDetailCss.inspections}>{'Inspections'}</Text>
           <CustomSingleButton
             disabled={isLoading ? true : false}
-            _ButtonText={'Request an inspection'}
+            _ButtonText={'inspection'}
             Text_Color={_COLORS.Kodie_WhiteColor}
           />
         </View>
@@ -548,7 +548,7 @@ export default ViewPropertyDetails = props => {
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
             <Text style={ViewDetailCss.propery_det}>
-              {'External featuress'}
+              {'External features'}
             </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>

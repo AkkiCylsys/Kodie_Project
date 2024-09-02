@@ -10,6 +10,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import PropertyPopup from './PropertyPopup';
 import {useNavigation} from '@react-navigation/native';
 import AddBiddingDetails from '../Molecules/AddBiddingDetails/AddBiddingDetails';
+import {useState} from 'react';
 // Define data for FlatList
 const data = [
   {
@@ -89,6 +90,7 @@ const data1 = [
 
 const PropertyModal = props => {
   const propertyId = props?.propertyId;
+  const [isSaveClick, setIsSaveClick] = useState("");
   const refRBSheet = useRef();
   const navigation = useNavigation();
   const handleCloseModal = () => {
@@ -96,6 +98,10 @@ const PropertyModal = props => {
   };
   const deleteMarketplace = () => {
     props?.deletelist();
+  };
+  const handleSaveClick = saveClick => {
+    console.log('saveClick...', saveClick);
+    setIsSaveClick(saveClick);
   };
   const BottomData = ({item}) => {
     return (
@@ -110,8 +116,8 @@ const PropertyModal = props => {
             handleCloseModal();
           }
           if (item.id === '2') {
-            // refRBSheet.current.open();
-            Alert.alert('Alert!', "Coming soon");
+            refRBSheet.current.open();
+            // Alert.alert('Alert!', "Coming soon");
           }
           if (item.id === '3') {
             navigation.navigate('PropertyReview', {
@@ -158,7 +164,7 @@ const PropertyModal = props => {
       {/* RBSheet for additional actions */}
       <RBSheet
         ref={refRBSheet}
-        height={590}
+        height={isSaveClick == true ? 450 : 650}
         closeOnDragDown={true}
         customStyles={{
           wrapper: {
@@ -172,9 +178,11 @@ const PropertyModal = props => {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
         }}>
-        {/* Pass propertyId to PropertyPopup */}
-        <PropertyPopup propertyId={propertyId} onClose={handleCloseModal} />
-        {/* <AddBiddingDetails propertyId={propertyId} onClose={handleCloseModal} /> */}
+        <PropertyPopup
+          propertyId={propertyId}
+          onClose={handleCloseModal}
+          saveClicked={handleSaveClick}
+        />
       </RBSheet>
     </View>
   );

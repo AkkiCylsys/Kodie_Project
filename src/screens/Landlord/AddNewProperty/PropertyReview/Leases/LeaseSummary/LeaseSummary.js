@@ -253,7 +253,7 @@ export default LeaseSummary = props => {
             <View>
               <Text style={LeaseSummaryStyle.Amount_Text}>{'Amount paid'}</Text>
               <Text style={LeaseSummaryStyle.Accounting_Text}>
-                {` $ ${item.UPLD_TOTAL_AMOUNT}`}
+                {`${item.UPLD_TOTAL_AMOUNT}`}
               </Text>
             </View>
           </View>
@@ -375,7 +375,7 @@ export default LeaseSummary = props => {
           },
           container: LeaseSummaryStyle.bottomModal_container,
         }}>
-        <Logrentalpayment onClose={handleClose} lease_keys={lease_key} />
+        <Logrentalpayment onClose={handleClose} lease_keys={lease_key} property_id={property_id}/>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>

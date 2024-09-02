@@ -57,7 +57,7 @@ console.log("newStatus",newStatus);
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response getPersonalDetails:', response?.data?.data[0]);
+        // console.log('API Response getPersonalDetails:', response?.data?.data[0]);
         if (
           response?.data?.data &&
           Array.isArray(response.data.data) &&
@@ -84,7 +84,7 @@ console.log("newStatus",newStatus);
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response: dfdd', response?.data?.data[0]);
+        // console.log('API Response: dfdd', response?.data?.data[0]);
         setInspection_Details(response?.data?.data[0]);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY)
         setIsLoading(false);
@@ -96,7 +96,7 @@ console.log("newStatus",newStatus);
   };
   const Area_key = () => {
     const url = Config.BASE_URL;
-    const AreaGetUrl = url + 'get_inspection_area';
+    const AreaGetUrl = url + `get_inspection_area_details/${TIM_KEY}`;
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
     axios
@@ -104,51 +104,37 @@ console.log("newStatus",newStatus);
       .then(response => {
         console.log('Selected_Address', response?.data);
         if (response?.data?.success === true) {
-          setIsLoading(false);
           console.log('Selected_Address....', response?.data?.data);
-          setAreaKey(response?.data?.data[0]);
+          setAreaKey(response?.data?.data);
+          setIsLoading(false);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Selected_Address error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
-  const toggleCheckBox = (itemId) => {
-    setCheckedItems((prevCheckedItems) => ({
-      ...prevCheckedItems,
-      [itemId]: !prevCheckedItems[itemId],
-    }));
-  };
-  const getCheckedItemIds = () => {
-    return Object.keys(checkedItems)
-      .filter(itemId => checkedItems[itemId])
-      .join(',');
-  };
-  const checkedItemIds = getCheckedItemIds();
+
+ 
   const Detail_render = ({ item, index }) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY]; 
+   
      return (
-      <View style={ScheduleCss.DetailsView}>
+      <View style={ScheduleCss.DetailsView} key={item?.area_key_id}>
         <TouchableOpacity 
-        // onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}
         >
           <MaterialIcons
-            name={isChecked ? 'check-box' : 'check-box-outline-blank'}
+            name={'check-box' }
             size={25}
-            color={isChecked ? _COLORS?.Kodie_GreenColor : _COLORS.Kodie_MediumGrayColor}
+            color={_COLORS?.Kodie_GreenColor }
           />
         </TouchableOpacity>
-        <Text style={ScheduleCss.details_text}>{item.TAM_AREA_NAME}</Text>
+        <Text style={ScheduleCss.details_text}>{item.area_name}</Text>
       </View>
     );
   };
-  const filteredData = AreaKey.filter(item => checkedItems[item.TAM_AREA_KEY]);
   return (
     <View style={ScheduleCss.MainContainer}>
       <View style={ScheduleCss.Container}>
@@ -202,17 +188,17 @@ console.log("newStatus",newStatus);
           {'Areas included in inspection'}
         </Text>
         <FlatList
-          data={filteredData}
+          data={AreaKey}
           scrollEnabled
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{}}
           numColumns={2}
-          keyExtractor={item =>item.TAM_AREA_KEY.toString()}
+          keyExtractor={item =>item?.area_key_id}
           renderItem={Detail_render}
         />
         <DividerIcon />
         <Text style={ScheduleCss.inspections}>{'Notes'}</Text>
-        <Text style={ScheduleCss.MBText}>{Inspection_Detail?.v_TIM_DESCRIPTION}</Text>
+        <Text style={ScheduleCss.MBText}>{Inspection_Detail?.v_TIM_DESCRIPTION? Inspection_Detail?.v_TIM_DESCRIPTION: 'No notes'}</Text>
         <DividerIcon />
 </>
         ):null}
