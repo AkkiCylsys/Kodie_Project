@@ -117,7 +117,7 @@ const SocialMedia = props => {
             </View>
           </View>
           <View style={SocialMediaStyle.arrowiconview}>
-            <Entypo name={'chevron-small-right'} size={20} color={'#787D8B'} />
+            <Entypo name={'chevron-small-right'} size={20} color={_COLORS.Kodie_DarkGrayColor} />
           </View>
         </TouchableOpacity>
         <DividerIcon style={{marginBottom: 10}} />

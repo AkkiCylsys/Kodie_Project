@@ -2061,7 +2061,7 @@ const AddPropertyMainPage = props => {
                 borderBottomWidth={1}
                 color={_COLORS.Kodie_GrayColor}
               />
-              <View style={DetailsStyle.subContainer}>
+              <View >
                 <View style={DetailsStyle.propety_details_view}>
                   <Text style={DetailsStyle.propery_det}>
                     {'Property details'}
@@ -2077,7 +2077,7 @@ const AddPropertyMainPage = props => {
                 </View>
                 <DividerIcon marginTop={8} />
               </View>
-              <View style={DetailsStyle.subContainer}>
+              <View >
                 <View style={DetailsStyle.propety_details_view}>
                   <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
 
@@ -2091,7 +2091,7 @@ const AddPropertyMainPage = props => {
                 </View>
                 <DividerIcon marginTop={8} />
               </View>
-              <View style={DetailsStyle.subContainer}>
+              <View >
                 <View style={DetailsStyle.propety_details_view}>
                   <Text style={DetailsStyle.propery_det}>
                     {'External features'}
@@ -2107,7 +2107,7 @@ const AddPropertyMainPage = props => {
                 </View>
                 <DividerIcon marginTop={8} />
               </View>
-              <View style={DetailsStyle.subContainer}>
+              <View >
                 <View style={DetailsStyle.propety_details_view}>
                   <Text style={DetailsStyle.propery_det}>
                     {'Points of interest'}

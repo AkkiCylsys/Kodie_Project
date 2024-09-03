@@ -54,6 +54,7 @@ const PropertyList = props => {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [propertyData, setPropertyData] = useState([]);
   const [propId, setPropId] = useState(0);
+  const [auto_List, setAutoList] = useState(0);
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -62,10 +63,12 @@ const PropertyList = props => {
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
+
   };
   const CloseUp = () => {
     setIsDeleteBottomSheetVisible(false);
     setIsDeleteData_Clicked(false);
+    getPropertyDetailsByFilter(selectedFilter);
   };
 
   // search propertyList....
@@ -346,7 +349,7 @@ const isArchived = item.isArchived;
                               <SimpleLineIcons
                                 name="note"
                                 size={25}
-                                color={_COLORS.Kodie_LightGrayColor}
+                                color={_COLORS.Kodie_ExtraminLiteGrayColor}
                                 resizeMode={'contain'}
                               />
                               {/* <Image
@@ -364,12 +367,13 @@ const isArchived = item.isArchived;
                                 // alert(propertyDelId);
                                 setAddress(item?.location);
                                 setPropId(item?.property_id);
-                                console.log('property id..', item.property_id);
+                                setAutoList(item?.auto_list)
+                                console.log('property id..', item.auto_list);
                               }}>
                               <MaterialCommunityIcons
                                 name={'dots-horizontal'}
                                 size={25}
-                                color={_COLORS.Kodie_LightGrayColor}
+                                color={_COLORS.Kodie_ExtraminLiteGrayColor}
                               />
                             </TouchableOpacity>
                           </View>
@@ -385,18 +389,6 @@ const isArchived = item.isArchived;
                               },
                             ]}
                             onPress={props.onInvite}>
-                            {/* <View
-                  style={[
-                    PropertyListCSS.roundButton,
-                    {
-                      backgroundColor: item.isRentPanding
-                        ? _COLORS.Kodie_DarkOrange
-                        : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
-                    },
-                  ]}
-                /> */}
                             <Text
                               style={[
                                 PropertyListCSS.buttonText,
@@ -405,7 +397,7 @@ const isArchived = item.isArchived;
                                     ? _COLORS.Kodie_DarkOrange
                                     : item.isRentReceived
                                       ? _COLORS.Kodie_GreenColor
-                                      : _COLORS.Kodie_MediumGrayColor,
+                                      : _COLORS.Kodie_ExtraminLiteGrayColor,
                                 },
                               ]}>
                               {'+ Invite Tenant'}
@@ -761,6 +753,8 @@ const isArchived = item.isArchived;
           onDeleteData={FinalDeleteProperty}
           Address={Address}
           onClose={CloseUp}
+          autoList={auto_List}
+          onArchive={archiveProperty}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}

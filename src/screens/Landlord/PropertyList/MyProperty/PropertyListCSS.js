@@ -87,9 +87,8 @@ export const PropertyListCSS = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    // paddingHorizontal: 10,
-    // paddingVertical: 1,
-    marginLeft: '10%',
+    paddingVertical: 5,
+    marginLeft: '30%',
     paddingBottom: 3,
   },
   roundButton: {
@@ -103,7 +102,7 @@ export const PropertyListCSS = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: 'center',
+    marginBottom:5
   },
   flatListContainer: {marginHorizontal: 30},
   expandedContent: {

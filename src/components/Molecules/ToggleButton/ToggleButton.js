@@ -1,13 +1,14 @@
-import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
-import {ToggleButtonStyle} from './ToggleButtonStyle';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text } from 'react-native';
+import { ToggleButtonStyle } from './ToggleButtonStyle';
+
 const ToggleButton = ({
   tabValue,
   setTabValue,
-  firstTabValue = 'Yes',
-  secondTabValue = 'No',
-  firstTabLabel = 'Individual',
-  secondTabLabel = 'Company',
+  firstTabValue = 1,   // Change 'Yes' to 1
+  secondTabValue = 0,  // Change 'No' to 0
+  firstTabLabel = 'Yes',
+  secondTabLabel = 'No',
   activeColor,
   inactiveColor,
   activeTextColor,
@@ -17,13 +18,12 @@ const ToggleButton = ({
 }) => {
   return (
     <View style={ToggleButtonStyle.boxContainer}>
-      <View style={[ToggleButtonStyle.boxView, {width: width}]}>
+      <View style={[ToggleButtonStyle.boxView, { width}]}>
         <TouchableOpacity
           style={[
             ToggleButtonStyle.buttonStyle,
             {
-              backgroundColor:
-                tabValue === firstTabValue ? activeColor : inactiveColor,
+              backgroundColor: tabValue === firstTabValue ? activeColor : inactiveColor,
             },
           ]}
           onPress={() => setTabValue(firstTabValue)}>
@@ -31,10 +31,7 @@ const ToggleButton = ({
             style={[
               textStyle,
               {
-                color:
-                  tabValue === firstTabValue
-                    ? activeTextColor
-                    : inactiveTextColor,
+                color: tabValue === firstTabValue ? activeTextColor : inactiveTextColor,
               },
             ]}>
             {firstTabLabel}
@@ -45,19 +42,15 @@ const ToggleButton = ({
           style={[
             ToggleButtonStyle.buttonStyle,
             {
-              backgroundColor:
-                tabValue === secondTabValue ? activeColor : inactiveColor,
+              backgroundColor: tabValue === secondTabValue ? activeColor : inactiveColor,
             },
           ]}
           onPress={() => setTabValue(secondTabValue)}>
           <Text
             style={[
-              ToggleButtonStyle.textStyle,
+              textStyle,
               {
-                color:
-                  tabValue === secondTabValue
-                    ? activeTextColor
-                    : inactiveTextColor,
+                color: tabValue === secondTabValue ? activeTextColor : inactiveTextColor,
               },
             ]}>
             {secondTabLabel}

@@ -28,7 +28,7 @@ export const DetailsStyle = StyleSheet.create({
     margin: 0,
   },
   subContainer: {
-    // marginHorizontal: 16,
+    marginTop: '8%',
   },
   apartment_View: {
     flexDirection: "row",
@@ -66,9 +66,9 @@ export const DetailsStyle = StyleSheet.create({
   },
   down_Arrow_icon: {
     borderWidth: 1,
-    paddingHorizontal: 3,
-    paddingVertical: 3,
-    borderRadius: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 10,
     borderColor: _COLORS.Kodie_GrayColor,
   },
   goBack_View: {
@@ -120,5 +120,6 @@ export const DetailsStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 16,
     // marginTop: 10,
-  }
+  },
+  ViewIconStyle:{ height: 28, width: 28, borderRadius: 12,borderWidth:1,justifyContent:'center',alignSelf:'center',borderColor:_COLORS.Kodie_LiteWhiteColor }
 });

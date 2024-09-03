@@ -86,7 +86,7 @@ const ViewRentalDetails = props => {
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}
             />
-          ) : Object.keys(item)[0] == 'Parking Space' ? (
+          ) : Object.keys(item)[0] == 'Parking / garage spaces' ? (
             <Ionicons
               name="car-outline"
               size={25}

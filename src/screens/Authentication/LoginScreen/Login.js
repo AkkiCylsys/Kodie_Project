@@ -541,8 +541,7 @@ export default Login = props => {
       if (response?.data?.success === true) {
         
         if (
-          response?.data?.message ==
-          'Try again with a password you haven’t used before'
+          response?.data?.code == 21
         ) {
           alert(response?.data?.message);
         } else {

@@ -66,8 +66,6 @@ export default PropertyDetails = props => {
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [property_value, setProperty_value] = useState(0);
-  const [selectedButton, setSelectedButton] = useState(false);
-  const [selectedButtonId, setSelectedButtonId] = useState(1);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [city, setCity] = useState('');
@@ -153,10 +151,6 @@ export default PropertyDetails = props => {
         setProperty_value(
           parseInt(response?.data?.property_details[0]?.property_type_id),
         );
-        const autoListValue = parseInt(
-          response?.data?.property_details[0]?.auto_list,
-        );
-        setSelectedButton(autoListValue === 0);
         setCity(response?.data?.property_details[0]?.city)
         setCountry(response?.data?.property_details[0]?.country)
         setState(response?.data?.property_details[0]?.state)
@@ -195,7 +189,7 @@ export default PropertyDetails = props => {
       UPD_FLOOR_SIZE: property_Detail?.floor_size,
       UPD_LAND_AREA: property_Detail?.land_area,
       additional_key_features: property_Detail?.additional_key_features_id,
-      autolist: selectedButtonId,
+      autolist: 0,
       property_id:
         // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
         //   ? addPropertySecondStepData
@@ -221,7 +215,7 @@ export default PropertyDetails = props => {
             location: location,
             property_value: property_value,
             propertyDesc: propertyDesc,
-            selectedButtonId: selectedButtonId,
+            selectedButtonId: 0,
             latitude: latitude,
             longitude: longitude,
             city: city,
@@ -415,7 +409,7 @@ export default PropertyDetails = props => {
   const handleNote = text => {
     setPropertyDesc(text);
     if (text.trim() === '') {
-      setNotesError('please enter note!');
+      setNotesError('Please enter note!');
     } else {
       setNotesError('');
     }
@@ -472,7 +466,7 @@ export default PropertyDetails = props => {
       key_features: 0,
       additional_features: 0,
       additional_key_features: 0,
-      autolist: selectedButtonId,
+      autolist: 0,
       UPD_FLOOR_SIZE: 0,
       UPD_LAND_AREA: 0,
       p_city: city,
@@ -490,10 +484,12 @@ export default PropertyDetails = props => {
         islocation: 1,
         property_description: propertyDesc,
         property_type: property_value > 0 ? property_value : 0,
-        key_features: [{"Bedrooms": 0}, {"Bathrooms": 0}, {"Parking Space": 0}, {"Garages": 0}],
-        additional_features: 1,
+        key_features: [{"Bedrooms": 0}, {"Bathrooms": 0},{'Reception rooms':0},
+        {'Parking / garage spaces': 0},
+        {'On-street parking': 0},],
+        additional_features: "0,0,0,0",
         additional_key_features: 0,
-        autolist: selectedButtonId,
+        autolist: 0,
         UPD_FLOOR_SIZE: 0,
         UPD_LAND_AREA: 0,
         p_city: city,
@@ -515,7 +511,7 @@ export default PropertyDetails = props => {
             location: location,
             property_value: property_value,
             propertyDesc: propertyDesc,
-            selectedButtonId: selectedButtonId,
+            selectedButtonId: 0,
             latitude: latitude,
             longitude: longitude,
             city: city,
@@ -757,7 +753,7 @@ export default PropertyDetails = props => {
                   </Text>
                 ) : null}
               </View>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -811,7 +807,7 @@ export default PropertyDetails = props => {
                   setSelectedButton(true);
                   setSelectedButtonId(0);
                 }}
-              />
+              /> */}
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
                   _ButtonText={'Next'}
@@ -838,19 +834,6 @@ export default PropertyDetails = props => {
 
                     if (isValid) {
                      propertyid? updatePropertyDetails(): property_details();
-                      // props.navigation.navigate('PropertyFeature', {
-                      //   location: location,
-                      //   property_value: property_value,
-                      //   propertyDesc: propertyDesc,
-                      //   selectedButtonId: selectedButtonId,
-                      //   latitude: latitude,
-                      //   longitude: longitude,
-                      //   propertyid: propertyid,
-                      //   city: city,
-                      //   state: state,
-                      //   country: country,
-                      //   editMode: editMode,
-                      // });
                     }
                   }}
                   disabled={isLoading ? true : false}

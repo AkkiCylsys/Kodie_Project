@@ -571,7 +571,7 @@ const PropertyList2 = props => {
               <View style={PropertyList2Css.mainfeaturesview}>
                 <View style={PropertyList2Css.key_feature_Text_view}>
                   <Text style={PropertyList2Css.key_feature_Text}>
-                    {'Parking spaces'}
+                    {'Parking / garage spaces'}
                   </Text>
                 </View>
 
