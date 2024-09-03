@@ -49,7 +49,8 @@ export default SignUpVerification = props => {
         email: email,
       };
       const response = await signupSendCode(SignUpData);
-      alert(response?.message);
+      // alert(response?.message); // as per manish discussion he said use static alert.
+      alert("OTP resent successfully!");
       setIsTimerActive(true);
       setValue('');
     } catch (error) {
@@ -69,7 +70,7 @@ export default SignUpVerification = props => {
       .then(responseData => {
         console.log('sign_verification_Api response', responseData);
         if (responseData?.success === true) {
-          alert(responseData?.message);
+          Alert.alert("Success", responseData?.message);
           setValue('');
           props.navigation.navigate('SignUpSteps', {
             email: email,
