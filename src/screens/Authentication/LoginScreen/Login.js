@@ -444,7 +444,8 @@ export default Login = props => {
       })
       .catch(error => {
         if (error?.response || error?.response?.status === 400) {
-          alert('Failed to send OTP via email. Please try again later.');
+          // alert('Failed to send OTP via email. Please try again later.');
+          alert( error?.response?.data.message)
         } else {
         }
         console.error('sendotp error:', error);
