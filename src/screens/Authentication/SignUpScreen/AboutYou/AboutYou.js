@@ -133,13 +133,15 @@ export default AboutYou = props => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [companyName, setCompanyName] = useState('');
+  const [companyNameError, setCompanyNameError] = useState('');
   const [website, setWebsite] = useState('');
   const [Indiwebsite, setIndiWebsite] = useState('');
   const [companyGSTNumber, setCompanyGSTNumber] = useState('');
   const [location, setLocation] = useState('');
   const [IndiservicesValue, setIndiservicesValue] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
-  const [businessNumber, SetBusinessNumber] = useState('');
+  const [businessNumber, setBusinessNumber] = useState('');
+  const [businessNumberError, setBusinessNumberError] = useState('');
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
     [],
   );
@@ -218,32 +220,71 @@ export default AboutYou = props => {
       setIndiSelectJobTypeidError('');
     }
   };
+  const validOrganisation = text => {
+    setCompanyName(text);
+    if (text == '') {
+      setCompanyNameError('Organisation name is required!');
+    } else {
+      setCompanyNameError('');
+    }
+  };
+  const validateABN = abn => {
+    const cleanedABN = abn.replace(/\s+/g, '');
+    if (cleanedABN.length !== 11) return false;
+
+    const abnDigits = cleanedABN.split('').map(Number);
+
+    abnDigits[0] -= 1;
+
+    const weighting = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+
+    const sum = abnDigits.reduce(
+      (acc, digit, index) => acc + digit * weighting[index],
+      0,
+    );
+
+    return sum % 89 === 0;
+  };
+
+  const handleABNChange = text => {
+    setBusinessNumber(text);
+    if (text == '') {
+      setBusinessNumberError('Australian business number is required!');
+    } else if (validateABN(text)) {
+      setBusinessNumberError(''); // Clear error if ABN is valid
+    } else {
+      setBusinessNumberError('Invalid Australian business number!');
+    }
+  };
   const validNextButton = () => {
-    // Check if any services are selected
     if (selectedServices.length == 0) {
       setSelectedServicesError('How would you describe yourself is required!');
       return;
     }
-
     // Check if kodieDescribeYourselfId includes 4
     if (kodieDescribeYourselfId.includes(4)) {
-      // If the job type selections are required for "Individual" or "Company"
+      if (companyName == '') {
+        setCompanyNameError('Organisation name is required!');
+      }
       if (IndiselectJobTypeid.length == 0) {
         setIndiSelectJobTypeidError(
-          'The category of service you offer is required indi!',
+          'The category of service you offer is required!',
         );
-      }if (selectJobTypeid.length == 0)
+      }
+      if (selectJobTypeid.length == 0) {
         setSelectJobTypeidError(
-          'The category of service you offer is required com!',
+          'The category of service you offer is required!',
         );
-      else {
-        // Clear errors and navigate if both categories are selected
+      } else if (businessNumber == '') {
+        setBusinessNumberError('Australian business number is required!');
+      } else if (!validateABN(businessNumber)) {
+        setBusinessNumberError('Invalid Australian business number!');
+      } else {
         setIndiSelectJobTypeidError('');
         setSelectJobTypeidError('');
         naviagteData();
       }
     } else {
-      // Navigate if kodieDescribeYourselfId doesn't include 4
       naviagteData();
     }
   };
@@ -1077,6 +1118,9 @@ export default AboutYou = props => {
                   style={CompanySignupStyle.input}
                   value={companyName}
                   onChangeText={setCompanyName}
+                  onBlur={() => {
+                    validOrganisation(companyName);
+                  }}
                   placeholder="Enter the name of your company"
                   placeholderTextColor="#999"
                 />
@@ -1085,7 +1129,9 @@ export default AboutYou = props => {
                   correspondence from Kodie.
                 </Text>
               </View>
-
+              {companyNameError ? (
+                <Text style={AboutYouStyle?.errorText}>{companyNameError}</Text>
+              ) : null}
               <View style={CompanySignupStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Australian business number'}
@@ -1093,12 +1139,20 @@ export default AboutYou = props => {
                 <TextInput
                   style={[CompanySignupStyle.input]}
                   value={businessNumber}
-                  onChangeText={SetBusinessNumber}
+                  onChangeText={setBusinessNumber}
+                  onBlur={() => {
+                    handleABNChange(businessNumber);
+                  }}
+                  maxLength={11}
                   placeholder="Enter your ABN"
                   placeholderTextColor="#999"
                 />
               </View>
-
+              {businessNumberError ? (
+                <Text style={AboutYouStyle.errorText}>
+                  {businessNumberError}
+                </Text>
+              ) : null}
               <View>
                 <Text
                   style={[
@@ -1389,7 +1443,7 @@ export default AboutYou = props => {
                           setKodieServicesData('');
                           setCompanyGSTNumber('');
                           setCompanyName('');
-                          SetBusinessNumber('');
+                          setBusinessNumber('');
                           setCompanyLocation('');
                           setSelectJobType('');
                           setWebsite('');

@@ -40,6 +40,7 @@ import Geocoder from 'react-native-geocoding';
 import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
@@ -120,6 +121,7 @@ const RentalOffer = props => {
   const [subChildren, setSubChildren] = useState([]);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   const [biddingDetailsMessage, setBiddingDetailsMessage] = useState('');
+  const isFocus = useIsFocused()
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -210,7 +212,7 @@ const RentalOffer = props => {
   useEffect(() => {
     handleTenantQues();
     edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
-  }, [question]);
+  }, [question,isFocus]);
 
   useEffect(() => {
     if (inputValues['PREVIOUS_ADDRESS']) {
@@ -1454,7 +1456,7 @@ const RentalOffer = props => {
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
     edit_offer == 'edit_offer' ? null : saveBiddingDetails();
-    resetDynamicFields();
+    // resetDynamicFields();
   };
 
   const resetDynamicFields = () => {
@@ -2280,7 +2282,7 @@ const RentalOffer = props => {
               }}
               leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
               LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-              RightButtonText="Submit"
+              RightButtonText={edit_offer == 'edit_offer' ?"Edit offer":"Submit"}
               RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
               RightButtonTextColor={_COLORS.Kodie_WhiteColor}
               onPressRightButton={() => {

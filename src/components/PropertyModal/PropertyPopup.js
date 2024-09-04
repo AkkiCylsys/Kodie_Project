@@ -125,6 +125,7 @@ const PropertyPopup = props => {
       new_bid_days: Newbid_Value,
       new_bid_before: '0',
     };
+    console.log("Bid_Data payload...",Bid_Data)
     axios
       .post(add_Bid_url, Bid_Data)
       .then(response => {
@@ -134,12 +135,12 @@ const PropertyPopup = props => {
           handleSaveClick();
           setBidResponse(response?.data);
         } else {
-          Alert.alert('Bid inserted', response?.data?.message);
+          // Alert.alert('Bid inserted', response?.data?.message);
         }
       })
       .catch(error => {
         console.error('API failed in add_Bid', error);
-        alert(error);
+        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);

@@ -219,7 +219,7 @@ const OfferForMyProperties = () => {
                         />
                       </View>
                       <Text style={OfferForMyPropertiesStyle.rattingText}>
-                        {'4.9'}
+                        {'0.0'}
                       </Text>
                     </View>
                   </View>
