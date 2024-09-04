@@ -3,6 +3,7 @@ import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const AccountStyle = StyleSheet.create({
   headingView: {
     marginHorizontal: 16,
+    marginTop:15
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -11,12 +12,12 @@ export const AccountStyle = StyleSheet.create({
   },
   profilviewmain: {
     alignItems: 'center',
-    marginTop: 10,
-    paddingTop: 10,
+    // marginTop: 10,
+    // paddingTop: 10,
   },
   ProfileView: {
-    width: 140,
-    height: 140,
+    width: 100,
+    height: 100,
     borderRadius: 140 / 2,
     backgroundColor: '#F5F5F5',
     justifyContent: 'center',
@@ -37,16 +38,16 @@ export const AccountStyle = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: _COLORS.Kodie_ExtraLiteGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
   editlogoview: {
     position: 'absolute',
-    top: 100,
-    right: 10,
-    backgroundColor: '#F5F5F5',
+    top: 70,
+    right: 0,
+    backgroundColor:_COLORS.Kodie_BlackColor,
     // padding: 9,
-    width: 35,
-    height: 35,
+    width: 30,
+    height: 30,
     // borderWidth:1,
     borderRadius: 35 / 2,
     alignItems: 'center',
@@ -87,7 +88,7 @@ export const AccountStyle = StyleSheet.create({
   },
   inputContainerbio: {
     // marginBottom: 15,
-    marginTop:15
+    marginTop:25
   },
   _texinputLabel: {
     fontSize: 16,
@@ -123,7 +124,7 @@ export const AccountStyle = StyleSheet.create({
     
   },
   referralcode: {
-    marginTop: 15,
+    marginTop: 25,
   },
   input: {
     height: 48,

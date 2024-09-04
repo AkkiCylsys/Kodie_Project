@@ -417,7 +417,7 @@ export default Login = props => {
     // const verification_code_url = url + "user_reset_password_email_verify";
 
     // const url = "https://e3.cylsys.com/api/v1/SendOTP";
-    const verification_code_url = url + 'SendOTP';
+    const verification_code_url = url + 'SendOTP_Forget_password';
     console.log('Request URL:', verification_code_url);
     setIsLoading(true);
     axios
@@ -427,7 +427,7 @@ export default Login = props => {
       .then(response => {
         console.log('API Response send otp:', response?.data);
         // if (response?.data?.status === true)
-        if (response?.data?.message === 'OTP sent successfully') {
+        if (response?.data?.code === 22) {
           alert(
             response?.data?.message || 'The otp has been sent to your email.',
           );
@@ -445,7 +445,8 @@ export default Login = props => {
       })
       .catch(error => {
         if (error?.response || error?.response?.status === 400) {
-          alert('Failed to send OTP via email. Please try again later.');
+          // alert('Failed to send OTP via email. Please try again later.');
+          alert( error?.response?.data.message)
         } else {
         }
         console.error('sendotp error:', error);

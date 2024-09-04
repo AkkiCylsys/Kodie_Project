@@ -133,7 +133,7 @@ const SignUp = (props) => {
       console.log('SignUp response', response?.data);
       // alert(JSON.stringify(response?.data));
       if (response?.data?.code === 3) {
-        Alert.alert('Success!', response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
@@ -142,7 +142,7 @@ const SignUp = (props) => {
           user_key: response?.data?.User_Key,
         });
       } else if (response?.data?.code === 1) {
-        Alert.alert('Success!', response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         setEmail('');
         setPassword('');
         setTerm(false);
@@ -156,10 +156,10 @@ const SignUp = (props) => {
           user_key: response?.data?.User_Key,
         });
       } else if (response?.data?.code === 2) {
-        Alert.alert('Success!', response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         props.navigation.navigate('LoginScreen');
       } else {
-        Alert.alert('Success!', response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
       }
     } catch (error) {
       if (error?.response || error?.response?.status === 400) {
@@ -216,7 +216,7 @@ const SignUp = (props) => {
 
       const response = await signup(SignUpData);
       if (response?.code === 3) {
-        Alert.alert('Success!', response?.message);
+        Alert.alert('Success', response?.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
@@ -225,11 +225,11 @@ const SignUp = (props) => {
           user_key: response?.User_Key,
         });
       } else if (response?.code === 1) {
-        Alert.alert('Success!', response?.message);
-        setEmail('');
-        setPassword('');
-        setTerm(false);
-        setPrivacy(false);
+        Alert.alert('Success', response?.message);
+        // setEmail('');
+        // setPassword('');
+        // setTerm(false);
+        // setPrivacy(false);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
@@ -238,7 +238,7 @@ const SignUp = (props) => {
           user_key: response?.User_Key,
         });
       } else if (response?.code === 2) {
-        Alert.alert('Success!', response?.message);
+        Alert.alert('Success', response?.message);
         props.navigation.navigate('LoginScreen');
       } else {
         Alert.alert('Error!', response?.message);

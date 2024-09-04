@@ -110,7 +110,7 @@ export const SignUpStyles = StyleSheet.create({
   },
   already_account_login: {
     flex: 1,
-    alignSelf: "flex-start",
+    alignSelf: "center",
     marginTop:20
   },
   terms_Condition: { color: _COLORS.Kodie_GreenColor },

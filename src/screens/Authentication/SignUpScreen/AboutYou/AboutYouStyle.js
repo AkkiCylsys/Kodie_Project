@@ -18,12 +18,14 @@ export const AboutYouStyle = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
+    marginTop:38
   },
   heading_Text: {
     // marginTop: 20,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal:4
   },
   profile_Text: {
     marginTop: 24,
@@ -123,6 +125,7 @@ export const AboutYouStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginHorizontal: 8,
+    marginBottom:12
   },
   // tab menu css here ..
   tabmainview: {
@@ -133,6 +136,7 @@ export const AboutYouStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom:5
   },
   btn_main_view: {
     flexDirection: 'row',
@@ -141,11 +145,9 @@ export const AboutYouStyle = StyleSheet.create({
     width: 178,
     height: 38,
     borderWidth: 1,
-    // padding: 5,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
-    // backgroundColor: _COLORS.Kodie_LightGrayColor,
-    marginTop: 12,
+    marginVertical:15,
   },
   person_view: {
     backgroundColor: _COLORS.Kodie_GreenColor,
@@ -212,7 +214,7 @@ export const AboutYouStyle = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginVertical: 29,
-    marginTop: 15,
+    marginTop: 24,
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -258,12 +260,14 @@ export const AboutYouStyle = StyleSheet.create({
   },
   crossIconStyle: {alignSelf: 'center', marginRight: 10},
   stepIndicator: {
-    marginTop: 15,
+    marginTop: 30,
   },
   backIcon: {
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
+    alignItems:"center",
+    marginTop:1
   },
   error_text: {
     color: 'red',
@@ -272,6 +276,7 @@ export const AboutYouStyle = StyleSheet.create({
     alignSelf: 'center',
   },
   searchInput: {
+    flex:1,
     color: _COLORS.Kodie_BlackColor,
     borderColor: _COLORS.Kodie_GrayColor,
     height: 40,
@@ -279,6 +284,7 @@ export const AboutYouStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   listContainer: {
+    flex:1,
     paddingVertical: 10,
     height: 200,
   },
@@ -287,7 +293,7 @@ export const AboutYouStyle = StyleSheet.create({
   },
   tagContainer: {
     borderWidth: 1,
-    height: 40,
+    height: 32,
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
   textTag: {
@@ -306,4 +312,5 @@ export const AboutYouStyle = StyleSheet.create({
     marginTop: 10,
     borderRadius: 8,
   },
+  errorText: {color: 'red', marginLeft: 10,marginVertical:3},
 });

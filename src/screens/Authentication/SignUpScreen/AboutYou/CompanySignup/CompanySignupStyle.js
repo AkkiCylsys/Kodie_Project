@@ -10,7 +10,7 @@ export default CompanySignupStyle = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
-    padding: 7,
+    paddingHorizontal: 7,
     // marginBottom: 50,
     // marginBottom: 250,
   },

@@ -94,7 +94,48 @@ const UploadImageData = (props) => {
             }
           }}
         >
-          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
+          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}   onPress={() => {
+            if (item.id === "1") {
+              ImagePicker.openCamera({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+              })
+                .then((image) => {
+                  // console.log('image....', image);
+                  setImage(image);
+                  setImageName(image?.path);
+                  // props?.ImageName(image?.path)
+                  props?.ImageName(image);
+
+                  console.log("ImagePath..", imageName);
+                })
+                .catch((err) => {
+                  console.log("err...", err);
+                });
+            }
+            if (item.id === "2") {
+              // Navigate to Choose photo from library when Contact Us is clicked.......
+              ImagePicker.openPicker({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                // multiple: true,
+              })
+                .then((image) => {
+                  // console.log(image);
+                  setImage(image);
+                  setImageName(JSON.stringify(image?.path));
+                  props?.ImageName(image);
+                  console.log("ImagePath..", imageName);
+                })
+                .catch((err) => {
+                  console.log("err...", err);
+                });
+            }
+          }}>
             {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
