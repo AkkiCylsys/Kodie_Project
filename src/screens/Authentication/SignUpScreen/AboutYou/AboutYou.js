@@ -955,6 +955,7 @@ export default AboutYou = props => {
                   style={[IndividualSignupStyle.want_Heading, {fontSize: 12}]}>
                   {'(you can select multiple options)'}
                 </Text>
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <FlatList
                 data={IndikodieServicesData}
@@ -1113,6 +1114,7 @@ export default AboutYou = props => {
               <View style={[CompanySignupStyle.inputContainer, {marginTop: 0}]}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Organisation name'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <TextInput
                   style={CompanySignupStyle.input}
@@ -1135,6 +1137,7 @@ export default AboutYou = props => {
               <View style={CompanySignupStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Australian business number'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <TextInput
                   style={[CompanySignupStyle.input]}
@@ -1167,6 +1170,7 @@ export default AboutYou = props => {
                     ]}>
                     {'(you can select multiple options)'}
                   </Text>
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <FlatList
                   data={kodieServicesData}
@@ -1389,6 +1393,7 @@ export default AboutYou = props => {
                   <Text style={[AboutYouStyle.want_Heading, {fontSize: 12}]}>
                     {'(you can select multiple options)'}
                   </Text>
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <View>
                   <FlatList
