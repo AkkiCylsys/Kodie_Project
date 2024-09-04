@@ -43,6 +43,8 @@ import storage from '@react-native-firebase/storage';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
+import Counter from '../../../../components/Molecules/CounterComponent/Counter';
+import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -128,21 +130,24 @@ export default FirstProperty = props => {
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
+  const [longitude, setlongitude] = useState(''); 
   const [CountBedroom, setCountBedroom] = useState(0);
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
+  const [CountReception, setCountReception] = useState(0);
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
   const [Fcm_token, setFcm_token] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const dispatch = useDispatch();
-  const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
-  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(70);
-  const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
-    useState(67);
+    useState(0);
+  const [selectedButtonStorageId, setSelectedButtonStorageId] =
+    useState(0);
+  const [selectedButtonGardenId, setSelectedButtonGardenId] =
+    useState(0);
   const P_addressParts = propertyLocation.split(', ');
   const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? '';
   const P_state = P_addressParts[2]?.trim() ?? '';
@@ -206,41 +211,56 @@ export default FirstProperty = props => {
     }, [IsMap, IsSearch]),
   );
   const AllCountsData = [
-    {Bedrooms: CountBedroom},
-    {Bathrooms: CountBathroom},
-    {'Parking Space': CountParking},
-    {'On-StreetParking': CountParkingStreet},
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { 'Reception rooms': CountReception },
+    { 'Parking / garage spaces': CountParking },
+    { 'On-street parking': CountParkingStreet },
   ];
-  const increaseBedroomCount = () => {
-    setCountBedroom(prevCount => prevCount + 1);
-  };
-  const decreaseBedroomCount = () => {
-    if (CountBedroom > 0) {
-      setCountBedroom(prevCount => prevCount - 1);
-    }
-  };
-  const increaseBathroomCount = () => {
-    setCountBathroom(prevCount => prevCount + 1);
-  };
-  const decreaseBathroomCount = () => {
-    if (CountBathroom > 0) {
-      setCountBathroom(prevCount => prevCount - 1);
-    }
-  };
-  const increaseParkingStreetCount = () => {
-    setCountParkingStreet(prevCount => prevCount + 1);
-  };
-  const decreaseParkingStreetCount = () => {
-    if (CountParkingStreet > 0) {
-      setCountParkingStreet(prevCount => prevCount - 1);
-    }
-  };
-  const increaseParkingCount = () => {
-    setCountParking(prevCount => prevCount + 1);
-  };
-  const decreaseParkingCount = () => {
-    if (CountParking > 0) {
-      setCountParking(prevCount => prevCount - 1);
+  const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
+  console.log(PreFriedly);
+  // Update count function
+  const updateCount = (type, operation) => {
+    if (operation === 'increase') {
+      switch (type) {
+        case 'Bedroom':
+          setCountBedroom(prev => prev + 1);
+          break;
+        case 'Bathroom':
+          setCountBathroom(prev => prev + 1);
+          break;
+        case 'Reception':
+          setCountReception(prev => prev + 1);
+          break;
+        case 'Parking':
+          setCountParking(prev => prev + 1);
+          break;
+        case 'ParkingStreet':
+          setCountParkingStreet(prev => prev + 1);
+          break;
+        default:
+          break;
+      }
+    } else if (operation === 'decrease') {
+      switch (type) {
+        case 'Bedroom':
+          if (CountBedroom > 0) setCountBedroom(prev => prev - 1);
+          break;
+        case 'Bathroom':
+          if (CountBathroom > 0) setCountBathroom(prev => prev - 1);
+          break;
+        case 'Reception':
+          if (CountReception > 0) setCountReception(prev => prev - 1);
+          break;
+        case 'Parking':
+          if (CountParking > 0) setCountParking(prev => prev - 1);
+          break;
+        case 'ParkingStreet':
+          if (CountParkingStreet > 0) setCountParkingStreet(prev => prev - 1);
+          break;
+        default:
+          break;
+      }
     }
   };
   const renderStepIndicator = params => (
@@ -788,8 +808,7 @@ export default FirstProperty = props => {
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
-  const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
-  return (
+return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
@@ -961,138 +980,38 @@ export default FirstProperty = props => {
                     Key features
                   </Text>
                   <View style={FirstPropertyStyle.inputContainer}>
-                    <View>
-                      <View style={FirstPropertyStyle.mainfeaturesview}>
-                        <View style={FirstPropertyStyle.key_feature_Text_view}>
-                          <Text style={FirstPropertyStyle.key_feature_Text}>
-                            {'Bedrooms'}
-                          </Text>
-                        </View>
-
-                        <TouchableOpacity
-                          style={FirstPropertyStyle.plus_minusview}>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={decreaseBedroomCount}>
-                            <AntDesign
-                              name="minus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                          <Text style={FirstPropertyStyle.countdata}>
-                            {CountBedroom}
-                          </Text>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={() => {
-                              increaseBedroomCount();
-                            }}>
-                            <AntDesign
-                              name="plus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={FirstPropertyStyle.mainfeaturesview}>
-                        <View style={FirstPropertyStyle.key_feature_Text_view}>
-                          <Text style={FirstPropertyStyle.key_feature_Text}>
-                            {'Bathrooms'}
-                          </Text>
-                        </View>
-                        <TouchableOpacity
-                          style={FirstPropertyStyle.plus_minusview}>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={decreaseBathroomCount}>
-                            <AntDesign
-                              name="minus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                          <Text style={FirstPropertyStyle.countdata}>
-                            {CountBathroom}
-                          </Text>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={increaseBathroomCount}>
-                            <AntDesign
-                              name="plus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                        </TouchableOpacity>
-                      </View>
-
-                      <View style={FirstPropertyStyle.mainfeaturesview}>
-                        <View style={FirstPropertyStyle.key_feature_Text_view}>
-                          <Text style={FirstPropertyStyle.key_feature_Text}>
-                            {'Parking spaces'}
-                          </Text>
-                        </View>
-
-                        <TouchableOpacity
-                          style={FirstPropertyStyle.plus_minusview}>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={decreaseParkingCount}>
-                            <AntDesign
-                              name="minus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                          <Text style={FirstPropertyStyle.countdata}>
-                            {CountParking}
-                          </Text>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={increaseParkingCount}>
-                            <AntDesign
-                              name="plus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                        </TouchableOpacity>
-                      </View>
-
-                      <View style={FirstPropertyStyle.mainfeaturesview}>
-                        <View style={FirstPropertyStyle.key_feature_Text_view}>
-                          <Text style={FirstPropertyStyle.key_feature_Text}>
-                            {'On-street parking'}
-                          </Text>
-                        </View>
-
-                        <TouchableOpacity
-                          style={FirstPropertyStyle.plus_minusview}>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={decreaseParkingStreetCount}>
-                            <AntDesign
-                              name="minus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                          <Text style={FirstPropertyStyle.countdata}>
-                            {CountParkingStreet}
-                          </Text>
-                          <TouchableOpacity
-                            style={FirstPropertyStyle.menusIconView}
-                            onPress={increaseParkingStreetCount}>
-                            <AntDesign
-                              name="plus"
-                              size={20}
-                              color={_COLORS.Kodie_BlackColor}
-                            />
-                          </TouchableOpacity>
-                        </TouchableOpacity>
-                      </View>
+                  <View>
+              <Counter
+                label="Bedrooms"
+                count={CountBedroom}
+                onIncrease={() => updateCount('Bedroom', 'increase')}
+                onDecrease={() => updateCount('Bedroom', 'decrease')}
+              />
+              <Counter
+                label="Bathrooms"
+                count={CountBathroom}
+                onIncrease={() => updateCount('Bathroom', 'increase')}
+                onDecrease={() => updateCount('Bathroom', 'decrease')}
+              />
+              <Counter
+                label="Reception rooms"
+                count={CountReception}
+                onIncrease={() => updateCount('Reception', 'increase')}
+                onDecrease={() => updateCount('Reception', 'decrease')}
+              />
+              <Counter
+                label="Parking / garage spaces"
+                count={CountParking}
+                onIncrease={() => updateCount('Parking', 'increase')}
+                onDecrease={() => updateCount('Parking', 'decrease')}
+              />
+              <Counter
+                label="On-street parking"
+                count={CountParkingStreet}
+                onIncrease={() => updateCount('ParkingStreet', 'increase')}
+                onDecrease={() => updateCount('ParkingStreet', 'decrease')}
+              />
+            
                     </View>
 
                     <View>
@@ -1135,7 +1054,7 @@ export default FirstProperty = props => {
                       </View>
                     </View>
 
-                    <View style={FirstPropertyStyle.addition_featureView}>
+                    <View>
                       <Text
                         style={[
                           LABEL_STYLES._texinputLabel,
@@ -1143,101 +1062,74 @@ export default FirstProperty = props => {
                         ]}>
                         {'Additional features'}
                       </Text>
-                      <View style={FirstPropertyStyle.addition_featureView}>
-                        <Text style={FirstPropertyStyle.Furnished_Text}>
-                          {'Furnished or unfurnished ?'}
-                        </Text>
-                        <RowButtons
-                          LeftButtonText={'Furnished'}
-                          leftButtonbackgroundColor={
-                            !selectedButtonFurnished
-                              ? _COLORS.Kodie_lightGreenColor
-                              : _COLORS.Kodie_WhiteColor
-                          }
-                          LeftButtonTextColor={
-                            !selectedButtonFurnished
-                              ? _COLORS.Kodie_BlackColor
-                              : _COLORS.Kodie_MediumGrayColor
-                          }
-                          LeftButtonborderColor={
-                            !selectedButtonFurnished
-                              ? _COLORS.Kodie_GrayColor
-                              : _COLORS.Kodie_LightWhiteColor
-                          }
-                          onPressLeftButton={() => {
-                            setSelectedButtonFurnished(false);
-                            setSelectedButtonFurnishedId(67);
-                          }}
-                          RightButtonText={'Unfurnished'}
-                          RightButtonbackgroundColor={
-                            selectedButtonFurnished
-                              ? _COLORS.Kodie_lightGreenColor
-                              : _COLORS.Kodie_WhiteColor
-                          }
-                          RightButtonTextColor={
-                            selectedButtonFurnished
-                              ? _COLORS.Kodie_BlackColor
-                              : _COLORS.Kodie_MediumGrayColor
-                          }
-                          RightButtonborderColor={
-                            selectedButtonFurnished
-                              ? _COLORS.Kodie_GrayColor
-                              : _COLORS.Kodie_LightWhiteColor
-                          }
-                          onPressRightButton={() => {
-                            setSelectedButtonFurnished(true);
-                            setSelectedButtonFurnishedId(68);
-                          }}
-                        />
-                      </View>
-                      <View style={FirstPropertyStyle.addition_featureView}>
-                        <Text style={FirstPropertyStyle.Furnished_Text}>
-                          {'Pet friendly ?'}
-                        </Text>
-                        <RowButtons
-                          LeftButtonText={'Yes'}
-                          leftButtonbackgroundColor={
-                            !selectedButtonDeposit
-                              ? _COLORS.Kodie_lightGreenColor
-                              : _COLORS.Kodie_WhiteColor
-                          }
-                          LeftButtonTextColor={
-                            !selectedButtonDeposit
-                              ? _COLORS.Kodie_BlackColor
-                              : _COLORS.Kodie_MediumGrayColor
-                          }
-                          LeftButtonborderColor={
-                            !selectedButtonDeposit
-                              ? _COLORS.Kodie_GrayColor
-                              : _COLORS.Kodie_LightWhiteColor
-                          }
-                          onPressLeftButton={() => {
-                            setSelectedButtonDeposit(false);
-                            setSelectedButtonDepositId(70);
-                            // alert(selectedButtonId)
-                          }}
-                          RightButtonText={'No'}
-                          RightButtonbackgroundColor={
-                            selectedButtonDeposit
-                              ? _COLORS.Kodie_lightGreenColor
-                              : _COLORS.Kodie_WhiteColor
-                          }
-                          RightButtonTextColor={
-                            selectedButtonDeposit
-                              ? _COLORS.Kodie_BlackColor
-                              : _COLORS.Kodie_MediumGrayColor
-                          }
-                          RightButtonborderColor={
-                            selectedButtonDeposit
-                              ? _COLORS.Kodie_GrayColor
-                              : _COLORS.Kodie_LightWhiteColor
-                          }
-                          onPressRightButton={() => {
-                            setSelectedButtonDeposit(true);
-                            setSelectedButtonDepositId(71);
-                          }}
-                        />
-                      </View>
+                      <View style={[FirstPropertyStyle.addition_featureView]}>
+                <View style={{ flex: 1 }}>
+                  <Text style={FirstPropertyStyle.Furnished_Text}>
+                    {'Furnished?'}
+                  </Text>
+                  <ToggleButton
+                    tabValue={selectedButtonFurnishedId}
+                    setTabValue={setSelectedButtonFurnishedId}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                  />
+                </View>
+                <View style={{ margin: 11 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={FirstPropertyStyle.Furnished_Text}>
+                    {'External storage?'}
+                  </Text>
+                  <ToggleButton
+                    tabValue={selectedButtonStorageId}
+                    setTabValue={setSelectedButtonStorageId}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                  />
+                </View>
+
+              </View>
+              <View style={FirstPropertyStyle.addition_featureView}>
+                <View style={{ flex: 1 }}>
+                  <Text style={FirstPropertyStyle.Furnished_Text}>
+                    {'Garden?'}
+                  </Text>
+                  <ToggleButton
+                    tabValue={selectedButtonGardenId}
+                    setTabValue={setSelectedButtonGardenId}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                  />
+                </View>
+                <View style={{ margin: 11 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={FirstPropertyStyle.Furnished_Text}>
+                    {'Pets allowed?'}
+                  </Text>
+                  <ToggleButton
+                    tabValue={selectedButtonDepositId}
+                    setTabValue={setSelectedButtonDepositId}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                  />
+                </View>
+              </View>
+        
                     </View>
 
                     <View style={FirstPropertyStyle.inputContainer}>

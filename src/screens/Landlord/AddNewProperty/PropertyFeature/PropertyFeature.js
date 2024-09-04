@@ -605,7 +605,7 @@ export default PropertyFeature = props => {
                 <View style={{ margin: 11 }} />
                 <View style={{ flex: 1 }}>
                   <Text style={PropertyFeatureStyle.Furnished_Text}>
-                    {'Garden?'}
+                    {'Pets allowed?'}
                   </Text>
                   <ToggleButton
                     tabValue={selectedButtonDepositId}

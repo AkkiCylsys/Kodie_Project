@@ -760,7 +760,7 @@ const PropertyList = props => {
             left: -20,
             bottom: -10,
             width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '35%',
+            height: isDeleteData_Clicked ? '28%' : '40%',
             backgroundColor: 'white',
             borderRadius: 10,
             paddingVertical: 8,
