@@ -12,6 +12,7 @@ import {
   _COLORS,
   LABEL_STYLES,
   IMAGES,
+  FONTFAMILY,
 } from '../../../../Themes';
 import Modal from 'react-native-modal';
 import { PropertyListCSS } from './PropertyListCSS';
@@ -41,7 +42,7 @@ const HorizontalData = [
 ];
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData);
+  // console.log('loginData', loginData);
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -88,7 +89,7 @@ const PropertyList = props => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const archive_apiUrl = url +'archieve_property';
+      const archive_apiUrl = url + 'archieve_property';
       const response = await axios.post(archive_apiUrl, {
         property_id: id,
       });
@@ -103,8 +104,8 @@ const PropertyList = props => {
         if (response?.data?.success === true) {
           // Remove the item from the list
           getPropertyDetailsByFilter(selectedFilter);
-         
-          
+
+
         } else {
           // If the request failed, revert the item to its original state
           setPropertyData(prevData =>
@@ -115,8 +116,8 @@ const PropertyList = props => {
             )
           );
         }
-      }, 200); 
-    
+      }, 200);
+
     } catch (error) {
       Alert.alert('Error', 'An error occurred while archiving the property.');
     } finally {
@@ -148,7 +149,7 @@ const PropertyList = props => {
     }
   };
 
-  const renderRightActions = (id, isArchived,location) => {
+  const renderRightActions = (id, isArchived, location) => {
     if (isArchived) return null;
     return (
       <View style={PropertyListCSS.actionsContainer}>
@@ -260,7 +261,7 @@ const PropertyList = props => {
     );
   };
   const propertyData1_render = ({ item, index }) => {
-const isArchived = item.isArchived;
+    const isArchived = item.isArchived;
     const isExpanded = expandedItems.includes(item.property_id);
     return (
       <Swipeable
@@ -271,7 +272,7 @@ const isArchived = item.isArchived;
         //     swipeableRef.current?.close(); 
         //   }
         // }}
-         renderRightActions={() => renderRightActions(item.property_id, isArchived,item.location)} >
+        renderRightActions={() => renderRightActions(item.property_id, isArchived, item.location)} >
         <TouchableOpacity
           style={[
 
@@ -282,22 +283,41 @@ const isArchived = item.isArchived;
               propertyid: item?.property_id,
             });
           }}>
+            {
+              item?.auto_list == 0 ? null :
+              <View style={{
+                justifyContent: 'center', marginRight: '65%', marginLeft: '6.6%',
+                backgroundColor: _COLORS.Kodie_GreenColor, paddingVertical: 5, borderBottomEndRadius: 8, borderBottomStartRadius:8
+              }}>
+                <Text style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  fontFamily: FONTFAMILY.K_SemiBold,
+                  color: _COLORS.Kodie_WhiteColor,
+                }}>{'Current listing'}</Text>
+              </View>
+    
+            }
+         
+
           {item.result ? null : (
             <>
-             {
-              item.isArchived ? <View style={[PropertyListCSS.actionsContainer,{justifyContent:'flex-start',alignItems:'center'}]}> 
-               <TouchableOpacity
-                style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton,{height:120}]}
-              >
-                <MaterialCommunityIcons name="archive" size={24} color="white" style={{justifyContent:'flex-start',alignSelf:'center'}}/>
-                <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
-              </TouchableOpacity>
-              </View> : (
-              <>
-          
-              <View key={index} style={PropertyListCSS.flatListContainer}>
-               
-                      <View style={PropertyListCSS.flat_MainView}>
+              {
+                item.isArchived ? <View style={[PropertyListCSS.actionsContainer, { justifyContent: 'flex-start', alignItems: 'center' }]}>
+                  <TouchableOpacity
+                    style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton, { height: 120,}]}
+                  >
+                    <MaterialCommunityIcons name="archive" size={24} color="white" style={{ justifyContent: 'flex-start', alignSelf: 'center' }} />
+                    <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
+                  </TouchableOpacity>
+                </View> : (
+                  <>
+
+                    <View key={index} style={[PropertyListCSS.flatListContainer,
+                      
+                    ]}>
+
+                      <View style={[PropertyListCSS.flat_MainView]}>
                         <View style={PropertyListCSS.flexContainer}>
                           <Text style={PropertyListCSS.apartmentText}>
                             {item.property_type}
@@ -406,6 +426,7 @@ const isArchived = item.isArchived;
                         </View>
                       </View>
                       <DividerIcon
+                      color={_COLORS?.Kodie_LiteWhiteColor}
                         IsShowIcon
                         iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
                         onPress={() => {
@@ -421,35 +442,35 @@ const isArchived = item.isArchived;
                         }}
                       />
 
-              </View>
-              {isExpanded && (
-                <View style={PropertyListCSS.expandedContent}>
-                  <View style={PropertyListCSS.flexContainer}>
-                    <Text style={LABEL_STYLES.commonMidtext}>
-                      Current tenant:
-                    </Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.tanentname || 'Vacant'}
-                    </Text>
-                  </View>
+                    </View>
+                    {isExpanded && (
+                      <View style={PropertyListCSS.expandedContent}>
+                        <View style={PropertyListCSS.flexContainer}>
+                          <Text style={LABEL_STYLES.commonMidtext}>
+                            Current tenant:
+                          </Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.tanentname || 'Vacant'}
+                          </Text>
+                        </View>
 
-                  <View style={[PropertyListCSS.rentView]}>
-                    <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.rent || '$0'}
-                    </Text>
-                  </View>
-                  <View style={[PropertyListCSS.rentView]}>
-                    <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.spend || `$0`}
-                    </Text>
-                  </View>
-                </View>
-              )}
-              <DividerIcon />
-              </>
-              )}
+                        <View style={[PropertyListCSS.rentView]}>
+                          <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.rent || '$0'}
+                          </Text>
+                        </View>
+                        <View style={[PropertyListCSS.rentView]}>
+                          <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.spend || `$0`}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                    <DividerIcon  marginBottom={item?.auto_list == 0? 3 : 15}/>
+                  </>
+                )}
             </>
           )}
         </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { BottomModalDataStyle } from './BottomModalDataStyle';
 import { _COLORS } from '../../../Themes';
 import { useNavigation } from '@react-navigation/native';
@@ -10,10 +10,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Config } from '../../../Config';
 import axios from 'axios';
+import { UnlistMarketDetails } from '../../../services/PropertyListing/ListingServices';
 
 
 
-const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose, onDelete,autoList }) => {
+const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose, onDelete,autoList,onDeleteData }) => {
   const options = [
     {
       id: '1',
@@ -76,7 +77,8 @@ const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose
         onClose();
         break;
       case 'listProperty':
-      navigation.navigate('PropertyListingDetail');
+        autoList == 0 ?
+      navigation.navigate('PropertyListingDetail',{propertyid: propertyId,}): handleUnList();
       onClose();
         break;
       case 'manageDocuments':
@@ -88,14 +90,14 @@ const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose
         onClose();
         break;
       case 'chatTenant':
-        navigation.navigate('Chats',{property:'property'})
+        navigation.navigate('Chats',{ property:'property'})
         onClose();
         break;
       case 'deleteProperty':
         onDelete(propertyId);
         break;
       case 'confirmDelete':
-        onDelete(propertyId, Address);
+        onDeleteData(propertyId, Address);
         break;
       case 'archiveProperty':
         archiveProperty()
@@ -123,6 +125,22 @@ const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose
      
     }
   }
+  const handleUnList = async () => {
+    const data = {
+      property_id: propertyId,
+     
+    };
+console.log(data);
+    try {
+      const response = await UnlistMarketDetails(data);
+      Alert.alert('Success', 'Market details have been Unlist successfully.');
+      onClose();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to insert market details.');
+    }
+  };
   const renderOption = ({ item }) => (
     <TouchableOpacity style={BottomModalDataStyle.container} onPress={() => handleAction(item.action)}>
       <View style={BottomModalDataStyle.IconView}>{item.icon}</View>

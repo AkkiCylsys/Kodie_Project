@@ -8,6 +8,7 @@ export const DetailsStyle = StyleSheet.create({
   headingView: {
     marginHorizontal: 16,
     marginTop: 10,
+    marginBottom:15
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -28,7 +29,8 @@ export const DetailsStyle = StyleSheet.create({
     margin: 0,
   },
   subContainer: {
-    marginTop: '8%',
+    // flex:1,
+    marginTop: '2%',
   },
   apartment_View: {
     flexDirection: "row",
@@ -121,5 +123,64 @@ export const DetailsStyle = StyleSheet.create({
     marginHorizontal: 16,
     // marginTop: 10,
   },
-  ViewIconStyle:{ height: 28, width: 28, borderRadius: 12,borderWidth:1,justifyContent:'center',alignSelf:'center',borderColor:_COLORS.Kodie_LiteWhiteColor }
+  input: {
+    height: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 1,
+  },
+  propertyDetailsContent:{marginHorizontal:16},
+  ViewIconStyle:{ height: 28, width: 28, borderRadius: 12,borderWidth:1,justifyContent:'center',alignSelf:'center',borderColor:_COLORS.Kodie_LiteWhiteColor },
+  dropdown: {
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    // marginTop: 10,
+    borderRadius: 8,
+  },
+
+  placeholderStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GreenColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    // borderWidth: 1,
+    marginRight: 16,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  section: {marginTop: 20 },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf: "center",
+  },
+  addition_featureView: {
+    marginTop: 10,
+    flexDirection:'row',
+    justifyContent:'center',
+
+  },
 });
