@@ -196,12 +196,79 @@ const PreRentalQuestionnaire = props => {
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
+          let occupants = [];
+          let leaseHolders = [];
 
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
+                if (Array.isArray(childQuestion.sub_children)) {
+                  childQuestion.sub_children.forEach(subChildQuestion => {
+                    if (
+                      subChildQuestion.tqm_Question_description?.trim() ===
+                      'Add Occupant'
+                    ) {
+                      console.log("Found 'Add Occupant' question");
+                      try {
+                        const parsedOccupants = JSON.parse(
+                          subChildQuestion.tqm_Question_value || '[]',
+                        );
+                        if (Array.isArray(parsedOccupants)) {
+                          occupants = parsedOccupants; // Update the local variable
+                          console.log(
+                            'Occupant data parsed successfully:',
+                            occupants,
+                          );
+                          // Call setOccupants outside of the loop to update the state once
+                        } else {
+                          console.error(
+                            'Occupant data is not an array:',
+                            parsedOccupants,
+                          );
+                        }
+                      } catch (e) {
+                        console.error('Error parsing occupants:', e);
+                      }
+                    }
+
+                    if (
+                      subChildQuestion.tqm_Question_description?.trim() ===
+                      'Add leaseholders'
+                    ) {
+                      console.log("Found 'Add leaseholders' question");
+                      try {
+                        const parsedLeaseHolders = JSON.parse(
+                          subChildQuestion.tqm_Question_value || '[]',
+                        );
+                        if (Array.isArray(parsedLeaseHolders)) {
+                          leaseHolders = parsedLeaseHolders; // Update the local variable
+                          console.log(
+                            'Leaseholder data parsed successfully:',
+                            leaseHolders,
+                          );
+                          // Call setLeaseHolderItem outside of the loop to update the state once
+                        } else {
+                          console.error(
+                            'Leaseholder data is not an array:',
+                            parsedLeaseHolders,
+                          );
+                        }
+                      } catch (e) {
+                        console.error('Error parsing leaseholders:', e);
+                      }
+                    }
+                  });
+                }
+
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
+                }
+
+                if (childQuestion.tqm_Question_type === 'Yes_no') {
+                  setButtonState(
+                    childQuestion.tqm_Question_code,
+                    childQuestion.tqm_Question_value,
+                  );
                 }
 
                 if (
@@ -210,36 +277,18 @@ const PreRentalQuestionnaire = props => {
                 ) {
                   initialValues[childQuestion.tqm_Question_code] =
                     childQuestion.tqm_Question_value;
-
-                  // Set the initial state for Yes/No and Smoking buttons
-                  if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
-                    setSelectedButton(childQuestion.tqm_Question_value === 1);
-                  } else if (
-                    childQuestion.tqm_Question_code === 'EVER_BROKEN'
-                  ) {
-                    setSelectedRentalBondButton(
-                      childQuestion.tqm_Question_value === 1,
-                    );
-                  } else if (
-                    childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND'
-                  ) {
-                    setSelectedPreviousRentalButton(
-                      childQuestion.tqm_Question_value === 1,
-                    );
-                  } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
-                    setSelectedPetsButton(
-                      childQuestion.tqm_Question_value === 1,
-                    );
-                  } else if (childQuestion.tqm_Question_code === 'S/NS') {
-                    setSelectedSomokingButton(
-                      childQuestion.tqm_Question_value === 0,
-                    ); // Assuming 0 means Smoking and 1 means Non-smoking
-                  }
                 }
               });
             }
           });
 
+          // Set occupants and leaseholders state
+          setOccupants(occupants);
+          setLeaseHolderItem(leaseHolders);
+          setNumberOccupants(occupants.length);
+          setNumberLeaseHolder(leaseHolders.length);
+          console.log('occupants in edit mode...', occupants);
+          console.log('leaseHolderItem in edit mode...', leaseHolderItem);
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -249,26 +298,25 @@ const PreRentalQuestionnaire = props => {
                 [questionCode]: options,
               }));
 
-              // Convert initialValues to match dropdown options format
               const value = initialValues[questionCode];
               if (value) {
                 const selectedOption = options.find(
                   option => String(option.lookup_key) === String(value),
                 );
                 if (selectedOption) {
-                  initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
+                  initialValues[questionCode] = selectedOption.lookup_key;
                 }
               }
             },
           );
 
-          // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
 
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
           }
+
           console.log('response in edit mode...', JSON.stringify(data));
         } else {
           console.error(
@@ -281,6 +329,31 @@ const PreRentalQuestionnaire = props => {
       console.error('API failed EdittenantQues', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const setButtonState = (questionCode, value) => {
+    console.log('value in buttons....', value);
+    const isYesSelected = value === 0; // true if Yes is selected, false if No is selected
+
+    switch (questionCode) {
+      case 'EARN_INCOME':
+        setSelectedButton(isYesSelected);
+        break;
+      case 'EVER_BROKEN':
+        setSelectedRentalBondButton(isYesSelected);
+        break;
+      case 'EVICTED_PREVIOUS_BOND':
+        setSelectedPreviousRentalButton(isYesSelected);
+        break;
+      case 'ANY_PETS':
+        setSelectedPetsButton(isYesSelected);
+        break;
+      case 'S/NS':
+        setSelectedSmokingButton(isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
+        break;
+      default:
+        console.warn(`Unhandled Yes/No question code: ${questionCode}`);
     }
   };
 
@@ -492,13 +565,15 @@ const PreRentalQuestionnaire = props => {
       <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
           <Text style={PreRentalQuestionnaireStyle.occupants_name}>
-            {item?.leaseFullName}
+          {item?.fullName ? item?.fullName : item?.leaseFullName}
           </Text>
           <Text style={PreRentalQuestionnaireStyle.occupants_email}>
-            {item?.leaseEmailAddress}
+          {item?.emailAddress ? item?.emailAddress : item?.leaseEmailAddress}
           </Text>
           <Text style={PreRentalQuestionnaireStyle.occupants_email}>
-            {item?.leaseConfirmEmailAddress}
+          {item?.confirmEmailAddress
+              ? item?.confirmEmailAddress
+              : item?.leaseConfirmEmailAddress}
           </Text>
         </View>
         <View style={{marginHorizontal: 5}}>

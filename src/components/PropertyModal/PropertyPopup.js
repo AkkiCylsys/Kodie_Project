@@ -125,6 +125,7 @@ const PropertyPopup = props => {
       new_bid_days: Newbid_Value,
       new_bid_before: '0',
     };
+    console.log("Bid_Data payload...",Bid_Data)
     axios
       .post(add_Bid_url, Bid_Data)
       .then(response => {

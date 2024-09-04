@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 import {PropertyRentalOfferStyle} from './PropertyRentalOfferStyle';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
@@ -68,7 +69,7 @@ const PropertyRentalOffer = props => {
       const response = await withdowBidServices(WithdrawData);
       console.log('response in withdrawBid...', response);
       if (response?.success === true) {
-        alert(response?.data);
+        Alert.alert("Withdraw bid",response?.data);
         handleGetCurrectOffer();
       }
     } catch (error) {

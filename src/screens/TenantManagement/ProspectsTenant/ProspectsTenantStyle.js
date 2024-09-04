@@ -35,16 +35,16 @@ export const ProspectsTenantStyle = StyleSheet.create({
   },
   screeningView: {
     flexDirection: 'row',
-    backgroundColor: _COLORS?.Kodie_LightOrange,
+    backgroundColor: _COLORS?.Kodie_ExtraMinLightGrayColor,
     padding: 3,
     borderRadius: 16,
-    width: 150,
+    width: 155,
     alignSelf: 'flex-end',
     marginTop:10
   },
   screeningText: {
-    color: _COLORS?.Kodie_DarkOrange,
-    fontSize: 12,
+    color: _COLORS?.Kodie_boldGrayColor,
+    fontSize: 11,
     fontFamily: FONTFAMILY?.K_Bold,
     alignSelf: 'center',
   },

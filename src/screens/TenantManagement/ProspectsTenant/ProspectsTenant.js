@@ -87,13 +87,13 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                 <Entypo
                   name="dot-single"
                   size={25}
-                  color={_COLORS.Kodie_DarkOrange}
+                  color={_COLORS.Kodie_boldGrayColor}
                   style={{
                     alignSelf: 'center',
                   }}
                 />
                 <Text style={ProspectsTenantStyle.screeningText}>
-                  {'Failed screening'}
+                  {'Screening not started'}
                 </Text>
               </View>
             </View>

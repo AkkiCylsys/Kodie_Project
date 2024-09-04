@@ -312,5 +312,5 @@ export const AboutYouStyle = StyleSheet.create({
     marginTop: 10,
     borderRadius: 8,
   },
-  errorText: {color: 'red', marginLeft: 10,marginVertical:3},
+  errorText: {color: 'red',marginVertical:3},
 });
