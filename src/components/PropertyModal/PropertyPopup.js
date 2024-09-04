@@ -135,12 +135,12 @@ const PropertyPopup = props => {
           handleSaveClick();
           setBidResponse(response?.data);
         } else {
-          Alert.alert('Bid inserted', response?.data?.message);
+          // Alert.alert('Bid inserted', response?.data?.message);
         }
       })
       .catch(error => {
         console.error('API failed in add_Bid', error);
-        alert(error);
+        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);

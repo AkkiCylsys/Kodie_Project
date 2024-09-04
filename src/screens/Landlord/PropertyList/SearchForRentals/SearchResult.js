@@ -120,7 +120,7 @@ export default SearchResult = props => {
           }}>
           {setKeyFeature(item?.key_features)}
           {item?.image_path && item?.image_path.length != 0 ? (
-            <View style={{borderWidth: 1}}>
+            <View style={{}}>
               <SliderBox
                 images={item?.image_path}
                 sliderBoxHeight={200}
