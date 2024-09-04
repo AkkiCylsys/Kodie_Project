@@ -177,29 +177,33 @@ const SignUpSteps = props => {
       .catch(error => console.warn(error));
   };
   const validateFirstName = text => {
-    if (text === '') {
+    const trimmedText = text.trim(); 
+    if (trimmedText === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
       setFirstNameError(
-        'First name should contain only alphabetic characters, spaces, or hyphens!',
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setFirstNameError('');
     }
     setFirstName(text);
   };
-  const validateLastName = text => {
-    if (text === '') {
-      setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
-      setLastNameError(
-        'Last name should contain only alphabetic characters, spaces, or hyphens!',
-      );
-    } else {
-      setLastNameError('');
-    }
-    setLastName(text);
-  };
+  
+const validateLastName = text => {
+  const trimmedText = text.trim();
+  if (trimmedText === '') {
+    setLastNameError('Last name is required!');
+  } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
+    setLastNameError(
+      'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+    );
+  } else {
+    setLastNameError('');
+  }
+  setLastName(text);
+};
+
 
   const validMobileNumber = () => {
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
@@ -217,8 +221,8 @@ const SignUpSteps = props => {
   const phoneNumber = mobileNumber;
   const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
   if (phoneNumberParts) {
-    const countryCode = phoneNumberParts[1]; // Extracted country code
-    const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+    const countryCode = phoneNumberParts[1];
+    const remainingNumber = phoneNumberParts[2];
     console.log('CountryCode:', countryCode);
     setCountry_Code_Get(countryCode);
     console.log('RemainingsNumber:', remainingNumber);
@@ -231,15 +235,13 @@ const SignUpSteps = props => {
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
-      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens!');
-    }
-     else if (lastName.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(firstName.trim())) {
+      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens in the correct format!');
+    } else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
-      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens!');
-    }
-     else if (mobileNumber.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(lastName.trim())) {
+      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!');
+    } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format!');
@@ -261,10 +263,11 @@ const SignUpSteps = props => {
         image: ImageName,
         Bio: bio,
         country_code: country_Code_Get,
-        password:password
+        password: password
       });
     }
   };
+  
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
@@ -367,7 +370,9 @@ const SignUpSteps = props => {
         </View>
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>First name
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={[
                 AccountStyle.input,
@@ -386,7 +391,9 @@ const SignUpSteps = props => {
             <Text style={AccountStyle.errorText}>{firstNameError}</Text>
           </View>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>Last name*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>Last name
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={[
                 AccountStyle.input,
@@ -406,7 +413,9 @@ const SignUpSteps = props => {
           </View>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
-              Phone number* <Text style={{fontSize:14}}>(mobile preferred)</Text>
+              Phone number
+               <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
+               <Text style={{fontSize:14}}>(mobile preferred)</Text>
             </Text>
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput

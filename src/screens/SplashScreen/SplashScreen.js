@@ -18,6 +18,7 @@ const Splash = props => {
 
   useEffect(() => {
     setTimeout(() => {
+      StatusBar.setHidden(false);
       if (
         loginData?.Login_details?.token == '' ||
         loginData?.Login_details?.token == undefined
