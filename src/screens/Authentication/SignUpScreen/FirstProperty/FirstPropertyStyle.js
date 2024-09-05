@@ -25,9 +25,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
   },
-  addition_featureView: {
-    marginTop: 15,
-  },
+
   Furnished_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,
@@ -38,9 +36,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  addition_featureView: {
-    marginTop: 15,
-  },
+ 
   inputContainer: {
     marginBottom: 15,
   },
@@ -320,5 +316,21 @@ export const FirstPropertyStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
+  },
+  addition_featureView: {
+    marginTop: 10,
+    flexDirection:'row',
+    justifyContent:'center',
+
+  },
+  Furnished_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  additional_Text: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
 });

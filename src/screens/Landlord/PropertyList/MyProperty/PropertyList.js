@@ -12,6 +12,7 @@ import {
   _COLORS,
   LABEL_STYLES,
   IMAGES,
+  FONTFAMILY,
 } from '../../../../Themes';
 import Modal from 'react-native-modal';
 import { PropertyListCSS } from './PropertyListCSS';
@@ -41,7 +42,7 @@ const HorizontalData = [
 ];
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData);
+  // console.log('loginData', loginData);
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -54,6 +55,7 @@ const PropertyList = props => {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [propertyData, setPropertyData] = useState([]);
   const [propId, setPropId] = useState(0);
+  const [auto_List, setAutoList] = useState(0);
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -62,10 +64,12 @@ const PropertyList = props => {
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
+
   };
   const CloseUp = () => {
     setIsDeleteBottomSheetVisible(false);
     setIsDeleteData_Clicked(false);
+    getPropertyDetailsByFilter(selectedFilter);
   };
 
   // search propertyList....
@@ -85,7 +89,7 @@ const PropertyList = props => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const archive_apiUrl = url +'archieve_property';
+      const archive_apiUrl = url + 'archieve_property';
       const response = await axios.post(archive_apiUrl, {
         property_id: id,
       });
@@ -100,8 +104,8 @@ const PropertyList = props => {
         if (response?.data?.success === true) {
           // Remove the item from the list
           getPropertyDetailsByFilter(selectedFilter);
-         
-          
+
+
         } else {
           // If the request failed, revert the item to its original state
           setPropertyData(prevData =>
@@ -112,8 +116,8 @@ const PropertyList = props => {
             )
           );
         }
-      }, 200); 
-    
+      }, 200);
+
     } catch (error) {
       Alert.alert('Error', 'An error occurred while archiving the property.');
     } finally {
@@ -145,7 +149,7 @@ const PropertyList = props => {
     }
   };
 
-  const renderRightActions = (id, isArchived,location) => {
+  const renderRightActions = (id, isArchived, location) => {
     if (isArchived) return null;
     return (
       <View style={PropertyListCSS.actionsContainer}>
@@ -257,7 +261,7 @@ const PropertyList = props => {
     );
   };
   const propertyData1_render = ({ item, index }) => {
-const isArchived = item.isArchived;
+    const isArchived = item.isArchived;
     const isExpanded = expandedItems.includes(item.property_id);
     return (
       <Swipeable
@@ -268,7 +272,7 @@ const isArchived = item.isArchived;
         //     swipeableRef.current?.close(); 
         //   }
         // }}
-         renderRightActions={() => renderRightActions(item.property_id, isArchived,item.location)} >
+        renderRightActions={() => renderRightActions(item.property_id, isArchived, item.location)} >
         <TouchableOpacity
           style={[
 
@@ -279,22 +283,41 @@ const isArchived = item.isArchived;
               propertyid: item?.property_id,
             });
           }}>
+            {
+              item?.auto_list == 0 ? null :
+              <View style={{
+                justifyContent: 'center', marginRight: '65%', marginLeft: '6.6%',
+                backgroundColor: _COLORS.Kodie_GreenColor, paddingVertical: 5, borderBottomEndRadius: 8, borderBottomStartRadius:8
+              }}>
+                <Text style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  fontFamily: FONTFAMILY.K_SemiBold,
+                  color: _COLORS.Kodie_WhiteColor,
+                }}>{'Current listing'}</Text>
+              </View>
+    
+            }
+         
+
           {item.result ? null : (
             <>
-             {
-              item.isArchived ? <View style={[PropertyListCSS.actionsContainer,{justifyContent:'flex-start',alignItems:'center'}]}> 
-               <TouchableOpacity
-                style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton,{height:120}]}
-              >
-                <MaterialCommunityIcons name="archive" size={24} color="white" style={{justifyContent:'flex-start',alignSelf:'center'}}/>
-                <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
-              </TouchableOpacity>
-              </View> : (
-              <>
-          
-              <View key={index} style={PropertyListCSS.flatListContainer}>
-               
-                      <View style={PropertyListCSS.flat_MainView}>
+              {
+                item.isArchived ? <View style={[PropertyListCSS.actionsContainer, { justifyContent: 'flex-start', alignItems: 'center' }]}>
+                  <TouchableOpacity
+                    style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton, { height: 120,}]}
+                  >
+                    <MaterialCommunityIcons name="archive" size={24} color="white" style={{ justifyContent: 'flex-start', alignSelf: 'center' }} />
+                    <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
+                  </TouchableOpacity>
+                </View> : (
+                  <>
+
+                    <View key={index} style={[PropertyListCSS.flatListContainer,
+                      
+                    ]}>
+
+                      <View style={[PropertyListCSS.flat_MainView]}>
                         <View style={PropertyListCSS.flexContainer}>
                           <Text style={PropertyListCSS.apartmentText}>
                             {item.property_type}
@@ -346,7 +369,7 @@ const isArchived = item.isArchived;
                               <SimpleLineIcons
                                 name="note"
                                 size={25}
-                                color={_COLORS.Kodie_LightGrayColor}
+                                color={_COLORS.Kodie_ExtraminLiteGrayColor}
                                 resizeMode={'contain'}
                               />
                               {/* <Image
@@ -364,12 +387,13 @@ const isArchived = item.isArchived;
                                 // alert(propertyDelId);
                                 setAddress(item?.location);
                                 setPropId(item?.property_id);
-                                console.log('property id..', item.property_id);
+                                setAutoList(item?.auto_list)
+                                console.log('property id..', item.auto_list);
                               }}>
                               <MaterialCommunityIcons
                                 name={'dots-horizontal'}
                                 size={25}
-                                color={_COLORS.Kodie_LightGrayColor}
+                                color={_COLORS.Kodie_ExtraminLiteGrayColor}
                               />
                             </TouchableOpacity>
                           </View>
@@ -385,18 +409,6 @@ const isArchived = item.isArchived;
                               },
                             ]}
                             onPress={props.onInvite}>
-                            {/* <View
-                  style={[
-                    PropertyListCSS.roundButton,
-                    {
-                      backgroundColor: item.isRentPanding
-                        ? _COLORS.Kodie_DarkOrange
-                        : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
-                    },
-                  ]}
-                /> */}
                             <Text
                               style={[
                                 PropertyListCSS.buttonText,
@@ -405,7 +417,7 @@ const isArchived = item.isArchived;
                                     ? _COLORS.Kodie_DarkOrange
                                     : item.isRentReceived
                                       ? _COLORS.Kodie_GreenColor
-                                      : _COLORS.Kodie_MediumGrayColor,
+                                      : _COLORS.Kodie_ExtraminLiteGrayColor,
                                 },
                               ]}>
                               {'+ Invite Tenant'}
@@ -414,6 +426,7 @@ const isArchived = item.isArchived;
                         </View>
                       </View>
                       <DividerIcon
+                      color={_COLORS?.Kodie_LiteWhiteColor}
                         IsShowIcon
                         iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
                         onPress={() => {
@@ -429,35 +442,35 @@ const isArchived = item.isArchived;
                         }}
                       />
 
-              </View>
-              {isExpanded && (
-                <View style={PropertyListCSS.expandedContent}>
-                  <View style={PropertyListCSS.flexContainer}>
-                    <Text style={LABEL_STYLES.commonMidtext}>
-                      Current tenant:
-                    </Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.tanentname || 'Vacant'}
-                    </Text>
-                  </View>
+                    </View>
+                    {isExpanded && (
+                      <View style={PropertyListCSS.expandedContent}>
+                        <View style={PropertyListCSS.flexContainer}>
+                          <Text style={LABEL_STYLES.commonMidtext}>
+                            Current tenant:
+                          </Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.tanentname || 'Vacant'}
+                          </Text>
+                        </View>
 
-                  <View style={[PropertyListCSS.rentView]}>
-                    <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.rent || '$0'}
-                    </Text>
-                  </View>
-                  <View style={[PropertyListCSS.rentView]}>
-                    <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {item.spend || `$0`}
-                    </Text>
-                  </View>
-                </View>
-              )}
-              <DividerIcon />
-              </>
-              )}
+                        <View style={[PropertyListCSS.rentView]}>
+                          <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.rent || '$0'}
+                          </Text>
+                        </View>
+                        <View style={[PropertyListCSS.rentView]}>
+                          <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.spend || `$0`}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                    <DividerIcon  marginBottom={item?.auto_list == 0? 3 : 15}/>
+                  </>
+                )}
             </>
           )}
         </TouchableOpacity>
@@ -747,7 +760,7 @@ const isArchived = item.isArchived;
             left: -20,
             bottom: -10,
             width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '35%',
+            height: isDeleteData_Clicked ? '28%' : '40%',
             backgroundColor: 'white',
             borderRadius: 10,
             paddingVertical: 8,
@@ -761,6 +774,8 @@ const isArchived = item.isArchived;
           onDeleteData={FinalDeleteProperty}
           Address={Address}
           onClose={CloseUp}
+          autoList={auto_List}
+          onArchive={archiveProperty}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}

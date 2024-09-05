@@ -121,7 +121,8 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   btnView: {
-    marginTop: 24,
+    justifyContent:'flex-end',
+    marginTop: '2%',
   },
   locationIconView: {
     borderWidth: 1,

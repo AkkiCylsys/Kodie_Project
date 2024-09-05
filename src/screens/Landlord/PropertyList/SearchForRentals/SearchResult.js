@@ -244,8 +244,8 @@ export default SearchResult = props => {
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj =>
-                    obj.hasOwnProperty('Parking Space'),
-                  )?.['Parking Space']
+                    obj.hasOwnProperty('Parking / garage spaces'),
+                  )?.['Parking / garage spaces']
                 }
               </Text>
             </View>

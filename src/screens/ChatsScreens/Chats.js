@@ -24,6 +24,7 @@ import { ChatsStyle } from './ChatsStyle';
 import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
+import { _goBack } from '../../services/CommonServices';
 
 const Chats = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,7 +34,8 @@ const Chats = (props) => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const bottomSheetRef = useRef(null);
-
+const property= props.route.params.property
+console.log(property,'property');
   const isFocus = useIsFocused();
   useEffect(() => {
     if (loginData?.Login_details?.email && loginData?.Login_details?.user_id && isFocus) {
@@ -242,7 +244,7 @@ const Chats = (props) => {
         IsNotification={true}
         isprofileImage
         onPressRightImgProfile={() => props.navigation.navigate('LandlordProfile')}
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() => property? props.navigation.navigate('Properties'):props.navigation.navigate('Dashboard')}
         MiddleText={'Chats'}
       />
       <KeyboardAvoidingView

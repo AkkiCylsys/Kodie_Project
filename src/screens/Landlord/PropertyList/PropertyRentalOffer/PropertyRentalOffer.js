@@ -155,10 +155,10 @@ const PropertyRentalOffer = props => {
     const isExpanded = expandedPropertyId === item.property_id;
     const keyFeatures = JSON.parse(item.key_features);
     const parkingSpaceFeature = keyFeatures.find(feature =>
-      feature.hasOwnProperty('Parking Space'),
+      feature.hasOwnProperty('Parking / garage spaces'),
     );
     const parkingSpaceValue = parkingSpaceFeature
-      ? parkingSpaceFeature['Parking Space']
+      ? parkingSpaceFeature['Parking / garage spaces']
       : null;
     return (
       <TouchableOpacity onPress={() => {}}>

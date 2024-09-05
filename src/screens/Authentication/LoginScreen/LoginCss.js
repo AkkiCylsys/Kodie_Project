@@ -72,7 +72,7 @@ export const LoginStyles = StyleSheet.create({
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
     marginBottom: 10,
-    fontFamily: FONTFAMILY.K_SemiBold,
+    fontFamily: FONTFAMILY.K_Bold,
     marginHorizontal: 16,
   },
   crossIconStyle: {
@@ -87,7 +87,7 @@ export const LoginStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
-  passchange: {alignSelf: 'center', fontSize: 21, textAlign: 'center'},
+  passchange: {alignSelf: 'center', fontSize: 22, textAlign: 'center',fontFamily:FONTFAMILY?.K_Medium},
   checkicon: {
     alignSelf: 'center',
     height: '50%',
@@ -96,7 +96,8 @@ export const LoginStyles = StyleSheet.create({
   },
   varifycode: {flexDirection: 'row', justifyContent: 'space-between'},
   getButtonView: {
-    flex: 0.3,
+    // flex: 0.3,
+    paddingHorizontal:10,
     borderRadius: 6,
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
@@ -105,6 +106,7 @@ export const LoginStyles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     marginTop: 20,
+    marginLeft:8
   },
   codeMargin: {
     margin: 5,
@@ -112,6 +114,7 @@ export const LoginStyles = StyleSheet.create({
   getButton: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,
+    // fontFamily:FONTFAMILY.K_Bold,
     alignSelf: 'center',
     textAlign: 'center',
   },

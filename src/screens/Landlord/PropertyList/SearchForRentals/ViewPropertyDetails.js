@@ -117,7 +117,7 @@ export default ViewPropertyDetails = props => {
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}
             />
-          ) : Object.keys(item)[0] == 'Parking Space' ? (
+          ) : Object.keys(item)[0] == 'Parking / garage spaces' ? (
             // (
             //   <Image source={IMAGES.Parking}
             //   style={DetailsStyle.DetailsIcon} />

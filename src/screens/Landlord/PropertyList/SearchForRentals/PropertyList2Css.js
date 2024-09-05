@@ -55,7 +55,7 @@ export const PropertyList2Css = StyleSheet.create({
     padding: 12,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    // marginTop: 10,
   },
   placeholderStyle: {
     fontSize: 14,
@@ -277,7 +277,7 @@ export const PropertyList2Css = StyleSheet.create({
   },
   tagContainer: {
     borderWidth: 1,
-    height: 40,
+    height: 28,
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
   textTag: {
@@ -293,7 +293,17 @@ export const PropertyList2Css = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    // marginTop: 10,
     borderRadius: 8,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
   },
 });

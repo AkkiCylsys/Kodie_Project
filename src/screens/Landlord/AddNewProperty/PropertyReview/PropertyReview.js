@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,58 +7,49 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  Alert,
 } from 'react-native';
-import {PropertyReviewStyle} from './PropertyReviewStyle';
+import { PropertyReviewStyle } from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
-import {SliderBox} from 'react-native-image-slider-box';
-
-import {_COLORS, IMAGES, LABEL_STYLES, FONTFAMILY} from '../../../../Themes';
+import { _goBack } from '../../../../services/CommonServices';
+import { SliderBox } from 'react-native-image-slider-box';
+import { _COLORS, LABEL_STYLES, FONTFAMILY } from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Leases from './Leases/Leases';
 import Details from './Details/Details';
 import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {DetailsStyle} from './Details/DetailsStyles';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { DetailsStyle } from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
-import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import {
-  CommonActions,
   useNavigation,
-  useNavigationState,
 } from '@react-navigation/native';
-import {clearPropertyData} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
-import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
-import {useDispatch, useSelector} from 'react-redux';
+import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import { useDispatch, useSelector } from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
   const addPropertySecondStepData = useSelector(
     state => state.AddPropertyStepsReducer.data,
   );
   console.log('addPropertySecondStepData...', addPropertySecondStepData);
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
   const propertyListing = props?.route?.params?.propertyListing;
   console.log('propertyListing..', propertyListing);
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
-  const MultiImageName = props?.route?.params?.MultiImageName;
-  const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
   const DocTab = props?.route?.params?.DocTab;
   const [activeTab, setActiveTab] = useState('Tab4');
@@ -78,7 +69,7 @@ export default PropertyReview = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
   const shareDocFile = async () => {
     setTimeout(() => {
-      Share.open({url: inviteFriendPath})
+      Share.open({ url: inviteFriendPath })
         .then(res => {
           console.log(res);
         })
@@ -92,136 +83,69 @@ export default PropertyReview = props => {
     //   console.error('Error sharing property ', error);
     // }
   };
-  const Detail_rander = ({item, index}) => {
+  const iconMapping = {
+    Pool: { component: MaterialIcons, name: 'pool' },
+    Garage: { component: MaterialCommunityIcons, name: 'garage' },
+    Balcony: { component: MaterialCommunityIcons, name: 'balcony' },
+    'Outdoor area': { component: MaterialCommunityIcons, name: 'table-chair' },
+    Ensuite: { component: MaterialCommunityIcons, name: 'shower' },
+    Dishwasher: { component: MaterialCommunityIcons, name: 'dishwasher' },
+    Study: { component: MaterialCommunityIcons, name: 'bookshelf' },
+    'Built-in wardrobes': { component: MaterialCommunityIcons, name: 'wardrobe' },
+    'Air conditioning': { component: MaterialCommunityIcons, name: 'air-conditioner' },
+    'Solar panels': { component: MaterialCommunityIcons, name: 'solar-panel' },
+    Heating: { component: MaterialCommunityIcons, name: 'fireplace' },
+    'High energy efficiency': { component: SimpleLineIcons, name: 'energy' },
+    Bedrooms: { component: MaterialCommunityIcons, name: 'bed-double-outline' },
+    Bathrooms: { component: MaterialCommunityIcons, name: 'shower-head' },
+    'Parking / garage spaces': { component: Ionicons, name: 'car-outline' },
+    'On-street parking': { component: Ionicons, name: 'car-sport-outline' },
+    Default: { component: MaterialCommunityIcons, name: 'garage' },
+  };
+  const Detail_rander = ({ item }) => {
+    const itemKey = Object.keys(item)[0];
+    const itemValue = Object.values(item)[0];
+    const IconComponent = iconMapping[itemKey]?.component || iconMapping.Default.component;
+    const iconName = iconMapping[itemKey]?.name || iconMapping.Default.name;
+
     return (
-      <>
-        <View style={DetailsStyle.DetailsView}>
-          {Object.keys(item)[0] == 'Bedrooms' ? (
-            <MaterialCommunityIcons
-              name="bed-double-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Bathrooms' ? (
-            <MaterialCommunityIcons
-              name="shower-head"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Parking Space' ? (
-            <Ionicons
-              name="car-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : (
-            <MaterialCommunityIcons
-              name="garage"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          )}
-          <Text style={DetailsStyle.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
-          </Text>
+      <View style={DetailsStyle.DetailsView}>
+        <View style={DetailsStyle.ViewIconStyle}>
+
+          <IconComponent
+            name={iconName}
+            size={22}
+            color={_COLORS.Kodie_GreenColor}
+            style={{alignSelf:'center'}}
+          />
         </View>
-      </>
+
+        <Text style={[DetailsStyle.details_text, { flexShrink: 1 }]}>
+          {`${itemKey}: ${itemValue}`}
+        </Text>
+      </View>
     );
   };
-  const renderItem = ({item}) => (
-    <View style={DetailsStyle.DetailsView}>
-      {item === 'Pool' ? (
-        <MaterialIcons
-          name="pool"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Garage' ? (
-        <MaterialCommunityIcons
-          name="garage"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Balcony' ? (
-        <MaterialCommunityIcons
-          name="balcony"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === '' ? (
-        <MaterialCommunityIcons
-          name="table-chair"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Ensuite' ? (
-        <MaterialCommunityIcons
-          name="shower"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Dishwasher' ? (
-        <MaterialCommunityIcons
-          name="dishwasher"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Study' ? (
-        <MaterialCommunityIcons
-          name="bookshelf"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Built-in wardrobes' ? (
-        <MaterialCommunityIcons
-          name="wardrobe"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Air conditioning' ? (
-        <MaterialCommunityIcons
-          name="air-conditioner"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Solar panels' ? (
-        <MaterialCommunityIcons
-          name="solar-panel"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Heating' ? (
-        <MaterialCommunityIcons
-          name="fireplace"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'High energy efficiency' ? (
-        <SimpleLineIcons
-          name="energy"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : null}
-      <Text style={DetailsStyle.details_text}>{item}</Text>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    const IconComponent = iconMapping[item]?.component;
+    const iconName = iconMapping[item]?.name;
+
+    return (
+      <View style={DetailsStyle.DetailsView}>
+         <View style={DetailsStyle.ViewIconStyle}>
+        {IconComponent && (
+          <IconComponent
+            name={iconName}
+            size={22}
+            color={_COLORS.Kodie_GreenColor}
+            style={{alignSelf:'center'}}
+          />
+        )}
+        </View>
+        <Text style={[DetailsStyle.details_text, { flexShrink: 1 }]}>{item}</Text>
+      </View>
+    );
+  };
 
   // Api intrigation here ....
   const fetchData = async () => {
@@ -264,7 +188,7 @@ export default PropertyReview = props => {
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
-    console.log("deependra furnished..",is_additionalFeaturesid);
+      console.log("deependra furnished..", is_additionalFeaturesid);
 
     } catch (error) {
       console.error('Error:', error);
@@ -288,7 +212,7 @@ export default PropertyReview = props => {
     return () => clearTimeout(timeout);
   }, [property_id, propertyid, additionalKeyFeaturesString]);
 
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -341,23 +265,23 @@ export default PropertyReview = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Features'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Features'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -381,10 +305,11 @@ export default PropertyReview = props => {
       </View>
     );
   };
-  const parkingSpaceValueObj = Detail.find(item => "Parking Space" in item);
-  const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking Space"] : null;
-  
-  console.log("Parking Space value:", parkingSpaceValue);
+  const parkingSpaceValueObj = Detail.find(item => "Parking / garage spaces" in item);
+  const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking / garage spaces"] : null;
+  const OnStreetParkingObj = Detail.find(item => "On-street parking" in item);
+  const OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -397,37 +322,45 @@ export default PropertyReview = props => {
               {property_Detail?.property_description}
             </Text>
             <DividerIcon marginTop={10} />
-            <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
+            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {'Key features'}
             </Text>
-            <FlatList
-              data={Detail}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              numColumns={numColumns}
-              keyExtractor={item => item?.id}
-              renderItem={Detail_rander}
-            />
+            <View style={{marginHorizontal:'12%'}}>
+              <FlatList
+                data={Detail}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ flexGrow: 1 }}
+                numColumns={numColumns}
+                keyExtractor={item => item?.id}
+                renderItem={Detail_rander}
+              />
+            </View>
             <DividerIcon />
             {property_Detail?.additional_key_features_id === '[]' ? null : (
-              <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
+              <>
+              <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
                 {'Additional key features'}
               </Text>
-            )}
-            <FlatList
-              data={additionalKeyFeatures}
-              numColumns={numColumns}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-            />
-            {property_Detail?.additional_key_features_id === '[]' ? null : (
+            {/* // )} */}
+            <View style={{marginHorizontal:'12%'}}>
+              <FlatList
+                data={additionalKeyFeatures}
+                numColumns={numColumns}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={{ flexGrow: 1 }}
+
+              />
+            </View>
+            {/* {property_Detail?.additional_key_features_id === '[]' ? null : ( */}
               <DividerIcon
                 borderBottomWidth={1}
                 color={_COLORS.Kodie_GrayColor}
               />
+            </>
             )}
-            <View style={DetailsStyle.subContainer}>
+            <View >
               <TouchableOpacity
                 style={DetailsStyle.propety_details_view}
                 onPress={() => {
@@ -441,14 +374,14 @@ export default PropertyReview = props => {
                   onPress={() => {
                     setPropertyDetailsClp(!propertyDetailsClp);
                   }}>
-                  <Entypo
+                 <Fontisto
                     name={
                       propertyDetailsClp
-                        ? 'chevron-small-up'
-                        : 'chevron-small-down'
-                    }
-                    size={18}
-                    color={_COLORS.Kodie_GrayColor}
+                      ? 'angle-up'
+                      : 'angle-down'
+                  }
+                  size={18}
+                  color={_COLORS.Kodie_DarkGrayColor}
                   />
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -456,78 +389,78 @@ export default PropertyReview = props => {
               {propertyDetailsClp ? (
                 <>
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Listing Number'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {property_id}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Type of Property'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {property_Detail?.property_type}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Floor Size'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {`${property_Detail?.floor_size || ''} m²`}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Pets Allowed'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {addtionalFeaturesID[0]}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Furnished'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {addtionalFeaturesID[1] == "Furnished" ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                       {'Smoking'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        {fontFamily: FONTFAMILY.K_Medium},
+                        { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
                       {'No'}
                     </Text>
@@ -536,7 +469,7 @@ export default PropertyReview = props => {
                 </>
               ) : null}
             </View>
-            <View style={DetailsStyle.subContainer}>
+            <View >
               <TouchableOpacity
                 style={DetailsStyle.propety_details_view}
                 onPress={() => {
@@ -548,10 +481,14 @@ export default PropertyReview = props => {
                   onPress={() => {
                     setRoomClp(!roomClp);
                   }}>
-                  <Entypo
-                    name={roomClp ? 'chevron-small-up' : 'chevron-small-down'}
-                    size={18}
-                    color={_COLORS.Kodie_GrayColor}
+                 <Fontisto
+                    name={
+                      roomClp
+                      ? 'angle-up'
+                      : 'angle-down'
+                  }
+                  size={18}
+                  color={_COLORS.Kodie_DarkGrayColor}
                   />
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -560,78 +497,78 @@ export default PropertyReview = props => {
             {roomClp ? (
               <>
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Bedrooms'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {Detail[0]?.Bedrooms}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Bathrooms'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {Detail[1]?.Bathrooms}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Kitchen'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Lounge'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Dining Room'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Other'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
@@ -639,7 +576,7 @@ export default PropertyReview = props => {
                 <DividerIcon marginTop={8} />
               </>
             ) : null}
-            <View style={DetailsStyle.subContainer}>
+            <View>
               <TouchableOpacity
                 style={DetailsStyle.propety_details_view}
                 onPress={() => {
@@ -654,15 +591,16 @@ export default PropertyReview = props => {
                   onPress={() => {
                     setExternalfeaturesClp(!externalfeaturesClp);
                   }}>
-                  <Entypo
+                     <Fontisto
                     name={
                       externalfeaturesClp
-                        ? 'chevron-small-up'
-                        : 'chevron-small-down'
-                    }
-                    size={18}
-                    color={_COLORS.Kodie_GrayColor}
+                      ? 'angle-up'
+                      : 'angle-down'
+                  }
+                  size={18}
+                  color={_COLORS.Kodie_DarkGrayColor}
                   />
+                 
                 </TouchableOpacity>
               </TouchableOpacity>
             </View>
@@ -670,78 +608,78 @@ export default PropertyReview = props => {
             {externalfeaturesClp ? (
               <>
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Car Spaces'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {parkingSpaceValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'On-Street Parking Spaces'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
-                    {'0'}
+                    {OnStreetParkingValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Garden'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Pool'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Outdoor Patio'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Other'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'0'}
                   </Text>
@@ -749,7 +687,7 @@ export default PropertyReview = props => {
                 <DividerIcon marginTop={8} />
               </>
             ) : null}
-            <View style={DetailsStyle.subContainer}>
+            <View >
               <TouchableOpacity
                 style={DetailsStyle.propety_details_view}
                 onPress={() => {
@@ -763,14 +701,14 @@ export default PropertyReview = props => {
                   onPress={() => {
                     setPointOfInterest(!pointOfInterest);
                   }}>
-                  <Entypo
+                  <Fontisto
                     name={
                       pointOfInterest
-                        ? 'chevron-small-up'
-                        : 'chevron-small-down'
-                    }
-                    size={18}
-                    color={_COLORS.Kodie_GrayColor}
+                      ? 'angle-up'
+                      : 'angle-down'
+                  }
+                  size={18}
+                  color={_COLORS.Kodie_DarkGrayColor}
                   />
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -784,8 +722,8 @@ export default PropertyReview = props => {
                     editMode
                       ? 'Save property'
                       : propertyView
-                      ? 'Edit details'
-                      : 'Add property'
+                        ? 'Edit details'
+                        : 'Add property'
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
@@ -840,8 +778,8 @@ export default PropertyReview = props => {
       case 'Tab2':
         return (
           <>
-         <Leases property_id={propertyid} />
-        {/* {Alert.alert('Lease', 'Coming soon', [
+            <Leases property_id={propertyid} />
+            {/* {Alert.alert('Lease', 'Coming soon', [
           {
             text: 'OK',
             onPress: () => {
@@ -850,15 +788,15 @@ export default PropertyReview = props => {
             },
           },
         ])} */}
-        </>
-      )
+          </>
+        )
 
       case 'Tab3':
         return (
           <>
-        <Expenses property_id={propertyid} />
-      
-        {/* {Alert.alert('Expenses', 'Coming soon', [
+            <Expenses property_id={propertyid} />
+
+            {/* {Alert.alert('Expenses', 'Coming soon', [
           {
             text: 'OK',
             onPress: () => {
@@ -867,8 +805,8 @@ export default PropertyReview = props => {
             },
           },
         ])} */}
-      
-        </>
+
+          </>
         )
       case 'Tab4':
         return (
@@ -888,9 +826,9 @@ export default PropertyReview = props => {
         return <Details />;
     }
   };
-  const corouseRenderItem = ({item}) => (
+  const corouseRenderItem = ({ item }) => (
     <View style={styles.slide}>
-      <Image source={{uri: item}} style={styles.image} />
+      <Image source={{ uri: item }} style={styles.image} />
     </View>
   );
   return (
@@ -900,17 +838,17 @@ export default PropertyReview = props => {
           propertyView
             ? () => props.navigation.navigate('Properties')
             : propertyListing
-            ? () => props.navigation.navigate('MarketplacePropertyListing')
-            : goBack
+              ? () => props.navigation.navigate('MarketplacePropertyListing')
+              : goBack
         }
         MiddleText={
           editMode
             ? 'Edit property'
             : propertyListing
-            ? 'View vacant property'
-            : propertyView
-            ? property_Detail?.location
-            : 'Add new property'
+              ? 'View vacant property'
+              : propertyView
+                ? property_Detail?.location
+                : 'Add new property'
         }
       />
       {propertyView || propertyListing ? null : (
@@ -929,7 +867,7 @@ export default PropertyReview = props => {
         </View>
       )}
       <ScrollView contentContainerStyle={{}}>
-        {propertyView || propertyListing? null : (
+        {propertyView || propertyListing ? null : (
           <View style={[PropertyReviewStyle.headingView]}>
             <Text style={PropertyReviewStyle.heading}>
               {'Review property details'}
@@ -940,10 +878,10 @@ export default PropertyReview = props => {
         <View
           style={[
             PropertyReviewStyle.slider_view,
-            {marginBottom: '5%', marginTop: propertyView ? 0 : '5%'},
+            { marginBottom: '5%', marginTop: propertyView ? 0 : '5%' },
           ]}>
           {property_Detail.image_path &&
-          property_Detail.image_path.length != 0 ? (
+            property_Detail.image_path.length != 0 ? (
             <SliderBox
               images={property_Detail.image_path}
               sliderBoxHeight={200}
@@ -1006,7 +944,7 @@ export default PropertyReview = props => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text style={{flex: 1, color: _COLORS.Kodie_MediumGrayColor}}>
+            <Text style={{ flex: 1, color: _COLORS.Kodie_MediumGrayColor }}>
               {property_Detail?.location || ''}
             </Text>
           </View>
@@ -1028,22 +966,22 @@ export default PropertyReview = props => {
               editMode
                 ? null
                 : propertyView || propertyListing
-                ? 'Leases'
-                : null
+                  ? 'Leases'
+                  : null
             }
             Tab3={
               editMode
                 ? null
                 : propertyView || propertyListing
-                ? 'Expenses'
-                : null
+                  ? 'Expenses'
+                  : null
             }
             Tab4={
               editMode
                 ? null
                 : propertyView || propertyListing
-                ? 'Documents'
-                : null
+                  ? 'Documents'
+                  : null
             }
             onPressTab1={() => setActiveTab('Tab1')}
             onPressTab2={() => {

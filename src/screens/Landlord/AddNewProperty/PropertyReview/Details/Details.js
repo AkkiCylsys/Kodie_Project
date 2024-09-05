@@ -125,7 +125,7 @@ export default Details = props => {
         />
 
         <DividerIcon borderBottomWidth={1} color={_COLORS.Kodie_GrayColor} />
-        <View style={DetailsStyle.subContainer}>
+        <View >
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Property details'}</Text>
 
@@ -139,7 +139,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View style={DetailsStyle.subContainer}>
+        <View >
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
 
@@ -153,7 +153,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View style={DetailsStyle.subContainer}>
+        <View >
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'External features'}</Text>
 
@@ -167,7 +167,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View style={DetailsStyle.subContainer}>
+        <View >
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Points of interest'}</Text>
 

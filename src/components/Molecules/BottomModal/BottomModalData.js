@@ -1,229 +1,170 @@
 import React, { useRef } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { BottomModalDataStyle } from './BottomModalDataStyle';
-import { IMAGES, _COLORS } from '../../../Themes';
-import { TouchableOpacity } from 'react-native';
+import { _COLORS } from '../../../Themes';
 import { useNavigation } from '@react-navigation/native';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import { PropertyListCSS } from '../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Config } from '../../../Config';
+import axios from 'axios';
+import { UnlistMarketDetails } from '../../../services/PropertyListing/ListingServices';
 
-const data = [
-  {
-    id: '1',
-    Data: 'View property details',
-    // Img: IMAGES.View_property,
-    Icon: (
-      <MaterialIcons
-        name="preview"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-        style={{ alignSelf: 'center' }}
-      />
-    ),
-  },
-  {
-    id: '2',
-    Data: 'Manage documents',
-    // Img: IMAGES.Documents,
-    Icon: (
-      <MaterialCommunityIcons
-        name="file-download-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '3',
-    Data: 'Create notice / reminder',
-    // Img: IMAGES.Reminder,
-    Icon: (
-      <Ionicons
-        name="mail-unread-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '4',
-    Data: 'Chat to tenant',
-    // Img: IMAGES.Chat_Tenant,
-    Icon: (
-      <Ionicons
-        name="chatbubbles-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '5',
-    Data: 'Delete property',
-    // Img: IMAGES.Delete,
-    Icon: (
-      <AntDesign
-        name="delete"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
-const data1 = [
-  {
-    id: '1',
-    Data: 'Confirm delete property',
-    // Img: IMAGES.View_property,
-    Icon: (
-      <MaterialIcons
-        name="delete-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '2',
-    Data: 'Archive instead',
-    // Img: IMAGES.Documents,
-    Icon: (
-      <Ionicons
-        name="file-tray-full-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
 
-const BottomModalData = props => {
-  const propertyId = props?.propertyId;
-  console.log('propertyId...', propertyId);
-  const navigation = useNavigation(); // Hook to get navigation
-  const refRBSheet = useRef();
-  const handleCloseModal = () => {
-    props.onClose(); // Call this function when you want to close the modal without performing delete action
-    //alert('hi')
-  };
-  const handleDeleteProperty = propertyDelId => {
-    console.log(propertyDelId, 'catch data');
-    props.onDelete(propertyDelId);
-    console.log('Raul data cath........... ', props.onDelete(propertyDelId));
-    // alert(propertyDelId);
-  };
-  const FinalDeleteProperty = (propertyDelId, Address) => {
-    console.log(propertyDelId, Address, 'catch data');
-    props.onDelete(propertyDelId, Address);
-    console.log('come data...........', propertyDelId);
-    console.log(
-      'Raul data cath........... ',
-      props.onDeleteData(propertyDelId, Address),
-    );
-    // alert(propertyDelId);
-  };
-  const BottomData = ({ item, index }) => {
-    return (
-      <>
-        {props?.isDeletePropertyClicked ? (
-          <>
-            <TouchableOpacity
-              style={BottomModalDataStyle.container}
-              onPress={() => {
-                if (item.id === '1') {
-                  FinalDeleteProperty();
-                  // navigation.navigate("ViewPropertyDetails");
-                }
-                if (item.id === '2') {
-                  // navigation.navigate("ViewPropertyDetails");
-                  // console.log("Property ID:", item.property_id);
-                }
-              }}>
-              {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-              {/* //{item.Icon} */}
-              <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
-              <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <TouchableOpacity
-            style={BottomModalDataStyle.container}
-            onPress={() => {
-              if (item.id === '1') {
-                navigation.navigate('PropertyReview', {
-                  // propertyId: propertyId,
-                  // propertyView: "propertyView",
-                  propertyid: propertyId,
-                  propertyView: 'propertyView',
-                });
-                handleCloseModal();
-              }
-              if (item.id === '2') {
-                navigation.navigate('PropertyReview', {
-                  // propertyId: propertyId,
-                  // propertyView: "propertyView",
-                  propertyid: propertyId,
-                  propertyView: 'propertyView',
-                  DocTab: 'DocTab',
-                });
-                handleCloseModal();
-              }
-              if (item.id === '3') {
-                navigation.navigate('AddNotices', { propertyView: 'propertyView' });
-                handleCloseModal();
-              }
-              if (item.id === '5') {
-                // navigation.navigate("ViewPropertyDetails");
-                handleDeleteProperty();
 
-                // console.log("Property ID:", item.property_id);
-              }
-            }}>
-            {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-            <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
-            <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
-          </TouchableOpacity>
-        )}
-      </>
-    );
+const BottomModalData = ({ propertyId, Address, isDeletePropertyClicked, onClose, onDelete,autoList,onDeleteData }) => {
+  const options = [
+    {
+      id: '1',
+      label: 'View property details',
+      icon: <MaterialIcons name="preview" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'viewProperty',
+    },
+    {
+      id: '6',
+      label: autoList == 0 ? 'List property on kodie property marketplace' : 'Unlist property on kodie property marketplace',
+      icon: <MaterialIcons name="preview" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'listProperty',
+    },
+    {
+      id: '2',
+      label: 'Manage documents',
+      icon: <MaterialCommunityIcons name="file-download-outline" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'manageDocuments',
+    },
+    {
+      id: '3',
+      label: 'Create notice / reminder',
+      icon: <Ionicons name="mail-unread-outline" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'createNotice',
+    },
+    {
+      id: '4',
+      label: 'Chat to tenant',
+      icon: <Ionicons name="chatbubbles-outline" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'chatTenant',
+    },
+    {
+      id: '5',
+      label: 'Delete property',
+      icon: <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'deleteProperty',
+    },
+  ];
+  
+  const deleteOptions = [
+    {
+      id: '1',
+      label: 'Confirm delete property',
+      icon: <MaterialIcons name="delete-outline" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'confirmDelete',
+    },
+    {
+      id: '2',
+      label: 'Archive instead',
+      icon: <Ionicons name="file-tray-full-outline" size={25} color={_COLORS.Kodie_GreenColor} />,
+      action: 'archiveProperty',
+    },
+  ];
+  const navigation = useNavigation();
+  
+  const handleAction = (action) => {
+    switch (action) {
+      case 'viewProperty':
+        navigation.navigate('PropertyReview', { propertyid: propertyId, propertyView: 'propertyView' });
+        onClose();
+        break;
+      case 'listProperty':
+        autoList == 0 ?
+      navigation.navigate('PropertyListingDetail',{propertyid: propertyId,}): handleUnList();
+      onClose();
+        break;
+      case 'manageDocuments':
+        navigation.navigate('PropertyReview', { propertyid: propertyId, propertyView: 'propertyView', DocTab: 'DocTab' });
+        onClose();
+        break;
+      case 'createNotice':
+        navigation.navigate('AddNotices', { propertyView: 'propertyView' });
+        onClose();
+        break;
+      case 'chatTenant':
+        navigation.navigate('Chats',{ property:'property'})
+        onClose();
+        break;
+      case 'deleteProperty':
+        onDelete(propertyId);
+        break;
+      case 'confirmDelete':
+        onDeleteData(propertyId, Address);
+        break;
+      case 'archiveProperty':
+        archiveProperty()
+        break;
+      default:
+        break;
+    }
   };
+  const archiveProperty = async() => {
+    console.log('sdfsdfdsf');
+    try {
+      const url = Config.BASE_URL;
+      const archive_apiUrl = url +'archieve_property';
+      const response = await axios.post(archive_apiUrl, {
+        property_id: propertyId,
+      });
+      setTimeout(() => {
+        if (response?.data?.success === true) {
+        onClose()
+        }
+      }, 200);
+    } catch (error) {
+      Alert.alert('Error', 'An error occurred while archiving the property.');
+    } finally {
+     
+    }
+  }
+  const handleUnList = async () => {
+    const data = {
+      property_id: propertyId,
+     
+    };
+console.log(data);
+    try {
+      const response = await UnlistMarketDetails(data);
+      Alert.alert('Success', 'Market details have been Unlist successfully.');
+      onClose();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to insert market details.');
+    }
+  };
+  const renderOption = ({ item }) => (
+    <TouchableOpacity style={BottomModalDataStyle.container} onPress={() => handleAction(item.action)}>
+      <View style={BottomModalDataStyle.IconView}>{item.icon}</View>
+      <Text style={BottomModalDataStyle.text}>{item.label}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={BottomModalDataStyle.mainContainer}>
-      <TouchableOpacity
-        style={{
-          justifyContent: 'flex-end',
-          alignSelf: 'flex-end',
-        }}
-        onPress={handleCloseModal}>
+      <TouchableOpacity style={{ justifyContent: 'flex-end', alignSelf: 'flex-end' }} onPress={onClose}>
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
       </TouchableOpacity>
       <FlatList
-        data={props?.isDeletePropertyClicked ? data1 : data}
+        data={isDeletePropertyClicked ? deleteOptions : options}
         scrollEnabled
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{}}
-        keyExtractor={item => item?.id}
-        renderItem={BottomData}
-        ListHeaderComponent={() => {
-          return (
-            <>
-              {props?.isDeletePropertyClicked ? (
-                <Text
-                  style={
-                    BottomModalDataStyle.text
-                  }>{`Delete property: ${props?.Address} ?`}</Text>
-              ) : null}
-            </>
-          );
-        }}
+        keyExtractor={item => item.id}
+        renderItem={renderOption}
+        ListHeaderComponent={() => (
+          isDeletePropertyClicked ? <Text style={BottomModalDataStyle.text}>{`Delete property: ${Address}?`}</Text> : null
+        )}
       />
     </View>
   );
 };
+
 export default BottomModalData;

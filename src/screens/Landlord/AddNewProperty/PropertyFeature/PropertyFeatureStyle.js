@@ -15,11 +15,14 @@ export const PropertyFeatureStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   addition_featureView: {
-    marginTop: 15,
+    marginTop: 10,
+    flexDirection:'row',
+    justifyContent:'center',
+
   },
   Furnished_Text: {
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   additional_Text: {
@@ -191,7 +194,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
   flor_input_field: {
     borderWidth: 0.5,
     borderRadius: 6,
-    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
@@ -220,7 +223,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
@@ -246,16 +249,16 @@ export const PropertyFeatureStyle = StyleSheet.create({
   },
   tagContainer: {
     borderWidth: 1,
-    height: 40,
+    height: 32,
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
   textTag: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   textDropdown: {
-    marginLeft: 20,
+    // marginLeft: 20,
   },
   dropdownMenu: {
     flex: 1,
