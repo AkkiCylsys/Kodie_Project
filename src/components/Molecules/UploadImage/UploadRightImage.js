@@ -113,7 +113,50 @@ const UploadRightImage = props => {
             }
           }}>
           {console.log(typeof item.Img, item.Img)}
-          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
+          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}
+          onPress={() => {
+            if (item.id === '1') {
+              ImagePicker.openCamera({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  // console.log("image....", image);
+                  setImage(image);
+                  setRightImage(Array.isArray(image) ? image : [image]);
+                  props?.rightImage(Array.isArray(image) ? image : [image]);
+                  console.log('ImagePathleftimage..', rightImage);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+            if (item.id === '2') {
+              // Navigate to Choose photo from library when Contact Us is clicked.......
+              ImagePicker.openPicker({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  // if (image.length > 0) {
+                  //   setImage(image);
+                  //   setRightImage(image);
+                  //   props.rightImage(image);
+                  //   console.log("Navigating to RightImage photos with", image);
+                  // }
+                  handleRightImageSelection(image);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+          }}>
             {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>

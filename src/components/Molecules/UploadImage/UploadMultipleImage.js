@@ -104,7 +104,42 @@ const UploadMultipleImage = props => {
             }
           }}>
           {console.log(typeof item.Img, item.Img)}
-          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
+          <TouchableOpacity style={UploadImageStyle.Bottomcontainer} onPress={() => {
+            if (item.id === '1') {
+              ImagePicker.openCamera({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  // console.log("image....", image);
+                  setImage(image);
+                  setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+                  props?.multipleImage(Array.isArray(image) ? image : [image]);
+                  console.log('ImagePath..', multipleImage);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+            if (item.id === '2') {
+              ImagePicker.openPicker({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  handleImageSelection(image);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+          }}>
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>

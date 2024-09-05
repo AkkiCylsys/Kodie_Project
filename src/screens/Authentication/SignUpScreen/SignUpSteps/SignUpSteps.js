@@ -425,7 +425,7 @@ const validateLastName = text => {
                 layout="second"
                 Country={false}
                 // disabled
-                // disableArrowIcon={true}
+                disableArrowIcon={true}
                 textInputProps={{
                   maxLength: 9,
                   keyboardType: 'number-pad',
@@ -461,7 +461,7 @@ const validateLastName = text => {
                     ? _COLORS.Kodie_lightRedColor
                     : _COLORS.Kodie_GrayColor,
                   borderRadius: Platform.OS == 'ios' ? 6 : 10,
-                  backgroundColor:_COLORS.Kodie_LightGrayColor
+                  // backgroundColor:_COLORS.Kodie_LightGrayColor
                 }}
               />
             </View>

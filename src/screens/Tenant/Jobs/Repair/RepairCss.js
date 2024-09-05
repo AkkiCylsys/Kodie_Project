@@ -52,6 +52,10 @@ export const RepairCss = StyleSheet.create({
     marginHorizontal: 16,
     textAlign: 'center',
   },
+  BtnView:{
+    marginHorizontal: 16,
+    marginTop:5,
+  },
   RightContainer: {flex: 0.5, alignSelf: 'flex-end'},
   flexContainer: {flex: 1},
   flatListContainer: {marginHorizontal: 30},
@@ -88,6 +92,7 @@ export const RepairCss = StyleSheet.create({
     paddingVertical: 2,
     marginLeft: '10%',
   },
+  
   roundButton: {
     height: 6,
     width: 6,
@@ -99,7 +104,6 @@ export const RepairCss = StyleSheet.create({
   buttonText: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,
-
     textAlign: 'center',
   },
   spend: {
@@ -178,5 +182,27 @@ export const RepairCss = StyleSheet.create({
   bottomModal_container: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+  },
+  modalStyle: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    // paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  closeButton: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  centerLine: {
+    width: 40,
+    height: 2,
+    backgroundColor:_COLORS.Kodie_GrayColor
   },
 });

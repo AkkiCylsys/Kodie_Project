@@ -33,7 +33,7 @@ import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJ
 import Modal from 'react-native-modal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 
-const HorizontalData = ['All', 'Recent', 'Posted', 'Ongoing', 'Completed'];
+const HorizontalData = ['All', 'Scheduled', 'Pending', 'Complete - Paid', 'Completed'];
 
 const property_List1 = [
   {
@@ -260,7 +260,7 @@ export default Repair = props => {
                 backgroundColor:
                   selectedFilter === item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_GrayColor,
               },
             ]}
           />
@@ -268,7 +268,7 @@ export default Repair = props => {
         <Text
           style={[
             RepairCss.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            {color: selectedFilter === item ? 'white' : 'gray'},
           ]}>
           {item}
         </Text>
@@ -323,7 +323,7 @@ export default Repair = props => {
                             ? _COLORS.Kodie_BlueColor
                             : item.isongoing
                             ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
+                            : _COLORS.Kodie_GrayColor,
                         },
                       ]}
                     />
@@ -335,7 +335,7 @@ export default Repair = props => {
                             ? _COLORS.Kodie_BlueColor
                             : item.isongoing
                             ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
+                            : _COLORS.Kodie_GrayColor,
                         },
                       ]}>
                       {'Pending'}
@@ -358,7 +358,7 @@ export default Repair = props => {
               </View>
               <Text
                 style={
-                  LABEL_STYLES.commonMidtext
+                  [LABEL_STYLES.commonMidtext]
                 }>{`Ref #${item.job_reference}`}</Text>
               <View style={RepairCss.flat_MainView}>
                 <View style={RepairCss.flexContainer}>
@@ -401,10 +401,11 @@ export default Repair = props => {
       <ScrollView>
         {/* {user_role_id === "4" ? ( */}
         <>
-          <View style={RepairCss.Container}>
+          <View style={RepairCss.BtnView}>
             <RowButtons
               LeftButtonText={'Jobs I am servicing'}
               leftButtonHeight={40}
+              LeftButtonfontSize={12}
               leftButtonbackgroundColor={
                 activeScreen
                   ? _COLORS.Kodie_WhiteColor
@@ -413,7 +414,7 @@ export default Repair = props => {
               LeftButtonborderColor={
                 activeScreen
                   ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_DarkGreenColor
               }
               RightButtonText={'Jobs I have requested'}
               RightButtonbackgroundColor={
@@ -423,7 +424,7 @@ export default Repair = props => {
               }
               RightButtonborderColor={
                 activeScreen
-                  ? _COLORS.Kodie_lightGreenColor
+                  ? _COLORS.Kodie_DarkGreenColor
                   : _COLORS.Kodie_GrayColor
               }
               LeftButtonTextColor={
@@ -437,6 +438,7 @@ export default Repair = props => {
                   : _COLORS.Kodie_GrayColor
               }
               RightButtonHeight={40}
+              RightButtonfontSize={12}
               onPressLeftButton={() => {
                 setActiveScreen(false);
                 setSelectedFilter('All');
@@ -465,7 +467,7 @@ export default Repair = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               text_Size={14}
               backgroundColor={_COLORS.Kodie_BlackColor}
-              height={40}
+              height={44}
               marginTop={3}
               onPress={activeScreen ? props.onpress : props.servicing_press}
             />
@@ -514,21 +516,20 @@ export default Repair = props => {
         )}
       </ScrollView>
       <Modal
-        isVisible={isDeleteBottomSheetVisible}
-        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
-        style={[
-          RepairCss.bottomModal_container,
-          {
-            position: 'absolute',
-            left: -20,
-            bottom: -30,
-            width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '40%',
-            backgroundColor: 'white',
-            borderRadius: 10,
-            paddingVertical: 8,
-          },
-        ]}>
+      isVisible={isDeleteBottomSheetVisible}
+      onBackdropPress={() => setIsDeleteBottomSheetVisible(false)}
+      style={RepairCss.modalStyle}
+      swipeDirection="down" 
+      onSwipeComplete={handleCloseModal}
+    >
+      <View style={[RepairCss.modalContent, { height: isDeleteData_Clicked ? '30%' : '40%' }]}>
+        <TouchableOpacity
+          style={RepairCss.closeButton}
+          onPress={handleCloseModal}
+        >
+          <View style={RepairCss.centerLine} />
+        </TouchableOpacity>
+
         <BottomJobModal
           JobId={JobId}
           onDelete={jobDelete}
@@ -541,6 +542,7 @@ export default Repair = props => {
           // job_sub_type_req={0}
           job_sub_type={job_sub_type}
         />
+        </View>
       </Modal>
       {isLoading ? <CommonLoader /> : null}
     </View>
