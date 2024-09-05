@@ -25,7 +25,7 @@ import Leases from './Leases/Leases';
 import Details from './Details/Details';
 import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
-
+import Share from 'react-native-share';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import { Config } from '../../../../Config';
 import axios from 'axios';
@@ -40,16 +40,18 @@ import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/Acti
 import { DetailsStyle } from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import { Divider } from 'react-native-paper';
-import Share from 'react-native-share';
+
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import { BackHandler } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { clockRunning } from 'react-native-reanimated';
+
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReviewDetails = props => {
   const dispatch = useDispatch();
+  const navigation = useNavigation()
   const property_id = props?.route?.params?.property_id;
 
   const propertyid = props?.route?.params?.propertyid;
@@ -79,7 +81,47 @@ export default PropertyReviewDetails = props => {
   const [roomClp, setRoomClp] = useState(false);
   const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
   const [pointOfInterest, setPointOfInterest] = useState(false);
+  const [GenerateLink, setGenerateLink] = useState("");
+  const buildLink = async () => {
+    try {
+      const link = await dynamicLinks().buildLink({
+        link: `https://kodie.page.link/DwNd?page=PropertyReviewDetails&id=${propertyid}`, // Use the current page parameters
+        domainUriPrefix: 'https://kodie.page.link',
+        analytics: {
+          campaign: 'banner',
+        },
+      });
+      setGenerateLink(link);
+      console.log('Generated Link:', link);
+    } catch (error) {
+      console.error('Failed to build dynamic link:', error);
+    }
+  };
 
+  // Function to share the generated link
+  const shareContent = async () => {
+    const shareOptions = {
+      title: 'Share this page',
+      message: property_Detail?.property_type,
+      url: GenerateLink,
+    };
+
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log('Share Response:', shareResponse);
+    } catch (error) {
+      if (error.message === 'User did not share') {
+        console.log('User canceled the sharing action.');
+      } else {
+        console.log('Error while sharing:', error);
+      }
+    }
+  };
+
+  // Build link when component mounts
+  useEffect(() => {
+    buildLink(propertyid);
+  }, []);
   const shareDocFile = async () => {
     setTimeout(() => {
       Share.open({ url: inviteFriendPath })
@@ -928,7 +970,7 @@ export default PropertyReviewDetails = props => {
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity
                 onPress={() => {
-                  // shareDocFile
+               shareContent();
                 }}>
                 <Entypo
                   name="share"

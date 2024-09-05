@@ -38,11 +38,13 @@ import {
 } from '@react-navigation/native';
 import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import { useDispatch, useSelector } from 'react-redux';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
   const addPropertySecondStepData = useSelector(
     state => state.AddPropertyStepsReducer.data,
   );
+  const navigation =useNavigation()
   console.log('addPropertySecondStepData...', addPropertySecondStepData);
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
@@ -67,22 +69,82 @@ export default PropertyReview = props => {
   const [roomClp, setRoomClp] = useState(false);
   const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
   const [pointOfInterest, setPointOfInterest] = useState(false);
-  const shareDocFile = async () => {
-    setTimeout(() => {
-      Share.open({ url: inviteFriendPath })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          err && console.log(err);
-        });
-    }, 300);
-    // try {
-    //   await Share.open({url: inviteFriendPath});
-    // } catch (error) {
-    //   console.error('Error sharing property ', error);
-    // }
+  const [GenerateLink, setGenerateLink] = useState("");
+  const buildLink = async (id) => {
+    try {
+      const link = await dynamicLinks().buildLink({
+        link: `https://kodie.page.link/DwNd?id=${id}`,
+        domainUriPrefix: 'https://kodie.page.link',
+        analytics: {
+          campaign: 'banner',
+        },
+      });
+      setGenerateLink(link);
+      console.log('Generated Link:', link); // For debugging
+    } catch (error) {
+      console.error('Failed to build dynamic link:', error);
+    }
   };
+
+  // Function to handle the dynamic link
+  const handleDynamicLink = async (link) => {
+    console.log('Received Dynamic Link:', link.url);
+
+    try {
+      const url = new URL(link.url);
+      const id = url.searchParams.get('id');
+
+      if (id) {
+        console.log('Navigating to PropertyReview with ID:', id);
+        navigation.navigate('PropertyReview', { id });
+      } else {
+        Alert.alert('Error', 'No ID found in the link.');
+      }
+    } catch (error) {
+      console.error('Error handling dynamic link:', error);
+    }
+  };
+
+  // Handle dynamic links both from the app and from initial link
+  useEffect(() => {
+    const handleLink = async () => {
+      // Check if there's an initial link when the app starts
+      const initialLink = await dynamicLinks().getInitialLink();
+      if (initialLink) {
+        await handleDynamicLink(initialLink);
+      }
+
+      // Listen for subsequent dynamic links
+      const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+      return () => {
+        console.log('Cleaning up dynamic link listener');
+        unsubscribe();
+      };
+    };
+
+    handleLink();
+  }, [navigation]);
+
+  // Function to share content
+  const shareContent = async () => {
+    const shareOptions = {
+      title: 'Share file',
+      message: 'Check this out!',
+      url: GenerateLink,
+    };
+
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log('Share Response:', shareResponse);
+    } catch (error) {
+      if (error.message === 'User did not share') {
+        console.log('User canceled the sharing action.');
+      } else {
+        console.log('Error while sharing:', error);
+      }
+    }
+  };
+
   const iconMapping = {
     Pool: { component: MaterialIcons, name: 'pool' },
     Garage: { component: MaterialCommunityIcons, name: 'garage' },
@@ -197,6 +259,7 @@ export default PropertyReview = props => {
   };
 
   useEffect(() => {
+    
     setActiveTab(DocTab ? 'Tab4' : 'Tab1');
     fetchData();
     try {
@@ -910,7 +973,8 @@ export default PropertyReview = props => {
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity
                 onPress={() => {
-                  // shareDocFile
+                  buildLink(propertyView || propertyListing ? propertyid : property_id);
+                  shareContent();
                 }}>
                 <Entypo
                   name="share"
