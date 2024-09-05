@@ -198,13 +198,13 @@ const PropertyRentalOffer = props => {
                 <Text style={PropertyRentalOfferStyle.apartmentText}>
                   {item?.property_type}
                 </Text>
-                <Text style={LABEL_STYLES.commontext}>{item?.city}</Text>
+                <Text style={[LABEL_STYLES.commontext,{fontSize:16}]}>{item?.city}</Text>
                 <View style={PropertyRentalOfferStyle.flat_MainView}>
                   <MaterialCommunityIcons
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
-                    style={{alignSelf: 'center'}}
+                    style={{alignSelf: 'center',marginTop:4}}
                   />
                   <Text
                     style={PropertyRentalOfferStyle.locationText}

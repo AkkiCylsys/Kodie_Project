@@ -263,26 +263,32 @@ export default AboutYou = props => {
     }
     // Check if kodieDescribeYourselfId includes 4
     if (kodieDescribeYourselfId.includes(4)) {
-      if (companyName == '') {
-        setCompanyNameError('Organisation name is required!');
-      }
-      if (IndiselectJobTypeid.length == 0) {
-        setIndiSelectJobTypeidError(
-          'The category of service you offer is required!',
-        );
-      }
-      if (selectJobTypeid.length == 0) {
-        setSelectJobTypeidError(
-          'The category of service you offer is required!',
-        );
-      } else if (businessNumber == '') {
-        setBusinessNumberError('Australian business number is required!');
-      } else if (!validateABN(businessNumber)) {
-        setBusinessNumberError('Invalid Australian business number!');
-      } else {
-        setIndiSelectJobTypeidError('');
-        setSelectJobTypeidError('');
-        naviagteData();
+      if (tabValue == 'IndividualSignup') {
+        if (IndiselectJobTypeid.length == 0) {
+          setIndiSelectJobTypeidError(
+            'The category of service you offer is required!',
+          );
+        } else {
+          setSelectJobTypeidError('');
+          naviagteData();
+        }
+      } else if (tabValue == 'CompanySignup') {
+        if (companyName == '') {
+          setCompanyNameError('Organisation name is required!');
+        }
+        if (selectJobTypeid.length == 0) {
+          setSelectJobTypeidError(
+            'The category of service you offer is required!',
+          );
+        } else if (businessNumber == '') {
+          setBusinessNumberError('Australian business number is required!');
+        } else if (!validateABN(businessNumber)) {
+          setBusinessNumberError('Invalid Australian business number!');
+        } else {
+          setIndiSelectJobTypeidError('');
+          // setSelectJobTypeidError('');
+          naviagteData();
+        }
       }
     } else {
       naviagteData();
@@ -478,9 +484,7 @@ export default AboutYou = props => {
     const jobTypes = selectedselectIndiJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
-
     setIsLoading(true);
-
     const fetchIndiServiceData = async jobType => {
       console.log(jobType, '{{jobType}}');
       const res = await SignupLookupDetails({
@@ -493,30 +497,26 @@ export default AboutYou = props => {
             ? 'HEAVY_LIFTING'
             : jobType === 169
             ? 'FIXING_AND_MAINTENANCE'
-            : null,
+            : 'HOME_CLEANING',
         P_TYPE: 'OPTION',
       });
 
       console.log('INdidi', res);
       servicesDatas.push(...res.lookup_details);
-      setIsLoading(false);
+      // setIsLoading(false);
     };
-
     const fetchIndiAllServices = async () => {
       try {
         const promises = jobTypes.map(jobType => fetchIndiServiceData(jobType));
         await Promise.all(promises);
-
-        setIsLoading(false);
         console.log('All Services Data:', servicesDatas);
-
         setIndiServicesData(servicesDatas);
+        // setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
         console.error('Error fetching services:', error);
       }
     };
-
     fetchIndiAllServices();
     setIsLoading(false);
   };
@@ -590,14 +590,18 @@ export default AboutYou = props => {
   };
 
   useEffect(() => {
-    if (
-      isvisible &&
-      IndiselectJobType !== undefined &&
-      IndiselectJobType !== null
-    ) {
-      handleIndiServices(IndiselectJobType);
-    }
-  }, [isvisible, IndiselectJobType]);
+    const fetchIndiServices = async () => {
+      if (
+        isvisible &&
+        IndiselectJobType !== undefined &&
+        IndiselectJobType !== null
+      ) {
+        await handleIndiServices(IndiselectJobType); // Ensure async/await is used correctly
+      }
+    };
+
+    fetchIndiServices();
+  }, [isvisible, IndiselectJobType, tabValue]);
 
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
@@ -760,14 +764,27 @@ export default AboutYou = props => {
     />
   );
   useEffect(() => {
-    if (isVisible) {
-      handle_manage_property();
-      handle_kodiehelp();
-      handle_describe_yourself();
-      handle_ServicesOffer();
-      handle_CompanyServicesOffer();
+    const fetchData = async () => {
+      if (isVisible) {
+        await fetchAllGetApi(); // Ensure async/await is used correctly
+      }
+    };
+
+    fetchData();
+  }, [isVisible, tabValue]);
+
+  const fetchAllGetApi = async () => {
+    try {
+      // Await each function call to ensure they are executed in order
+      await handle_manage_property();
+      await handle_kodiehelp();
+      await handle_describe_yourself();
+      await handle_ServicesOffer();
+      await handle_CompanyServicesOffer();
+    } catch (error) {
+      console.error('Error fetching data in fetchAllGetApi:', error);
     }
-  }, [isVisible]);
+  };
 
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -980,7 +997,7 @@ export default AboutYou = props => {
                       'Feature being searched for is not found on the list.'
                     }
                     onSelectedItemsChange={item => setIndiservicesValue(item)}
-                    selectedItems={IndiservicesValue}
+                    selectedItems={IndiservicesValue || []}
                     selectText="Search services"
                     searchInputPlaceholderText="Search Items..."
                     onChangeInput={item => {
@@ -998,8 +1015,20 @@ export default AboutYou = props => {
                     tagContainerStyle={AboutYouStyle.tagContainer}
                     tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
                     styleTextTag={AboutYouStyle.textTag}
-                    styleTextDropdown={AboutYouStyle.textDropdown}
-                    styleDropdownMenu={AboutYouStyle.dropdownMenu}
+                    styleTextDropdown={[
+                      AboutYouStyle.textDropdown,
+                      {
+                        paddingHorizontal:
+                          IndiservicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    styleDropdownMenu={[
+                      AboutYouStyle.dropdownMenu,
+                      {
+                        paddingHorizontal:
+                          IndiservicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
                     submitButtonColor={_COLORS.Kodie_GreenColor}
                     submitButtonText={
                       IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
@@ -1219,7 +1248,7 @@ export default AboutYou = props => {
                       'Feature being searched for is not found on the list.'
                     }
                     onSelectedItemsChange={item => setservicesValue(item)}
-                    selectedItems={servicesValue}
+                    selectedItems={servicesValue || []}
                     selectText="Select items"
                     searchInputPlaceholderText="Search Items..."
                     onChangeInput={item => {
@@ -1237,8 +1266,18 @@ export default AboutYou = props => {
                     tagContainerStyle={AboutYouStyle.tagContainer}
                     tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
                     styleTextTag={AboutYouStyle.textTag}
-                    styleTextDropdown={AboutYouStyle.textDropdown}
-                    styleDropdownMenu={AboutYouStyle.dropdownMenu}
+                    styleTextDropdown={[
+                      AboutYouStyle.textDropdown,
+                      {
+                        paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    styleDropdownMenu={[
+                      AboutYouStyle.dropdownMenu,
+                      {
+                        paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
                     submitButtonColor={_COLORS.Kodie_GreenColor}
                     submitButtonText={
                       servicesValue.length > 0 ? 'Done' : 'Cancel'

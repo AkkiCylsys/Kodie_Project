@@ -53,7 +53,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   flatListContainer: {marginHorizontal: 30},
   flat_MainView: {flex: 1, flexDirection: 'row', marginTop: 5},
   flexContainer: {flex: 1},
-  apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
+  apartmentText: {fontSize: 13.48, color: _COLORS.Kodie_BlackColor},
   locationText: {
     flex: 1,
     fontSize: 12,
