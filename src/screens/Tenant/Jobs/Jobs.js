@@ -3,7 +3,7 @@ import {View, Text, BackHandler, SafeAreaView, Alert} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import {_goBack} from './../../../services/CommonServices/index';
-import {_COLORS} from '../../../Themes';
+import {_COLORS, FONTFAMILY} from '../../../Themes';
 import {JobsCss} from './JobsCss';
 import Repair from './Repair/Repair';
 import SearchForContractor from './SearchforContractor/SearchForContractor';
@@ -125,6 +125,7 @@ const Jobs = props => {
           props.navigation.navigate('LandlordProfile')
         }
       />
+      <View style={{marginTop:5,}}> 
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -150,10 +151,20 @@ const Jobs = props => {
             ? _COLORS.Kodie_BlackColor
             : _COLORS.Kodie_MediumGrayColor
         }
+        FONTFAMILY1={
+          activeTab === 'Tab1' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+        }
+        FONTFAMILY2={
+          activeTab === 'Tab2' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+        }
+        FONTFAMILY3={
+          activeTab === 'Tab3' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+        }
         styleTab1={activeTab === 'Tab1' && JobsCss.activeTab}
         styleTab2={activeTab === 'Tab2' && JobsCss.activeTab}
         styleTab3={activeTab === 'Tab3' && JobsCss.activeTab}
       />
+      </View>
       <View style={JobsCss.Line} />
       {checkTabs()}
     </SafeAreaView>

@@ -960,7 +960,7 @@ export default CreateJobFirstScreen = props => {
             </View>
             {jobPriorityValueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Job priority is required.'}
+                {'Job priority is required!'}
               </Text>
             ) : null}
             {/* <View style={{marginTop: 12}}>

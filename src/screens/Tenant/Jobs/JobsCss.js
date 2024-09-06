@@ -6,12 +6,13 @@ export const JobsCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Line: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 4,
+    marginTop:3
   },
   activeTab: {
-    backgroundColor: "white",
-    borderBottomWidth: 1,
+    backgroundColor:_COLORS.Kodie_WhiteColor,
+    borderBottomWidth: 1.5,
   },
 });

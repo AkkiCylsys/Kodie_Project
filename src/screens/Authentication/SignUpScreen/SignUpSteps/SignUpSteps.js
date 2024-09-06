@@ -425,7 +425,7 @@ const validateLastName = text => {
                 layout="second"
                 Country={false}
                 // disabled
-                // disableArrowIcon={true}
+                disableArrowIcon={true}
                 textInputProps={{
                   maxLength: 9,
                   keyboardType: 'number-pad',
