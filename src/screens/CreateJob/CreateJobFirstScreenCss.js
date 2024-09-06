@@ -12,6 +12,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   },
   mainView: {
     marginHorizontal: 16,
+    marginTop:15
   },
   servicestext: {
     fontSize: 14,
@@ -165,6 +166,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginVertical: 29,
+    marginBottom:5
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -176,6 +178,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
+    marginRight:5
   },
   itemView: {
     flex: 1,
@@ -243,5 +246,5 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginBottom: 30,
     position: 'absolute',
   },
-  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
+  error_text: {color: 'red', marginLeft: 15,},
 });

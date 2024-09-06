@@ -87,8 +87,7 @@ export default CreateJobFirstScreen = props => {
       setservicesValueError(true);
     } else if (jobPriorityValue == '') {
       setJobPriorityValueError(true);
-    }
-    else if (selectedAddress == '') {
+    } else if (selectedAddress == '') {
       setTakingPlaceError(true);
     } else {
       props.navigation.navigate('CreateJobTermsScreen', {
@@ -503,6 +502,10 @@ export default CreateJobFirstScreen = props => {
               borderColor: selectJobTypeidError
                 ? _COLORS?.Kodie_redColor
                 : _COLORS.Kodie_GrayColor,
+              borderColor:
+                isClick === item?.lookup_key
+                  ? _COLORS?.Kodie_GreenColor
+                  : _COLORS.Kodie_GrayColor,
             },
           ]}
           textColor={[
@@ -773,7 +776,13 @@ export default CreateJobFirstScreen = props => {
     <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
         onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : ReviewInspection? _goBack(props): goBack();
+          IsMap
+            ? setIsMap(false)
+            : IsSearch
+            ? setIsSearch(false)
+            : ReviewInspection
+            ? _goBack(props)
+            : goBack();
         }}
         MiddleText={
           IsMap || IsSearch
@@ -863,20 +872,22 @@ export default CreateJobFirstScreen = props => {
               <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
           </View>
-          <FlatList
-            data={jobTypeData}
-            keyExtractor={item => item.lookup_key.toString()}
-            renderItem={jobType_render}
-            numColumns={2}
-          />
-          {selectJobTypeidError ? (
-            <Text style={CreateJobFirstStyle.error_text}>
-              {selectJobTypeidError}
-            </Text>
-          ) : null}
+          <View style={{marginHorizontal: 6}}>
+            <FlatList
+              data={jobTypeData}
+              keyExtractor={item => item.lookup_key.toString()}
+              renderItem={jobType_render}
+              numColumns={2}
+            />
+            {selectJobTypeidError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {selectJobTypeidError}
+              </Text>
+            ) : null}
+          </View>
           <View style={CreateJobFirstStyle.formContainer}>
             <View style={{flex: 1}}>
-              <Text style={LABEL_STYLES.commontext}>
+              <Text style={[LABEL_STYLES.commontext, {marginTop: 6}]}>
                 {'What service are you looking for?'}
                 <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
@@ -933,7 +944,7 @@ export default CreateJobFirstScreen = props => {
             </View>
             <View style={{marginTop: 12}}>
               <Text style={LABEL_STYLES.commontext}>
-                {'Job priority'}
+                {'Job priority:'}
                 <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
@@ -1074,7 +1085,7 @@ export default CreateJobFirstScreen = props => {
               </View>
             ) : null}
             <View style={CreateJobFirstStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{'Rating threshold'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Rating threshold:'}</Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -1104,7 +1115,7 @@ export default CreateJobFirstScreen = props => {
                 renderItem={ratingThreshold_render}
               />
             </View>
-            <View style={{marginTop: 27}}>
+            <View style={{marginTop: 27, marginBottom: 5}}>
               <CustomSingleButton
                 disabled={isLoading ? true : false}
                 onPress={() => {
