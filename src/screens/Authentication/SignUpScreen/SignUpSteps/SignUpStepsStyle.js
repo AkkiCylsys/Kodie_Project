@@ -43,7 +43,7 @@ export const SignUpStepStyle = StyleSheet.create({
    // borderWidth: 1,
     width: '30%',
     height:50,
-    bottom: 0,
+    bottom: 15,
     right:20,
     marginBottom: 20,
     position: 'absolute',
