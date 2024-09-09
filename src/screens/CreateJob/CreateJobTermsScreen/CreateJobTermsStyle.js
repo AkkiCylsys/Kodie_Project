@@ -78,9 +78,10 @@ export const CreateJobTermsStyle = StyleSheet.create({
     marginTop: 12,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
+    marginBottom:"20%"
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -93,7 +94,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  nextBtn_view: { marginTop: 50 },
+  nextBtn_view: { marginTop: 27},
   itemView: {
     flex: 1,
     flexDirection: "row",
