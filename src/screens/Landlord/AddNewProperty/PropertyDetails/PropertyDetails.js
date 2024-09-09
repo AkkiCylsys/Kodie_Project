@@ -72,10 +72,31 @@ export default PropertyDetails = props => {
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
+  const [addressComponents, setAddressComponents] = useState([]);
   const [error, setError] = useState('');
   const [notesError, setNotesError] = useState('');
   const [propertyError, setPropertyError] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
+
+  function getAddressComponent(addressComponents, type) {
+    return addressComponents.find(component => component.types.includes(type));
+  }
+  const selected_city = getAddressComponent(
+    addressComponents,
+    'locality',
+  )?.long_name;
+  const Selected_State = getAddressComponent(
+    addressComponents,
+    'administrative_area_level_1',
+  )?.long_name;
+  const selected_Country = getAddressComponent(
+    addressComponents,
+    'country',
+  )?.long_name;
+
+  console.log(`selected_city: ${selected_city}`); 
+  console.log(`Selected_State: ${Selected_State}`); 
+  console.log(`selected_Country: ${selected_Country}`);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
@@ -151,9 +172,9 @@ export default PropertyDetails = props => {
         setProperty_value(
           parseInt(response?.data?.property_details[0]?.property_type_id),
         );
-        setCity(response?.data?.property_details[0]?.city)
-        setCountry(response?.data?.property_details[0]?.country)
-        setState(response?.data?.property_details[0]?.state)
+        setCity(response?.data?.property_details[0]?.city);
+        setCountry(response?.data?.property_details[0]?.country);
+        setState(response?.data?.property_details[0]?.state);
         setPropertyDesc(
           response?.data?.property_details[0]?.property_description,
         );
@@ -173,7 +194,7 @@ export default PropertyDetails = props => {
       setIsLoading(false);
     }
   };
-  console.log(property_Detail?.key_features,'property_Detail?.key_features');
+  console.log(property_Detail?.key_features, 'property_Detail?.key_features');
   const updatePropertyDetails = () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
@@ -193,8 +214,8 @@ export default PropertyDetails = props => {
       property_id:
         // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
         //   ? addPropertySecondStepData
-        //   : 
-          propertyid,
+        //   :
+        propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -221,11 +242,9 @@ export default PropertyDetails = props => {
             city: city,
             state: state,
             country: country,
-            propertyid: 
-               propertyid,
+            propertyid: propertyid,
             editMode: editMode,
           });
-         
         } else {
           console.error('update_property_detailserror:', response?.data?.error);
           setIsLoading(false);
@@ -348,7 +367,8 @@ export default PropertyDetails = props => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
-        console.log('json location.......', json);
+        console.log('json location.......', JSON.stringify(json));
+        setAddressComponents(json?.results[0]?.address_components);
         console.log('current address...', json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
@@ -454,7 +474,26 @@ export default PropertyDetails = props => {
     const additionalApi = url + 'add_property_details';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
-    let data = {
+    // let data = {
+    //   user: loginData?.Login_details?.user_id,
+    //   user_account_details_id: loginData?.Login_details?.user_account_id,
+    //   location: location,
+    //   location_longitude: longitude,
+    //   location_latitude: latitude,
+    //   islocation: 1,
+    //   property_description: propertyDesc,
+    //   property_type: property_value > 0 ? property_value : 0,
+    //   key_features: 0,
+    //   additional_features: 0,
+    //   additional_key_features: 0,
+    //   autolist: 0,
+    //   UPD_FLOOR_SIZE: 0,
+    //   UPD_LAND_AREA: 0,
+    //   p_city: selected_city,
+    //   p_state: Selected_State,
+    //   p_country: selected_Country,
+    // };
+    const addPropertyPayload = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
       location: location,
@@ -463,39 +502,26 @@ export default PropertyDetails = props => {
       islocation: 1,
       property_description: propertyDesc,
       property_type: property_value > 0 ? property_value : 0,
-      key_features: 0,
-      additional_features: 0,
+      key_features: [
+        {Bedrooms: 0},
+        {Bathrooms: 0},
+        {'Reception rooms': 0},
+        {'Parking / garage spaces': 0},
+        {'On-street parking': 0},
+      ],
+      additional_features: '0,0,0,0',
       additional_key_features: 0,
       autolist: 0,
       UPD_FLOOR_SIZE: 0,
       UPD_LAND_AREA: 0,
-      p_city: city,
-      p_state: state,
-      p_country: country,
+      p_city: selected_city,
+      p_state: Selected_State,
+      p_country: selected_Country,
     };
-    console.log('Property details data..', data);
+
+    console.log('Property details data..', addPropertyPayload);
     axios
-      .post(additionalApi, {
-        user: loginData?.Login_details?.user_id,
-        user_account_details_id: loginData?.Login_details?.user_account_id,
-        location: location,
-        location_longitude: longitude,
-        location_latitude: latitude,
-        islocation: 1,
-        property_description: propertyDesc,
-        property_type: property_value > 0 ? property_value : 0,
-        key_features: [{"Bedrooms": 0}, {"Bathrooms": 0},{'Reception rooms':0},
-        {'Parking / garage spaces': 0},
-        {'On-street parking': 0},],
-        additional_features: "0,0,0,0",
-        additional_key_features: 0,
-        autolist: 0,
-        UPD_FLOOR_SIZE: 0,
-        UPD_LAND_AREA: 0,
-        p_city: city,
-        p_state: state,
-        p_country: country,
-      })
+      .post(additionalApi, addPropertyPayload)
 
       .then(response => {
         console.log('property_details', response?.data);
@@ -514,9 +540,9 @@ export default PropertyDetails = props => {
             selectedButtonId: 0,
             latitude: latitude,
             longitude: longitude,
-            city: city,
-            state: state,
-            country: country,
+            city: selected_city,
+            state: Selected_State,
+            country: selected_Country,
             editMode: editMode,
             propertyid: response?.data?.Property_id,
           });
@@ -633,12 +659,13 @@ export default PropertyDetails = props => {
               const country = details.address_components[4].long_name;
               // setLocation(details.formatted_address);
               setCurrentLocation(details.formatted_address);
-              setCity(city);
-              setState(state);
-              setCountry(country);
+              // setCity(city);
+              // setState(state);
+              // setCountry(country);
               console.log('locationSearch....', location);
               console.log('details.......', details);
               console.log(city, state, country, 'location rahul..........');
+              setAddressComponents(details?.address_components);
             }}
           />
         ) : (
@@ -697,8 +724,7 @@ export default PropertyDetails = props => {
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
                   Property type
-            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
-
+                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <Dropdown
                   style={PropertyDetailsStyle.dropdown}
@@ -728,9 +754,9 @@ export default PropertyDetails = props => {
                 ) : null}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Notes 
-            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
-
+                <Text style={LABEL_STYLES._texinputLabel}>
+                  Notes
+                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <TextInput
                   style={PropertyDetailsStyle.input}
@@ -833,7 +859,7 @@ export default PropertyDetails = props => {
                     }
 
                     if (isValid) {
-                     propertyid? updatePropertyDetails(): property_details();
+                      propertyid ? updatePropertyDetails() : property_details();
                     }
                   }}
                   disabled={isLoading ? true : false}

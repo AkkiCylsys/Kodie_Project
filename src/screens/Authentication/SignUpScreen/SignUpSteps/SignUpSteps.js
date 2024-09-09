@@ -13,7 +13,7 @@ import {
   Image,
   SafeAreaView,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -91,10 +91,29 @@ const SignUpSteps = props => {
   const [p_longitude, setP_longitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [country_Code_Get, setCountry_Code_Get] = useState('');
+  const [addressComponents, setAddressComponents] = useState([]);
   const addressParts = physicalAddress.split(', ');
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(', ');
+  function getAddressComponent(addressComponents, type) {
+    return addressComponents.find(component => component.types.includes(type));
+  }
+  const selected_city = getAddressComponent(
+    addressComponents,
+    'locality',
+  )?.long_name;
+  const Selected_State = getAddressComponent(
+    addressComponents,
+    'administrative_area_level_1',
+  )?.long_name;
+  const selected_Country = getAddressComponent(
+    addressComponents,
+    'country',
+  )?.long_name;
+  console.log(`selected_city: ${selected_city}`);
+  console.log(`Selected_State: ${Selected_State}`);
+  console.log(`selected_Country: ${selected_Country}`);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -119,10 +138,6 @@ const SignUpSteps = props => {
     console.log(newImageName, 'ImageNAme');
     refRBSheet.current.close();
   };
-  console.log('Country:', country);
-  console.log('State:', state);
-  console.log('City:', city);
-
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
   let password = props?.route?.params?.password;
@@ -177,7 +192,7 @@ const SignUpSteps = props => {
       .catch(error => console.warn(error));
   };
   const validateFirstName = text => {
-    const trimmedText = text.trim(); 
+    const trimmedText = text.trim();
     if (trimmedText === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
@@ -189,21 +204,20 @@ const SignUpSteps = props => {
     }
     setFirstName(text);
   };
-  
-const validateLastName = text => {
-  const trimmedText = text.trim();
-  if (trimmedText === '') {
-    setLastNameError('Last name is required!');
-  } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
-    setLastNameError(
-      'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
-    );
-  } else {
-    setLastNameError('');
-  }
-  setLastName(text);
-};
 
+  const validateLastName = text => {
+    const trimmedText = text.trim();
+    if (trimmedText === '') {
+      setLastNameError('Last name is required!');
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
+      setLastNameError(
+        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
+    } else {
+      setLastNameError('');
+    }
+    setLastName(text);
+  };
 
   const validMobileNumber = () => {
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
@@ -236,11 +250,15 @@ const validateLastName = text => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(firstName.trim())) {
-      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens in the correct format!');
+      setFirstNameError(
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
     } else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(lastName.trim())) {
-      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!');
+      setLastNameError(
+        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
     } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
@@ -254,20 +272,20 @@ const validateLastName = text => {
         organisation: organisation,
         referral: referral,
         email: email,
-        country: country,
-        state: state,
-        city: city,
+        country: selected_Country,
+        state: Selected_State,
+        city: selected_city,
         p_latitude: p_latitude,
         p_longitude: p_longitude,
         user_key: user_key,
         image: ImageName,
         Bio: bio,
         country_code: country_Code_Get,
-        password: password
+        password: password,
       });
     }
   };
-  
+
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
@@ -355,7 +373,6 @@ const validateLastName = text => {
                   color={_COLORS.Kodie_ExtraLightGrayColor}
                 />
               </View>
-             
             )}
 
             <View style={AccountStyle.editlogoview}>
@@ -370,8 +387,9 @@ const validateLastName = text => {
         </View>
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>First name
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              First name
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={[
@@ -391,8 +409,9 @@ const validateLastName = text => {
             <Text style={AccountStyle.errorText}>{firstNameError}</Text>
           </View>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>Last name
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              Last name
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={[
@@ -414,8 +433,8 @@ const validateLastName = text => {
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Phone number
-               <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
-               <Text style={{fontSize:14}}>(mobile preferred)</Text>
+              <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
+              <Text style={{fontSize: 14}}>(mobile preferred)</Text>
             </Text>
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput
@@ -528,7 +547,6 @@ const validateLastName = text => {
             />
           </View>
         </View>
-       
       </ScrollView>
     );
   };
@@ -619,6 +637,7 @@ const validateLastName = text => {
                 setCurrentLocation(details.formatted_address);
                 console.log('physicalAddressSearch....', physicalAddress);
                 console.log('details.......', details);
+                setAddressComponents(details?.address_components);
               }}
             />
           ) : (
@@ -670,38 +689,38 @@ const validateLastName = text => {
         </View>
       </KeyboardAvoidingView>
       <RBSheet
-          ref={refRBSheet}
-          height={177}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: AccountStyle.bottomModal_container,
-          }}>
-          <View style={AccountStyle.upload_View}>
-            <Text style={AccountStyle.uploadImgText}>
-              {props.heading_Text || 'Upload image'}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.close();
-              }}>
-              <Entypo
-                name="cross"
-                size={25}
-                color={_COLORS.Kodie_BlackColor}
-                style={AccountStyle.crossIconStyle}
-              />
-            </TouchableOpacity>
-          </View>
-          <UploadImageData
-            heading_Text={'Upload image'}
-            ImageName={handleImageNameChange}
-          />
-        </RBSheet>
+        ref={refRBSheet}
+        height={177}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: AccountStyle.bottomModal_container,
+        }}>
+        <View style={AccountStyle.upload_View}>
+          <Text style={AccountStyle.uploadImgText}>
+            {props.heading_Text || 'Upload image'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              refRBSheet.current.close();
+            }}>
+            <Entypo
+              name="cross"
+              size={25}
+              color={_COLORS.Kodie_BlackColor}
+              style={AccountStyle.crossIconStyle}
+            />
+          </TouchableOpacity>
+        </View>
+        <UploadImageData
+          heading_Text={'Upload image'}
+          ImageName={handleImageNameChange}
+        />
+      </RBSheet>
     </SafeAreaView>
   );
 };

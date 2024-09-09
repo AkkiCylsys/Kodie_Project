@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,23 +7,23 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import { PropertyFeatureStyle } from './PropertyFeatureStyle';
+import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-import { FONTFAMILY, LABEL_STYLES } from '../../../../Themes';
-import { _COLORS } from '../../../../Themes';
+import {_goBack} from '../../../../services/CommonServices';
+import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import MultiSelect from 'react-native-multiple-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
@@ -53,12 +53,9 @@ export default PropertyFeature = props => {
   console.log('key_features_id............', additionalfeatureskeyvalue);
   console.log('propertyid............', propertyid);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
-    useState(0);
-  const [selectedButtonStorageId, setSelectedButtonStorageId] =
-    useState(0);
-  const [selectedButtonGardenId, setSelectedButtonGardenId] =
-    useState(0);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(0);
+  const [selectedButtonStorageId, setSelectedButtonStorageId] = useState(0);
+  const [selectedButtonGardenId, setSelectedButtonGardenId] = useState(0);
   const [CountBedroom, setCountBedroom] = useState(0);
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
@@ -67,15 +64,15 @@ export default PropertyFeature = props => {
   const [florSize, setFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
- 
+
   const keyFeaturesString = property_Detail?.key_features;
 
   useEffect(() => {
     additional_features();
     propertyid > 0 ||
-      (Array.isArray(addPropertySecondStepData) &&
-        addPropertySecondStepData.length > 0) ||
-      typeof addPropertySecondStepData === 'number'
+    (Array.isArray(addPropertySecondStepData) &&
+      addPropertySecondStepData.length > 0) ||
+    typeof addPropertySecondStepData === 'number'
       ? DetailsData()
       : null;
     try {
@@ -112,15 +109,19 @@ export default PropertyFeature = props => {
       if (response?.data?.success === true) {
         setIsLoading(false);
         setProperty_Details(response?.data?.property_details[0]);
-        const featureValues = response?.data?.property_details[0]?.additional_features_id?.split(',').map(value => value.trim());
+        const featureValues =
+          response?.data?.property_details[0]?.additional_features_id
+            ?.split(',')
+            .map(value => value.trim());
         if (featureValues.length >= 4) {
           setSelectedButtonFurnishedId(featureValues[0] === '1' ? 1 : 0);
           setSelectedButtonStorageId(featureValues[1] === '1' ? 1 : 0);
           setSelectedButtonGardenId(featureValues[2] === '1' ? 1 : 0);
           setSelectedButtonDepositId(featureValues[3] === '1' ? 1 : 0);
         }
-        response?.data?.property_details[0]?.floor_size == 0 ? setFlorSize('') :
-          setFlorSize(response?.data?.property_details[0]?.floor_size);
+        response?.data?.property_details[0]?.floor_size == 0
+          ? setFlorSize('')
+          : setFlorSize(response?.data?.property_details[0]?.floor_size);
         const keyFeaturesId =
           response?.data?.property_details[0]?.additional_key_features_id;
         const parsedKeyFeaturesId =
@@ -130,8 +131,9 @@ export default PropertyFeature = props => {
         setAdditionalFeaturesKeyValue(
           Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
         );
-        response?.data?.property_details[0]?.land_area == 0 ? setLandArea('') :
-          setLandArea(response?.data?.property_details[0]?.land_area);
+        response?.data?.property_details[0]?.land_area == 0
+          ? setLandArea('')
+          : setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         setIsLoading(false);
@@ -142,11 +144,11 @@ export default PropertyFeature = props => {
     }
   };
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Reception rooms': CountReception },
-    { 'Parking / garage spaces': CountParking },
-    { 'On-street parking': CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Reception rooms': CountReception},
+    {'Parking / garage spaces': CountParking},
+    {'On-street parking': CountParkingStreet},
   ];
   const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
   console.log(PreFriedly);
@@ -194,7 +196,7 @@ export default PropertyFeature = props => {
       }
     }
   };
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -247,23 +249,23 @@ export default PropertyFeature = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
+        ? 'Features'
+        : position === 2
+        ? 'Images'
+        : position === 3
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -314,7 +316,7 @@ export default PropertyFeature = props => {
       p_state: state,
       p_country: country,
     };
-    console.log('Property feature data..', data);
+    console.log('Property feature data in feature..', data);
     axios
       .post(additionalApi, {
         user: loginData?.Login_details?.user_id,
@@ -409,7 +411,7 @@ export default PropertyFeature = props => {
       property_id:
         // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
         //   ? addPropertySecondStepData
-        //   : 
+        //   :
         propertyid,
       p_city: city,
       p_state: state,
@@ -428,8 +430,7 @@ export default PropertyFeature = props => {
         if (response?.data?.success === true) {
           setIsLoading(false);
           props.navigation.navigate('PropertyImages', {
-            property_id:
-              propertyid,
+            property_id: propertyid,
             editMode: editMode,
           });
         } else {
@@ -465,9 +466,7 @@ export default PropertyFeature = props => {
         />
       </View>
 
-      <ScrollView
-        nestedScrollEnabled={true}
-      >
+      <ScrollView nestedScrollEnabled={true}>
         <View style={PropertyFeatureStyle.headingView}>
           <Text style={PropertyFeatureStyle.heading}>
             {'Property features'}
@@ -548,12 +547,12 @@ export default PropertyFeature = props => {
               </View>
             </View>
 
-            <View >
+            <View>
               <Text style={LABEL_STYLES._texinputLabel}>
                 {'Additional features'}
               </Text>
               <View style={[PropertyFeatureStyle.addition_featureView]}>
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Text style={PropertyFeatureStyle.Furnished_Text}>
                     {'Furnished?'}
                   </Text>
@@ -568,8 +567,8 @@ export default PropertyFeature = props => {
                     secondTabLabel="No"
                   />
                 </View>
-                <View style={{ margin: 11 }} />
-                <View style={{ flex: 1 }}>
+                <View style={{margin: 11}} />
+                <View style={{flex: 1}}>
                   <Text style={PropertyFeatureStyle.Furnished_Text}>
                     {'External storage?'}
                   </Text>
@@ -584,10 +583,9 @@ export default PropertyFeature = props => {
                     secondTabLabel="No"
                   />
                 </View>
-
               </View>
               <View style={PropertyFeatureStyle.addition_featureView}>
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Text style={PropertyFeatureStyle.Furnished_Text}>
                     {'Garden?'}
                   </Text>
@@ -602,8 +600,8 @@ export default PropertyFeature = props => {
                     secondTabLabel="No"
                   />
                 </View>
-                <View style={{ margin: 11 }} />
-                <View style={{ flex: 1 }}>
+                <View style={{margin: 11}} />
+                <View style={{flex: 1}}>
                   <Text style={PropertyFeatureStyle.Furnished_Text}>
                     {'Pets allowed?'}
                   </Text>
@@ -633,14 +631,12 @@ export default PropertyFeature = props => {
                 }
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={additionalfeatureskeyvalue}
-
                 selectText="Add features such as pool, aircon, balcony etc."
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
                   console.warn(item);
                   // setAdditionalFeaturesKeyValue(item)
                 }}
-                
                 tagBorderColor={_COLORS.Kodie_BlackColor}
                 selectedItemTextColor={_COLORS.Kodie_GreenColor}
                 selectedItemIconColor={_COLORS.Kodie_GreenColor}
@@ -652,8 +648,20 @@ export default PropertyFeature = props => {
                 tagContainerStyle={PropertyFeatureStyle.tagContainer}
                 tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
                 styleTextTag={PropertyFeatureStyle.textTag}
-                styleTextDropdown={[PropertyFeatureStyle.textDropdown,{paddingHorizontal:additionalfeatureskeyvalue.length > 0? 10:5}]}
-                styleDropdownMenu={[PropertyFeatureStyle.dropdownMenu,{paddingHorizontal:additionalfeatureskeyvalue.length > 0? 10:5}]}
+                styleTextDropdown={[
+                  PropertyFeatureStyle.textDropdown,
+                  {
+                    paddingHorizontal:
+                      additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                  },
+                ]}
+                styleDropdownMenu={[
+                  PropertyFeatureStyle.dropdownMenu,
+                  {
+                    paddingHorizontal:
+                      additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                  },
+                ]}
                 submitButtonColor={_COLORS.Kodie_GreenColor}
                 submitButtonText={
                   additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'

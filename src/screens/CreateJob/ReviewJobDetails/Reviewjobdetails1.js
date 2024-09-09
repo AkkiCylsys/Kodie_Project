@@ -19,7 +19,7 @@ import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {useNavigation} from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 const Reviewjobdetails1 = props => {
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId in reviewjobDetails.....', createJobId);
@@ -159,13 +159,16 @@ const Reviewjobdetails1 = props => {
         />
         <RowTexts
           leftText={'Number of hours'}
-          rightText={jobDetailsData.number_of_hours == null ? jobDetailsData.number_of_hours : '' }
+          rightText={jobDetailsData.number_of_hours || ''}
         />
-        <RowTexts leftText={'How often'} rightText={jobDetailsData.how_often == null ? jobDetailsData.how_often : ' ' } />
+        <RowTexts
+          leftText={'How often'}
+          rightText={jobDetailsData.how_often || ' '}
+        />
         <RowTexts
           leftText={'Budget range'}
-          rightText={`${jobDetailsData.job_min_budget == '$1' ?  ' ':jobDetailsData.job_min_budget || ''} - ${
-            jobDetailsData.job_max_budget == '$2000' ?  ' ':jobDetailsData.job_max_budget || ''
+          rightText={`${jobDetailsData.job_min_budget} - ${
+            jobDetailsData.job_max_budget || ''
           }`}
         />
         <RowTexts leftText={'Payment'} rightText={jobDetailsData.payment_by} />
