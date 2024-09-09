@@ -17,7 +17,7 @@ const RowButtons = (props) => {
           _ButtonText={props.LeftButtonText}
           borderColor={props.LeftButtonborderColor}
           Text_Color={props.LeftButtonTextColor}
-          
+          text_Size={props.LeftButtonfontSize}
         />
       </View>
       {props.isShowRightButton?
@@ -31,6 +31,7 @@ const RowButtons = (props) => {
           _ButtonText={props.RightButtonText}
           borderColor={props.RightButtonborderColor}
           Text_Color={props.RightButtonTextColor}
+          text_Size={props.RightButtonfontSize}
         />
       </View>
       :null

@@ -87,7 +87,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     // marginLeft: 15,
   },
   apartmentText: {
-    fontSize: 13,
+    fontSize: 13.48,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
   },

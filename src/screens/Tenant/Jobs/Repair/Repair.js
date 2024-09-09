@@ -32,8 +32,15 @@ import BottomModalData from '../../../../components/Molecules/BottomModal/Bottom
 import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJobModal';
 import Modal from 'react-native-modal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { color } from 'react-native-reanimated';
 
-const HorizontalData = ['All', 'Recent', 'Posted', 'Ongoing', 'Completed'];
+const HorizontalData = [
+  'All',
+  'Scheduled',
+  'Pending',
+  'Complete - Paid',
+  'Completed',
+];
 
 const property_List1 = [
   {
@@ -260,7 +267,7 @@ export default Repair = props => {
                 backgroundColor:
                   selectedFilter === item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_GrayColor,
               },
             ]}
           />
@@ -268,7 +275,7 @@ export default Repair = props => {
         <Text
           style={[
             RepairCss.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            {color: selectedFilter === item ? 'white' : 'gray'},
           ]}>
           {item}
         </Text>
@@ -302,80 +309,69 @@ export default Repair = props => {
                     {item.service_looking}
                   </Text>
                 </View>
-                <View style={RepairCss.RightContainer}>
-                  <TouchableOpacity
+                <TouchableOpacity
+                  style={[
+                    RepairCss.buttonView,
+                    {
+                      backgroundColor: _COLORS.Kodie_minLiteGrayColor,
+                    },
+                  ]}>
+                  <View style={{alignSelf: 'center'}}>
+                    <Entypo
+                      name="dot-single"
+                      size={25}
+                      color={_COLORS?.Kodie_boldGrayColor}
+                      style={{alignSelf: 'center', marginTop: 2}}
+                    />
+                  </View>
+                  <Text
                     style={[
-                      RepairCss.buttonView,
+                      RepairCss.buttonText,
                       {
-                        backgroundColor: item.isPosted
-                          ? _COLORS.Kodie_mostLightBlueColor
-                          : item.isongoing
-                          ? _COLORS.Kodie_LightOrange
-                          : _COLORS.Kodie_mostLightGreenColor,
+                        color: _COLORS.Kodie_boldGrayColor,
                       },
                     ]}>
-                    <View
-                      style={[
-                        RepairCss.roundButton,
-
-                        {
-                          backgroundColor: item.isPosted
-                            ? _COLORS.Kodie_BlueColor
-                            : item.isongoing
-                            ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
-                        },
-                      ]}
-                    />
-                    <Text
-                      style={[
-                        RepairCss.buttonText,
-                        {
-                          color: item.isPosted
-                            ? _COLORS.Kodie_BlueColor
-                            : item.isongoing
-                            ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
-                        },
-                      ]}>
-                      {'Pending'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                    {'Pending'}
+                  </Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     setIsDeleteBottomSheetVisible(true);
                     setJobId(item.job_id);
                     setAddress(`Ref #${item?.job_reference}`);
-                  }}>
+                  }}
+                  style={{alignSelf: 'center'}}>
                   <Entypo
                     name={'dots-three-horizontal'}
                     size={20}
-                    color={_COLORS.Kodie_GrayColor}
-                    style={{marginLeft: 15}}
+                    color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                    style={{marginLeft: 15, alignSelf: 'center'}}
                   />
                 </TouchableOpacity>
               </View>
               <Text
-                style={
-                  LABEL_STYLES.commonMidtext
-                }>{`Ref #${item.job_reference}`}</Text>
+                style={[
+                  LABEL_STYLES.commonMidtext,
+                ]}>{`Ref #${item.job_reference}`}</Text>
               <View style={RepairCss.flat_MainView}>
                 <View style={RepairCss.flexContainer}>
                   <View style={RepairCss.propertyView}>
                     <View style={RepairCss.flexContainer}>
                       <Text
                         style={
-                          RepairCss.tom
+                         [ RepairCss.tom,{color:_COLORS?.Kodie_MediumGrayColor}]
                         }>{`${item.first_name} ${item.last_name}`}</Text>
                       <View style={RepairCss.locationView}>
                         <MaterialCommunityIcons
                           name={'map-marker'}
-                          size={12}
+                          size={16}
                           color={_COLORS.Kodie_MediumGrayColor}
-                          style={{alignSelf: 'center'}}
+                          style={{alignSelf: 'center', marginTop: 3}}
                         />
-                        <Text style={RepairCss.locationText}>
+                        <Text
+                          style={RepairCss.locationText}
+                          ellipsizeMode="tail"
+                          numberOfLines={1}>
                           {item.job_location}
                         </Text>
                       </View>
@@ -401,10 +397,11 @@ export default Repair = props => {
       <ScrollView>
         {/* {user_role_id === "4" ? ( */}
         <>
-          <View style={RepairCss.Container}>
+          <View style={RepairCss.BtnView}>
             <RowButtons
               LeftButtonText={'Jobs I am servicing'}
               leftButtonHeight={40}
+              LeftButtonfontSize={12}
               leftButtonbackgroundColor={
                 activeScreen
                   ? _COLORS.Kodie_WhiteColor
@@ -413,7 +410,7 @@ export default Repair = props => {
               LeftButtonborderColor={
                 activeScreen
                   ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_DarkGreenColor
               }
               RightButtonText={'Jobs I have requested'}
               RightButtonbackgroundColor={
@@ -423,7 +420,7 @@ export default Repair = props => {
               }
               RightButtonborderColor={
                 activeScreen
-                  ? _COLORS.Kodie_lightGreenColor
+                  ? _COLORS.Kodie_DarkGreenColor
                   : _COLORS.Kodie_GrayColor
               }
               LeftButtonTextColor={
@@ -437,6 +434,7 @@ export default Repair = props => {
                   : _COLORS.Kodie_GrayColor
               }
               RightButtonHeight={40}
+              RightButtonfontSize={12}
               onPressLeftButton={() => {
                 setActiveScreen(false);
                 setSelectedFilter('All');
@@ -465,7 +463,7 @@ export default Repair = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               text_Size={14}
               backgroundColor={_COLORS.Kodie_BlackColor}
-              height={40}
+              height={44}
               marginTop={3}
               onPress={activeScreen ? props.onpress : props.servicing_press}
             />
@@ -495,7 +493,7 @@ export default Repair = props => {
             />
           </View>
         </View>
-        <DividerIcon />
+        <DividerIcon borderBottomWidth={2} />
         {activeScreen ? (
           <FlatList
             //  data={JobData}
@@ -515,32 +513,34 @@ export default Repair = props => {
       </ScrollView>
       <Modal
         isVisible={isDeleteBottomSheetVisible}
-        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
-        style={[
-          RepairCss.bottomModal_container,
-          {
-            position: 'absolute',
-            left: -20,
-            bottom: -30,
-            width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '40%',
-            backgroundColor: 'white',
-            borderRadius: 10,
-            paddingVertical: 8,
-          },
-        ]}>
-        <BottomJobModal
-          JobId={JobId}
-          onDelete={jobDelete}
-          onCloseModal={handleCloseModal}
-          isDeletePropertyClicked={isDeleteData_Clicked}
-          onDeleteData={FinalDeleteProperty}
-          Address={Address}
-          onClose={CloseUp}
-          // job_sub_type_serv={1}
-          // job_sub_type_req={0}
-          job_sub_type={job_sub_type}
-        />
+        onBackdropPress={() => setIsDeleteBottomSheetVisible(false)}
+        style={RepairCss.modalStyle}
+        swipeDirection="down"
+        onSwipeComplete={handleCloseModal}>
+        <View
+          style={[
+            RepairCss.modalContent,
+            {height: isDeleteData_Clicked ? '30%' : '40%'},
+          ]}>
+          <TouchableOpacity
+            style={RepairCss.closeButton}
+            onPress={handleCloseModal}>
+            <View style={RepairCss.centerLine} />
+          </TouchableOpacity>
+
+          <BottomJobModal
+            JobId={JobId}
+            onDelete={jobDelete}
+            onCloseModal={handleCloseModal}
+            isDeletePropertyClicked={isDeleteData_Clicked}
+            onDeleteData={FinalDeleteProperty}
+            Address={Address}
+            onClose={CloseUp}
+            // job_sub_type_serv={1}
+            // job_sub_type_req={0}
+            job_sub_type={job_sub_type}
+          />
+        </View>
       </Modal>
       {isLoading ? <CommonLoader /> : null}
     </View>

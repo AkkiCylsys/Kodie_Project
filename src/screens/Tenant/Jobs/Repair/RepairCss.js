@@ -14,7 +14,7 @@ export const RepairCss = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
   },
-  flat_MainView: {flexDirection: 'row'},
+  flat_MainView: {flex:1,flexDirection: 'row'},
   AllView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,8 +49,13 @@ export const RepairCss = StyleSheet.create({
     marginRight: 5,
   },
   Container: {
+    flex:1,
     marginHorizontal: 16,
     textAlign: 'center',
+  },
+  BtnView:{
+    marginHorizontal: 16,
+    marginTop:5,
   },
   RightContainer: {flex: 0.5, alignSelf: 'flex-end'},
   flexContainer: {flex: 1},
@@ -76,18 +81,19 @@ export const RepairCss = StyleSheet.create({
     marginLeft: 5,
   },
   BudgetView: {marginLeft: 20, flex: 1, flexDirection: 'row', marginTop: 15},
-  buttonView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: _COLORS.Kodie_LightOrange,
-    backgroundColor: _COLORS.Kodie_LightOrange,
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    marginLeft: '10%',
-  },
+  // buttonView: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'center',
+  //   alignSelf: 'center',
+  //   borderWidth: 1,
+  //   borderColor: _COLORS.Kodie_LightOrange,
+  //   backgroundColor: _COLORS.Kodie_LightOrange,
+  //   borderRadius: 15,
+  //   paddingHorizontal: 10,
+  //   paddingVertical: 2,
+  //   marginLeft: '10%',
+  // },
+  
   roundButton: {
     height: 6,
     width: 6,
@@ -96,12 +102,11 @@ export const RepairCss = StyleSheet.create({
     alignItems: 'center',
     marginRight: 5,
   },
-  buttonText: {
-    fontSize: 12,
-    fontFamily: FONTFAMILY.K_Bold,
-
-    textAlign: 'center',
-  },
+  // buttonText: {
+  //   fontSize: 12,
+  //   fontFamily: FONTFAMILY.K_Bold,
+  //   textAlign: 'center',
+  // },
   spend: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
@@ -111,7 +116,7 @@ export const RepairCss = StyleSheet.create({
   },
   bugetText: {
     fontSize: 12,
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: 'right',
   },
@@ -178,5 +183,52 @@ export const RepairCss = StyleSheet.create({
   bottomModal_container: {
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+  },
+  modalStyle: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    // paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  closeButton: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  centerLine: {
+    width: 40,
+    height: 2,
+    backgroundColor:_COLORS.Kodie_GrayColor
+  },
+  buttonText: {
+    fontSize: 12,
+    color: _COLORS.Kodie_DarkOrange,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: 'center',
+  },
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent:"flex-end",
+    alignSelf:"flex-end",
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_minLiteGrayColor,
+    backgroundColor: _COLORS.Kodie_LightOrange,
+    borderRadius: 15,
+    marginLeft: '10%',
+    paddingBottom: 3,
+    paddingRight:10,
+    height:30
+  },
+  buttonText: {
+    fontSize: 12,
+    color: _COLORS.Kodie_DarkOrange,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: 'center',
   },
 });

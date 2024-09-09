@@ -130,7 +130,7 @@ export default FirstProperty = props => {
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState(''); 
+  const [longitude, setlongitude] = useState('');
   const [CountBedroom, setCountBedroom] = useState(0);
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
@@ -142,12 +142,9 @@ export default FirstProperty = props => {
   const [currentLocation, setCurrentLocation] = useState('');
   const dispatch = useDispatch();
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
-    useState(0);
-  const [selectedButtonStorageId, setSelectedButtonStorageId] =
-    useState(0);
-  const [selectedButtonGardenId, setSelectedButtonGardenId] =
-    useState(0);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(0);
+  const [selectedButtonStorageId, setSelectedButtonStorageId] = useState(0);
+  const [selectedButtonGardenId, setSelectedButtonGardenId] = useState(0);
   const P_addressParts = propertyLocation.split(', ');
   const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? '';
   const P_state = P_addressParts[2]?.trim() ?? '';
@@ -211,11 +208,11 @@ export default FirstProperty = props => {
     }, [IsMap, IsSearch]),
   );
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Reception rooms': CountReception },
-    { 'Parking / garage spaces': CountParking },
-    { 'On-street parking': CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Reception rooms': CountReception},
+    {'Parking / garage spaces': CountParking},
+    {'On-street parking': CountParkingStreet},
   ];
   const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
   console.log(PreFriedly);
@@ -460,6 +457,7 @@ export default FirstProperty = props => {
       austrilian_busi_no: BusinessNumber,
       country_code: country_code,
     };
+    console.log('newData....', newData);
     if (ImageName?.path) {
       newData = {
         ...newData,
@@ -529,7 +527,7 @@ export default FirstProperty = props => {
     console.log('signupAccountApiActionCreator..', res?.data);
     if (res?.data?.status === true) {
       setIsLoading(false);
-      registerUser()
+      registerUser();
       // props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
@@ -541,10 +539,10 @@ export default FirstProperty = props => {
   const registerUser = async () => {
     setIsLoading(true);
     const userId = uuid.v4();
-    
+
     try {
       let downloadURL = ''; // Initialize as empty
-      
+
       if (ImageName && ImageName.path) {
         const storageRef = storage().ref(`user_images/${userId}`);
         await storageRef.putFile(ImageName.path);
@@ -553,24 +551,30 @@ export default FirstProperty = props => {
         // If no image is provided, set a default image URL
         downloadURL = ''; // Replace with your default image URL
       }
-  
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-  
-      await firestore().collection('Users').doc(userCredential.user.uid).set({
-        name: `${firstName} ${lastName}`,
-        email: email,
-        mobile: mobileNumber,
-        userId: userId,
-        user_key: String(user_key),
-        image: downloadURL,
-      });
-  
+
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      await firestore()
+        .collection('Users')
+        .doc(userCredential.user.uid)
+        .set({
+          name: `${firstName} ${lastName}`,
+          email: email,
+          mobile: mobileNumber,
+          userId: userId,
+          user_key: String(user_key),
+          image: downloadURL,
+        });
+
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
-  
+
       console.log('User data saved to AsyncStorage');
       props.navigation.navigate('DrawerNavigatorLeftMenu');
     } catch (error) {
@@ -718,10 +722,10 @@ export default FirstProperty = props => {
   const registerUserfill = async () => {
     setIsLoading(true);
     const userId = uuid.v4();
-    
+
     try {
       let downloadURL = ''; // Initialize as empty
-      
+
       if (ImageName && ImageName.path) {
         const storageRef = storage().ref(`user_images/${userId}`);
         await storageRef.putFile(ImageName.path);
@@ -730,24 +734,30 @@ export default FirstProperty = props => {
         // If no image is provided, set a default image URL
         downloadURL = ''; // Replace with your default image URL
       }
-  
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-  
-      await firestore().collection('Users').doc(userCredential.user.uid).set({
-        name: `${firstName} ${lastName}`,
-        email: email,
-        mobile: mobileNumber,
-        userId: userId,
-        user_key: String(user_key),
-        image: downloadURL,
-      });
-  
+
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+
+      await firestore()
+        .collection('Users')
+        .doc(userCredential.user.uid)
+        .set({
+          name: `${firstName} ${lastName}`,
+          email: email,
+          mobile: mobileNumber,
+          userId: userId,
+          user_key: String(user_key),
+          image: downloadURL,
+        });
+
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
-  
+
       console.log('User data saved to AsyncStorage');
       props.navigation.navigate('DrawerNavigatorLeftMenu');
     } catch (error) {
@@ -756,7 +766,7 @@ export default FirstProperty = props => {
       setIsLoading(false);
     }
   };
-  
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -808,7 +818,7 @@ export default FirstProperty = props => {
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
-return (
+  return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
@@ -930,9 +940,7 @@ return (
                     </View>
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
-                    <Text style={LABEL_STYLES._texinputLabel}>
-                      Notes
-                    </Text>
+                    <Text style={LABEL_STYLES._texinputLabel}>Notes</Text>
                     <TextInput
                       style={FirstPropertyStyle.input}
                       value={propertyDesc}
@@ -980,38 +988,41 @@ return (
                     Key features
                   </Text>
                   <View style={FirstPropertyStyle.inputContainer}>
-                  <View>
-              <Counter
-                label="Bedrooms"
-                count={CountBedroom}
-                onIncrease={() => updateCount('Bedroom', 'increase')}
-                onDecrease={() => updateCount('Bedroom', 'decrease')}
-              />
-              <Counter
-                label="Bathrooms"
-                count={CountBathroom}
-                onIncrease={() => updateCount('Bathroom', 'increase')}
-                onDecrease={() => updateCount('Bathroom', 'decrease')}
-              />
-              <Counter
-                label="Reception rooms"
-                count={CountReception}
-                onIncrease={() => updateCount('Reception', 'increase')}
-                onDecrease={() => updateCount('Reception', 'decrease')}
-              />
-              <Counter
-                label="Parking / garage spaces"
-                count={CountParking}
-                onIncrease={() => updateCount('Parking', 'increase')}
-                onDecrease={() => updateCount('Parking', 'decrease')}
-              />
-              <Counter
-                label="On-street parking"
-                count={CountParkingStreet}
-                onIncrease={() => updateCount('ParkingStreet', 'increase')}
-                onDecrease={() => updateCount('ParkingStreet', 'decrease')}
-              />
-            
+                    <View>
+                      <Counter
+                        label="Bedrooms"
+                        count={CountBedroom}
+                        onIncrease={() => updateCount('Bedroom', 'increase')}
+                        onDecrease={() => updateCount('Bedroom', 'decrease')}
+                      />
+                      <Counter
+                        label="Bathrooms"
+                        count={CountBathroom}
+                        onIncrease={() => updateCount('Bathroom', 'increase')}
+                        onDecrease={() => updateCount('Bathroom', 'decrease')}
+                      />
+                      <Counter
+                        label="Reception rooms"
+                        count={CountReception}
+                        onIncrease={() => updateCount('Reception', 'increase')}
+                        onDecrease={() => updateCount('Reception', 'decrease')}
+                      />
+                      <Counter
+                        label="Parking / garage spaces"
+                        count={CountParking}
+                        onIncrease={() => updateCount('Parking', 'increase')}
+                        onDecrease={() => updateCount('Parking', 'decrease')}
+                      />
+                      <Counter
+                        label="On-street parking"
+                        count={CountParkingStreet}
+                        onIncrease={() =>
+                          updateCount('ParkingStreet', 'increase')
+                        }
+                        onDecrease={() =>
+                          updateCount('ParkingStreet', 'decrease')
+                        }
+                      />
                     </View>
 
                     <View>
@@ -1063,73 +1074,71 @@ return (
                         {'Additional features'}
                       </Text>
                       <View style={[FirstPropertyStyle.addition_featureView]}>
-                <View style={{ flex: 1 }}>
-                  <Text style={FirstPropertyStyle.Furnished_Text}>
-                    {'Furnished?'}
-                  </Text>
-                  <ToggleButton
-                    tabValue={selectedButtonFurnishedId}
-                    setTabValue={setSelectedButtonFurnishedId}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                  />
-                </View>
-                <View style={{ margin: 11 }} />
-                <View style={{ flex: 1 }}>
-                  <Text style={FirstPropertyStyle.Furnished_Text}>
-                    {'External storage?'}
-                  </Text>
-                  <ToggleButton
-                    tabValue={selectedButtonStorageId}
-                    setTabValue={setSelectedButtonStorageId}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                  />
-                </View>
-
-              </View>
-              <View style={FirstPropertyStyle.addition_featureView}>
-                <View style={{ flex: 1 }}>
-                  <Text style={FirstPropertyStyle.Furnished_Text}>
-                    {'Garden?'}
-                  </Text>
-                  <ToggleButton
-                    tabValue={selectedButtonGardenId}
-                    setTabValue={setSelectedButtonGardenId}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                  />
-                </View>
-                <View style={{ margin: 11 }} />
-                <View style={{ flex: 1 }}>
-                  <Text style={FirstPropertyStyle.Furnished_Text}>
-                    {'Pets allowed?'}
-                  </Text>
-                  <ToggleButton
-                    tabValue={selectedButtonDepositId}
-                    setTabValue={setSelectedButtonDepositId}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                  />
-                </View>
-              </View>
-        
+                        <View style={{flex: 1}}>
+                          <Text style={FirstPropertyStyle.Furnished_Text}>
+                            {'Furnished?'}
+                          </Text>
+                          <ToggleButton
+                            tabValue={selectedButtonFurnishedId}
+                            setTabValue={setSelectedButtonFurnishedId}
+                            activeColor={_COLORS.Kodie_GreenColor}
+                            inactiveColor={_COLORS.Kodie_WhiteColor}
+                            activeTextColor={_COLORS.Kodie_WhiteColor}
+                            inactiveTextColor={_COLORS.Kodie_BlackColor}
+                            firstTabLabel="Yes"
+                            secondTabLabel="No"
+                          />
+                        </View>
+                        <View style={{margin: 11}} />
+                        <View style={{flex: 1}}>
+                          <Text style={FirstPropertyStyle.Furnished_Text}>
+                            {'External storage?'}
+                          </Text>
+                          <ToggleButton
+                            tabValue={selectedButtonStorageId}
+                            setTabValue={setSelectedButtonStorageId}
+                            activeColor={_COLORS.Kodie_GreenColor}
+                            inactiveColor={_COLORS.Kodie_WhiteColor}
+                            activeTextColor={_COLORS.Kodie_WhiteColor}
+                            inactiveTextColor={_COLORS.Kodie_BlackColor}
+                            firstTabLabel="Yes"
+                            secondTabLabel="No"
+                          />
+                        </View>
+                      </View>
+                      <View style={FirstPropertyStyle.addition_featureView}>
+                        <View style={{flex: 1}}>
+                          <Text style={FirstPropertyStyle.Furnished_Text}>
+                            {'Garden?'}
+                          </Text>
+                          <ToggleButton
+                            tabValue={selectedButtonGardenId}
+                            setTabValue={setSelectedButtonGardenId}
+                            activeColor={_COLORS.Kodie_GreenColor}
+                            inactiveColor={_COLORS.Kodie_WhiteColor}
+                            activeTextColor={_COLORS.Kodie_WhiteColor}
+                            inactiveTextColor={_COLORS.Kodie_BlackColor}
+                            firstTabLabel="Yes"
+                            secondTabLabel="No"
+                          />
+                        </View>
+                        <View style={{margin: 11}} />
+                        <View style={{flex: 1}}>
+                          <Text style={FirstPropertyStyle.Furnished_Text}>
+                            {'Pets allowed?'}
+                          </Text>
+                          <ToggleButton
+                            tabValue={selectedButtonDepositId}
+                            setTabValue={setSelectedButtonDepositId}
+                            activeColor={_COLORS.Kodie_GreenColor}
+                            inactiveColor={_COLORS.Kodie_WhiteColor}
+                            activeTextColor={_COLORS.Kodie_WhiteColor}
+                            inactiveTextColor={_COLORS.Kodie_BlackColor}
+                            firstTabLabel="Yes"
+                            secondTabLabel="No"
+                          />
+                        </View>
+                      </View>
                     </View>
 
                     <View style={FirstPropertyStyle.inputContainer}>

@@ -328,7 +328,7 @@ export default Login = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (password.trim() === '') {
-      setPasswordError('Password is required!.');
+      setPasswordError('Password is required!');
     } else {
       Keyboard.dismiss();
       setIsLoading(true);

@@ -168,7 +168,7 @@ const BottomJobModal = props => {
           paddingHorizontal: 20,
         }}
         onPress={handleCloseModal}>
-        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        {/* <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}

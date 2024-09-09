@@ -126,7 +126,56 @@ const UploadLeftImage = props => {
             }
           }}>
           {console.log(typeof item.Img, item.Img)}
-          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
+          <TouchableOpacity style={UploadImageStyle.Bottomcontainer}
+          onPress={() => {
+            if (item.id === '1') {
+              ImagePicker.openCamera({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  // console.log("image....", image);
+                  setImage(image);
+                  setLeftImage(Array.isArray(image) ? image : [image]);
+                  props?.leftImage(Array.isArray(image) ? image : [image]);
+                  console.log('ImagePathleftimage..', leftImage);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+            if (item.id === '2') {
+              // Navigate to Choose photo from library when Contact Us is clicked.......
+              ImagePicker.openPicker({
+                width: 300,
+                height: 400,
+                cropping: true,
+                compressImageQuality: 0.5,
+                multiple: true,
+              })
+                .then(image => {
+                  // console.log(image);
+                  // setImage(image);
+                  // setImageName(JSON.stringify(image?.path));
+                  // props?.ImageName(image?.path);
+                  // console.log("ImagePath..", imageName);
+                  // ...
+                  // if (image.length > 0) {
+                  //   setImage(image);
+                  //   setLeftImage(image);
+                  //   props.leftImage(image);
+                  //   console.log('Navigating to leftImage photos with', image);
+                  // }
+                  handleLeftImageSelection(image);
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
+            }
+          }}>
             {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>

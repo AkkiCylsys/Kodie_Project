@@ -13,7 +13,7 @@ import {
   Image,
   SafeAreaView,
   KeyboardAvoidingView,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -91,10 +91,29 @@ const SignUpSteps = props => {
   const [p_longitude, setP_longitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [country_Code_Get, setCountry_Code_Get] = useState('');
+  const [addressComponents, setAddressComponents] = useState([]);
   const addressParts = physicalAddress.split(', ');
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(', ');
+  function getAddressComponent(addressComponents, type) {
+    return addressComponents.find(component => component.types.includes(type));
+  }
+  const selected_city = getAddressComponent(
+    addressComponents,
+    'locality',
+  )?.long_name;
+  const Selected_State = getAddressComponent(
+    addressComponents,
+    'administrative_area_level_1',
+  )?.long_name;
+  const selected_Country = getAddressComponent(
+    addressComponents,
+    'country',
+  )?.long_name;
+  console.log(`selected_city: ${selected_city}`);
+  console.log(`Selected_State: ${Selected_State}`);
+  console.log(`selected_Country: ${selected_Country}`);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -119,10 +138,6 @@ const SignUpSteps = props => {
     console.log(newImageName, 'ImageNAme');
     refRBSheet.current.close();
   };
-  console.log('Country:', country);
-  console.log('State:', state);
-  console.log('City:', city);
-
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
   let password = props?.route?.params?.password;
@@ -177,23 +192,26 @@ const SignUpSteps = props => {
       .catch(error => console.warn(error));
   };
   const validateFirstName = text => {
-    if (text === '') {
+    const trimmedText = text.trim();
+    if (trimmedText === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
       setFirstNameError(
-        'First name should contain only alphabetic characters, spaces, or hyphens!',
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setFirstNameError('');
     }
     setFirstName(text);
   };
+
   const validateLastName = text => {
-    if (text === '') {
+    const trimmedText = text.trim();
+    if (trimmedText === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
       setLastNameError(
-        'Last name should contain only alphabetic characters, spaces, or hyphens!',
+        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setLastNameError('');
@@ -217,8 +235,8 @@ const SignUpSteps = props => {
   const phoneNumber = mobileNumber;
   const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
   if (phoneNumberParts) {
-    const countryCode = phoneNumberParts[1]; // Extracted country code
-    const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+    const countryCode = phoneNumberParts[1];
+    const remainingNumber = phoneNumberParts[2];
     console.log('CountryCode:', countryCode);
     setCountry_Code_Get(countryCode);
     console.log('RemainingsNumber:', remainingNumber);
@@ -231,15 +249,17 @@ const SignUpSteps = props => {
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
-      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens!');
-    }
-     else if (lastName.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(firstName.trim())) {
+      setFirstNameError(
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
+    } else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
-      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens!');
-    }
-     else if (mobileNumber.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(lastName.trim())) {
+      setLastNameError(
+        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
+    } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format!');
@@ -252,19 +272,20 @@ const SignUpSteps = props => {
         organisation: organisation,
         referral: referral,
         email: email,
-        country: country,
-        state: state,
-        city: city,
+        country: selected_Country,
+        state: Selected_State,
+        city: selected_city,
         p_latitude: p_latitude,
         p_longitude: p_longitude,
         user_key: user_key,
         image: ImageName,
         Bio: bio,
         country_code: country_Code_Get,
-        password:password
+        password: password,
       });
     }
   };
+
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
@@ -352,7 +373,6 @@ const SignUpSteps = props => {
                   color={_COLORS.Kodie_ExtraLightGrayColor}
                 />
               </View>
-             
             )}
 
             <View style={AccountStyle.editlogoview}>
@@ -367,7 +387,10 @@ const SignUpSteps = props => {
         </View>
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              First name
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={[
                 AccountStyle.input,
@@ -386,7 +409,10 @@ const SignUpSteps = props => {
             <Text style={AccountStyle.errorText}>{firstNameError}</Text>
           </View>
           <View style={AccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>Last name*</Text>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              Last name
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={[
                 AccountStyle.input,
@@ -406,7 +432,9 @@ const SignUpSteps = props => {
           </View>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
-              Phone number* <Text style={{fontSize:14}}>(mobile preferred)</Text>
+              Phone number
+              <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
+              <Text style={{fontSize: 14}}>(mobile preferred)</Text>
             </Text>
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput
@@ -416,7 +444,7 @@ const SignUpSteps = props => {
                 layout="second"
                 Country={false}
                 // disabled
-                // disableArrowIcon={true}
+                disableArrowIcon={true}
                 textInputProps={{
                   maxLength: 9,
                   keyboardType: 'number-pad',
@@ -452,7 +480,7 @@ const SignUpSteps = props => {
                     ? _COLORS.Kodie_lightRedColor
                     : _COLORS.Kodie_GrayColor,
                   borderRadius: Platform.OS == 'ios' ? 6 : 10,
-                  backgroundColor:_COLORS.Kodie_LightGrayColor
+                  // backgroundColor:_COLORS.Kodie_LightGrayColor
                 }}
               />
             </View>
@@ -519,7 +547,6 @@ const SignUpSteps = props => {
             />
           </View>
         </View>
-       
       </ScrollView>
     );
   };
@@ -610,6 +637,7 @@ const SignUpSteps = props => {
                 setCurrentLocation(details.formatted_address);
                 console.log('physicalAddressSearch....', physicalAddress);
                 console.log('details.......', details);
+                setAddressComponents(details?.address_components);
               }}
             />
           ) : (
@@ -661,38 +689,38 @@ const SignUpSteps = props => {
         </View>
       </KeyboardAvoidingView>
       <RBSheet
-          ref={refRBSheet}
-          height={177}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: AccountStyle.bottomModal_container,
-          }}>
-          <View style={AccountStyle.upload_View}>
-            <Text style={AccountStyle.uploadImgText}>
-              {props.heading_Text || 'Upload image'}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.close();
-              }}>
-              <Entypo
-                name="cross"
-                size={25}
-                color={_COLORS.Kodie_BlackColor}
-                style={AccountStyle.crossIconStyle}
-              />
-            </TouchableOpacity>
-          </View>
-          <UploadImageData
-            heading_Text={'Upload image'}
-            ImageName={handleImageNameChange}
-          />
-        </RBSheet>
+        ref={refRBSheet}
+        height={177}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: AccountStyle.bottomModal_container,
+        }}>
+        <View style={AccountStyle.upload_View}>
+          <Text style={AccountStyle.uploadImgText}>
+            {props.heading_Text || 'Upload image'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              refRBSheet.current.close();
+            }}>
+            <Entypo
+              name="cross"
+              size={25}
+              color={_COLORS.Kodie_BlackColor}
+              style={AccountStyle.crossIconStyle}
+            />
+          </TouchableOpacity>
+        </View>
+        <UploadImageData
+          heading_Text={'Upload image'}
+          ImageName={handleImageNameChange}
+        />
+      </RBSheet>
     </SafeAreaView>
   );
 };
