@@ -90,6 +90,7 @@ export default CreateJobTermsScreen = props => {
   const [formattedPriceRanges, setFormattedPriceRanges] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTime, setCurrentTime] = useState('');
+  const [currentTimeError, setCurrentTimeError] = useState('');
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
@@ -225,10 +226,18 @@ export default CreateJobTermsScreen = props => {
       setSelectedDateError('');
     }
   };
-
+  const handleSelectTime = text => {
+    if (text.trim() === '') {
+      setCurrentTimeError('Select time is required!');
+    } else {
+      setCurrentTimeError(''); // Clear the error if valid time is selected
+    }
+  };
   const handleValidatiomtionCreateJob = () => {
     if (selectedDate.trim() === '') {
       setSelectedDateError('Select date is required!');
+    } else if (currentTime.trim() == '') {
+      setCurrentTimeError('Select time is required!');
     } else {
       handleCreateJob();
     }
@@ -621,7 +630,7 @@ export default CreateJobTermsScreen = props => {
           <Text style={CreateJobTermsStyle.terms_Text}>{'Terms'}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {' What date and time would you prefer?'}
-            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -630,6 +639,11 @@ export default CreateJobTermsScreen = props => {
                 color: selectedDate
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_GrayColor,
+              }}
+              calenderStyle={{
+                borderColor: selectedDateError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
               // onDayPress={handleDayPress}
@@ -664,15 +678,27 @@ export default CreateJobTermsScreen = props => {
               _TextTimeColor={
                 currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
               }
+              timerConStyle={{
+                borderColor: currentTimeError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
+              }}
               data={new Date()}
               getData={date => {
-                setCurrentTime(moment(date).format('hh:mm A'));
+                const formattedTime = moment(date).format('hh:mm A');
+                setCurrentTime(formattedTime);
+                handleSelectTime(formattedTime);
               }}
             />
           </View>
           {selectedDateError ? (
             <Text style={CreateJobTermsStyle.error_text}>
               {selectedDateError}
+            </Text>
+          ) : null}
+          {currentTimeError ? (
+            <Text style={CreateJobTermsStyle.error_text}>
+              {currentTimeError}
             </Text>
           ) : null}
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>

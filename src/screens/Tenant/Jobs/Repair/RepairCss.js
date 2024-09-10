@@ -14,7 +14,7 @@ export const RepairCss = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
   },
-  flat_MainView: {flex:1,flexDirection: 'row'},
+  flat_MainView: {flex:0,flexDirection: 'row'},
   AllView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -223,7 +223,8 @@ export const RepairCss = StyleSheet.create({
     marginLeft: '10%',
     paddingBottom: 3,
     paddingRight:10,
-    height:30
+    height:24,
+    // marginTop:5
   },
   buttonText: {
     fontSize: 12,

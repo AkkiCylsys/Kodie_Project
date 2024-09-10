@@ -57,17 +57,18 @@ export const ReviewjobdetailsStyle1 = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     marginLeft: 50,
   },
-  nextBtn_view: { marginTop: 50 },
+  nextBtn_view: { marginTop: 20 },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
+    marginBottom:"20%"
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   backIcon: {
     borderWidth: 1,

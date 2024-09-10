@@ -581,7 +581,7 @@ export default Login = props => {
         <View style={LoginStyles.formContainer}>
           <Text style={LoginStyles.title}>Login</Text>
           <View style={LoginStyles.card}>
-            <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
+            <View style={[LoginStyles.inputContainer]}>
               <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
               <TextInput
                 style={[
@@ -601,10 +601,10 @@ export default Login = props => {
                 autoCapitalize={'none'}
                 keyboardType={'email-address'}
               />
-            </View>
             {emailError ? (
               <Text style={LoginStyles.error_text}>{emailError}</Text>
             ) : null}
+            </View>
             <View style={[LoginStyles.inputContainer,]}>
               <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
               <View
@@ -645,11 +645,11 @@ export default Login = props => {
                   />
                 </TouchableOpacity>
               </View>
-            </View>
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
             ) : null}
-            <View style={{ flexDirection: 'row' ,marginTop:20}}>
+            </View>
+            <View style={{ flexDirection: 'row'}}>
               <TouchableOpacity
                 onPress={() => {
                   openSheetWithHeight(550)

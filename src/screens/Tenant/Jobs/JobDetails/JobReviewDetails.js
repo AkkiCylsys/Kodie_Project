@@ -284,7 +284,7 @@ const JobReviewDetails = props => {
         )}
       </View>
       <ScrollView>
-        <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
+        {/* <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text> */}
         <ImageBackground>
           {imageFileData.image_file_path &&
           imageFileData.image_file_path.length != 0 ? (
@@ -328,10 +328,15 @@ const JobReviewDetails = props => {
 
         <View
           style={{
-            borderBottomWidth: 3,
+            // borderBottomWidth: 1,
             borderColor: _COLORS.Kodie_GrayColor,
-            elevation: 1,
+            elevation: 4,
+            shadowColor: _COLORS.Kodie_GrayColor,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
           }}>
+            
           <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
