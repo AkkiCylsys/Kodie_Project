@@ -26,6 +26,7 @@ import {useSelector} from 'react-redux';
 import {Config} from '../../../../Config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 const HorizontalData = [
   'All',
   'Recent',
@@ -37,7 +38,8 @@ const HorizontalData = [
 ];
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginData', loginData);
+  const userRole = loginData?.Account_details[0]?.user_role_id;
+  // const userRole = '4';
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -648,86 +650,132 @@ const PropertyList = props => {
     );
   };
 
+  const renderRowButtons = () => {
+    const roleArray = userRole.split(',');
+
+    const hasTenantRole = roleArray.includes('2');
+    const hasLandlordRole = roleArray.includes('3');
+
+    const renderSingleButton = buttonText => (
+      <CustomSingleButton
+        _ButtonText={buttonText}
+        Text_Color={_COLORS.Kodie_BlackColor}
+        text_Size={14}
+        backgroundColor={_COLORS.Kodie_lightGreenColor}
+        height={40}
+        onPress={() => {}}
+        disabled={isLoading ? true : false}
+      />
+    );
+
+    if (hasTenantRole && !hasLandlordRole) {
+      return renderSingleButton('Properties I rent');
+    } else if (hasLandlordRole && !hasTenantRole) {
+      return renderSingleButton('Properties I own');
+    }
+
+    if (hasTenantRole && hasLandlordRole) {
+      return (
+        <RowButtons
+          LeftButtonText={'Properties I own'}
+          leftButtonHeight={40}
+          leftButtonbackgroundColor={
+            activeScreen
+              ? _COLORS.Kodie_WhiteColor
+              : _COLORS.Kodie_lightGreenColor
+          }
+          LeftButtonborderColor={
+            activeScreen
+              ? _COLORS.Kodie_GrayColor
+              : _COLORS.Kodie_lightGreenColor
+          }
+          RightButtonText={'Properties I rent'}
+          RightButtonbackgroundColor={
+            activeScreen
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor
+          }
+          RightButtonborderColor={
+            activeScreen
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_GrayColor
+          }
+          LeftButtonTextColor={
+            activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
+          }
+          RightButtonTextColor={
+            activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+          }
+          RightButtonHeight={40}
+          onPressLeftButton={() => setActiveScreen(false)}
+          onPressRightButton={() => {
+            setActiveScreen(true);
+            Alert.alert('Properties I rent', 'Coming soon', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('OK Pressed');
+                  setActiveScreen(false);
+                },
+              },
+            ]);
+          }}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <GestureHandlerRootView style={PropertyListCSS.mainContainer}>
       <ScrollView
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{marginBottom: 50}}>
-        <View style={PropertyListCSS.Container}>
-          <RowButtons
-            LeftButtonText={'Properties I own'}
-            leftButtonHeight={40}
-            leftButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            LeftButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            RightButtonText={'Properties I rent'}
-            RightButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_GrayColor
-            }
-            LeftButtonTextColor={
-              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
-            }
-            RightButtonTextColor={
-              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-            }
-            RightButtonHeight={40}
-            onPressLeftButton={() => setActiveScreen(false)}
-            onPressRightButton={() => {
-              setActiveScreen(true);
-              Alert.alert('Properties I rent', 'Coming soon', [
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    console.log('OK Pressed');
-                    setActiveScreen(false);
-                  },
-                },
-              ]);
-            }}
-          />
+        <View
+          style={[
+            PropertyListCSS.Container,
+            {marginVertical: userRole == '4' ? 0 : 15},
+          ]}>
+          {renderRowButtons()}
         </View>
-        <DividerIcon
-          borderBottomWidth={9}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <View style={PropertyListCSS.Container}>
-          <CustomSingleButton
-            _ButtonText={'+ Add New Property'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            text_Size={14}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            height={40}
+        {userRole == '4' ? null : (
+          <DividerIcon
+            borderBottomWidth={9}
+            color={_COLORS.Kodie_LiteWhiteColor}
+            // marginTop={1}
+          />
+        )}
+        {userRole == '4' ? null : (
+          <View style={PropertyListCSS.Container}>
+            <CustomSingleButton
+              _ButtonText={'+ Add New Property'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              text_Size={14}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              height={40}
+              marginTop={3}
+              onPress={props.propertyDetail}
+              disabled={isLoading ? true : false}
+            />
+          </View>
+        )}
+        {userRole == '4' ? null : (
+          <DividerIcon
+            borderBottomWidth={9}
+            color={_COLORS.Kodie_LiteWhiteColor}
+            // marginTop={1}
+          />
+        )}
+        <View style={{marginTop: userRole == '4' ? 15 : 0}}>
+          <SearchBar
+            filterImage={IMAGES.filter}
+            frontSearchIcon
             marginTop={3}
-            onPress={props.propertyDetail}
-            disabled={isLoading ? true : false}
+            searchData={searchPropertyList}
+            textvalue={searchQuery}
           />
         </View>
-        <DividerIcon
-          borderBottomWidth={9}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-
-        <SearchBar
-          filterImage={IMAGES.filter}
-          frontSearchIcon
-          marginTop={3}
-          searchData={searchPropertyList}
-          textvalue={searchQuery}
-        />
         {activeScreen ? (
           <>
             {/* for static that by its hide.... */}
