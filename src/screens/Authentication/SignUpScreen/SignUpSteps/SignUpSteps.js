@@ -195,7 +195,7 @@ const SignUpSteps = props => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
+    } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
       setFirstNameError(
         'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
@@ -209,7 +209,7 @@ const SignUpSteps = props => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(trimmedText)) {
+    } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
       setLastNameError(
         'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
@@ -430,7 +430,7 @@ const SignUpSteps = props => {
             />
             <Text style={AccountStyle.errorText}>{lastNameError}</Text>
           </View>
-          <View style={AccountStyle.inputContainer}>
+          {/* <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Phone number
               <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
@@ -486,6 +486,65 @@ const SignUpSteps = props => {
             </View>
             {mobileNumberError ? (
               <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
+            ) : null}
+          </View> */}
+          <View style={AccountStyle.inputContainer}>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              Phone number
+              <Text style={{color: _COLORS?.Kodie_redColor}}>* </Text>
+              <Text style={{fontSize: 14}}>(mobile preferred)</Text>
+            </Text>
+            <View
+              style={[
+                AccountStyle.phoneinputview,
+                {flexDirection: 'row', alignItems: 'center'},
+              ]}>
+              <View style={{position: 'relative', flex: 1}}>
+                <Text
+                  style={{
+                    position: 'absolute',
+                    left: 15,
+                    top: 14,
+                    color: _COLORS.Kodie_BlackColor,
+                    fontSize: 16,
+                    zIndex: 1,
+                  }}>
+                  +61
+                </Text>
+                <TextInput
+                  value={mobileNumber}
+                  keyboardType="number-pad"
+                  maxLength={9}
+                  placeholder="Enter your phone number"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  style={{
+                    height: 50,
+                    backgroundColor: _COLORS.Kodie_WhiteColor,
+                    paddingVertical: 2,
+                    paddingLeft: 70,
+                    paddingRight: 10,
+                    borderRadius: Platform.OS === 'ios' ? 6 : 10,
+                    borderWidth: 1,
+                    borderColor: mobileNumberError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                      fontSize: 16,
+                  }}
+                  onChangeText={text => {
+                    if (text === '') {
+                      setMobileNumberError('Phone number is required!');
+                    } else if (!/^[0-9]{9}$/.test(text)) {
+                      setMobileNumberError('Invalid phone number format!');
+                    } else {
+                      setMobileNumberError('');
+                    }
+                    setMobileNumber(text);
+                  }}
+                />
+              </View>
+            </View>
+            {mobileNumberError ? (
+              <Text style={AccountStyle.errorText1}>{mobileNumberError}</Text>
             ) : null}
           </View>
 
