@@ -246,5 +246,6 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginBottom: 30,
     position: 'absolute',
   },
-  error_text: {color: 'red', marginLeft: 15,},
+  error_text: {color: 'red', marginLeft: 10,marginTop:5},
+  error_text1: {color: 'red', marginLeft: 20},
 });

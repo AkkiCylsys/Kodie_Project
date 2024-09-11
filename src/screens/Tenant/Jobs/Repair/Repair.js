@@ -32,7 +32,7 @@ import BottomModalData from '../../../../components/Molecules/BottomModal/Bottom
 import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJobModal';
 import Modal from 'react-native-modal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { color } from 'react-native-reanimated';
+import {color} from 'react-native-reanimated';
 
 const HorizontalData = [
   'All',
@@ -305,7 +305,7 @@ export default Repair = props => {
             <View style={RepairCss.Container}>
               <View style={RepairCss.flat_MainView}>
                 <View style={RepairCss.flexContainer}>
-                  <Text style={LABEL_STYLES.commontext}>
+                  <Text style={[LABEL_STYLES.commontext]}>
                     {item.service_looking}
                   </Text>
                 </View>
@@ -319,9 +319,8 @@ export default Repair = props => {
                   <View style={{alignSelf: 'center'}}>
                     <Entypo
                       name="dot-single"
-                      size={25}
+                      size={23}
                       color={_COLORS?.Kodie_boldGrayColor}
-                      style={{alignSelf: 'center', marginTop: 2}}
                     />
                   </View>
                   <Text
@@ -358,9 +357,10 @@ export default Repair = props => {
                   <View style={RepairCss.propertyView}>
                     <View style={RepairCss.flexContainer}>
                       <Text
-                        style={
-                         [ RepairCss.tom,{color:_COLORS?.Kodie_MediumGrayColor}]
-                        }>{`${item.first_name} ${item.last_name}`}</Text>
+                        style={[
+                          RepairCss.tom,
+                          {color: _COLORS?.Kodie_MediumGrayColor},
+                        ]}>{`${item.first_name} ${item.last_name}`}</Text>
                       <View style={RepairCss.locationView}>
                         <MaterialCommunityIcons
                           name={'map-marker'}

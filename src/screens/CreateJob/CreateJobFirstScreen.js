@@ -82,7 +82,7 @@ export default CreateJobFirstScreen = props => {
       selectedAddress?.property_type_id,
     );
     if (selectJobTypeid == '') {
-      setSelectJobTypeidError('The type of job you need is required!');
+      setSelectJobTypeidError('Please choose an option!');
     } else if (servicesValue == '') {
       setservicesValueError(true);
     } else if (jobPriorityValue == '') {
@@ -501,11 +501,9 @@ export default CreateJobFirstScreen = props => {
                   : _COLORS.Kodie_WhiteColor,
               borderColor: selectJobTypeidError
                 ? _COLORS?.Kodie_redColor
+                : isClick === item?.lookup_key
+                ? _COLORS?.Kodie_GreenColor
                 : _COLORS.Kodie_GrayColor,
-              borderColor:
-                isClick === item?.lookup_key
-                  ? _COLORS?.Kodie_GreenColor
-                  : _COLORS.Kodie_GrayColor,
             },
           ]}
           textColor={[
@@ -716,7 +714,7 @@ export default CreateJobFirstScreen = props => {
         // console.log('API Response JobDetails:', response?.data);
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
-          // console.log('jobDetailsData....', response?.data?.data);
+          console.log('jobDetailsData....', response?.data?.data);
           setSelectJobTypeid(response?.data?.data?.job_type_key);
           setIsClick(parseInt(response?.data?.data?.job_type_key));
           setAboutyourNeed(response?.data?.data?.job_description);
@@ -729,6 +727,14 @@ export default CreateJobFirstScreen = props => {
           setRatingThresholdValue(
             parseInt(response?.data?.data?.job_rating_key),
           );
+          setSelectedAddress({
+            latitude: response?.data?.data?.location_latitude,
+            longitude: response?.data?.data?.location_longitude,
+            location:response?.data?.data?.job_location,
+            property_id: response?.data?.data?.property_id,
+            propertyType: response?.data?.data?.property_type,
+            property_type_id: response?.data?.data?.property_type_key,
+          })
           setlatitude(response?.data?.data?.location_latitude);
           setlongitude(response?.data?.data?.location_longitude);
           handleServices(response?.data?.data.job_type_key);
@@ -880,7 +886,7 @@ export default CreateJobFirstScreen = props => {
               numColumns={2}
             />
             {selectJobTypeidError ? (
-              <Text style={CreateJobFirstStyle.error_text}>
+              <Text style={CreateJobFirstStyle.error_text1}>
                 {selectJobTypeidError}
               </Text>
             ) : null}
@@ -895,9 +901,9 @@ export default CreateJobFirstScreen = props => {
                 style={[
                   CreateJobFirstStyle.dropdown,
                   {
-                    backgroundColor: isClick
-                      ? null
-                      : _COLORS.Kodie_LightGrayLineColor,
+                      borderColor: servicesValueError
+                        ? _COLORS?.Kodie_redColor
+                        : _COLORS?.Kodie_GrayColor,
                   },
                 ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -923,7 +929,7 @@ export default CreateJobFirstScreen = props => {
             </View>
             {servicesValueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Service are you looking for is required!'}
+                {'Please choose an option!'}
               </Text>
             ) : null}
             <View style={CreateJobFirstStyle.jobDetailsView}>
@@ -948,7 +954,14 @@ export default CreateJobFirstScreen = props => {
                 <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
-                style={CreateJobFirstStyle.dropdown}
+                style={[
+                  CreateJobFirstStyle.dropdown,
+                  {
+                    borderColor: jobPriorityValueError
+                      ? _COLORS?.Kodie_redColor
+                      : _COLORS?.Kodie_GrayColor,
+                  },
+                ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
                 selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
                 inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
@@ -971,7 +984,7 @@ export default CreateJobFirstScreen = props => {
             </View>
             {jobPriorityValueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Job priority is required!'}
+                {'Please choose an option!'}
               </Text>
             ) : null}
             {/* <View style={{marginTop: 12}}>
@@ -1011,7 +1024,14 @@ export default CreateJobFirstScreen = props => {
                 <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
-                style={CreateJobFirstStyle.dropdown}
+                style={[
+                  CreateJobFirstStyle.dropdown,
+                  {
+                      borderColor: takingPlaceError
+                        ? _COLORS?.Kodie_redColor
+                        : _COLORS?.Kodie_GrayColor,
+                  },
+                ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
                 selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
                 inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
@@ -1067,7 +1087,7 @@ export default CreateJobFirstScreen = props => {
             ) : null} */}
             {takingPlaceError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Job taking place is required!'}
+                {'Please choose an option!'}
               </Text>
             ) : null}
             {selectedAddress?.propertyType ? (

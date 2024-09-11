@@ -8,6 +8,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
   },
   container: {
     marginHorizontal: 16,
+    marginTop:15
   },
   terms_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -78,22 +79,23 @@ export const CreateJobTermsStyle = StyleSheet.create({
     marginTop: 12,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
+    marginBottom:"20%"
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   backIcon: {
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  nextBtn_view: { marginTop: 50 },
+  nextBtn_view: { marginTop: 27},
   itemView: {
     flex: 1,
     flexDirection: "row",
@@ -105,5 +107,5 @@ export const CreateJobTermsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     alignSelf: "center",
   },
-  error_text: { color: "red", marginLeft: 10 },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
 });
