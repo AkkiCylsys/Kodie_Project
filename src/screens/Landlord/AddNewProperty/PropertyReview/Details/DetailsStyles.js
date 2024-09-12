@@ -183,4 +183,44 @@ export const DetailsStyle = StyleSheet.create({
     justifyContent:'center',
 
   },
+  container: {
+    flex: 1,
+    marginHorizontal:16
+  },
+  header: {
+    fontSize: 15,
+    fontFamily: FONTFAMILY?.K_Medium,
+    color: _COLORS?.Kodie_BlackColor,
+    marginBottom: 10,
+  },
+  categoryContainer: {
+    marginBottom: 20,
+  },
+  categoryTitle: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY?.K_Medium,
+    color: _COLORS?.Kodie_BlackColor,
+    marginBottom: 10,
+  },
+  itemContainer: {
+    flex:1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+  },
+  itemName: {
+    fontSize: 13,
+    marginLeft:15
+  },
+  itemDistance: {
+    flex:1,
+    fontSize: 13,
+    color: _COLORS?.Kodie_BlackColor,
+    textAlign:"right"
+   
+  },
+  viewMore: {
+    color: '#45B742',
+    marginTop: 5,
+  },
 });

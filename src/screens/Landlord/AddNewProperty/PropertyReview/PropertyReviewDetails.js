@@ -48,6 +48,7 @@ import { useDispatch } from 'react-redux';
 import { clockRunning } from 'react-native-reanimated';
 
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import Geolocation from '@react-native-community/geolocation';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReviewDetails = props => {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ export default PropertyReviewDetails = props => {
   console.log('propertyid...', propertyid);
   console.log('propertyView.....', propertyView);
   const [activeTab, setActiveTab] = useState('Tab4');
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -97,7 +99,91 @@ export default PropertyReviewDetails = props => {
       console.error('Failed to build dynamic link:', error);
     }
   };
+  const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        console.log(latitude,longitude);
+        fetchPointsOfInterest(latitude,longitude);
+        // fetchPointsOfInterest("27.149994", "79.499901");
 
+      },
+      error => console.error(error),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }, []);
+
+  const fetchPointsOfInterest = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+      );
+
+      const poiData = categorizeData(response.data.results);
+      console.log(JSON.stringify(poiData))
+      setData(poiData);
+    } catch (error) {
+      console.error('Error fetching POIs:', error);
+    }
+  };
+
+  const categorizeData = (places) => {
+    const categories = {
+      'Schools & Education': [],
+      'Food & Entertainment': [],
+      'Health': [],
+      'Transport': []
+    };
+
+    places.forEach(place => {
+      const { name, vicinity } = place;
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
+      if (place.types.includes('school') || place.types.includes('university')) {
+        categories['Schools & Education'].push({ name, distance });
+      } else if (place.types.includes('restaurant') || place.types.includes('food')) {
+        categories['Food & Entertainment'].push({ name, distance });
+      } else if (place.types.includes('hospital') || place.types.includes('health')) {
+        categories['Health'].push({ name, distance });
+      } else if (place.types.includes('bus_station') || place.types.includes('train_station')) {
+        categories['Transport'].push({ name, distance });
+      }
+    });
+
+    return Object.entries(categories).map(([category, items]) => ({ category, items }));
+  };
+
+  const renderpointItem = ({ item }) => (
+    <>
+    <View style={DetailsStyle.itemContainer}>
+      <Text style={DetailsStyle.itemName}>{item.name}</Text>
+      <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
+      
+    <DividerIcon marginTop={5}/>
+    </View>
+    </>
+  );
+
+  const renderCategory = ({ item }) => (
+    <View style={DetailsStyle.categoryContainer}>
+      <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
+      <DividerIcon marginTop={5}/>
+      <FlatList
+        data={item.items}
+        renderItem={renderpointItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={<TouchableOpacity onPress={()=>{
+          alert(JSON.stringify(item.items.length))
+          if(item.items.length >2){
+
+          }else{
+            alert(JSON.stringify("No more data found!"))
+          }
+        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
+      />
+     
+    </View>
+  );
   // Function to share the generated link
   const shareContent = async () => {
     const shareOptions = {
@@ -170,7 +256,7 @@ export default PropertyReviewDetails = props => {
             name={iconName}
             size={22}
             color={_COLORS.Kodie_GreenColor}
-           style={{alignSelf:'center'}}
+            style={{ alignSelf: 'center' }}
           />
         </View>
         <Text style={[DetailsStyle.details_text, { flexShrink: 1 }]}>
@@ -191,7 +277,7 @@ export default PropertyReviewDetails = props => {
               name={iconName}
               size={22}
               color={_COLORS.Kodie_GreenColor}
-              style={{alignSelf:'center'}}
+              style={{ alignSelf: 'center' }}
 
             />
           )}
@@ -234,7 +320,7 @@ export default PropertyReviewDetails = props => {
         console.error('propertyDetail_error:', response?.data?.error);
       }
       const additionalFeatures_id =
-        response?.data?.property_details[0].additional_features;
+        response?.data?.property_details[0].additional_features_id;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
@@ -376,7 +462,7 @@ export default PropertyReviewDetails = props => {
     const parkingSpaceValueObj = Detail.find(item => 'Parking / garage spaces' in item);
     parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj['Parking / garage spaces'] : null;
     const OnStreetParkingObj = Detail.find(item => "On-street parking" in item);
- OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
+    OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
 
   } else {
     console.error('Detail is not an array:', Detail);
@@ -395,12 +481,12 @@ export default PropertyReviewDetails = props => {
             <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {'Key features '}
             </Text>
-            <View style={{ marginHorizontal: '12%' }}>
+            <View style={{ marginHorizontal: '10%' }}>
               <FlatList
                 data={Detail}
                 scrollEnabled
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{flexGrow:1}}
+                contentContainerStyle={{ flexGrow: 1 }}
                 numColumns={numColumns}
                 keyExtractor={item => item?.id}
                 renderItem={Detail_rander}
@@ -409,380 +495,395 @@ export default PropertyReviewDetails = props => {
             <DividerIcon />
             {property_Detail?.additional_key_features_id === '[]' ? null : (
               <>
-              <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
-                {'Additional key features'}
-              </Text>
-            {/* )} */}
-            <View style={{ marginHorizontal: '12%' }}>
-              <FlatList
-                data={additionalKeyFeatures}
-                numColumns={numColumns}
-                contentContainerStyle={{flexGrow:1}}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-            {/* {property_Detail?.additional_key_features_id === '[]' ? null : ( */}
-              <DividerIcon
-                borderBottomWidth={1}
-                color={_COLORS.Kodie_GrayColor}
-              />
+                <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+                  {'Additional key features'}
+                </Text>
+                {/* )} */}
+                <View style={{ marginHorizontal: '10%' }}>
+                  <FlatList
+                    data={additionalKeyFeatures}
+                    numColumns={numColumns}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
+                {/* {property_Detail?.additional_key_features_id === '[]' ? null : ( */}
+                <DividerIcon
+                  borderBottomWidth={1}
+                  color={_COLORS.Kodie_GrayColor}
+                />
               </>
             )}
+            {property_Detail?.auto_list == 0 ? null : (
+              <>
+                <View >
+                  <TouchableOpacity
+                    style={DetailsStyle.propety_details_view}
+                    onPress={() => {
+                      setPropertyDetailsClp(!propertyDetailsClp);
+                    }}>
+                    <Text style={DetailsStyle.propery_det}>
+                      {'Property details'}
+                    </Text>
 
-            <View >
-              <TouchableOpacity
-                style={DetailsStyle.propety_details_view}
-                onPress={() => {
-                  setPropertyDetailsClp(!propertyDetailsClp);
-                }}>
-                <Text style={DetailsStyle.propery_det}>
-                  {'Property details'}
-                </Text>
+                    <TouchableOpacity
+                      style={DetailsStyle.down_Arrow_icon}
+                      onPress={() => {
+                        setPropertyDetailsClp(!propertyDetailsClp);
+                      }}>
+                      <Fontisto
+                        name={
+                          propertyDetailsClp
+                            ? 'angle-up'
+                            : 'angle-down'
+                        }
+                        size={18}
+                        color={_COLORS.Kodie_DarkGrayColor}
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                  <DividerIcon marginTop={8} />
+                  {propertyDetailsClp ? (
+                    <>
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Listing Number'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {propertyid}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Type of Property'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {property_Detail?.property_type}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Floor Size'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {`${property_Detail?.floor_size || ''} m²`}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Pets Allowed'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {addtionalFeaturesID[0]}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Furnished'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {addtionalFeaturesID[1] == 'Furnished' ? 'Yes' : 'No'}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                      <View style={DetailsStyle.p_rowTextView}>
+                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                          {'Smoking'}
+                        </Text>
+                        <Text
+                          style={[
+                            LABEL_STYLES.commontext,
+                            { fontFamily: FONTFAMILY.K_Medium },
+                          ]}>
+                          {'No'}
+                        </Text>
+                      </View>
+                      <DividerIcon marginTop={8} />
+                    </>
+                  ) : null}
+                </View>
+                <View >
+                  <TouchableOpacity
+                    style={DetailsStyle.propety_details_view}
+                    onPress={() => {
+                      setRoomClp(!roomClp);
+                    }}>
+                    <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
+                    <TouchableOpacity
+                      style={DetailsStyle.down_Arrow_icon}
+                      onPress={() => {
+                        setRoomClp(!roomClp);
+                      }}>
+                      <Fontisto
+                        name={roomClp ? 'angle-up'
+                          : 'angle-down'
+                        }
+                        size={18}
+                        color={_COLORS.Kodie_DarkGrayColor}
 
-                <TouchableOpacity
-                  style={DetailsStyle.down_Arrow_icon}
-                  onPress={() => {
-                    setPropertyDetailsClp(!propertyDetailsClp);
-                  }}>
-                  <Fontisto
-                    name={
-                      propertyDetailsClp
-                        ? 'angle-up'
-                        : 'angle-down'
-                    }
-                    size={18}
-                    color={_COLORS.Kodie_DarkGrayColor}
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
-              <DividerIcon marginTop={8} />
-              {propertyDetailsClp ? (
-                <>
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Listing Number'}
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+                {roomClp ? (
+                  <>
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Bedrooms'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {Detail[0]?.Bedrooms}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Bathrooms'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {Detail[1]?.Bathrooms}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Kitchen'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Lounge'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Dining Room'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Other'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                  </>
+                ) : null}
+                <View >
+                  <TouchableOpacity
+                    style={DetailsStyle.propety_details_view}
+                    onPress={() => {
+                      setExternalfeaturesClp(!externalfeaturesClp);
+                    }}>
+                    <Text style={DetailsStyle.propery_det}>
+                      {'External features'}
                     </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {propertyid}
+
+                    <TouchableOpacity
+                      style={DetailsStyle.down_Arrow_icon}
+                      onPress={() => {
+                        setExternalfeaturesClp(!externalfeaturesClp);
+                      }}>
+                      <Fontisto
+                        name={
+                          externalfeaturesClp
+                            ? 'angle-up'
+                            : 'angle-down'
+                        }
+                        size={18}
+                        color={_COLORS.Kodie_DarkGrayColor}
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+                {externalfeaturesClp ? (
+                  <>
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Car Spaces'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {parkingSpaceValue}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'On-Street Parking Spaces'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {OnStreetParkingValue}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Garden'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Pool'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Outdoor Patio'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                    <View style={DetailsStyle.p_rowTextView}>
+                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        {'Other'}
+                      </Text>
+                      <Text
+                        style={[
+                          LABEL_STYLES.commontext,
+                          { fontFamily: FONTFAMILY.K_Medium },
+                        ]}>
+                        {'0'}
+                      </Text>
+                    </View>
+                    <DividerIcon marginTop={8} />
+                  </>
+                ) : null}
+                <View >
+                  <TouchableOpacity
+                    style={DetailsStyle.propety_details_view}
+                    onPress={() => {
+                      setPointOfInterest(!pointOfInterest);
+                    }}>
+                    <Text style={DetailsStyle.propery_det}>
+                      {'Points of interest'}
                     </Text>
-                  </View>
+                    <TouchableOpacity
+                      style={DetailsStyle.down_Arrow_icon}
+                      onPress={() => {
+                        setPointOfInterest(!pointOfInterest);
+                      }}>
+                      <Fontisto
+                        name={
+                          pointOfInterest
+                            ? 'angle-up'
+                            : 'angle-down'
+                        }
+                        size={18}
+                        color={_COLORS.Kodie_DarkGrayColor}
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
                   <DividerIcon marginTop={8} />
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Type of Property'}
-                    </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {property_Detail?.property_type}
-                    </Text>
-                  </View>
-                  <DividerIcon marginTop={8} />
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Floor Size'}
-                    </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {`${property_Detail?.floor_size || ''} m²`}
-                    </Text>
-                  </View>
-                  <DividerIcon marginTop={8} />
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Pets Allowed'}
-                    </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {addtionalFeaturesID[0]}
-                    </Text>
-                  </View>
-                  <DividerIcon marginTop={8} />
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Furnished'}
-                    </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {addtionalFeaturesID[1] == 'Furnished' ? 'Yes' : 'No'}
-                    </Text>
-                  </View>
-                  <DividerIcon marginTop={8} />
-                  <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                      {'Smoking'}
-                    </Text>
-                    <Text
-                      style={[
-                        LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
-                      ]}>
-                      {'No'}
-                    </Text>
-                  </View>
-                  <DividerIcon marginTop={8} />
-                </>
-              ) : null}
-            </View>
-            <View >
-              <TouchableOpacity
-                style={DetailsStyle.propety_details_view}
-                onPress={() => {
-                  setRoomClp(!roomClp);
-                }}>
-                <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
-                <TouchableOpacity
-                  style={DetailsStyle.down_Arrow_icon}
-                  onPress={() => {
-                    setRoomClp(!roomClp);
-                  }}>
-                  <Fontisto
-                    name={roomClp  ? 'angle-up'
-                    : 'angle-down'
-                }
-                size={18}
-                color={_COLORS.Kodie_DarkGrayColor}
+                {
+                  pointOfInterest?
                   
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-            <DividerIcon marginTop={8} />
-            {roomClp ? (
-              <>
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Bedrooms'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {Detail[0]?.Bedrooms}
-                  </Text>
+                  <View style={DetailsStyle.container}>
+                    <FlatList
+        data={data}
+        renderItem={renderCategory}
+        keyExtractor={(item, index) => index.toString()}
+      /></View>
+                :null
+                }
                 </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Bathrooms'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {Detail[1]?.Bathrooms}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Kitchen'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Lounge'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Dining Room'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Other'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
               </>
-            ) : null}
-            <View >
-              <TouchableOpacity
-                style={DetailsStyle.propety_details_view}
-                onPress={() => {
-                  setExternalfeaturesClp(!externalfeaturesClp);
-                }}>
-                <Text style={DetailsStyle.propery_det}>
-                  {'External features'}
-                </Text>
-
-                <TouchableOpacity
-                  style={DetailsStyle.down_Arrow_icon}
-                  onPress={() => {
-                    setExternalfeaturesClp(!externalfeaturesClp);
-                  }}>
-                  <Fontisto
-                    name={
-                      externalfeaturesClp
-                      ? 'angle-up'
-                      : 'angle-down'
-                  }
-                  size={18}
-                  color={_COLORS.Kodie_DarkGrayColor}
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
-            <DividerIcon marginTop={8} />
-            {externalfeaturesClp ? (
-              <>
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Car Spaces'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {parkingSpaceValue}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'On-Street Parking Spaces'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {OnStreetParkingValue}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Garden'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Pool'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Outdoor Patio'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Other'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-              </>
-            ) : null}
-            <View >
-              <TouchableOpacity
-                style={DetailsStyle.propety_details_view}
-                onPress={() => {
-                  setPointOfInterest(!pointOfInterest);
-                }}>
-                <Text style={DetailsStyle.propery_det}>
-                  {'Points of interest'}
-                </Text>
-                <TouchableOpacity
-                  style={DetailsStyle.down_Arrow_icon}
-                  onPress={() => {
-                    setPointOfInterest(!pointOfInterest);
-                  }}>
-                  <Fontisto
-                    name={
-                      pointOfInterest
-                      ? 'angle-up'
-                      : 'angle-down'
-                  }
-                  size={18}
-                  color={_COLORS.Kodie_DarkGrayColor}
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
-              <DividerIcon marginTop={8} />
-
+            )}
+            <View>
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
@@ -970,7 +1071,7 @@ export default PropertyReviewDetails = props => {
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity
                 onPress={() => {
-               shareContent();
+                  shareContent();
                 }}>
                 <Entypo
                   name="share"

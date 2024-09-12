@@ -39,7 +39,7 @@ import {
 } from '@react-navigation/native';
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
-
+ 
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
   const navigation = useNavigation();
@@ -91,9 +91,9 @@ export default CompanyDetails = props => {
         }
         return false;
       };
-
+ 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
+ 
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
@@ -174,7 +174,7 @@ export default CompanyDetails = props => {
       setIndiSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
     }
   };
-
+ 
   const jobType_render = ({item}) => {
     return (
       <View style={{flex: 1}}>
@@ -293,9 +293,9 @@ export default CompanyDetails = props => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
-
+ 
     setIsLoading(true);
-
+ 
     const fetchServiceData = async jobType => {
       const propertyData = {
         P_PARENT_CODE:
@@ -310,13 +310,13 @@ export default CompanyDetails = props => {
             : null,
         P_TYPE: 'OPTION',
       };
-
+ 
       const url = Config.BASE_URL;
       const propertyType = url + 'lookup_details';
-
+ 
       try {
         const response = await axios.post(propertyType, propertyData);
-
+ 
         if (response?.data?.status === true) {
           servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
@@ -333,12 +333,12 @@ export default CompanyDetails = props => {
         setIsLoading(false);
       }
     };
-
+ 
     const fetchAllServices = async () => {
       try {
         const promises = jobTypes.map(jobType => fetchServiceData(jobType));
         await Promise.all(promises);
-
+ 
         setIsLoading(false);
         console.log('All Services Data:', servicesDatas);
         setServicesData(servicesDatas);
@@ -347,7 +347,7 @@ export default CompanyDetails = props => {
         console.error('Error fetching services:', error);
       }
     };
-
+ 
     fetchAllServices();
     setIsLoading(false);
   };
@@ -355,9 +355,9 @@ export default CompanyDetails = props => {
     const jobTypes = selectedselectIndiJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
-
+ 
     setIsLoading(true);
-
+ 
     const fetchIndiServiceData = async jobType => {
       const propertyData = {
         P_PARENT_CODE:
@@ -372,13 +372,13 @@ export default CompanyDetails = props => {
             : null,
         P_TYPE: 'OPTION',
       };
-
+ 
       const url = Config.BASE_URL;
       const propertyType = url + 'lookup_details';
-
+ 
       try {
         const response = await axios.post(propertyType, propertyData);
-
+ 
         if (response?.data?.status === true) {
           console.log("knsdnven....",response?.data?.lookup_details)
           servicesDatas.push(...response?.data?.lookup_details);
@@ -396,35 +396,35 @@ export default CompanyDetails = props => {
         setIsLoading(false);
       }
     };
-
+ 
     const fetchIndiAllServices = async () => {
       try {
         const promises = jobTypes.map(jobType => fetchIndiServiceData(jobType));
         await Promise.all(promises);
-
+ 
         setIsLoading(false);
         console.log('All Services Data:', servicesDatas);
-
+ 
         setIndiServicesData(servicesDatas);
       } catch (error) {
         setIsLoading(false);
         console.error('Error fetching services:', error);
       }
     };
-
+ 
     fetchIndiAllServices();
     setIsLoading(false);
   };
   const selectedselectJobTypesString = selectJobTypeid.join(',');
   const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
-
+ 
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
     console.log('................ImageNAmeDeependra', newImageName.path);
     refRBSheet.current.close();
   };
-
+ 
   const ConfirmAddress = () => {
     setIsMap(false);
     if (tabValue == 'IndividualInProfile') {
@@ -445,7 +445,7 @@ export default CompanyDetails = props => {
       setCompanylatitude(Region.latitude);
       setCompanylongitude(Region.longitude);
     }
-
+ 
     getAddress(Region.latitude, Region.longitude);
     // getAddress();
   };
@@ -473,7 +473,7 @@ export default CompanyDetails = props => {
           json.results[0].address_components[7].long_name +
           ', ' +
           json.results[0].address_components[8].long_name;
-
+ 
         var addressComponent2 = json.results[0].address_components[1];
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
@@ -485,7 +485,7 @@ export default CompanyDetails = props => {
       })
       .catch(error => console.warn(error));
   };
-
+ 
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
@@ -494,21 +494,20 @@ export default CompanyDetails = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        // console.log('API Response:', response?.data?.data[0]);
+        console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
-        setLocation(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS
-            : '',
+        setLocation(response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS_INDIVIDUAL
         );
-        setCompanyLocation(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS
-            : '',
-        );
+        setCompanyLocation(response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS);
         const initialJobTypeIds = response?.data?.data[0]?.business_data
           ?.service_offer
           ? response?.data?.data[0].business_data?.service_offer
+              .split(',')
+              .map(Number)
+          : [];
+        const initialJobTypeIdsIndividual = response?.data?.data[0]?.business_data
+          ?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL
+          ? response?.data?.data[0].business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL
               .split(',')
               .map(Number)
           : [];
@@ -518,62 +517,36 @@ export default CompanyDetails = props => {
               .split(',')
               .map(Number)
           : [];
-        setSelectJobTypeid(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? initialJobTypeIds
-            : [],
+          console.log('UAD_SERVICE_YOU_PERFORM_INDIVIDUAL...',initialServiceIds,response?.data?.data[0]?.business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL.split(','));
+        const initialServiceIdsIndividual = response?.data?.data[0]?.business_data
+          ?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL
+          ? response?.data?.data[0].business_data?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL
+              .split(',')
+              .map(Number)
+          : [];
+        setSelectJobTypeid(initialJobTypeIds
+         );
+        setIndiSelectJobTypeid(initialJobTypeIdsIndividual
         );
-        setIndiSelectJobTypeid(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? initialJobTypeIds
-            : [],
+        setSelectJobType(initialJobTypeIds
         );
-        setSelectJobType(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? initialJobTypeIds
-            : [],
+        setIndiSelectJobType(initialJobTypeIdsIndividual
         );
-        setIndiSelectJobType(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? initialJobTypeIds
-            : [],
-        );
-
-        setservicesValue(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? initialServiceIds
-            : [],
+ 
+        setservicesValue(initialServiceIds
         );
         
-        setIndiservicesValue(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? initialServiceIds
-            : [],
+        setIndiservicesValue(initialServiceIdsIndividual
         );
-        setWebsite(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_WEBSITE
-            : '',
+        setWebsite(response?.data?.data[0]?.UAD_WEBSITE
         );
-        setIndiWebsite(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response?.data?.data[0]?.UAD_WEBSITE
-            : '',
+        setIndiWebsite(response?.data?.data[0]?.business_data?.UAD_WEBSITE_INDIVIDUAL
         );
-        setCompanyName(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.business_data?.organization_name
-            : '',
+        setCompanyName(response?.data?.data[0]?.business_data?.organization_name
         );
-        SetBusinessNumber(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.business_data?.Austrilian_business_no
-            : '',
+        SetBusinessNumber(response?.data?.data[0]?.business_data?.Austrilian_business_no
         );
-        setCompanyGSTNumber(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.business_data?.gst
-            : '',
+        setCompanyGSTNumber(response?.data?.data[0]?.business_data?.gst
         );
         setIsLoading(false);
       })
@@ -584,17 +557,17 @@ export default CompanyDetails = props => {
   };
   const UpdateCompanyData = async () => {
     const formData = new FormData();
-
+ 
     const fileUri = ImageName.path;
     const fileName = fileUri
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
     const fileType = ImageName.mime;
-
+    
     console.log('fileUri....', fileUri);
     console.log('fileName....', fileName);
     console.log('fileType....', fileType);
-
+    
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
     } else {
@@ -605,44 +578,49 @@ export default CompanyDetails = props => {
       });
     }
     formData.append('account_id', loginData?.Login_details?.user_account_id);
-    formData.append('run_business', tabValue === 'IndividualInProfile' ? 0 : 1);
+    formData.append('run_business', '0,1');
+    formData.append('austrialian_business_no',businessNumber,);
     formData.append(
-      'organisation_name',
-      tabValue === 'IndividualInProfile' ? '' : companyName,
+      'organisation_name', companyName,
     );
     formData.append(
-      'austrialian_business_no',
-      tabValue === 'IndividualInProfile' ? '' : businessNumber,
+      'company_gst',companyGSTNumber,
     );
     formData.append(
-      'company_gst',
-      tabValue === 'IndividualInProfile' ? '' : companyGSTNumber,
+      'category_offer', selectedselectJobTypesString,
     );
     formData.append(
-      'category_offer',
-      tabValue === 'IndividualInProfile'
-        ? selectedselectIndiJobTypesString
-        : selectedselectJobTypesString,
+      'category_offer_individual',selectedselectIndiJobTypesString   
     );
     formData.append(
-      'service_perform',
-      tabValue === 'IndividualInProfile' ? IndiservicesValue : servicesValue,
+      'service_perform',servicesValue,
     );
     formData.append(
-      'company_address',
-      tabValue === 'IndividualInProfile' ? location : Companylocation,
+      'service_perform_individual',IndiservicesValue
     );
     formData.append(
-      'company_longitude',
-      tabValue === 'IndividualInProfile' ? longitude : Companylongitude,
+      'company_address', Companylocation,
     );
     formData.append(
-      'company_latitude',
-      tabValue === 'IndividualInProfile' ? latitude : Companylatitude,
+      'company_address_individual',location
     );
     formData.append(
-      'website',
-      tabValue === 'IndividualInProfile' ? Indiwebsite : website,
+      'company_longitude',Companylongitude,
+    );
+    formData.append(
+      'company_longitude_individual', longitude
+    );
+    formData.append(
+      'company_latitude',Companylatitude,
+    );
+    formData.append(
+      'company_latitude_individual',latitude
+    );
+    formData.append(
+      'website',website,
+    );
+    formData.append(
+      'website_individual',Indiwebsite 
     );
     console.log('formData', formData);
     const url = Config.BASE_URL;
@@ -677,18 +655,18 @@ console.log("IndiservicesData...dee",IndiservicesData)
   const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
     return item.lookup_description !== 'Other' || index === lastOtherIndex;
   });
-
+ 
   let lastComOtherIndex = -1;
   servicesData.forEach((item, index) => {
     if (item.lookup_description === 'Other') {
       lastComOtherIndex = index;
     }
   });
-
+ 
   const filteredCompservicesData = servicesData.filter((item, index) => {
     return item.lookup_description !== 'Other' || index === lastComOtherIndex;
   });
-
+ 
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualInProfile':
@@ -737,8 +715,16 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 tagContainerStyle={CompanyDetailsStyle.tagContainer}
                 tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
                 styleTextTag={CompanyDetailsStyle.textTag}
-                styleTextDropdown={CompanyDetailsStyle.textDropdown}
-                styleDropdownMenu={CompanyDetailsStyle.dropdownMenu}
+                styleTextDropdown={[CompanyDetailsStyle.textDropdown,
+                  {
+                    paddingHorizontal: IndiservicesValue.length > 0 ? 10 : 5,
+                  },
+                ]}
+                styleDropdownMenu={[CompanyDetailsStyle.dropdownMenu,
+                  {
+                    paddingHorizontal: IndiservicesValue.length > 0 ? 10 : 5,
+                  },
+                ]}
                 submitButtonColor={_COLORS.Kodie_GreenColor}
                 submitButtonText={
                   IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
@@ -773,7 +759,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 <Text style={LABEL_STYLES.commontext}>
                   {'Company physical address'}
                 </Text>
-
+ 
                 <View style={IndividualProfileStyle.inputContainer}>
                   <View style={IndividualProfileStyle.locationConView}>
                     <View style={IndividualProfileStyle.locationContainer}>
@@ -801,7 +787,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   </View>
                 </View>
               </View>
-
+ 
               <View style={IndividualProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
                 <TextInput
@@ -840,7 +826,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   correspondence from Kodie.
                 </Text>
               </View>
-
+ 
               <View style={CompanyInProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Australian business number'}
@@ -853,7 +839,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   placeholderTextColor="#999"
                 />
               </View>
-
+ 
               <View style={CompanyInProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Company GST / VAT number'}
@@ -866,7 +852,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   placeholderTextColor="#999"
                 />
               </View>
-
+ 
               <View>
                 <Text style={CompanyInProfileStyle.want_Heading}>
                   {
@@ -909,8 +895,16 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 tagContainerStyle={CompanyDetailsStyle.tagContainer}
                 tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
                 styleTextTag={CompanyDetailsStyle.textTag}
-                styleTextDropdown={CompanyDetailsStyle.textDropdown}
-                styleDropdownMenu={CompanyDetailsStyle.dropdownMenu}
+                styleTextDropdown={[CompanyDetailsStyle.textDropdown,
+                  {
+                    paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                  },
+                ]}
+                styleDropdownMenu={[CompanyDetailsStyle.dropdownMenu,
+                  {
+                    paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                  },
+                ]}
                 submitButtonColor={_COLORS.Kodie_GreenColor}
                 submitButtonText={
                   servicesValue.length > 0 ? 'Done' : 'Cancel'
@@ -1038,7 +1032,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
               <TextInput
                 style={{
                   backgroundColor: 'transparent',
-
+ 
                   width: '90%',
                   height: 45,
                   alignSelf: 'center',
@@ -1066,7 +1060,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
               setCompanylatitude(details.geometry.location.lat);
               setCompanylongitude(details.geometry.location.lng);
             }
-
+ 
             setIsSearch(false);
             setIsMap(true);
             setCurrentLocation(details.formatted_address);
@@ -1092,11 +1086,11 @@ console.log("IndiservicesData...dee",IndiservicesData)
                         {borderRadius: 110 / 2},
                       ]}
                     />
-                  ) : accountDetails?.business_data?.UAD_Company_logo ? (
+                  ) : accountDetails?.business_data?.company_logo[0] ? (
                     <Image
                       style={CompanyDetailsStyle.profilelogo}
                       source={{
-                        uri:accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0 ?'': `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.business_data?.company_logo}`,
+                        uri:accountDetails?.business_data?.company_logo[0],
                       }}
                       resizeMode="cover"
                     />
@@ -1125,7 +1119,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 </Text>
               </View>
               <Divider style={CompanyDetailsStyle.firstdivider} />
-
+ 
               <View style={CompanyDetailsStyle.tabmainview}>
                 <Text style={CompanyDetailsStyle.tabheadingtext}>
                   How do you run your business?
@@ -1185,11 +1179,11 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   </TouchableOpacity>
                 </View>
               </View>
-
+ 
               {checkTabs()}
-              {Platform.OS == 'ios' ? (
+              {/* {Platform.OS == 'ios' ? (
                 <View style={{height: IsHeeight ? 120 : 0}}></View>
-              ) : null}
+              ) : null} */}
               <View style={CompanyDetailsStyle.saveBackButton}>
                 <View style={CompanyDetailsStyle.secondview}>
                   <CustomSingleButton

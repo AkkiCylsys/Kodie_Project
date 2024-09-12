@@ -17,6 +17,7 @@ export const DrawerStyle = StyleSheet.create({
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
+    marginBottom: 15,
   },
   ImageStyle: {height: 35, width: '12%'},
   SubHeading: {
@@ -29,7 +30,6 @@ export const DrawerStyle = StyleSheet.create({
   },
   SubHeadingView: {
     flexDirection: 'row',
-    marginTop: 15,
     borderRadius: 8,
     paddingVertical: 4,
   },
@@ -50,43 +50,43 @@ export const DrawerStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-  popupcantainer:{
-    marginHorizontal:16,
-    marginTop:10,
-    flexDirection:"row",
-    justifyContent:"space-between"
+  popupcantainer: {
+    marginHorizontal: 16,
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  popuptext:{
-    fontSize:20,
+  popuptext: {
+    fontSize: 20,
     fontFamily: FONTFAMILY.K_SemiBold,
-    color: _COLORS.Kodie_BlackColor,color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_BlackColor,
   },
-  ViewBtn:{
-    justifyContent:"flex-end",
+  ViewBtn: {
+    justifyContent: 'flex-end',
     // marginLeft:100,
-    marginHorizontal:16,
-    flexDirection:"row",
-    marginTop:48,
-    alignItems:"flex-end"
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    marginTop: 48,
+    alignItems: 'flex-end',
   },
-  CancelBtn:{
-    borderWidth:0,
-    color:_COLORS.Kodie_BlackColor,
-    paddingHorizontal:15,
-    paddingVertical:10,
-    borderRadius:5,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium
-
+  CancelBtn: {
+    borderWidth: 0,
+    color: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
   },
-  LogoutBtn:{
-    backgroundColor:_COLORS.Kodie_BlackColor,
-    paddingHorizontal:15,
-    paddingVertical:10,
-    borderRadius:5,
-    color:_COLORS.Kodie_WhiteColor,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium,
-    alignSelf:'center'
-  }
+  LogoutBtn: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    color: _COLORS.Kodie_WhiteColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: 'center',
+  },
 });

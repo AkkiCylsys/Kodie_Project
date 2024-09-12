@@ -48,6 +48,7 @@ export const signupAccountApiActionCreator = data => async dispatch => {
   try {
     const res = await axios.post(
       'https://kodietestapi.cylsys.com/api/v1/signup_step_one',
+      // 'https://kodieapis.cylsys.com/api/v1/signup_step_one',
       data,
       {
         headers: {
@@ -56,7 +57,7 @@ export const signupAccountApiActionCreator = data => async dispatch => {
       },
     );
 
-    if (res.data.status === true) {
+    if (res.data.success === true) {
       dispatch(fetchRegistrationSuccess(res.data));
       return res;
     } else {

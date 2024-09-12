@@ -33,7 +33,6 @@ import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJ
 import Modal from 'react-native-modal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {color} from 'react-native-reanimated';
-
 const HorizontalData = [
   'All',
   'Scheduled',
@@ -62,14 +61,8 @@ const property_List1 = [
 export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
-  // console.log(
-  //   'loginresponse_jobdetails..',
-  //   loginData?.Login_details?.user_account_id,
-  // );
-  // const user_role_id = loginData?.Account_details[0]?.user_role_id;
-  // alert(user_role_id);
-
+  const userRole = loginData?.Account_details[0]?.user_role_id;
+  // const userRole = '4';
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(false);
@@ -93,7 +86,77 @@ export default Repair = props => {
   const myJob_Type = props.myJob_Type;
   // console.log('myJob_Type in job module', myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
-  console.log('job_sub_type_ser_req....', job_sub_type_req);
+
+  const roleArray = userRole.split(',');
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+  const renderRowButtons = () => {
+    const renderSingleButton = buttonText => (
+      <CustomSingleButton
+        _ButtonText={buttonText}
+        Text_Color={_COLORS.Kodie_BlackColor}
+        text_Size={14}
+        backgroundColor={_COLORS.Kodie_lightGreenColor}
+        height={40}
+        onPress={() => {}}
+        disabled={isLoading ? true : false}
+      />
+    );
+    if (hasContractorRole) {
+      return (
+        <RowButtons
+          LeftButtonText={'Jobs I am servicing'}
+          leftButtonHeight={40}
+          LeftButtonfontSize={12}
+          leftButtonbackgroundColor={
+            activeScreen
+              ? _COLORS.Kodie_WhiteColor
+              : _COLORS.Kodie_lightGreenColor
+          }
+          LeftButtonborderColor={
+            activeScreen
+              ? _COLORS.Kodie_GrayColor
+              : _COLORS.Kodie_DarkGreenColor
+          }
+          RightButtonText={'Jobs I have requested'}
+          RightButtonbackgroundColor={
+            activeScreen
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor
+          }
+          RightButtonborderColor={
+            activeScreen
+              ? _COLORS.Kodie_DarkGreenColor
+              : _COLORS.Kodie_GrayColor
+          }
+          LeftButtonTextColor={
+            activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
+          }
+          RightButtonTextColor={
+            activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+          }
+          RightButtonHeight={40}
+          RightButtonfontSize={12}
+          onPressLeftButton={() => {
+            setActiveScreen(false);
+            setSelectedFilter('All');
+          }}
+          onPressRightButton={() => {
+            setActiveScreen(true);
+            setSelectedFilter('All');
+          }}
+        />
+      );
+    }
+
+    if (hasTenantRole || hasLandlordRole) {
+      return renderSingleButton('Jobs I have requested');
+    }
+
+    return null;
+  };
+
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -198,10 +261,6 @@ export default Repair = props => {
     }
   };
   useEffect(() => {
-    // if (isvisible) {
-    //   getJobDetailsByFilter(selectedFilter);
-    //   getJobDetails_Filter_Service(selectedFilter);
-    // }
     if (isvisible) {
       fetch_filterData();
     }
@@ -212,7 +271,14 @@ export default Repair = props => {
   };
 
   useEffect(() => {
-    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
+    setActiveScreen(
+      myJob_Type == 1 ||
+        job_sub_type_req == 1 ||
+        hasTenantRole ||
+        hasLandlordRole
+        ? true
+        : false,
+    );
   }, []);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -395,86 +461,35 @@ export default Repair = props => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        {/* {user_role_id === "4" ? ( */}
         <>
-          <View style={RepairCss.BtnView}>
-            <RowButtons
-              LeftButtonText={'Jobs I am servicing'}
-              leftButtonHeight={40}
-              LeftButtonfontSize={12}
-              leftButtonbackgroundColor={
-                activeScreen
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_lightGreenColor
-              }
-              LeftButtonborderColor={
-                activeScreen
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_DarkGreenColor
-              }
-              RightButtonText={'Jobs I have requested'}
-              RightButtonbackgroundColor={
-                activeScreen
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonborderColor={
-                activeScreen
-                  ? _COLORS.Kodie_DarkGreenColor
-                  : _COLORS.Kodie_GrayColor
-              }
-              LeftButtonTextColor={
-                activeScreen
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonTextColor={
-                activeScreen
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_GrayColor
-              }
-              RightButtonHeight={40}
-              RightButtonfontSize={12}
-              onPressLeftButton={() => {
-                setActiveScreen(false);
-                setSelectedFilter('All');
-              }}
-              onPressRightButton={() => {
-                setActiveScreen(true);
-                setSelectedFilter('All');
-              }}
-            />
-          </View>
+          <View style={RepairCss.BtnView}>{renderRowButtons()}</View>
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
           />
         </>
-        {/* ) : null} */}
-
-        {/* {user_role_id === "4" ? ( */}
-        <>
-          <View style={RepairCss.Container}>
-            <CustomSingleButton
-              _ButtonText={
-                activeScreen ? '+ Create new job request' : '+ Add job'
-              }
-              disabled={isLoading ? true : false}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              text_Size={14}
-              backgroundColor={_COLORS.Kodie_BlackColor}
-              height={44}
-              marginTop={3}
-              onPress={activeScreen ? props.onpress : props.servicing_press}
+        {hasTenantRole || hasLandlordRole ? (
+          <>
+            <View style={RepairCss.Container}>
+              <CustomSingleButton
+                _ButtonText={
+                  activeScreen ? '+ Create new job request' : '+ Add job'
+                }
+                disabled={isLoading ? true : false}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                text_Size={14}
+                backgroundColor={_COLORS.Kodie_BlackColor}
+                height={44}
+                marginTop={3}
+                onPress={activeScreen ? props.onpress : props.servicing_press}
+              />
+            </View>
+            <DividerIcon
+              borderBottomWidth={9}
+              color={_COLORS.Kodie_LiteWhiteColor}
             />
-          </View>
-          <DividerIcon
-            borderBottomWidth={9}
-            color={_COLORS.Kodie_LiteWhiteColor}
-            // marginTop={20}
-          />
-        </>
-        {/* ) : null} */}
+          </>
+        ) : null}
 
         <SearchBar
           frontSearchIcon
