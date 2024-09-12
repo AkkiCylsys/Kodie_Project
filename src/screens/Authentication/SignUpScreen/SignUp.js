@@ -284,7 +284,9 @@ const SignUp = (props) => {
           {/*.............. signup input field start here ..................*/}
           <View style={SignUpStyles.card}>
             <View style={SignUpStyles.inputContainer}>
-              <Text style={LABEL_STYLES._texinputLabel}>Email address*</Text>
+              <Text style={LABEL_STYLES._texinputLabel}>Email address
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <TextInput
                 style={[
                   SignUpStyles.input,
@@ -311,7 +313,7 @@ const SignUp = (props) => {
             <View style={SignUpStyles.inputContainer}>
               <Text
                 style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
-                Password*
+                Password<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <View
                 style={[
