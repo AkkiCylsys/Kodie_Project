@@ -777,6 +777,9 @@ export default AboutYou = props => {
             isClick === item?.lookup_key
               ? _COLORS.Kodie_lightGreenColor
               : _COLORS.Kodie_WhiteColor,
+              borderColor: isClick === item?.lookup_key
+            ? _COLORS.Kodie_GreenColor
+            : _COLORS.Kodie_GrayColor,
         },
       ]}
       textColor={[AboutYouStyle.box_Text_Style]}
@@ -815,6 +818,9 @@ export default AboutYou = props => {
           backgroundColor: selectedServices.includes(item?.lookup_key)
             ? _COLORS.Kodie_lightGreenColor
             : _COLORS.Kodie_WhiteColor,
+          borderColor: selectedServices.includes(item?.lookup_key)
+            ? _COLORS.Kodie_GreenColor
+            : _COLORS.Kodie_GrayColor,
         },
       ]}
       textColor={[AboutYouStyle.box_Text_Style]}
