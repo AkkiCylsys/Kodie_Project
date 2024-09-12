@@ -1,5 +1,5 @@
 //ScreenNo:13
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,32 +11,32 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
-import {FirstPropertyStyle} from './FirstPropertyStyle';
+import { FirstPropertyStyle } from './FirstPropertyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
+import { _goBack } from '../../../../services/CommonServices';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {_COLORS, FONTFAMILY} from '../../../../Themes';
-import {LABEL_STYLES, IMAGES} from '../../../../Themes';
-import {Dropdown} from 'react-native-element-dropdown';
+import { _COLORS, FONTFAMILY } from '../../../../Themes';
+import { LABEL_STYLES, IMAGES } from '../../../../Themes';
+import { Dropdown } from 'react-native-element-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
-import {BackHandler} from 'react-native';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { BackHandler } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import {signupAccountApiActionCreator} from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import { signupAccountApiActionCreator } from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -66,7 +66,7 @@ const firstIndicatorSignUpStepStyle = {
   labelAlign: 'center',
 };
 
-const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   const iconConfig = {
     name: 'feed',
     color: stepStatus === 'finished' ? '#ffffff' : '#ffffff',
@@ -113,6 +113,10 @@ export default FirstProperty = props => {
   let country_code = props?.route?.params?.country_code;
   let company_address = props?.route?.params?.company_address;
   let password = props?.route?.params?.password;
+  console.log("individual",IndividualservicesValue,IndividualWebSide,IndividualselectJobType,Individualp_longitude);
+  console.log("Company",CompanyservicesValue,CompanyWebSide,Companyp_latitude,CompanyservicesValue);
+  console.log("selectedServiceKeysString",selectedServiceKeysString);
+  console.log("user_key",password);
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyLocation, setPropertyLocation] = useState('');
@@ -208,11 +212,11 @@ export default FirstProperty = props => {
     }, [IsMap, IsSearch]),
   );
   const AllCountsData = [
-    {Bedrooms: CountBedroom},
-    {Bathrooms: CountBathroom},
-    {'Reception rooms': CountReception},
-    {'Parking / garage spaces': CountParking},
-    {'On-street parking': CountParkingStreet},
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { 'Reception rooms': CountReception },
+    { 'Parking / garage spaces': CountParking },
+    { 'On-street parking': CountParkingStreet },
   ];
   const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
   console.log(PreFriedly);
@@ -294,21 +298,21 @@ export default FirstProperty = props => {
       </View>
     );
   };
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Account'
         : position === 1
-        ? 'About you'
-        : position === 2
-        ? 'First property'
-        : 'circle';
+          ? 'About you'
+          : position === 2
+            ? 'First property'
+            : 'circle';
 
     return (
       <View style={{}}>
@@ -435,25 +439,22 @@ export default FirstProperty = props => {
       additional_features: additionalfeatureskeyvalue,
       key_additional_features: PreFriedly,
       selectManageProperty: selectManageProperty,
-      auto_list: selectedButtonId,
+      auto_list: 0,
       fcm_token: Fcm_token,
       run_your_business: run_your_business,
       bio: Bio,
-      website: run_your_business === 0 ? IndividualWebSide : CompanyWebSide,
-      company_latitude:
-        run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
-      company_longitude:
-        run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address:
-        run_your_business === 0 ? individualAddress : company_address,
-      category_service_perform:
-        run_your_business === 0
-          ? IndividualservicesValue
-          : CompanyservicesValue,
-      category_service_offer:
-        run_your_business === 0
-          ? IndividualselectJobType
-          : CompanyselectJobType,
+      website: CompanyWebSide,
+      p_website_individual: IndividualWebSide,
+      company_latitude: Companyp_latitude,
+      company_latitude_individual: Individualp_latitude,
+      company_longitude: Companyp_longitude,
+      company_longitude_individual: Individualp_longitude,
+      company_address: company_address,
+      company_address_individual: individualAddress,
+      category_service_perform: CompanyservicesValue,
+      category_service_perform_individual: IndividualservicesValue,
+      category_service_offer: CompanyselectJobType,
+      category_service_offer_individual: IndividualselectJobType,
       austrilian_busi_no: BusinessNumber,
       country_code: country_code,
     };
@@ -470,10 +471,11 @@ export default FirstProperty = props => {
     }
     const formData = new FormData();
     formData.append('user', newData?.user_key);
+    formData.append('email', newData?.email);
     formData.append('first_name', newData?.firstName);
     formData.append('last_name', newData?.lastName);
+    formData.append('country_code', newData?.country_code);
     formData.append('phone_number', newData?.mobileNumber);
-    formData.append('email', newData?.email);
     formData.append('physical_address', newData?.physicalAddress);
     formData.append('p_longitude', newData?.p_longitude);
     formData.append('p_latitude', newData?.p_latitude);
@@ -488,38 +490,46 @@ export default FirstProperty = props => {
     formData.append('location', newData?.location);
     formData.append('location_longitude', newData?.longitude);
     formData.append('location_latitude', newData?.latitude);
-    formData.append('p_state', newData?.P_state);
-    formData.append('p_country', newData?.p_country);
-    formData.append('p_city', newData?.p_city);
     formData.append('islocation', newData?.islocation);
     formData.append('property_description', newData?.propertyDesc);
     formData.append('property_type', newData?.property_value);
     formData.append('key_features', newData?.key_features);
-    formData.append('land_area', newData?.landArea);
-    formData.append('floor_size', newData?.buildingFlorSize);
-    formData.append('device_id', newData?.deviceId);
-    formData.append('device_type', newData?.deviceType);
     formData.append('additional_features', newData?.additional_features);
-    formData.append('auto_list', newData?.auto_list);
-    formData.append('profile_photo', newData?.image);
-    formData.append('fcm_token', newData?.fcm_token);
-    formData.append('run_your_business', newData?.run_your_business);
-    formData.append('bio', newData?.bio);
-    formData.append('website', newData?.website);
-    formData.append('company_latitude', newData?.company_latitude);
-    formData.append('company_longitude', newData?.company_longitude);
-    formData.append('company_address', newData?.company_address);
-    formData.append(
-      'category_service_perform',
-      newData?.category_service_perform,
-    );
-    formData.append('category_service_offer', newData?.category_service_offer);
-    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
     formData.append(
       'key_additional_features',
       newData?.key_additional_features,
     );
-    formData.append('country_code', newData?.country_code);
+    formData.append('auto_list', newData?.auto_list);
+    formData.append('land_area', newData?.landArea);
+    formData.append('floor_size', newData?.buildingFlorSize);
+    formData.append('p_state', newData?.P_state);
+    formData.append('p_country', newData?.p_country);
+    formData.append('p_city', newData?.p_city);
+    formData.append('device_id', newData?.deviceId);
+    formData.append('device_type', newData?.deviceType);
+    formData.append('fcm_token', newData?.fcm_token);
+    formData.append('run_your_business', newData?.run_your_business);
+    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
+    formData.append('category_service_offer', newData?.category_service_offer);
+    formData.append('category_service_offer_individual', newData?.category_service_offer_individual);
+    formData.append(
+      'category_service_perform',
+      newData?.category_service_perform,
+    );
+    formData.append(
+      'category_service_perform_individual',
+      newData?.category_service_perform_individual,
+    );
+    formData.append('company_address', newData?.company_address);
+    formData.append('company_address_individual', newData?.company_address_individual);
+    formData.append('company_longitude', newData?.company_longitude);
+    formData.append('company_longitude_individual', newData?.company_longitude_individual);
+    formData.append('company_latitude', newData?.company_latitude);
+    formData.append('company_latitude_individual', newData?.company_latitude_individual);
+    formData.append('website', newData?.website);
+    formData.append('p_website_individual', newData?.p_website_individual);
+    formData.append('bio', newData?.bio);
+    formData.append('profile_photo', newData?.image);
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -618,25 +628,22 @@ export default FirstProperty = props => {
       deviceType: deviceType,
       additional_features: '[]',
       key_additional_features: '[]',
-      auto_list: selectedButtonId,
+      auto_list: 0,
       fcm_token: Fcm_token,
       run_your_business: run_your_business,
       bio: Bio,
-      website: run_your_business === 0 ? IndividualWebSide : CompanyWebSide,
-      company_latitude:
-        run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
-      company_longitude:
-        run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address:
-        run_your_business === 0 ? individualAddress : company_address,
-      category_service_perform:
-        run_your_business === 0
-          ? IndividualservicesValue
-          : CompanyservicesValue,
-      category_service_offer:
-        run_your_business === 0
-          ? IndividualselectJobType
-          : CompanyselectJobType,
+      website: CompanyWebSide,
+      p_website_individual: IndividualWebSide,
+      company_latitude: Companyp_latitude,
+      company_latitude_individual: Individualp_latitude,
+      company_longitude: Companyp_longitude,
+      company_longitude_individual: Individualp_longitude,
+      company_address: company_address,
+      company_address_individual: individualAddress,
+      category_service_perform: CompanyservicesValue,
+      category_service_perform_individual: IndividualservicesValue,
+      category_service_offer: CompanyselectJobType,
+      category_service_offer_individual: IndividualselectJobType,
       austrilian_busi_no: BusinessNumber,
       country_code: country_code,
     };
@@ -652,10 +659,11 @@ export default FirstProperty = props => {
     }
     const formData = new FormData();
     formData.append('user', newData?.user_key);
+    formData.append('email', newData?.email);
     formData.append('first_name', newData?.firstName);
     formData.append('last_name', newData?.lastName);
+    formData.append('country_code', newData?.country_code);
     formData.append('phone_number', newData?.mobileNumber);
-    formData.append('email', newData?.email);
     formData.append('physical_address', newData?.physicalAddress);
     formData.append('p_longitude', newData?.p_longitude);
     formData.append('p_latitude', newData?.p_latitude);
@@ -670,39 +678,46 @@ export default FirstProperty = props => {
     formData.append('location', newData?.location);
     formData.append('location_longitude', newData?.longitude);
     formData.append('location_latitude', newData?.latitude);
-    formData.append('p_state', newData?.P_state);
-    formData.append('p_country', newData?.p_country);
-    formData.append('p_city', newData?.p_city);
     formData.append('islocation', newData?.islocation);
     formData.append('property_description', newData?.propertyDesc);
     formData.append('property_type', newData?.property_value);
     formData.append('key_features', newData?.key_features);
-    formData.append('land_area', newData?.landArea);
-    formData.append('floor_size', newData?.buildingFlorSize);
-    formData.append('device_id', newData?.deviceId);
-    formData.append('device_type', newData?.deviceType);
     formData.append('additional_features', newData?.additional_features);
-    formData.append('auto_list', newData?.auto_list);
-    formData.append('profile_photo', newData?.image);
-    formData.append('fcm_token', newData?.fcm_token);
-    formData.append('run_your_business', newData?.run_your_business);
-    formData.append('bio', newData?.bio);
-    formData.append('website', newData?.website);
-    formData.append('company_latitude', newData?.company_latitude);
-    formData.append('company_longitude', newData?.company_longitude);
-    formData.append('company_address', newData?.company_address);
-    formData.append(
-      'category_service_perform',
-      newData?.category_service_perform,
-    );
-    formData.append('category_service_offer', newData?.category_service_offer);
-    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
     formData.append(
       'key_additional_features',
       newData?.key_additional_features,
     );
-    formData.append('country_code', newData?.country_code);
-
+    formData.append('auto_list', newData?.auto_list);
+    formData.append('land_area', newData?.landArea);
+    formData.append('floor_size', newData?.buildingFlorSize);
+    formData.append('p_state', newData?.P_state);
+    formData.append('p_country', newData?.p_country);
+    formData.append('p_city', newData?.p_city);
+    formData.append('device_id', newData?.deviceId);
+    formData.append('device_type', newData?.deviceType);
+    formData.append('fcm_token', newData?.fcm_token);
+    formData.append('run_your_business', newData?.run_your_business);
+    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
+    formData.append('category_service_offer', newData?.category_service_offer);
+    formData.append('category_service_offer_individual', newData?.category_service_offer_individual);
+    formData.append(
+      'category_service_perform',
+      newData?.category_service_perform,
+    );
+    formData.append(
+      'category_service_perform_individual',
+      newData?.category_service_perform_individual,
+    );
+    formData.append('company_address', newData?.company_address);
+    formData.append('company_address_individual', newData?.company_address_individual);
+    formData.append('company_longitude', newData?.company_longitude);
+    formData.append('company_longitude_individual', newData?.company_longitude_individual);
+    formData.append('company_latitude', newData?.company_latitude);
+    formData.append('company_latitude_individual', newData?.company_latitude_individual);
+    formData.append('website', newData?.website);
+    formData.append('p_website_individual', newData?.p_website_individual);
+    formData.append('bio', newData?.bio);
+    formData.append('profile_photo', newData?.image);
     console.log('formData.....', JSON.stringify(formData));
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
@@ -819,9 +834,9 @@ export default FirstProperty = props => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
         <TopHeader
@@ -877,7 +892,7 @@ export default FirstProperty = props => {
               <TouchableOpacity
                 style={FirstPropertyStyle.BtnContainer}
                 onPress={ConfirmAddress}>
-                <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+                <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
               </TouchableOpacity>
             </View>
           ) : IsSearch ? (
@@ -963,7 +978,7 @@ export default FirstProperty = props => {
                       style={FirstPropertyStyle.dropdown}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
-                        {color: _COLORS.Kodie_LightGrayColor},
+                        { color: _COLORS.Kodie_LightGrayColor },
                       ]}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
@@ -1074,7 +1089,7 @@ export default FirstProperty = props => {
                         {'Additional features'}
                       </Text>
                       <View style={[FirstPropertyStyle.addition_featureView]}>
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Furnished?'}
                           </Text>
@@ -1089,8 +1104,8 @@ export default FirstProperty = props => {
                             secondTabLabel="No"
                           />
                         </View>
-                        <View style={{margin: 11}} />
-                        <View style={{flex: 1}}>
+                        <View style={{ margin: 11 }} />
+                        <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'External storage?'}
                           </Text>
@@ -1107,7 +1122,7 @@ export default FirstProperty = props => {
                         </View>
                       </View>
                       <View style={FirstPropertyStyle.addition_featureView}>
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Garden?'}
                           </Text>
@@ -1122,8 +1137,8 @@ export default FirstProperty = props => {
                             secondTabLabel="No"
                           />
                         </View>
-                        <View style={{margin: 11}} />
-                        <View style={{flex: 1}}>
+                        <View style={{ margin: 11 }} />
+                        <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Pets allowed?'}
                           </Text>
@@ -1181,7 +1196,7 @@ export default FirstProperty = props => {
                         }}
                         tagContainerStyle={{
                           borderWidth: 1,
-                          height: 40,
+                          height: 32,
                           backgroundColor: _COLORS.Kodie_BlackColor,
                         }}
                         tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
@@ -1189,9 +1204,12 @@ export default FirstProperty = props => {
                           fontSize: 14,
                           color: _COLORS.Kodie_WhiteColor,
                           fontFamily: FONTFAMILY.K_Medium,
+                         
                         }}
-                        styleTextDropdown={{marginLeft: 20}}
-                        styleDropdownMenu={FirstPropertyStyle.dropdown}
+                        styleTextDropdown={{ marginLeft: 20 , paddingHorizontal:
+                          additionalfeatureskeyvalue.length > 0 ? 10 : 5,}}
+                        styleDropdownMenu={[FirstPropertyStyle.dropdown,{ paddingHorizontal:
+                          additionalfeatureskeyvalue.length > 0 ? 10 : 5,}]}
                         submitButtonColor={_COLORS.Kodie_GreenColor}
                         submitButtonText={
                           additionalfeatureskeyvalue.length > 0
@@ -1202,7 +1220,7 @@ export default FirstProperty = props => {
                     </View>
                   </View>
                 </View>
-                <View style={{marginHorizontal: 16}}>
+                <View style={{ marginHorizontal: 16 }}>
                   <CustomSingleButton
                     disabled={isLoading ? true : false}
                     _ButtonText={'Save'}
@@ -1212,7 +1230,7 @@ export default FirstProperty = props => {
                     }}
                   />
                 </View>
-                <View style={{marginHorizontal: 16}}>
+                <View style={{ marginHorizontal: 16 }}>
                   <CustomSingleButton
                     disabled={isLoading ? true : false}
                     _ButtonText={'Fill these details out later'}

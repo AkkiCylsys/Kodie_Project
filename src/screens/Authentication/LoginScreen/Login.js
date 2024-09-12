@@ -321,6 +321,7 @@ export default Login = props => {
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
+    const encryptedPassword = await encryptPassword(newpassword, secretKey);
     if (email.trim() === '') {
       setEmailError('Email is required!');
     } else if (!validateEmail(email)) {
@@ -351,6 +352,7 @@ export default Login = props => {
         props.navigation.navigate('SignUpSteps', {
           email: email,
           user_key: res?.User_key,
+          password: encryptedPassword,
         });
       } else if (res?.data?.code === 2) {
         Alert.alert('Account suspension', res?.data?.message, [
@@ -375,6 +377,7 @@ export default Login = props => {
           props.navigation.navigate('SignUpSteps', {
             email: email,
             user_key: res?.User_key,
+            password: encryptedPassword,
           });
         } else if (res.data.code == 9) {
           alert(res.data.message);

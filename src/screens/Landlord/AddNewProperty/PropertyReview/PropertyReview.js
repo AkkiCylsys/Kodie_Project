@@ -39,6 +39,7 @@ import {
 import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import { useDispatch, useSelector } from 'react-redux';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import Geolocation from '@react-native-community/geolocation';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
   const addPropertySecondStepData = useSelector(
@@ -51,6 +52,7 @@ export default PropertyReview = props => {
   const propertyListing = props?.route?.params?.propertyListing;
   console.log('propertyListing..', propertyListing);
   const propertyid = props?.route?.params?.propertyid;
+  const [data, setData] = useState([]);
   const propertyView = props?.route?.params?.propertyView;
   const editMode = props?.route?.params?.editMode;
   const DocTab = props?.route?.params?.DocTab;
@@ -70,6 +72,91 @@ export default PropertyReview = props => {
   const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
   const [pointOfInterest, setPointOfInterest] = useState(false);
   const [GenerateLink, setGenerateLink] = useState("");
+  const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        console.log(latitude,longitude);
+        // fetchPointsOfInterest(latitude,longitude);
+        fetchPointsOfInterest("27.149994", "79.499901");
+
+      },
+      error => console.error(error),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }, []);
+
+  const fetchPointsOfInterest = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+      );
+
+      const poiData = categorizeData(response.data.results);
+      console.log(JSON.stringify(poiData))
+      setData(poiData);
+    } catch (error) {
+      console.error('Error fetching POIs:', error);
+    }
+  };
+
+  const categorizeData = (places) => {
+    const categories = {
+      'Schools & Education': [],
+      'Food & Entertainment': [],
+      'Health': [],
+      'Transport': []
+    };
+
+    places.forEach(place => {
+      const { name, vicinity } = place;
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
+      if (place.types.includes('school') || place.types.includes('university')) {
+        categories['Schools & Education'].push({ name, distance });
+      } else if (place.types.includes('restaurant') || place.types.includes('food')) {
+        categories['Food & Entertainment'].push({ name, distance });
+      } else if (place.types.includes('hospital') || place.types.includes('health')) {
+        categories['Health'].push({ name, distance });
+      } else if (place.types.includes('bus_station') || place.types.includes('train_station')) {
+        categories['Transport'].push({ name, distance });
+      }
+    });
+
+    return Object.entries(categories).map(([category, items]) => ({ category, items }));
+  };
+
+  const renderpointItem = ({ item }) => (
+    <>
+    <View style={DetailsStyle.itemContainer}>
+      <Text style={DetailsStyle.itemName}>{item.name}</Text>
+      <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
+      
+    <DividerIcon marginTop={5}/>
+    </View>
+    </>
+  );
+
+  const renderCategory = ({ item }) => (
+    <View style={DetailsStyle.categoryContainer}>
+      <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
+      <DividerIcon marginTop={5}/>
+      <FlatList
+        data={item.items}
+        renderItem={renderpointItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={<TouchableOpacity onPress={()=>{
+          alert(JSON.stringify(item.items.length))
+          if(item.items.length >2){
+
+          }else{
+            alert(JSON.stringify("No more data found!"))
+          }
+        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
+      />
+     
+    </View>
+  );
   const buildLink = async (id) => {
     try {
       const link = await dynamicLinks().buildLink({
@@ -388,7 +475,7 @@ export default PropertyReview = props => {
             <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {'Key features'}
             </Text>
-            <View style={{marginHorizontal:'12%'}}>
+            <View style={{marginHorizontal:'10%'}}>
               <FlatList
                 data={Detail}
                 scrollEnabled
@@ -406,7 +493,7 @@ export default PropertyReview = props => {
                 {'Additional key features'}
               </Text>
             {/* // )} */}
-            <View style={{marginHorizontal:'12%'}}>
+            <View style={{marginHorizontal:'10%'}}>
               <FlatList
                 data={additionalKeyFeatures}
                 numColumns={numColumns}
@@ -416,6 +503,7 @@ export default PropertyReview = props => {
 
               />
             </View>
+            
             {/* {property_Detail?.additional_key_features_id === '[]' ? null : ( */}
               <DividerIcon
                 borderBottomWidth={1}
@@ -423,7 +511,8 @@ export default PropertyReview = props => {
               />
             </>
             )}
-            <View >
+            {property_Detail?.auto_list == 0 ? null : (<>
+              <View >
               <TouchableOpacity
                 style={DetailsStyle.propety_details_view}
                 onPress={() => {
@@ -776,8 +865,21 @@ export default PropertyReview = props => {
                 </TouchableOpacity>
               </TouchableOpacity>
               <DividerIcon marginTop={8} />
-
-              <View style={PropertyReviewStyle.btnView}>
+              {
+                  pointOfInterest?
+                  
+                  <View style={DetailsStyle.container}>
+                    <FlatList
+        data={data}
+        renderItem={renderCategory}
+        keyExtractor={(item, index) => index.toString()}
+      /></View>
+                :null
+                }
+         
+            </View>
+            </>)}
+            <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
                   height={50}
@@ -835,7 +937,6 @@ export default PropertyReview = props => {
                   </TouchableOpacity>
                 </>
               )}
-            </View>
           </>
         );
       case 'Tab2':

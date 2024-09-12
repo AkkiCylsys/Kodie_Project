@@ -1,60 +1,36 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-  Permission,
-  KeyboardAvoidingView,
-  Keyboard,
-  Platform,
-  Alert,
-  PermissionsAndroid,
-  SafeAreaView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View,Text,TouchableOpacity,TextInput,ScrollView,Image,KeyboardAvoidingView,Platform,SafeAreaView,BackHandler} from 'react-native';
 import {PropertyDetailsStyle} from './PropertyDetailsStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {Dropdown} from 'react-native-element-dropdown';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {IMAGES, LABEL_STYLES} from '../../../../Themes';
-import {_COLORS, FONTFAMILY} from '../../../../Themes';
-import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import {_COLORS} from '../../../../Themes';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import CustomDropdown from '../../../../components/Molecules/CustomDropdown/CustomDropdown';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import CustomSingleDropdown from '../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Entypo from 'react-native-vector-icons/Entypo';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {BackHandler} from 'react-native';
-//import Geolocation from '@react-native-community/geolocation';
-import Geolocation from 'react-native-geolocation-service';
 import {useSelector} from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const addPropertySecondStepData = useSelector(
     state => state.AddPropertyStepsReducer.data,
   );
-  console.log('addPropertySecondStepData...', addPropertySecondStepData);
-  const isFocus = useIsFocused();
   const propertyid = props?.route?.params?.propertyid;
   const editMode = props?.route?.params?.editMode;
-  console.log('propertyid....', propertyid);
-  console.log('EditProperty....', editMode);
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState('');
   const [propertyDesc, setPropertyDesc] = useState('');
@@ -93,23 +69,11 @@ export default PropertyDetails = props => {
     addressComponents,
     'country',
   )?.long_name;
-
-  console.log(`selected_city: ${selected_city}`); 
-  console.log(`Selected_State: ${Selected_State}`); 
-  console.log(`selected_Country: ${selected_Country}`);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
       setPropertyError('');
       setNotesError('');
-    }
-  };
-
-  const handleLocationSearch = () => {
-    if (!location) {
-      setError('Please enter a location.');
-    } else {
-      setError('');
     }
   };
   useFocusEffect(
@@ -132,7 +96,6 @@ export default PropertyDetails = props => {
   );
   useEffect(() => {
     handleProperty_Type();
-    // propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
     propertyid > 0 ||
     (Array.isArray(addPropertySecondStepData) &&
       addPropertySecondStepData.length > 0) ||
@@ -182,7 +145,6 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        // Alert.alert('Warning', error?.response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
@@ -190,7 +152,6 @@ export default PropertyDetails = props => {
         'property_type error in get data:',
         error?.response?.data?.message,
       );
-      // Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
@@ -211,11 +172,7 @@ export default PropertyDetails = props => {
       UPD_LAND_AREA: property_Detail?.land_area,
       additional_key_features: property_Detail?.additional_key_features_id,
       autolist: 0,
-      property_id:
-        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-        //   ? addPropertySecondStepData
-        //   :
-        propertyid,
+      property_id:propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -255,7 +212,40 @@ export default PropertyDetails = props => {
         setIsLoading(false);
       });
   };
-
+  const getLocation = () => {
+    // Geolocation.getCurrentPosition(position => {
+    //   console.log('you are here.');
+    //   const {latitude, longitude} = position.coords;
+    //   console.log('position.coords in map components....', position.coords);
+    //   // setlatitude(latitude);
+    //   setLat(latitude);
+    //   setLong(longitude);
+    //   setIsLoading(false);
+    //   // setlongitude(longitude);
+    //   // animateToCoordinate(latitude, longitude)
+    // });
+    Geolocation.getCurrentPosition(
+      (position) => {
+        console.log('you are here.',position);
+        // alert(JSON.stringify(position))
+        const { latitude, longitude } = position.coords;
+        console.log('position.coords in map components....', position.coords);
+        // alert(position.coords.latitude)
+        // alert(position.coords.longitude)
+        setlatitude(position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+      }
+    );
+  };
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
@@ -434,7 +424,6 @@ export default PropertyDetails = props => {
       setNotesError('');
     }
   };
-  //dropDown render Item....
   const propertyType_render = item => {
     return (
       <View
@@ -474,25 +463,6 @@ export default PropertyDetails = props => {
     const additionalApi = url + 'add_property_details';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
-    // let data = {
-    //   user: loginData?.Login_details?.user_id,
-    //   user_account_details_id: loginData?.Login_details?.user_account_id,
-    //   location: location,
-    //   location_longitude: longitude,
-    //   location_latitude: latitude,
-    //   islocation: 1,
-    //   property_description: propertyDesc,
-    //   property_type: property_value > 0 ? property_value : 0,
-    //   key_features: 0,
-    //   additional_features: 0,
-    //   additional_key_features: 0,
-    //   autolist: 0,
-    //   UPD_FLOOR_SIZE: 0,
-    //   UPD_LAND_AREA: 0,
-    //   p_city: selected_city,
-    //   p_state: Selected_State,
-    //   p_country: selected_Country,
-    // };
     const addPropertyPayload = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -588,7 +558,6 @@ export default PropertyDetails = props => {
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
               currentPosition={0}
-              // onPress={onStepPress}
               renderStepIndicator={renderStepIndicator}
               labels={stepLabels}
               stepCount={4}
@@ -640,11 +609,36 @@ export default PropertyDetails = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-
+<TouchableOpacity
+              style={{
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 3,
+                borderRadius: 10,
+                width: '24%',
+                height: 60,
+                bottom: -15,
+                left: 20,
+                marginBottom: 30,
+                position: 'absolute',
+              }}
+              onPress={() => {
+                getLocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
-              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+              
             </TouchableOpacity>
           </View>
         ) : IsSearch ? (
@@ -657,11 +651,7 @@ export default PropertyDetails = props => {
               const city = details.address_components[0].long_name;
               const state = details.address_components[3].long_name;
               const country = details.address_components[4].long_name;
-              // setLocation(details.formatted_address);
               setCurrentLocation(details.formatted_address);
-              // setCity(city);
-              // setState(state);
-              // setCountry(country);
               console.log('locationSearch....', location);
               console.log('details.......', details);
               console.log(city, state, country, 'location rahul..........');
@@ -779,61 +769,6 @@ export default PropertyDetails = props => {
                   </Text>
                 ) : null}
               </View>
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={PropertyDetailsStyle.AutoList_text}>
-                  {'Auto-list property on Kodie property marketplace '}
-                </Text>
-                <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
-                  <AntDesign name="question" size={20} color="#8AFBA5" />
-                </TouchableOpacity>
-              </View>
-              <RowButtons
-                LeftButtonText={'Yes'}
-                leftButtonbackgroundColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedButton(false);
-                  setSelectedButtonId(1);
-                }}
-                RightButtonText={'No'}
-                RightButtonbackgroundColor={
-                  selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedButton(true);
-                  setSelectedButtonId(0);
-                }}
-              /> */}
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
                   _ButtonText={'Next'}

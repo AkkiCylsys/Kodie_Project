@@ -34,7 +34,7 @@ const Chats = (props) => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const bottomSheetRef = useRef(null);
-const property= props.route.params.property
+const property= props?.route?.params?.property
 console.log(property,'property');
   const isFocus = useIsFocused();
   useEffect(() => {

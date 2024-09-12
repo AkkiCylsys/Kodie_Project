@@ -339,7 +339,7 @@ export const CompanyDetailsStyle = StyleSheet.create({
   },
   tagContainer: {
     borderWidth: 1,
-    height: 40,
+    height: 32,
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
   textTag: {

@@ -73,10 +73,8 @@ const EditProfile = props => {
   console.log('profileDoc....', profileDoc);
   const [about, setAbout] = useState('');
   const [activeTab, setActiveTab] = useState('Tab1');
-  const [value, setValue] = useState(null);
   const refRBSheet = useRef();
   const [visible, setVisible] = useState(false);
-  const [photoid, setPhotoId] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
@@ -98,10 +96,13 @@ const EditProfile = props => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [currentLocation, setCurrentLocation] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
-
-  const [Individuallatitude, setIndividuallatitude] = useState('');
-  const [Individuallongitude, setIndividuallongitude] = useState('');
   const [country_Code_Get, setCountry_Code_Get] = useState('');
+console.log(selectedServices,'selectedServices');
+const hasTenantRole = selectedServices.includes(2);
+  const hasLandlordRole = selectedServices.includes(3) 
+  const hasPropertyRole = selectedServices.includes(10);
+  const hanContractorRole = selectedServices.includes(4);
+  const shouldShowCompanyDetailsTab = hanContractorRole;
 
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
@@ -270,7 +271,7 @@ const EditProfile = props => {
       textColor={[EditProfileStyle.box_Text_Style]}
       onPress={() => {
         toggleSelection(item.lookup_key);
-        setKodieDescribeYourselfDataId(item.lookup_key);
+        // setKodieDescribeYourselfDataId(item.lookup_key);
         // alert(item.lookup_key);
       }}
     />
@@ -712,12 +713,12 @@ const EditProfile = props => {
             <CustomTabNavigator
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              TAB3
+              TAB3={shouldShowCompanyDetailsTab ? "TAB3" : null}
               Tab1={'Personal Details'}
-              Tab2={'Company Details'}
+              Tab2={shouldShowCompanyDetailsTab ? "Company Details" : 'Documents'}
               Tab3={'Documents'}
               onPressTab1={() => setActiveTab('Tab1')}
-              onPressTab2={() => setActiveTab('Tab2')}
+              onPressTab2={ () => setActiveTab('Tab2') }
               onPressTab3={() => setActiveTab('Tab3')}
               colorTab1={
                 activeTab === 'Tab1'
@@ -725,7 +726,7 @@ const EditProfile = props => {
                   : _COLORS.Kodie_MediumGrayColor
               }
               colorTab2={
-                activeTab === 'Tab2'
+                activeTab === 'Tab2' && shouldShowCompanyDetailsTab
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor
               }
@@ -738,14 +739,14 @@ const EditProfile = props => {
                 activeTab === 'Tab1' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               FONTFAMILY2={
-                activeTab === 'Tab2' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+                activeTab === 'Tab2'  ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               FONTFAMILY3={
                 activeTab === 'Tab3' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               styleTab1={activeTab === 'Tab1' && EditProfileStyle.activeTab}
-              styleTab2={activeTab === 'Tab2' && EditProfileStyle.activeTab}
-              styleTab3={activeTab === 'Tab3' && EditProfileStyle.activeTab}
+              styleTab2={activeTab === 'Tab2'  ? EditProfileStyle.activeTab : {}}
+  styleTab3={activeTab === 'Tab3' && EditProfileStyle.activeTab}
             />
           </View>
           <ScrollView>{checkTabs()}</ScrollView>

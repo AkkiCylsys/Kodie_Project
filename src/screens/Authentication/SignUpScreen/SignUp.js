@@ -213,7 +213,7 @@ const SignUp = (props) => {
         is_privacy_policy: privacy,
         fcm_token: Fcm_token,
       };
-
+console.log(SignUpData);
       const response = await signup(SignUpData);
       if (response?.code === 3) {
         Alert.alert('Success', response?.message);
