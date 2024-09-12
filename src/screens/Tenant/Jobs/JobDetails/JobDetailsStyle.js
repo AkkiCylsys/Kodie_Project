@@ -60,7 +60,8 @@ export const JobDetailsStyle = StyleSheet.create({
   },
   activeTab: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2.5,
+    marginHorizontal:10,
   },
   uploadtext: {
     fontSize: 14,

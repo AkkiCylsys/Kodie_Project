@@ -53,6 +53,7 @@ export const PropertyListCSS = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
+    marginVertical: 15,
   },
   flexContainer: {flex: 1},
   apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
@@ -102,7 +103,7 @@ export const PropertyListCSS = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
-    marginBottom:5
+    marginBottom: 5,
   },
   flatListContainer: {marginHorizontal: 30},
   expandedContent: {
@@ -184,9 +185,9 @@ export const PropertyListCSS = StyleSheet.create({
     // padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    width: "29%",
+    width: '29%',
     height: '100%',
-    marginBottom:10
+    marginBottom: 10,
   },
   archiveButton: {
     backgroundColor: _COLORS.Kodie_GreenColor,

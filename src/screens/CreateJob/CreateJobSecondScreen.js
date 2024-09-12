@@ -333,7 +333,7 @@ const CreateJobSecondScreen = props => {
       console.log('uploadJobFilesData', response?.data);
       if (response?.data && response?.data?.success === true) {
         setIsLoading(false);
-        Alert.alert('Success!', response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         // props.navigation.navigate('JobDetails', {job_id: job_id});
         props.navigation.navigate('JobDetails', {
           job_id: JobId > 0 ? JobId : job_id,

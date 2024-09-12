@@ -19,12 +19,9 @@ import ViewRentalDetails from './SearchForRentals/ViewRentalDetails';
 import PropertyRentalOffer from './PropertyRentalOffer/PropertyRentalOffer';
 
 const Properties = props => {
-  const tab3 = props?.route?.params?.tab3
-  console.log("tab3 in p...",tab3)
+  const tab3 = props?.route?.params?.tab3;
   const routesLength = useNavigationState(state => state.routes.length);
-
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData?.Login_details?.user_id);
   const [activeTab, setActiveTab] = useState('Tab1');
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +29,6 @@ const Properties = props => {
   const navigation = useNavigation();
   useEffect(() => {
     setActiveTab(tab3 == 'tab3' ? 'Tab3' : 'Tab1');
-    <PropertyList />;
   }, []);
   useFocusEffect(
     React.useCallback(() => {
@@ -92,9 +88,7 @@ const Properties = props => {
           </>
         );
       case 'Tab3':
-        return (
-          <PropertyRentalOffer />
-        );
+        return <PropertyRentalOffer />;
 
       default:
         return <PropertyList />;

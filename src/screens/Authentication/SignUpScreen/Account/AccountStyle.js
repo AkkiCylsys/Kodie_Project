@@ -237,6 +237,7 @@ export const AccountStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   errorText: {color: 'red', marginLeft: 10,marginTop:5},
+  errorText1: {color: 'red', marginLeft: 10,},
   BtnContainer: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     flexDirection: 'row',

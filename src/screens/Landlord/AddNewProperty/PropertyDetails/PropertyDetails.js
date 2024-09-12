@@ -69,6 +69,10 @@ export default PropertyDetails = props => {
     addressComponents,
     'country',
   )?.long_name;
+
+  console.log(`selected_city: ${selected_city}`);
+  console.log(`Selected_State: ${Selected_State}`);
+  console.log(`selected_Country: ${selected_Country}`);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
@@ -628,6 +632,15 @@ export default PropertyDetails = props => {
                 getLocation();
               }}
             >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={SignUpStepStyle.c_locationBtn}
+              onPress={() => {}}>
               <Entypo
                 name="location-pin"
                 size={30}

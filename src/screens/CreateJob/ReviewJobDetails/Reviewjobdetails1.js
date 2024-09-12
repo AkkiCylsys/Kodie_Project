@@ -20,6 +20,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import moment from 'moment/moment';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 const Reviewjobdetails1 = props => {
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId in reviewjobDetails.....', createJobId);
@@ -115,179 +116,189 @@ const Reviewjobdetails1 = props => {
   props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
-    <View style={{flex: 1, marginHorizontal: 16}}>
-      <View style={{marginTop: 17}}>
-        <Text style={ReviewjobdetailsStyle1.textview}>
-          {jobDetailsData.job_description}
-        </Text>
-        <Text style={ReviewjobdetailsStyle1.textview1}>
-          Job request summary
-        </Text>
-      </View>
-      <View style={{marginBottom: 50}}>
-        <RowTexts
-          leftText={'Name'}
-          rightText={`${jobDetailsData.first_name || ''} ${
-            jobDetailsData.last_name || ''
-          }`}
-        />
-        <RowTexts
-          leftText={'Location'}
-          rightText={jobDetailsData.job_location}
-        />
-        <RowTexts
-          leftText={'Property type'}
-          rightText={jobDetailsData.property_type}
-        />
-        <RowTexts
-          leftText={'Proposed date'}
-          rightText={moment(jobDetailsData.job_date || '').format(
-            'MMM DD, YYYY',
-          )}
-        />
-        <RowTexts
-          leftText={'Proposed time'}
-          rightText={
-            jobDetailsData.job_time && jobDetailsData.proposed_time
-              ? `${moment(jobDetailsData.job_time, 'h:mm a').format(
-                  'h:mm A',
-                )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
-                  'h:mm A',
-                )}`
-              : '' // Or use a placeholder like 'N/A'
-          }
-        />
-        <RowTexts
-          leftText={'Number of hours'}
-          rightText={jobDetailsData.number_of_hours || ''}
-        />
-        <RowTexts
-          leftText={'How often'}
-          rightText={jobDetailsData.how_often || ' '}
-        />
-        <RowTexts
-          leftText={'Budget range'}
-          rightText={`${jobDetailsData.job_min_budget} - ${
-            jobDetailsData.job_max_budget || ''
-          }`}
-        />
-        <RowTexts leftText={'Payment'} rightText={jobDetailsData.payment_by} />
-        {/* This is hide for now client requirement. */}
-        {/* <RowTexts
+    <View>
+      <View style={{flex: 1, marginHorizontal: 16}}>
+        <View style={{marginTop: 17}}>
+          <Text style={ReviewjobdetailsStyle1.textview}>
+            {jobDetailsData.job_description}
+          </Text>
+          <Text style={ReviewjobdetailsStyle1.textview1}>
+            Job request summary
+          </Text>
+        </View>
+        <View style={{marginBottom: 16}}>
+          <RowTexts
+            leftText={'Name'}
+            rightText={`${jobDetailsData.first_name || ''} ${
+              jobDetailsData.last_name || ''
+            }`}
+          />
+          <RowTexts
+            leftText={'Location'}
+            rightText={jobDetailsData.job_location}
+          />
+          <RowTexts
+            leftText={'Property type'}
+            rightText={jobDetailsData.property_type}
+          />
+          <RowTexts
+            leftText={'Proposed date'}
+            rightText={moment(jobDetailsData.job_date || '').format(
+              'MMM DD, YYYY',
+            )}
+          />
+          <RowTexts
+            leftText={'Proposed time'}
+            rightText={
+              jobDetailsData.job_time && jobDetailsData.proposed_time
+                ? `${moment(jobDetailsData.job_time, 'h:mm a').format(
+                    'h:mm A',
+                  )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
+                    'h:mm A',
+                  )}`
+                : '' // Or use a placeholder like 'N/A'
+            }
+          />
+          <RowTexts
+            leftText={'Number of hours'}
+            rightText={jobDetailsData.number_of_hours || ''}
+          />
+          <RowTexts
+            leftText={'How often'}
+            rightText={jobDetailsData.how_often || ' '}
+          />
+          <RowTexts
+            leftText={'Budget range'}
+            rightText={`${jobDetailsData.job_min_budget} - ${
+              jobDetailsData.job_max_budget || ''
+            }`}
+          />
+          <RowTexts
+            leftText={'Payment'}
+            rightText={jobDetailsData.payment_by}
+          />
+          {/* This is hide for now client requirement. */}
+          {/* <RowTexts
           leftText={"Booking insurance"}
           rightText={jobDetailsData.insurance}
         /> */}
-      </View>
-      {props.View_Job_Details || searchView ? null : (
-        <>
-          <View style={ReviewjobdetailsStyle1.nextBtn_view}>
-            <CustomSingleButton
-              _ButtonText={'Next'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
-              onPress={props.onPress}
-            />
-          </View>
-          <TouchableOpacity
-            style={ReviewjobdetailsStyle1.goBack_View}
-            onPress={() => {
-              navigation.pop();
-            }}>
-            <View style={ReviewjobdetailsStyle1.backIcon}>
-              <Ionicons
-                name="chevron-back"
-                size={22}
-                color={_COLORS.Kodie_MediumGrayColor}
-              />
-            </View>
-            <Text style={ReviewjobdetailsStyle1.goBack_Text}>{'Go back'}</Text>
-          </TouchableOpacity>
-        </>
-      )}
-      {searchView ? (
-        <View style={{borderWidth: 0.3, borderRadius: 15}}>
-          <View style={{marginHorizontal: 20, marginVertical: 25}}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-              }}>
-              <Text style={{fontSize: 12}}>Bidding ends in</Text>
-              <Text style={{fontSize: 12}}>Budget:</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 5,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                }}>
-                <View
-                  style={{
-                    borderWidth: 0.4,
-                    borderRadius: 8,
-                    paddingHorizontal: 5,
-                    paddingVertical: 8,
-                    color: _COLORS.Kodie_GrayColor,
-                  }}>
-                  <Text style={{fontSize: 9}}>22 hrs</Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 0.4,
-                    marginHorizontal: 5,
-                    fontSize: 9,
-                    borderRadius: 5,
-                    paddingHorizontal: 5,
-                    paddingVertical: 8,
-                  }}>
-                  <Text style={{fontSize: 9}}>33 mins</Text>
-                </View>
-                <View
-                  style={{
-                    borderWidth: 0.4,
-                    fontSize: 9,
-                    borderRadius: 8,
-                    paddingHorizontal: 5,
-                    paddingVertical: 8,
-                    color: _COLORS.Kodie_GrayColor,
-                  }}>
-                  <Text style={{fontSize: 9}}>10 secs</Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  borderWidth: 0.4,
-                  borderRadius: 8,
-                  paddingHorizontal: 5,
-                  paddingVertical: 8,
-                  color: _COLORS.Kodie_GrayColor,
-                }}>
-                <Text style={{fontSize: 9}}>$100 per hour</Text>
-              </View>
-            </View>
-            <View style={{marginTop: 8}}>
-              <RowButtons
-                LeftButtonText={'Bid for job'}
-                leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-                RightButtonText={'Message'}
-                RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-                RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-                RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
-                onPressLeftButton={props.BidonPress}
-                onPressRightButton={props.MessageBtn}
-              />
-            </View>
-          </View>
         </View>
-      ) : null}
-      {isLoading ? <CommonLoader /> : null}
+      </View>
+      <DividerIcon />
+      <View style={{flex: 1, marginHorizontal: 16}}>
+        {props.View_Job_Details || searchView ? null : (
+          <>
+            <View style={ReviewjobdetailsStyle1.nextBtn_view}>
+              <CustomSingleButton
+                _ButtonText={'Create job'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                disabled={isLoading ? true : false}
+                onPress={props.onPress}
+              />
+            </View>
+            <TouchableOpacity
+              style={ReviewjobdetailsStyle1.goBack_View}
+              onPress={() => {
+                navigation.pop();
+              }}>
+              <View style={ReviewjobdetailsStyle1.backIcon}>
+                <Ionicons
+                  name="chevron-back"
+                  size={22}
+                  color={_COLORS.Kodie_MediumGrayColor}
+                />
+              </View>
+              <Text style={ReviewjobdetailsStyle1.goBack_Text}>
+                {'Go back'}
+              </Text>
+            </TouchableOpacity>
+          </>
+        )}
+        {searchView ? (
+          <View style={{borderWidth: 0.3, borderRadius: 15}}>
+            <View style={{marginHorizontal: 20, marginVertical: 25}}>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                }}>
+                <Text style={{fontSize: 12}}>Bidding ends in</Text>
+                <Text style={{fontSize: 12}}>Budget:</Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 5,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  <View
+                    style={{
+                      borderWidth: 0.4,
+                      borderRadius: 8,
+                      paddingHorizontal: 5,
+                      paddingVertical: 8,
+                      color: _COLORS.Kodie_GrayColor,
+                    }}>
+                    <Text style={{fontSize: 9}}>22 hrs</Text>
+                  </View>
+                  <View
+                    style={{
+                      borderWidth: 0.4,
+                      marginHorizontal: 5,
+                      fontSize: 9,
+                      borderRadius: 5,
+                      paddingHorizontal: 5,
+                      paddingVertical: 8,
+                    }}>
+                    <Text style={{fontSize: 9}}>33 mins</Text>
+                  </View>
+                  <View
+                    style={{
+                      borderWidth: 0.4,
+                      fontSize: 9,
+                      borderRadius: 8,
+                      paddingHorizontal: 5,
+                      paddingVertical: 8,
+                      color: _COLORS.Kodie_GrayColor,
+                    }}>
+                    <Text style={{fontSize: 9}}>10 secs</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 0.4,
+                    borderRadius: 8,
+                    paddingHorizontal: 5,
+                    paddingVertical: 8,
+                    color: _COLORS.Kodie_GrayColor,
+                  }}>
+                  <Text style={{fontSize: 9}}>$100 per hour</Text>
+                </View>
+              </View>
+              <View style={{marginTop: 8}}>
+                <RowButtons
+                  LeftButtonText={'Bid for job'}
+                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+                  LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+                  RightButtonText={'Message'}
+                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+                  RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                  onPressLeftButton={props.BidonPress}
+                  onPressRightButton={props.MessageBtn}
+                />
+              </View>
+            </View>
+          </View>
+        ) : null}
+        {isLoading ? <CommonLoader /> : null}
+      </View>
     </View>
   );
 };

@@ -28,10 +28,13 @@ import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 import {useSelector} from 'react-redux';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 const PropertyRentalOffer = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userRole = loginData?.Account_details[0]?.user_role_id;
+  // const userRole = '3';
   const navigation = useNavigation();
   const isFocus = useIsFocused();
-  const loginData = useSelector(state => state.authenticationReducer.data);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
@@ -69,7 +72,7 @@ const PropertyRentalOffer = props => {
       const response = await withdowBidServices(WithdrawData);
       console.log('response in withdrawBid...', response);
       if (response?.success === true) {
-        Alert.alert("Withdraw bid",response?.data);
+        Alert.alert('Withdraw bid', response?.data);
         handleGetCurrectOffer();
       }
     } catch (error) {
@@ -198,13 +201,15 @@ const PropertyRentalOffer = props => {
                 <Text style={PropertyRentalOfferStyle.apartmentText}>
                   {item?.property_type}
                 </Text>
-                <Text style={[LABEL_STYLES.commontext,{fontSize:16}]}>{item?.city}</Text>
+                <Text style={[LABEL_STYLES.commontext, {fontSize: 16}]}>
+                  {item?.city}
+                </Text>
                 <View style={PropertyRentalOfferStyle.flat_MainView}>
                   <MaterialCommunityIcons
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
-                    style={{alignSelf: 'center',marginTop:4}}
+                    style={{alignSelf: 'center', marginTop: 4}}
                   />
                   <Text
                     style={PropertyRentalOfferStyle.locationText}
@@ -405,9 +410,31 @@ const PropertyRentalOffer = props => {
       </TouchableOpacity>
     );
   };
-  return (
-    <View style={PropertyRentalOfferStyle.mainContainer}>
-      <View style={PropertyRentalOfferStyle.rowButtonView}>
+  const renderRowButtons = () => {
+    const roleArray = userRole.split(',');
+
+    const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+    const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+    const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+
+    const renderSingleButton = buttonText => (
+      <CustomSingleButton
+        _ButtonText={buttonText}
+        Text_Color={_COLORS.Kodie_BlackColor}
+        text_Size={14}
+        backgroundColor={_COLORS.Kodie_lightGreenColor}
+        height={40}
+        onPress={() => {}}
+        disabled={isLoading ? true : false}
+      />
+    );
+
+    if (!hasLandlordRole) {
+      return renderSingleButton('My rental applications');
+    }
+
+    if (hasLandlordRole) {
+      return (
         <RowButtons
           LeftButtonText={'Offers for my properties'}
           leftButtonbackgroundColor={
@@ -427,7 +454,6 @@ const PropertyRentalOffer = props => {
           }
           onPressLeftButton={() => {
             setSelectedButton(false);
-            // alert(selectedButton)
           }}
           RightButtonText={'My rental applications'}
           RightButtonbackgroundColor={
@@ -449,8 +475,19 @@ const PropertyRentalOffer = props => {
             setSelectedButton(true);
           }}
         />
+      );
+    }
+
+    return null; // If no matching roles, return null
+  };
+
+  return (
+    <View style={PropertyRentalOfferStyle.mainContainer}>
+      <View
+        style={[PropertyRentalOfferStyle.rowButtonView, {marginVertical: 15}]}>
+        {renderRowButtons()}
       </View>
-      <DividerIcon borderBottomWidth={5} />
+      <DividerIcon borderBottomWidth={5} marginTop={7} />
       <ScrollView>
         <View style={PropertyRentalOfferStyle.subContainer}>
           {!selectedButton ? null : (

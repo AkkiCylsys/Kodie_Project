@@ -34,13 +34,14 @@ export const CreateJobSecondStyle = StyleSheet.create({
   goBack_View: {
     flexDirection: 'row',
     alignSelf: 'center',
-    marginTop: 29,
+    marginVertical: 29,
+    marginBottom:5
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 5,
+    marginLeft: 10,
   },
   backIcon: {
     borderWidth: 1,
@@ -72,8 +73,8 @@ export const CreateJobSecondStyle = StyleSheet.create({
   error_text: {
     color: 'red',
     // alignSelf: 'center',
-    marginTop: 10,
-
+    marginTop: 5,
+    marginLeft:10
     // borderWidth: 1,
   },
 });

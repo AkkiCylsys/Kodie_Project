@@ -20,6 +20,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {DrawerActions} from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 const CustomSidebarMenu = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userRole = loginData?.Account_details[0]?.user_role_id;
+  // const userRole = '2';
+  const roleArray = userRole.split(',');
+  const hasLandlordRole = roleArray.includes('3');
   const refRBSheet = useRef();
   const [selectedId, setselectedId] = useState('');
   const dispatch = useDispatch();
@@ -112,21 +117,26 @@ const CustomSidebarMenu = props => {
         <Text style={[DrawerStyle.HeaderText, {marginVertical: 5}]}>
           {'Properties'}
         </Text>
-        <TouchableOpacity
-          style={[DrawerStyle.SubHeadingView]}
-          onPress={() => check('MarketplacePropertyListing')}>
-          <View style={DrawerStyle.IconView}>
-            <MaterialCommunityIcons
-              name="calendar-text-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-              style={{alignSelf: 'center'}}
-            />
-          </View>
-          <Text style={DrawerStyle.SubHeading}>{'Property listings'}</Text>
-        </TouchableOpacity>
-        <DividerIcon marginBottom={3} marginTop={5} />
+        {hasLandlordRole ? (
+          <>
+            <TouchableOpacity
+              style={[DrawerStyle.SubHeadingView]}
+              onPress={() => check('MarketplacePropertyListing')}>
+              <View style={DrawerStyle.IconView}>
+                <MaterialCommunityIcons
+                  name="calendar-text-outline"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                  resizeMode={'contain'}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+              <Text style={DrawerStyle.SubHeading}>{'Property listings'}</Text>
+            </TouchableOpacity>
+            <DividerIcon marginBottom={3} marginTop={5} />
+          </>
+        ) : null}
+
         <TouchableOpacity
           style={[DrawerStyle.rowFlex]}
           onPress={() => check('RentalOffers')}>
@@ -142,22 +152,27 @@ const CustomSidebarMenu = props => {
           <Text style={DrawerStyle.SubHeading}>{'Rental offers'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <TouchableOpacity
-          style={[DrawerStyle.rowFlex]}
-          onPress={() => check('vacantProperties')}>
-          <View style={DrawerStyle.IconView}>
-            <Octicons
-              name="shield-x"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-              style={{alignSelf: 'center', justifyContent: 'center'}}
-            />
-          </View>
+        {hasLandlordRole ? (
+          <>
+            <TouchableOpacity
+              style={[DrawerStyle.rowFlex]}
+              onPress={() => check('vacantProperties')}>
+              <View style={DrawerStyle.IconView}>
+                <Octicons
+                  name="shield-x"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                  resizeMode={'contain'}
+                  style={{alignSelf: 'center', justifyContent: 'center'}}
+                />
+              </View>
 
-          <Text style={DrawerStyle.SubHeading}>{'Vacant properties'}</Text>
-        </TouchableOpacity>
-        <DividerIcon marginBottom={3} marginTop={5} />
+              <Text style={DrawerStyle.SubHeading}>{'Vacant properties'}</Text>
+            </TouchableOpacity>
+            <DividerIcon marginBottom={3} marginTop={5} />
+          </>
+        ) : null}
+
         <TouchableOpacity
           style={[DrawerStyle.rowFlex]}
           onPress={() => check('Inspection')}>
@@ -188,21 +203,25 @@ const CustomSidebarMenu = props => {
           <Text style={DrawerStyle.SubHeading}>{'Tenants'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <TouchableOpacity
-          style={[DrawerStyle.rowFlex]}
-          onPress={() => check('ManagingTenants')}>
-          <View style={DrawerStyle.IconView}>
-            <MaterialCommunityIcons
-              name="shield-account"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-              style={{alignSelf: 'center'}}
-            />
-          </View>
-          <Text style={DrawerStyle.SubHeading}>{'Managing tenants'}</Text>
-        </TouchableOpacity>
-        <DividerIcon marginBottom={3} marginTop={5} />
+        {hasLandlordRole ? (
+          <>
+            <TouchableOpacity
+              style={[DrawerStyle.rowFlex]}
+              onPress={() => check('ManagingTenants')}>
+              <View style={DrawerStyle.IconView}>
+                <MaterialCommunityIcons
+                  name="shield-account"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                  resizeMode={'contain'}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+              <Text style={DrawerStyle.SubHeading}>{'Managing tenants'}</Text>
+            </TouchableOpacity>
+            <DividerIcon marginBottom={3} marginTop={5} />
+          </>
+        ) : null}
 
         <Text style={[DrawerStyle.HeaderText, {marginTop: 15}]}>{'Jobs'}</Text>
         <TouchableOpacity

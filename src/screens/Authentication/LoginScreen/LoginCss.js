@@ -39,7 +39,7 @@ export const LoginStyles = StyleSheet.create({
   },
 
   inputContainer: {
-    marginBottom: 10,
+    marginBottom: 24,
     // flexDirection:'column',
     // justifyContent:'center',
     // alignItems:'center',
@@ -157,7 +157,11 @@ export const LoginStyles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
   },
-  error_text: {color: 'red', marginLeft: 10},
+  error_text: {
+    color: 'red',
+    marginLeft: 10,
+    marginTop:5
+  },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',

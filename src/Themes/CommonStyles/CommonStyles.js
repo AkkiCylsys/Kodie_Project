@@ -21,7 +21,7 @@ export const LABEL_STYLES = StyleSheet.create({
   commonMidtext: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    // fontFamily: FONTFAMILY.K_Medium,
   },
 });
 export const VIEW_STYLES = StyleSheet.create({
