@@ -254,19 +254,31 @@ const SignUpSteps = props => {
     if (text.trim() === '') {
       setMobileNumberError('Phone number is required!');
       return false;
-    } else if (!/^[0-9]{9}$/.test(text)) {
-      setMobileNumberError('Invalid phone number format!');
+    } else if (!/^[24][0-9]{8}$/.test(text)) {
+      setMobileNumberError('Invalid phone number!');
       return false;
     } else {
       setMobileNumberError('');
       return true;
     }
   };
+  
+  
 
   const handleNextBtn = () => {
     const isFirstNameValid = isValidFirstName(firstName);
+    if (!isFirstNameValid) {
+      return;
+    }
+
     const isLastNameValid = isValidLastName(lastName);
+    if (!isLastNameValid) {
+      return;
+    }
     const isPhoneNumberValid = isValidPhoneNumber(mobileNumber);
+    if (!isPhoneNumberValid) {
+      return;
+    }
 
     if (isFirstNameValid && isLastNameValid && isPhoneNumberValid) {
       props.navigation.navigate('AboutYou', {

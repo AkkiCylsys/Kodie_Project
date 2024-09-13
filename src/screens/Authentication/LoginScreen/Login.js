@@ -791,10 +791,10 @@ export default Login = props => {
                   autoCapitalize={'none'}
                   editable={isLoading?false:true}
                 />
-              </View>
               {resetEmailError ? (
                 <Text style={LoginStyles.error_text}>{resetEmailError}</Text>
               ) : null}
+              </View>
             </>
           )}
 
@@ -816,7 +816,7 @@ export default Login = props => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1}]}>
+                <View style={{ flex: 1}}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -865,7 +865,6 @@ export default Login = props => {
                   )}
                 </TouchableOpacity>
               </View>
-
               {verificationcodeError ? (
                 <Text style={LoginStyles.error_text}>
                   {verificationcodeError}

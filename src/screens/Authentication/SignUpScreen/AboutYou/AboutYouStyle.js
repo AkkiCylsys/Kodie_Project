@@ -125,7 +125,7 @@ export const AboutYouStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginHorizontal: 8,
-    marginBottom:12
+    marginBottom:12,
   },
   // tab menu css here ..
   tabmainview: {
@@ -312,5 +312,5 @@ export const AboutYouStyle = StyleSheet.create({
     marginTop: 10,
     borderRadius: 8,
   },
-  errorText: {color: 'red',marginVertical:3},
+  errorText: {color: 'red',marginVertical:3,marginLeft:15},
 });

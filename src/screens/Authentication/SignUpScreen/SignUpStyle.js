@@ -114,5 +114,5 @@ export const SignUpStyles = StyleSheet.create({
     marginTop:20
   },
   terms_Condition: { color: _COLORS.Kodie_GreenColor },
-  error_text: { color: "red", marginLeft: 10 },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
 });
