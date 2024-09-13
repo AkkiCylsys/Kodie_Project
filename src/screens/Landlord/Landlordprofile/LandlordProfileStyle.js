@@ -42,7 +42,11 @@ export const LandlordProfileStyle = StyleSheet.create({
     color: _COLORS?.Kodie_ExtraLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  staricon: { flexDirection: "row", marginTop: 8 },
+  staricon: { 
+    flexDirection: "row", 
+    marginTop: 8,
+    alignItems:'center'
+  },
   ratingText: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -60,10 +64,10 @@ export const LandlordProfileStyle = StyleSheet.create({
     alignSelf: "center",
     marginHorizontal: 16,
     borderWidth: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
     borderRadius: 5,
-    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderColor: _COLORS.Kodie_minLiteGrayColor,
     marginTop: 10,
   },
   contactIcon: { height: 16, width: 16 },

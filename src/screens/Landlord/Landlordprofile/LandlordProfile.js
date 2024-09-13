@@ -126,7 +126,7 @@ const LandlordProfile = (props) => {
             </View>
           </View>
           <View style={LandlordProfileStyle.contactIconView}>
-            <MaterialCommunityIcons name="account-edit-outline" size={20} color={_COLORS.Kodie_GreenColor} />
+            <MaterialCommunityIcons name="account-edit-outline" size={25} color={_COLORS.Kodie_GreenColor} />
           </View>
         </TouchableOpacity>
 
