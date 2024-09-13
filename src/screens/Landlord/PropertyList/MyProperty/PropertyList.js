@@ -39,6 +39,7 @@ const HorizontalData = [
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details[0]?.user_role_id;
+  console.log(loginData,"loginData");
   // const userRole = '4';
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);

@@ -35,6 +35,7 @@ import {_goBack} from '../../../../services/CommonServices';
 import {LABEL_STYLES, _COLORS, IMAGES} from '../../../../Themes';
 import {SignUpStepStyle} from './SignUpStepsStyle';
 import {AccountStyle} from '../Account/AccountStyle';
+import GoogleMapScreen from '../../../../components/Molecules/GoogleMapScreens/GoogleMapScreen';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -636,54 +637,14 @@ const SignUpSteps = props => {
             </View>
           )}
           {IsMap ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-              }}>
-              <MapScreen
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  alignSelf: 'center',
-                  marginBottom: 10,
-                }}
-                onRegionChange={onRegionChange}
+            <GoogleMapScreen
+            onRegionChange={onRegionChange}
                 Maplat={p_latitude}
                 Maplng={p_longitude}
-              />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  width: '96%',
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  backgroundColor: 'white',
-                  borderColor: '#E5E4E2',
-                  marginTop: 10,
-                  position: 'absolute',
-                }}>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    width: '90%',
-                    height: 45,
-                    alignSelf: 'center',
-                  }}
-                  onFocus={() => openMapandClose()}
-                  placeholder={'Search Place'}
-                  placeholderTextColor={_COLORS.Kodie_BlackColor}
-                />
-              </View>
-              <TouchableOpacity
-                style={SignUpStepStyle.BtnContainer}
-                onPress={ConfirmAddress}>
-                {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
-                <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-              </TouchableOpacity>
-            </View>
+                openMapandClose={() => openMapandClose()}
+                ConfirmAddress={ConfirmAddress}
+            />
+           
           ) : IsSearch ? (
             <SearchPlaces
               onPress={(data, details = null) => {

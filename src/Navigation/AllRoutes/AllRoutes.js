@@ -407,25 +407,7 @@ const DrawerNavigatorLeftMenu = props => {
 };
 const AuthStack = createNativeStackNavigator();
 const AuthStackRouts = props => {
-  const handleDynamicLink = async (link) => {
-    const url = link.url;
-    const params = new URLSearchParams(url.split('?')[1]);
-    const page = params.get('page'); // Example parameter
-
-    if (page === 'PropertyReviewDetails') {
-      const id = params.get('id'); // Extract the 'id' if needed
-      navigationRef.current?.navigate('PropertyReviewDetails', { id });
-    } else {
-      navigationRef.current?.navigate('Dashboard');
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  
   return (
     <AuthStack.Navigator
       screenOptions={{headerShown: false}}

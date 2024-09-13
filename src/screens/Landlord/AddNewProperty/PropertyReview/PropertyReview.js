@@ -78,8 +78,8 @@ export default PropertyReview = props => {
       position => {
         const { latitude, longitude } = position.coords;
         console.log(latitude,longitude);
-        // fetchPointsOfInterest(latitude,longitude);
-        fetchPointsOfInterest("27.149994", "79.499901");
+        fetchPointsOfInterest(latitude,longitude);
+        // fetchPointsOfInterest("27.149994", "79.499901");
 
       },
       error => console.error(error),
@@ -333,11 +333,13 @@ export default PropertyReview = props => {
         console.error('propertyDetail_error:', response?.data?.error);
       }
       const additionalFeatures_id =
-        response?.data?.property_details[0]?.additional_features;
-      console.log('additionalFeaturesid....', additionalFeatures_id);
-      const is_additionalFeaturesid = additionalFeatures_id.split(',');
-      setAddtionalFeaturesID(is_additionalFeaturesid);
-      console.log("deependra furnished..", is_additionalFeaturesid);
+      response?.data?.property_details[0].additional_features_id;
+    console.log('additionalFeaturesid....', additionalFeatures_id);
+    const additionalFeaturesIds = additionalFeatures_id
+    .split(',')
+    .map(value => value.trim()); // ['1', '1', '1', '0']
+    console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+    setAddtionalFeaturesID(additionalFeaturesIds);
 
     } catch (error) {
       console.error('Error:', error);
@@ -588,7 +590,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
-                      {addtionalFeaturesID[0]}
+                      {addtionalFeaturesID[3] == 0 ? 'No' : 'Yes'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -601,7 +603,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
-                      {addtionalFeaturesID[1] == "Furnished" ? 'Yes' : 'No'}
+                      {addtionalFeaturesID[0] == 1 ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

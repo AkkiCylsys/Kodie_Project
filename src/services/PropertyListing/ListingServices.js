@@ -41,3 +41,22 @@ export const insertMarketDetails = (data) => {
         });
     });
   };
+  export const AddBidDetails = (data) => {
+    const url = `${Config.BASE_URL}property_market_place_enable_bidding`;
+  
+    return new Promise((resolve, reject) => {
+      axios.post(url, data)
+        .then(response => {
+          if (response?.data?.status) {
+            resolve(response?.data);
+          } else {
+            reject(new Error(response?.data?.error || 'Unknown error'));
+          }
+        })
+        .catch(error => {
+          const errorMessage = handleApiError(error);
+        // alert(errorMessage); // Display error message in an alert
+        reject(errorMessage);
+        });
+    });
+  };

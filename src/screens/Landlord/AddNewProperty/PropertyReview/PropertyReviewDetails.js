@@ -78,7 +78,7 @@ export default PropertyReviewDetails = props => {
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
   const [like, setLike] = useState(false);
-  const [addtionalFeaturesID, setAddtionalFeaturesID] = useState('');
+  const [addtionalFeaturesID, setAddtionalFeaturesID] = useState([]);
   const [propertyDetailsClp, setPropertyDetailsClp] = useState(false);
   const [roomClp, setRoomClp] = useState(false);
   const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
@@ -87,7 +87,7 @@ export default PropertyReviewDetails = props => {
   const buildLink = async () => {
     try {
       const link = await dynamicLinks().buildLink({
-        link: `https://kodie.page.link/DwNd?page=PropertyReviewDetails&id=${propertyid}`, // Use the current page parameters
+        link: `https://kodie.page.link/DwNd`, // Use the current page parameters
         domainUriPrefix: 'https://kodie.page.link',
         analytics: {
           campaign: 'banner',
@@ -99,6 +99,39 @@ export default PropertyReviewDetails = props => {
       console.error('Failed to build dynamic link:', error);
     }
   };
+  const handleDynamicLink = link => {
+    // Handle dynamic link inside your own application
+    if (link.url === 'https://kodie.page.link/DwNd') {
+      // ...navigate to your offers screen
+      alert("dfddsfdsfdsfd")
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, []);
+  // Function to share the generated link
+  const shareContent = async () => {
+    const shareOptions = {
+      title: 'Share this page',
+      message: property_Detail?.property_type,
+      url: GenerateLink,
+    };
+
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      console.log('Share Response:', shareResponse);
+    } catch (error) {
+      if (error.message === 'User did not share') {
+        console.log('User canceled the sharing action.');
+      } else {
+        console.log('Error while sharing:', error);
+      }
+    }
+  };
+
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -184,25 +217,7 @@ export default PropertyReviewDetails = props => {
      
     </View>
   );
-  // Function to share the generated link
-  const shareContent = async () => {
-    const shareOptions = {
-      title: 'Share this page',
-      message: property_Detail?.property_type,
-      url: GenerateLink,
-    };
-
-    try {
-      const shareResponse = await Share.open(shareOptions);
-      console.log('Share Response:', shareResponse);
-    } catch (error) {
-      if (error.message === 'User did not share') {
-        console.log('User canceled the sharing action.');
-      } else {
-        console.log('Error while sharing:', error);
-      }
-    }
-  };
+  
 
   // Build link when component mounts
   useEffect(() => {
@@ -322,8 +337,11 @@ export default PropertyReviewDetails = props => {
       const additionalFeatures_id =
         response?.data?.property_details[0].additional_features_id;
       console.log('additionalFeaturesid....', additionalFeatures_id);
-      const is_additionalFeaturesid = additionalFeatures_id.split(',');
-      setAddtionalFeaturesID(is_additionalFeaturesid);
+      const additionalFeaturesIds = additionalFeatures_id
+      .split(',')
+      .map(value => value.trim()); // ['1', '1', '1', '0']
+      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+      setAddtionalFeaturesID(additionalFeaturesIds);
     } catch (error) {
       console.error('Error:', error);
       setIsLoading(false);
@@ -468,7 +486,7 @@ export default PropertyReviewDetails = props => {
     console.error('Detail is not an array:', Detail);
   }
 
-  console.log('Parking / garage spaces value:', parkingSpaceValue);
+  console.log('Parking / garage spaces value:', addtionalFeaturesID);
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -594,7 +612,7 @@ export default PropertyReviewDetails = props => {
                             LABEL_STYLES.commontext,
                             { fontFamily: FONTFAMILY.K_Medium },
                           ]}>
-                          {addtionalFeaturesID[0]}
+                          {addtionalFeaturesID[3] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
@@ -607,7 +625,7 @@ export default PropertyReviewDetails = props => {
                             LABEL_STYLES.commontext,
                             { fontFamily: FONTFAMILY.K_Medium },
                           ]}>
-                          {addtionalFeaturesID[1] == 'Furnished' ? 'Yes' : 'No'}
+                          {addtionalFeaturesID[0] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
