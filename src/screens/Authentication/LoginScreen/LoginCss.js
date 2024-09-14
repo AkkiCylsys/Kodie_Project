@@ -87,17 +87,26 @@ export const LoginStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
-  passchange: {alignSelf: 'center', fontSize: 22, textAlign: 'center',fontFamily:FONTFAMILY?.K_Medium},
+  passchange: {
+    alignSelf: 'center',
+    fontSize: 22,
+    textAlign: 'center',
+    fontFamily: FONTFAMILY?.K_Medium,
+  },
   checkicon: {
     alignSelf: 'center',
     height: '50%',
     width: '50%',
     marginTop: 20,
   },
-  varifycode: {flexDirection: 'row', justifyContent: 'space-between'},
+  varifycode: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // borderWidth: 1,
+  },
   getButtonView: {
     // flex: 0.3,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     borderRadius: 6,
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
@@ -105,8 +114,9 @@ export const LoginStyles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 20,
-    marginLeft:8
+    marginTop: Platform.OS== 'android'?35:  20,
+    // marginBottom: Platform.OS == 'android' ? 28 : 20,
+    marginLeft: 8,
   },
   codeMargin: {
     margin: 5,
@@ -160,7 +170,7 @@ export const LoginStyles = StyleSheet.create({
   error_text: {
     color: 'red',
     marginLeft: 10,
-    marginTop:5
+    marginTop: 5,
   },
   passwordContainer: {
     flexDirection: 'row',
