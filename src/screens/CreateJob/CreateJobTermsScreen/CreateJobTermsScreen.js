@@ -1,6 +1,3 @@
-//ScreenNo:123
-//ScreenNo:124
-//ScreenNo:125
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -56,31 +53,34 @@ export default CreateJobTermsScreen = props => {
     console.log('Low Range in Parent Component:', low);
     setMin(low);
   };
+  const {
+    JobId,
+    editMode,
+    selectJobType,
+    servicesValue,
+    aboutyourNeed,
+    jobPriorityValue,
+    property_value,
+    location,
+    ratingThresholdValue,
+    latitude,
+    longitude,
+    myJob,
+    jm_upd_key,
+  } = props.route.params;
 
-  let JobId = props?.route?.params?.JobId;
-  console.log('JobId p j....', JobId);
-  let editMode = props?.route?.params?.editMode;
-  // alert(JobId)
-  let selectJobType = props?.route?.params?.selectJobType;
-  let servicesValue = props?.route?.params?.servicesValue;
-  let aboutyourNeed = props?.route?.params?.aboutyourNeed;
-  let jobPriorityValue = props?.route?.params?.jobPriorityValue;
-  let property_value = props?.route?.params?.property_value;
-  let location = props?.route?.params?.location;
-  let ratingThresholdValue = props?.route?.params?.ratingThresholdValue;
-  let latitude = props?.route?.params?.latitude;
-  let longitude = props?.route?.params?.longitude;
-  let myJob = props?.route?.params?.myJob;
-  console.log('selectJobType.....', selectJobType);
-  console.log('servicesValue.....', servicesValue);
-  console.log('aboutyourNeed.....', aboutyourNeed);
-  console.log('jobPriorityValue.....', jobPriorityValue);
-  console.log('property_value.....', property_value);
-  console.log('location.....', location);
-  console.log('ratingThresholdValue.....', ratingThresholdValue);
-  console.log('latitude.....', latitude);
-  console.log('longitude.....', longitude);
-  console.log('myJob.....', myJob);
+  console.log('JobId:', JobId);
+  console.log('editMode:', editMode);
+  console.log('selectJobType:', selectJobType);
+  console.log('servicesValue:', servicesValue);
+  console.log('aboutyourNeed:', aboutyourNeed);
+  console.log('jobPriorityValue:', jobPriorityValue);
+  console.log('property_value:', property_value);
+  console.log('location:', location);
+  console.log('ratingThresholdValue:', ratingThresholdValue);
+  console.log('latitude:', latitude);
+  console.log('longitude:', longitude);
+  console.log('myJob:', myJob);
 
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
@@ -119,9 +119,6 @@ export default CreateJobTermsScreen = props => {
   };
   const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
-  };
-  const handleDayPress = day => {
-    setSelectedDate(day.dateString);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -179,8 +176,8 @@ export default CreateJobTermsScreen = props => {
   );
   const renderLabel = ({position, stepStatus}) => {
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -230,7 +227,7 @@ export default CreateJobTermsScreen = props => {
     if (text.trim() === '') {
       setCurrentTimeError('Select time is required!');
     } else {
-      setCurrentTimeError(''); // Clear the error if valid time is selected
+      setCurrentTimeError('');
     }
   };
   const handleValidatiomtionCreateJob = () => {
@@ -239,7 +236,7 @@ export default CreateJobTermsScreen = props => {
     } else if (currentTime.trim() == '') {
       setCurrentTimeError('Select time is required!');
     } else {
-      handleCreateJob();
+      updateCreateJob();
     }
   };
 
@@ -251,11 +248,7 @@ export default CreateJobTermsScreen = props => {
     if (priceRanges) {
       setFormattedPriceRanges(`$${priceRanges}`);
     }
-    JobId > 0 ||
-    (Array.isArray(createJobId) && createJobId.length > 0) ||
-    typeof createJobId === 'number'
-      ? getJobDetails()
-      : null;
+    JobId ? getJobDetails() : null;
   }, []);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
@@ -352,7 +345,6 @@ export default CreateJobTermsScreen = props => {
       })
       .catch(error => {
         console.error('HourlyNeed error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -381,7 +373,6 @@ export default CreateJobTermsScreen = props => {
       })
       .catch(error => {
         console.error('NeedServices error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -481,20 +472,16 @@ export default CreateJobTermsScreen = props => {
           alert(response?.data?.message);
           dispatch(fetchCreateJobSuccess(response?.data?.job_id));
           props.navigation.navigate('CreateJobSecondScreen', {
-            job_id: response?.data?.job_id,
+            JobId: response?.data?.job_id,
           });
           setIsLoading(false);
-
-          // setIsLoading(false);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed handleCreateJob', error);
         setIsLoading(false);
-        // alert(error);
       });
     // .finally(() => {
     //   setIsLoading(false);
@@ -508,8 +495,7 @@ export default CreateJobTermsScreen = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
-      jm_job_id:
-        createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
+      jm_job_id: JobId,
     };
     axios
       .post(jobDetails_url, jobDetails_Data)
@@ -518,8 +504,18 @@ export default CreateJobTermsScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData_term....', response?.data?.data);
-          setSelectedDate(response?.data?.data?.job_date.substring(0, 10));
-          setCurrentTime(response?.data?.data?.job_time);
+          setSelectedDate(
+            response?.data?.data?.job_date === '0' ||
+              response?.data?.data?.job_date === null
+              ? ''
+              : response?.data?.data?.job_date.substring(0, 10),
+          );
+          setCurrentTime(
+            response?.data?.data?.job_time === '0' ||
+              response?.data?.data?.job_time === null
+              ? ''
+              : response?.data?.data?.job_time,
+          );
           setHourlyNeedValue(parseInt(response?.data?.data?.job_hourly_key));
           setneedServicesValue(
             parseInt(response?.data?.data?.job_how_often_key),
@@ -556,11 +552,7 @@ export default CreateJobTermsScreen = props => {
 
   const updateCreateJob = () => {
     const url = Config.BASE_URL;
-    const update_createJob_url =
-      url +
-      `job/updateJob/${
-        createJobId && !Array.isArray(createJobId) ? createJobId : JobId
-      }`;
+    const update_createJob_url = url + `job/updateJob/${JobId}`;
     console.log('Request URL u:', update_createJob_url);
     setIsLoading(true);
     const update_createJob_Data = {
@@ -572,26 +564,30 @@ export default CreateJobTermsScreen = props => {
       job_location: location,
       location_longitude: longitude,
       location_latitude: latitude,
+      jm_upd_key: jm_upd_key,
       job_rating: ratingThresholdValue,
       job_date: selectedDate,
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_min_budget: jobDetailsData?.job_min_budget,
-      job_max_budget: jobDetailsData?.job_max_budget,
+      job_min_budget: jobDetailsData?.job_min_budget
+        ? jobDetailsData?.job_min_budget
+        : `$${min}`,
+      job_max_budget: jobDetailsData?.job_max_budget
+        ? jobDetailsData?.job_max_budget
+        : `$${max}`,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: null,
     };
-    console.log('updatedBody.....', update_createJob_Data);
+    console.log('updatedBody in second step .....', update_createJob_Data);
     axios
       .put(update_createJob_url, update_createJob_Data)
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
-            JobId:
-              createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
+            JobId: JobId,
             editMode: editMode,
           });
           // setIsLoading(false);
@@ -646,10 +642,7 @@ export default CreateJobTermsScreen = props => {
                   : _COLORS?.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
-              // onDayPress={handleDayPress}
               onDayPress={day => {
-                // const selected = moment(day.dateString).format('YYYY-MM-DD');
-                // setSelectedDate(selected);
                 handleRequestDate(day.dateString);
               }}
               onChangeText={() => handleRequestDate(selectedDate)}
@@ -763,7 +756,9 @@ export default CreateJobTermsScreen = props => {
               {'Who is responsible for paying for this?'}
             </Text>
             <Text style={CreateJobTermsStyle.sub_des_Text}>
-              {'If you select “Landlord”, authorisation will be required!'}
+              {
+                'Authorisation will be required by the party responsible for payment.'
+              }
             </Text>
 
             <RowButtons
@@ -869,25 +864,9 @@ export default CreateJobTermsScreen = props => {
               _ButtonText={'Next'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading}
-              onPress={() =>
-                // props.navigation.navigate("CreateJobSecondScreen")
-                // handleCreateJob()
-                // {
-                //   JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
-                // }
-                {
-                  if (
-                    (Array.isArray(createJobId) && createJobId.length > 0) ||
-                    JobId ||
-                    editMode ||
-                    typeof createJobId === 'number'
-                  ) {
-                    updateCreateJob();
-                  } else {
-                    handleValidatiomtionCreateJob();
-                  }
-                }
-              }
+              onPress={() => {
+                JobId ? handleValidatiomtionCreateJob() : null;
+              }}
             />
           </View>
           <TouchableOpacity

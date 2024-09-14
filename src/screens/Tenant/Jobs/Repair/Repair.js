@@ -61,7 +61,7 @@ const property_List1 = [
 export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const userRole = loginData?.Account_details[0]?.user_role_id;
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '4';
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +87,7 @@ export default Repair = props => {
   // console.log('myJob_Type in job module', myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
 
-  const roleArray = userRole.split(',');
+  const roleArray = userRole ? userRole.split(',') : [];
   const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
   const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
   const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
@@ -272,11 +272,12 @@ export default Repair = props => {
 
   useEffect(() => {
     setActiveScreen(
-      myJob_Type == 1 ||
-        job_sub_type_req == 1 ||
-        hasTenantRole ||
-        hasLandlordRole
-        ? true
+      myJob_Type == 1 || job_sub_type_req == 1
+        ? //  ||
+          // hasTenantRole ||
+          // hasLandlordRole
+
+          true
         : false,
     );
   }, []);
@@ -369,17 +370,21 @@ export default Repair = props => {
               console.log('check job id in view mode...', item.job_id);
             }}>
             <View style={RepairCss.Container}>
-              <View style={RepairCss.flat_MainView}>
+              <View style={[RepairCss.flat_MainView]}>
                 <View style={RepairCss.flexContainer}>
                   <Text style={[LABEL_STYLES.commontext]}>
                     {item.service_looking}
                   </Text>
+                  <Text
+                style={[
+                  LABEL_STYLES.commonMidtext
+                ]}>{`Ref #${item.job_reference}`}</Text>
                 </View>
                 <TouchableOpacity
                   style={[
                     RepairCss.buttonView,
                     {
-                      backgroundColor: _COLORS.Kodie_minLiteGrayColor,
+                      backgroundColor: _COLORS.Kodie_minLiteGrayColor
                     },
                   ]}>
                   <View style={{alignSelf: 'center'}}>
@@ -414,10 +419,6 @@ export default Repair = props => {
                   />
                 </TouchableOpacity>
               </View>
-              <Text
-                style={[
-                  LABEL_STYLES.commonMidtext,
-                ]}>{`Ref #${item.job_reference}`}</Text>
               <View style={RepairCss.flat_MainView}>
                 <View style={RepairCss.flexContainer}>
                   <View style={RepairCss.propertyView}>
@@ -468,28 +469,28 @@ export default Repair = props => {
             color={_COLORS.Kodie_LiteWhiteColor}
           />
         </>
-        {hasTenantRole || hasLandlordRole ? (
-          <>
-            <View style={RepairCss.Container}>
-              <CustomSingleButton
-                _ButtonText={
-                  activeScreen ? '+ Create new job request' : '+ Add job'
-                }
-                disabled={isLoading ? true : false}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                text_Size={14}
-                backgroundColor={_COLORS.Kodie_BlackColor}
-                height={44}
-                marginTop={3}
-                onPress={activeScreen ? props.onpress : props.servicing_press}
-              />
-            </View>
-            <DividerIcon
-              borderBottomWidth={9}
-              color={_COLORS.Kodie_LiteWhiteColor}
+        {/* {hasTenantRole || hasLandlordRole ? ( */}
+        <>
+          <View style={RepairCss.Container}>
+            <CustomSingleButton
+              _ButtonText={
+                activeScreen ? '+ Create new job request' : '+ Add job'
+              }
+              disabled={isLoading ? true : false}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              text_Size={14}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              height={44}
+              marginTop={3}
+              onPress={activeScreen ? props.onpress : props.servicing_press}
             />
-          </>
-        ) : null}
+          </View>
+          <DividerIcon
+            borderBottomWidth={9}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+        </>
+        {/* ) : null} */}
 
         <SearchBar
           frontSearchIcon

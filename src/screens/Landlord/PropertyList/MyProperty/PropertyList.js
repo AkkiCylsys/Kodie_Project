@@ -38,7 +38,7 @@ const HorizontalData = [
 ];
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const userRole = loginData?.Account_details[0]?.user_role_id;
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '4';
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
@@ -651,7 +651,7 @@ const PropertyList = props => {
   };
 
   const renderRowButtons = () => {
-    const roleArray = userRole.split(',');
+    const roleArray = userRole ? userRole.split(',') : [];
 
     const hasTenantRole = roleArray.includes('2');
     const hasLandlordRole = roleArray.includes('3');

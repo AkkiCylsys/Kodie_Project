@@ -31,29 +31,31 @@ const Reviewjobdetails1 = props => {
   // const SearchJobId = props.route.params.SearchJobId;
   const searchView = props.searchView;
   const SearchJobId = props.SearchJobId;
-  console.log('imagesFiles...', imagesFiles);
-  console.log('SearchJobId...', props.SearchJobId, searchView);
-  console.log('View_Job_Details_sdfsdf.....', props.View_Job_Details);
-  console.log('JOB_IDfsdfsdfs.....', props.JOB_ID);
-  console.log('JOB_IDfsdfsdfs small.....', props.job_id);
-  // const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
-  const F_job_id = props.View_Job_Details ? props.JOB_ID : createJobId;
-  console.log('F_job_id....', F_job_id);
-
+  const JobId = props?.JobId;
+  console.log('JobId finalin review..', JobId);
   useEffect(() => {
-    if (props.editMode) {
-      getUpdateJobDetails();
-    } else {
+    // if (props.editMode) {
+    //   getUpdateJobDetails();
+    // } else {
+    //   getJobDetails();
+    // }
+    console.log(
+      'min budget and max buggets..',
+      jobDetailsData.job_max_budget,
+      jobDetailsData.job_max_budget,
+    );
+    if (JobId) {
       getJobDetails();
     }
-  }, [F_job_id]);
+  }, [JobId]);
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
-      jm_job_id: F_job_id || SearchJobId,
+      // jm_job_id: F_job_id || SearchJobId,
+      jm_job_id: JobId,
     };
     axios
       .post(jobDetails_url, jobDetailsData)
@@ -129,53 +131,102 @@ const Reviewjobdetails1 = props => {
         <View style={{marginBottom: 16}}>
           <RowTexts
             leftText={'Name'}
-            rightText={`${jobDetailsData.first_name || ''} ${
-              jobDetailsData.last_name || ''
+            rightText={`${
+              jobDetailsData.first_name == 'null' ||
+              jobDetailsData.first_name == ''
+                ? '-'
+                : jobDetailsData.first_name
+            } ${
+              jobDetailsData.last_name == 'null' ||
+              jobDetailsData.last_name == ''
+                ? '-'
+                : jobDetailsData.last_name
             }`}
           />
           <RowTexts
             leftText={'Location'}
-            rightText={jobDetailsData.job_location}
+            rightText={
+              jobDetailsData.job_location == 'null' ||
+              jobDetailsData.job_location == ''
+                ? '-'
+                : jobDetailsData.job_location || ''
+            }
           />
           <RowTexts
             leftText={'Property type'}
-            rightText={jobDetailsData.property_type}
+            rightText={
+              jobDetailsData.property_type == 'null' ||
+              jobDetailsData.property_type == ''
+                ? '-'
+                : jobDetailsData.property_type || ''
+            }
           />
           <RowTexts
             leftText={'Proposed date'}
-            rightText={moment(jobDetailsData.job_date || '').format(
-              'MMM DD, YYYY',
-            )}
+            rightText={
+              jobDetailsData.job_date == 'null' || jobDetailsData.job_date == ''
+                ? '-'
+                : moment(jobDetailsData.job_date).format('MMM DD, YYYY' || '')
+            }
           />
           <RowTexts
             leftText={'Proposed time'}
             rightText={
-              jobDetailsData.job_time && jobDetailsData.proposed_time
+              jobDetailsData.job_time === 'null' ||
+              jobDetailsData.job_time === '' ||
+              jobDetailsData.proposed_time === 'null' ||
+              jobDetailsData.proposed_time === ''
+                ? '-'
+                : jobDetailsData.job_time && jobDetailsData.proposed_time
                 ? `${moment(jobDetailsData.job_time, 'h:mm a').format(
                     'h:mm A',
                   )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
                     'h:mm A',
                   )}`
-                : '' // Or use a placeholder like 'N/A'
+                : ''
             }
           />
           <RowTexts
             leftText={'Number of hours'}
-            rightText={jobDetailsData.number_of_hours || ''}
+            rightText={
+              jobDetailsData.number_of_hours === 'null' ||
+              jobDetailsData.number_of_hours === ''
+                ? '-'
+                : jobDetailsData.number_of_hours
+            }
           />
           <RowTexts
             leftText={'How often'}
-            rightText={jobDetailsData.how_often || ' '}
+            rightText={
+              jobDetailsData.how_often == 'null' ||
+              jobDetailsData.how_often == ''
+                ? '-'
+                : jobDetailsData.how_often || ' '
+            }
           />
           <RowTexts
             leftText={'Budget range'}
-            rightText={`${jobDetailsData.job_min_budget} - ${
-              jobDetailsData.job_max_budget || ''
-            }`}
+            rightText={
+              jobDetailsData.job_min_budget === 'null' ||
+              jobDetailsData.job_min_budget === '' ||
+              jobDetailsData.job_max_budget === 'null' ||
+              jobDetailsData.job_max_budget === '' ||
+              (jobDetailsData.job_max_budget === '$1' &&
+                jobDetailsData.job_max_budget === '$2000')
+                ? '-'
+                : `${jobDetailsData.job_min_budget || ''} - ${
+                    jobDetailsData.job_max_budget || ''
+                  }`
+            }
           />
           <RowTexts
             leftText={'Payment'}
-            rightText={jobDetailsData.payment_by}
+            rightText={
+              jobDetailsData.payment_by == 'null' ||
+              jobDetailsData.payment_by == ''
+                ? '-'
+                : jobDetailsData.payment_by
+            }
           />
           {/* This is hide for now client requirement. */}
           {/* <RowTexts

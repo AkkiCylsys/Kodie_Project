@@ -35,6 +35,7 @@ import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader
 import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../Config';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 const images = [
   BANNERS.wallImage,
@@ -46,25 +47,25 @@ const CreateJobSecondScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId.....', createJobId);
-  // console.log('loginResponse.....', loginData);
-  // alert(loginData?.Login_details?.user_account_id);
 
-  // validation...
   const handleValidate = () => {
-    if (editMode || (updateAllImage && updateAllImage.length > 0)) {
-      if (allImagePaths.length === 0) {
-        props.navigation.navigate('JobDetails', {
-          JobId: JobId,
-          editMode: editMode,
-        });
-      } else {
-        handleUpdateJobFiles();
-      }
-    } else if (MultiImageName.length > 0) {
-      handleuploadJobFiles();
+    if (
+      // editMode ||
+      (updateAllImage &&
+        updateAllImage.length === 0 &&
+        allImagePaths.length === 0) ||
+      (MultiImageName.length === 0 && allImagePaths.length === 0)
+    ) {
+      props.navigation.navigate('JobDetails', {
+        JobId: JobId,
+        editMode: editMode,
+      });
     } else {
-      setMultiImageNameError('Front images required!');
-      console.log('err...', MultiImageNameError);
+      if (editMode) {
+        handleUpdateJobFiles();
+      } else if (MultiImageName.length > 0) {
+        handleuploadJobFiles();
+      }
     }
   };
 
@@ -89,13 +90,13 @@ const CreateJobSecondScreen = props => {
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
-  useEffect(() => {
-    JobId > 0 ||
-    (Array.isArray(createJobId) && createJobId.length > 0) ||
-    typeof createJobId === 'number'
-      ? getJobDetails()
-      : null;
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (JobId > 0) {
+        getJobDetails(); // Fetch job details when the screen is focused
+      }
+    }, [JobId])
+  );
   const CloseUp = () => {
     refRBSheet.current.close();
     console.log('close');
@@ -336,12 +337,13 @@ const CreateJobSecondScreen = props => {
         Alert.alert('Success', response?.data?.message);
         // props.navigation.navigate('JobDetails', {job_id: job_id});
         props.navigation.navigate('JobDetails', {
-          job_id: JobId > 0 ? JobId : job_id,
+          // job_id: JobId > 0 ? JobId : job_id,
+          JobId: JobId,
         });
         // clear state for image..
-        // setMultiImageName([]);
-        // setLeftImage([]);
-        // setRightImage([]);
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
       } else {
         const errorMessage = response?.data
           ? response?.data?.error
@@ -471,14 +473,14 @@ const CreateJobSecondScreen = props => {
         setIsLoading(false);
         alert(response?.data?.message);
         props.navigation.navigate('JobDetails', {
-          // JobId: JobId,
-          JobId: JobId > 0 ? JobId : job_id,
+          JobId: JobId,
+          // JobId: JobId > 0 ? JobId : job_id,
           editMode: editMode,
         });
         console.log('update_uploadJobFilesDatas', response?.data);
-        // setMultiImageName([]);
-        // setLeftImage([]);
-        // setRightImage([]);
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
       } else {
         console.log('update_uploadJobFilesData', response?.data?.error);
         // alert('Oops Somthing went wrong! please try again later.');
@@ -551,7 +553,7 @@ const CreateJobSecondScreen = props => {
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the front profile'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              {/* <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text> */}
             </Text>
             <AntDesign
               name="questioncircle"
@@ -570,11 +572,11 @@ const CreateJobSecondScreen = props => {
             {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
           </View>
 
-          {MultiImageName.length > 0 ? null : (
+          {/* {MultiImageName.length > 0 ? null : (
             <Text style={CreateJobSecondStyle.error_text}>
               {MultiImageNameError}
             </Text>
-          )}
+          )} */}
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the left side profile'}
