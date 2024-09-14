@@ -64,17 +64,6 @@ const Section = ({children, title}): Node => {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   useEffect(() => {
-    dynamicLinks()
-      .getInitialLink()
-      .then(link => {
-        if (link.url === 'https://kodie.page.link/DwNd') {
-          // ...set initial route as offers screen\
-          alert("log")
-        }
-      });
-  }, [])
-
-  useEffect(() => {
     //SplashScreen.hide()
     LogBox.ignoreAllLogs(true);
     // isConnected()
