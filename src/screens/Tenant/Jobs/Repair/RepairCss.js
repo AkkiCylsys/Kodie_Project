@@ -214,8 +214,9 @@ export const RepairCss = StyleSheet.create({
   },
   buttonView: {
     flexDirection: 'row',
-    justifyContent:"flex-end",
-    alignSelf:"flex-end",
+    // justifyContent:"flex-end",
+    // alignSelf:"flex-end",
+    alignSelf:'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_minLiteGrayColor,
     backgroundColor: _COLORS.Kodie_LightOrange,

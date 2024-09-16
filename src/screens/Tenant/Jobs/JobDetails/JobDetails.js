@@ -30,7 +30,7 @@ import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDet
 import JobDocuments from '../JobDocuments.js/JobDocuments';
 import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import { fetchCreateJobSuccess } from '../../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
+import {fetchCreateJobSuccess} from '../../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 // const images = [
@@ -55,14 +55,7 @@ const Apartment_data = [
 const JobDetails = props => {
   const dispatch = useDispatch();
   const isFocued = useIsFocused();
-  let job_id = props?.route?.params?.job_id;
-  let JOB_ID = props?.route?.params?.JOB_ID;
-  let jobDocTab = props?.route?.params?.jobDocTab;
-  console.log('JOB_ID......', JOB_ID);
-  console.log('job_id......', job_id);
-  let update_JOB_ID = props?.route?.params?.JobId;
-  let View_Job_Details = props?.route?.params?.View_Job_Details;
-  let editMode = props?.route?.params?.editMode;
+  const {JobId, editMode,View_Job_Details,job_id,jobDocTab} = props?.route?.params;
   const SearchJobId = props.route.params.SearchJobId;
   const searchView = props.route.params.searchView;
   console.log('SearchJobId...', SearchJobId, searchView);
@@ -187,9 +180,10 @@ const JobDetails = props => {
           <Reviewjobdetails1
             SearchJobId={SearchJobId}
             searchView={searchView}
-            job_id={job_id}
-            JOB_ID={JOB_ID}
-            update_JOB_ID={update_JOB_ID}
+            JobId={JobId}
+            // job_id={job_id}
+            // JOB_ID={JOB_ID}
+            // update_JOB_ID={update_JOB_ID}
             editMode={editMode}
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}

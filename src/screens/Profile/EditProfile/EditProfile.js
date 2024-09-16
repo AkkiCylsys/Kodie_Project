@@ -43,6 +43,7 @@ import PersonalDetails from '../PersonalDetails/PersonalDetails';
 import PhoneInput from 'react-native-phone-number-input';
 import styles from 'rn-range-slider/styles';
 import ServicesBox from '../../../components/Molecules/ServicesBox/ServicesBox';
+import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -57,6 +58,7 @@ const data = [
 ];
 
 const EditProfile = props => {
+  const dispatch = useDispatch();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
@@ -97,9 +99,9 @@ const EditProfile = props => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
   const [country_Code_Get, setCountry_Code_Get] = useState('');
-console.log(selectedServices,'selectedServices');
-const hasTenantRole = selectedServices.includes(2);
-  const hasLandlordRole = selectedServices.includes(3) 
+  console.log(selectedServices, 'selectedServices');
+  const hasTenantRole = selectedServices.includes(2);
+  const hasLandlordRole = selectedServices.includes(3);
   const hasPropertyRole = selectedServices.includes(10);
   const hanContractorRole = selectedServices.includes(4);
   const shouldShowCompanyDetailsTab = hanContractorRole;
@@ -176,6 +178,7 @@ const hasTenantRole = selectedServices.includes(2);
       .get(apiUrl)
       .then(response => {
         // console.log('API Response:', response?.data?.data[0]);
+        // dispatch(fetchLoginSuccess(response?.data?.data[0]));
         setAccountDetails(response?.data?.data[0]);
         setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
@@ -395,6 +398,7 @@ const hasTenantRole = selectedServices.includes(2);
       console.log('updateprofile....', response.data);
       if (response?.data?.success === true) {
         alert(response?.data?.message);
+        // dispatch(fetchLoginSuccess(response?.data?.data?.[0]));
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');
       }
@@ -715,12 +719,14 @@ const hasTenantRole = selectedServices.includes(2);
             <CustomTabNavigator
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              TAB3={shouldShowCompanyDetailsTab ? "TAB3" : null}
+              TAB3={shouldShowCompanyDetailsTab ? 'TAB3' : null}
               Tab1={'Personal Details'}
-              Tab2={shouldShowCompanyDetailsTab ? "Company Details" : 'Documents'}
+              Tab2={
+                shouldShowCompanyDetailsTab ? 'Company Details' : 'Documents'
+              }
               Tab3={'Documents'}
               onPressTab1={() => setActiveTab('Tab1')}
-              onPressTab2={ () => setActiveTab('Tab2') }
+              onPressTab2={() => setActiveTab('Tab2')}
               onPressTab3={() => setActiveTab('Tab3')}
               colorTab1={
                 activeTab === 'Tab1'
@@ -741,14 +747,14 @@ const hasTenantRole = selectedServices.includes(2);
                 activeTab === 'Tab1' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               FONTFAMILY2={
-                activeTab === 'Tab2'  ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+                activeTab === 'Tab2' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               FONTFAMILY3={
                 activeTab === 'Tab3' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
               }
               styleTab1={activeTab === 'Tab1' && EditProfileStyle.activeTab}
-              styleTab2={activeTab === 'Tab2'  ? EditProfileStyle.activeTab : {}}
-  styleTab3={activeTab === 'Tab3' && EditProfileStyle.activeTab}
+              styleTab2={activeTab === 'Tab2' ? EditProfileStyle.activeTab : {}}
+              styleTab3={activeTab === 'Tab3' && EditProfileStyle.activeTab}
             />
           </View>
           <ScrollView>{checkTabs()}</ScrollView>

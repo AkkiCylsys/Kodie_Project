@@ -652,7 +652,7 @@ const PropertyList = props => {
   };
 
   const renderRowButtons = () => {
-    const roleArray = userRole.split(',');
+    const roleArray = userRole ? userRole.split(',') : [];
 
     const hasTenantRole = roleArray.includes('2');
     const hasLandlordRole = roleArray.includes('3');

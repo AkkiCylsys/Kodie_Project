@@ -1,6 +1,3 @@
-//ScreenNo:143
-//ScreenNo:139
-//ScreenNo:121
 import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
@@ -31,17 +28,20 @@ import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
 import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
+  console.log('createJobId.....', createJobId);
   const JobId = props.route.params?.JobId;
+  console.log('JobId in first page..', JobId);
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
   const job_sub_type = props.route.params?.job_sub_type;
   const ReviewInspection = props.route.params?.ReviewInspection;
   const [currentPage, setCurrentPage] = useState(0);
+  const [saveJobId, setSaveJobId] = useState(0);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
   const [takingPlaceError, setTakingPlaceError] = useState(false);
@@ -73,39 +73,70 @@ export default CreateJobFirstScreen = props => {
   const [longitude, setlongitude] = useState('');
   const [arrowIcon, setArrowIcon] = useState(false);
   const [currentLocation, setCurrentLocation] = useState('');
+
+  const [selectedDate, setSelectedDate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  const [hourlyNeedValue, setHourlyNeedValue] = useState(0);
+  const [needServicesValue, setneedServicesValue] = useState(0);
+  const [formattedPriceRanges, setFormattedPriceRanges] = useState('');
+  const [selectedButtonResponsible, setSelectedButtonResponsible] =
+    useState(false);
+  const [selectedButtonBookingInsurance, setSelectedButtonBookingInsurance] =
+    useState(false);
+  const [minBudget, setMinBudget] = useState(0);
+  const [maxBudget, setMaxBudget] = useState(0);
   const loginData = useSelector(state => state.authenticationReducer.data);
 
   // validation.....
   const handleNextbtn = () => {
-    console.log(
-      'selectedAddress?.property_type_id',
-      selectedAddress?.property_type_id,
-    );
-    if (selectJobTypeid == '') {
+    if (selectJobTypeid === '') {
       setSelectJobTypeidError('Please choose an option!');
-    } else if (servicesValue == '') {
+    } else if (servicesValue === '') {
       setservicesValueError(true);
-    } else if (jobPriorityValue == '') {
+    } else if (jobPriorityValue === '') {
       setJobPriorityValueError(true);
-    } else if (selectedAddress == '') {
+    } else if (selectedAddress === '') {
       setTakingPlaceError(true);
     } else {
-      props.navigation.navigate('CreateJobTermsScreen', {
-        selectJobType: selectJobTypeid,
-        servicesValue: servicesValue,
-        aboutyourNeed: aboutyourNeed,
-        jobPriorityValue: jobPriorityValue,
-        property_value: selectedAddress?.property_type_id,
-        location: location || selectedAddress.location,
-        ratingThresholdValue: ratingThresholdValue,
-        latitude: latitude || selectedAddress.latitude,
-        longitude: longitude || selectedAddress.longitude,
-        JobId: JobId,
-        editMode: editMode,
-        myJob: myJob,
-      });
+      if (JobId || saveJobId) {
+        updateCreateJob(); // Call update job if JobId is present
+      } else {
+        handleCreateJob(); // Otherwise, call create job
+      }
     }
   };
+
+  useEffect(() => {
+    handleProperty_Type();
+    Selected_Address_Type();
+    handleJob_priority();
+    handleRatingThreshold();
+    handleJobType();
+    // JobId ?getJobDetails() : null;
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
+    });
+    setservicesValue('');
+    setAboutyourNeed('');
+    setJobPriorityValue('');
+    setProperty_value('');
+    setLocation('');
+    setSelectedAddress('');
+    setRatingThresholdValue('');
+  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (JobId || saveJobId) {
+        getJobDetails(); // Fetch job details when the screen is focused
+      }
+    }, [JobId, saveJobId])
+  );
+  console.log("saveJobId...",saveJobId)
+  useEffect(() => {
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [selectJobType]);
 
   const goBack = () => {
     props.navigation.pop();
@@ -259,34 +290,221 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  useEffect(() => {
-    handleProperty_Type();
-    Selected_Address_Type();
-    handleJob_priority();
-    handleRatingThreshold();
-    handleJobType();
-    JobId > 0 ||
-    (Array.isArray(createJobId) && createJobId.length > 0) ||
-    typeof createJobId === 'number'
-      ? getJobDetails()
-      : null;
-    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
-      language: 'en',
-    });
-    // CheckIOSMapPermission();
-    setservicesValue('');
-    setAboutyourNeed('');
-    setJobPriorityValue('');
-    setProperty_value('');
-    setLocation('');
-    setSelectedAddress('');
-    setRatingThresholdValue('');
-  }, []); //pass the selectJobType in the depandency.
-  useEffect(() => {
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
-  }, [selectJobType]);
+
+  // EditMode ..................
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + 'job/get';
+    console.log('Request URL:', jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id:saveJobId ? saveJobId : JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then(response => {
+        // console.log('API Response JobDetails:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('get job data in first page....', response?.data?.data);
+          setSelectJobTypeid(response?.data?.data?.job_type_key);
+          setIsClick(parseInt(response?.data?.data?.job_type_key));
+          setAboutyourNeed(response?.data?.data?.job_description);
+          setservicesValue(
+            parseInt(response?.data?.data?.job_service_you_looking_key),
+          );
+          setJobPriorityValue(parseInt(response?.data?.data?.job_priority_key));
+          setProperty_value(parseInt(response?.data?.data?.property_type_key));
+          setLocation(response?.data?.data?.job_location);
+          setRatingThresholdValue(
+            parseInt(response?.data?.data?.job_rating_key),
+          );
+          setSelectedAddress({
+            latitude: response?.data?.data?.location_latitude,
+            longitude: response?.data?.data?.location_longitude,
+            location: response?.data?.data?.job_location,
+            property_id: response?.data?.data?.property_id,
+            propertyType: response?.data?.data?.property_type,
+            property_type_id: response?.data?.data?.property_type_key,
+          });
+          setlatitude(response?.data?.data?.location_latitude);
+          setlongitude(response?.data?.data?.location_longitude);
+          handleServices(response?.data?.data.job_type_key);
+          setSelectedDate(
+            response?.data?.data?.job_date === '0' ||
+              response?.data?.data?.job_date === null
+              ? ''
+              : response?.data?.data?.job_date.substring(0, 10),
+          );
+          setCurrentTime(
+            response?.data?.data?.job_time === '0' ||
+              response?.data?.data?.job_time === null
+              ? ''
+              : response?.data?.data?.job_time,
+          );
+          setHourlyNeedValue(parseInt(response?.data?.data?.job_hourly_key));
+          setneedServicesValue(
+            parseInt(response?.data?.data?.job_how_often_key),
+          );
+          setFormattedPriceRanges(response?.data?.data?.job_budget);
+          const payingThis = parseInt(response?.data?.data?.job_payment_by_key);
+          console.log('payingThis...', payingThis);
+          setSelectedButtonResponsible(
+            payingThis === 259 ? false : payingThis === 260 ? true : null,
+          );
+          console.log('selectedButtonResponsible..', selectedButtonResponsible);
+          // setSelectedButtonResponsible(true);
+          setSelectedButtonBookingInsurance(
+            parseInt(response?.data?.data?.job_insurence_key),
+          );
+          setMaxBudget(response?.data?.data?.job_max_budget);
+          setMinBudget(response?.data?.data?.job_min_budget);
+        } else {
+          alert(response?.data?.message);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed JobDetails in Edit mode ', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  // createJOb method...
+  const handleCreateJob = () => {
+    const url = Config.BASE_URL;
+    const createJob_url = url + 'job/create';
+    console.log('Request URL:', createJob_url);
+    setIsLoading(true);
+    const createJob_Data = {
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      type_of_job: selectJobType > 0 ? selectJobType : 0,
+      job_service_you_looking: servicesValue > 0 ? servicesValue : 0,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: selectedAddress?.property_type_id,
+      job_location: selectedAddress?.location,
+      location_latitude: selectedAddress?.latitude,
+      location_longitude: selectedAddress?.longitude,
+      upd_key: selectedAddress?.property_id,
+      job_rating: ratingThresholdValue > 0 ? ratingThresholdValue : 0,
+      job_date: 0,
+      job_time: 0,
+      job_hourly: 0,
+      job_often_need_service: 0,
+      job_min_budget: '',
+      job_max_budget: '',
+      job_payment_by: 0,
+      job_booking_insurance: null,
+      job_sub_type: myJob == 'requested' ? 1 : 0,
+    };
+    console.log('createJob_Data....', createJob_Data);
+    axios
+      .post(createJob_url, createJob_Data)
+      .then(response => {
+        console.log('API Response jobCreate..:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
+          setSaveJobId(response?.data?.job_id);
+          // dispatch(fetchCreateJobSuccess(response?.data?.job_id));
+          props.navigation.navigate('CreateJobTermsScreen', {
+            JobId: response?.data?.job_id,
+            editMode: editMode,
+            selectJobType: selectJobType > 0 ? selectJobType : 0,
+            servicesValue: servicesValue > 0 ? servicesValue : 0,
+            aboutyourNeed: aboutyourNeed,
+            jobPriorityValue: jobPriorityValue,
+            property_value: selectedAddress?.property_type_id,
+            location: selectedAddress?.location,
+            ratingThresholdValue: ratingThresholdValue,
+            latitude: selectedAddress.latitude,
+            longitude: selectedAddress.longitude,
+            jm_upd_key: 0,
+            myJob: myJob,
+            jm_upd_key: selectedAddress?.property_id
+              ? selectedAddress?.property_id
+              : 0,
+          });
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed handleCreateJob', error);
+        setIsLoading(false);
+      });
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
+  };
+
+  const updateCreateJob = () => {
+    console.log('update job ');
+    const url = Config.BASE_URL;
+    const update_createJob_url = url + `job/updateJob/${saveJobId ? saveJobId :JobId}`;
+    console.log('Request URL update:', update_createJob_url);
+    setIsLoading(true);
+    const update_createJob_Data = {
+      type_of_job: selectJobTypeid,
+      job_service_you_looking: servicesValue ? servicesValue : 0,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: selectedAddress?.property_type_id,
+      job_location: selectedAddress?.location,
+      location_longitude: selectedAddress?.longitude,
+      location_latitude: selectedAddress?.latitude,
+      jm_upd_key: selectedAddress?.property_id
+        ? selectedAddress?.property_id
+        : 0,
+      job_rating: ratingThresholdValue > 0 ? ratingThresholdValue : 0,
+      job_date: selectedDate ? selectedDate : 0,
+      job_time: currentTime ? currentTime : 0,
+      job_hourly: hourlyNeedValue ? hourlyNeedValue : 0,
+      job_often_need_service: needServicesValue ? needServicesValue : 0,
+      job_min_budget: '',
+      job_max_budget: '',
+      job_payment_by: selectedButtonResponsible == true ? 260 : 259,
+      job_booking_insurance: null,
+    };
+    console.log('updatedBody.....', update_createJob_Data);
+    axios
+      .put(update_createJob_url, update_createJob_Data)
+      .then(response => {
+        console.log('API Response updateCreateJob..:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
+          props.navigation.navigate('CreateJobTermsScreen', {
+            JobId:saveJobId ? saveJobId: JobId,
+            editMode: editMode,
+            selectJobType: selectJobTypeid,
+            servicesValue: servicesValue,
+            aboutyourNeed: aboutyourNeed,
+            jobPriorityValue: jobPriorityValue,
+            property_value: selectedAddress?.property_type_id,
+            location: location || selectedAddress.location,
+            ratingThresholdValue: ratingThresholdValue,
+            latitude: latitude || selectedAddress.latitude,
+            longitude: longitude || selectedAddress.longitude,
+            myJob: myJob,
+            jm_upd_key: selectedAddress?.property_id
+              ? selectedAddress?.property_id
+              : 0,
+          });
+        } else {
+          alert(response?.data?.message);
+        }
+      })
+      .catch(error => {
+        console.error('API failed updateCreateJob', error);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const Selected_Time_render = item => {
     const isSelected = selectedAddress?.property_id === item.property_id;
 
@@ -568,7 +786,6 @@ export default CreateJobFirstScreen = props => {
           setJobPriorityData(response?.data?.lookup_details);
         } else {
           console.error('Job_priority_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -607,7 +824,6 @@ export default CreateJobFirstScreen = props => {
       })
       .catch(error => {
         console.error('RatingThreshold error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -635,7 +851,6 @@ export default CreateJobFirstScreen = props => {
       })
       .catch(error => {
         console.error('JobType error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -643,7 +858,6 @@ export default CreateJobFirstScreen = props => {
   const handleServices = selectJobType => {
     let P_PARENT_CODE = null;
 
-    // Map CompanyjobType to P_PARENT_CODE
     switch (selectJobType) {
       case 166:
         P_PARENT_CODE = 'HOME_CLEANING';
@@ -676,8 +890,6 @@ export default CreateJobFirstScreen = props => {
       const propertyType = url + 'lookup_details';
       console.log('Request URL:', propertyType);
       setIsLoading(true);
-
-      // Make POST request with axios
       axios
         .post(propertyType, propertyData)
         .then(response => {
@@ -698,59 +910,6 @@ export default CreateJobFirstScreen = props => {
     }
   };
 
-  // EditMode ..................
-  const getJobDetails = () => {
-    const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
-    setIsLoading(true);
-    const jobDetails_Data = {
-      jm_job_id:
-        createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
-    };
-    axios
-      .post(jobDetails_url, jobDetails_Data)
-      .then(response => {
-        // console.log('API Response JobDetails:', response?.data);
-        if (response?.data?.success === true) {
-          setJobDetailsData(response?.data?.data);
-          console.log('jobDetailsData....', response?.data?.data);
-          setSelectJobTypeid(response?.data?.data?.job_type_key);
-          setIsClick(parseInt(response?.data?.data?.job_type_key));
-          setAboutyourNeed(response?.data?.data?.job_description);
-          setservicesValue(
-            parseInt(response?.data?.data?.job_service_you_looking_key),
-          );
-          setJobPriorityValue(parseInt(response?.data?.data?.job_priority_key));
-          setProperty_value(parseInt(response?.data?.data?.property_type_key));
-          setLocation(response?.data?.data?.job_location);
-          setRatingThresholdValue(
-            parseInt(response?.data?.data?.job_rating_key),
-          );
-          setSelectedAddress({
-            latitude: response?.data?.data?.location_latitude,
-            longitude: response?.data?.data?.location_longitude,
-            location:response?.data?.data?.job_location,
-            property_id: response?.data?.data?.property_id,
-            propertyType: response?.data?.data?.property_type,
-            property_type_id: response?.data?.data?.property_type_key,
-          })
-          setlatitude(response?.data?.data?.location_latitude);
-          setlongitude(response?.data?.data?.location_longitude);
-          handleServices(response?.data?.data.job_type_key);
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed JobDetails in Edit mode ', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: 'PROP_TYPE',
@@ -903,9 +1062,9 @@ export default CreateJobFirstScreen = props => {
                 style={[
                   CreateJobFirstStyle.dropdown,
                   {
-                      borderColor: servicesValueError
-                        ? _COLORS?.Kodie_redColor
-                        : _COLORS?.Kodie_GrayColor,
+                    borderColor: servicesValueError
+                      ? _COLORS?.Kodie_redColor
+                      : _COLORS?.Kodie_GrayColor,
                   },
                 ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -1029,9 +1188,9 @@ export default CreateJobFirstScreen = props => {
                 style={[
                   CreateJobFirstStyle.dropdown,
                   {
-                      borderColor: takingPlaceError
-                        ? _COLORS?.Kodie_redColor
-                        : _COLORS?.Kodie_GrayColor,
+                    borderColor: takingPlaceError
+                      ? _COLORS?.Kodie_redColor
+                      : _COLORS?.Kodie_GrayColor,
                   },
                 ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}

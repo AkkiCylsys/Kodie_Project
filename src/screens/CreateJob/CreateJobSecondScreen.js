@@ -1,5 +1,3 @@
-//ScreenNo:126
-//ScreenNo:127
 import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
@@ -10,7 +8,6 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-import StepText from '../../components/Molecules/StepText/StepText';
 import {CreateJobSecondStyle} from './CreateJobSecondScreenCss';
 import {_COLORS, LABEL_STYLES, BANNERS} from '../../Themes/index';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
@@ -20,9 +17,7 @@ import {SliderBox} from 'react-native-image-slider-box';
 import UploadImageBoxes from '../../components/Molecules/UploadImageBoxes/UploadImageBoxes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../components/Molecules/UploadImage/UploadImage';
 import UploadMultipleImage from '../../components/Molecules/UploadImage/UploadMultipleImage';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -35,36 +30,60 @@ import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader
 import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../Config';
 import axios from 'axios';
+import {useFocusEffect} from '@react-navigation/native';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
-const images = [
-  BANNERS.wallImage,
-  BANNERS.BannerFirst,
-  BANNERS.BannerSecond,
-  BANNERS.previewImage,
-];
 const CreateJobSecondScreen = props => {
+  const videoRef = useRef(null);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId.....', createJobId);
-  // console.log('loginResponse.....', loginData);
-  // alert(loginData?.Login_details?.user_account_id);
 
-  // validation...
+  // const handleValidate = () => {
+  //   if (
+  //     // editMode ||
+  //     (updateAllImage &&
+  //       updateAllImage.length === 0 &&
+  //       allImagePaths.length === 0) ||
+  //     (MultiImageName.length === 0 && allImagePaths.length === 0) ||
+  //     selectedVideos.length === 0
+  //   ) {
+  //     props.navigation.navigate('JobDetails', {
+  //       JobId: JobId,
+  //       editMode: editMode,
+  //     });
+  //   } else {
+  //     if (editMode) {
+  //       // handleUpdateJobFiles();
+  //       alert('upadte image');
+  //       handleUpdateAndNavigate();
+  //     } else if (MultiImageName.length > 0 ||  selectedVideos.length > 0) {
+  //       // handleuploadJobFiles();\
+  //       alert('upload image');
+  //       handleUploadAndNavigate();
+  //     }
+  //   }
+  // };
+
   const handleValidate = () => {
-    if (editMode || (updateAllImage && updateAllImage.length > 0)) {
-      if (allImagePaths.length === 0) {
-        props.navigation.navigate('JobDetails', {
-          JobId: JobId,
-          editMode: editMode,
-        });
-      } else {
-        handleUpdateJobFiles();
-      }
-    } else if (MultiImageName.length > 0) {
-      handleuploadJobFiles();
+    const isImagesEmpty =
+      updateAllImage &&
+      updateAllImage.length === 0 &&
+      allImagePaths.length === 0 &&
+      MultiImageName.length === 0 &&
+      allImagePaths.length === 0;
+
+    const isVideosEmpty = selectedVideos.length === 0;
+    if (isImagesEmpty && isVideosEmpty) {
+      props.navigation.navigate('JobDetails', {
+        JobId: JobId,
+        editMode: editMode,
+      });
     } else {
-      setMultiImageNameError('Front images required!');
-      console.log('err...', MultiImageNameError);
+      if (editMode) {
+        handleUpdateAndNavigate();
+      } else if (!isImagesEmpty || !isVideosEmpty) {
+        handleUploadAndNavigate();
+      }
     }
   };
 
@@ -89,13 +108,13 @@ const CreateJobSecondScreen = props => {
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
-  useEffect(() => {
-    JobId > 0 ||
-    (Array.isArray(createJobId) && createJobId.length > 0) ||
-    typeof createJobId === 'number'
-      ? getJobDetails()
-      : null;
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (JobId > 0) {
+        getJobDetails();
+      }
+    }, [JobId]),
+  );
   const CloseUp = () => {
     refRBSheet.current.close();
     console.log('close');
@@ -208,52 +227,189 @@ const CreateJobSecondScreen = props => {
     updatedVideos.splice(indexToRemove, 1);
     setSelectedVideos(updatedVideos);
   };
-
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: true,
+      multiple: false, // Disable multiple selection
     })
-      .then(videos => {
-        setSelectedVideos([...selectedVideos, ...videos]);
-        console.log('videos....', videos);
+      .then(video => {
+        if (video) {
+          setSelectedVideos([video]); // Set only one video
+          console.log('Video selected:', video);
+        } else {
+          console.log('No video selected.');
+        }
       })
       .catch(error => {
-        console.error('Error selecting videos:', error);
+        console.error('Error selecting video:', error);
       });
   };
+
+  console.log('selectedVideos .....', selectedVideos);
   const handlefrontImage = multipleImages => {
-    // setMultiImageName(multipleImages);
     setMultiImageName([...MultiImageName, ...multipleImages]);
     console.log('................multiFrontImage', multipleImages);
-    // console.log("................ImageNAmepath", multipleImages.path);
   };
   const handleleftImage = leftImages => {
-    // setLeftImage(leftImage);
     setLeftImage([...leftImage, ...leftImages]);
     console.log('................leftImage', leftImage);
-    // console.log("................ImageNAmepath", multipleImages.path);
   };
   const handleRightImage = rightImages => {
     setRightImage([...rightImage, ...rightImages]);
     console.log('................RightImage', rightImage);
-    // console.log("................ImageNAmepath", multipleImages.path);
   };
 
   const imagePaths = MultiImageName.map(item => item.path);
-  console.log('imagePaths....', imagePaths);
-
   const leftImagePaths = leftImage.map(item => item.path);
-  console.log('leftImagePaths....', leftImagePaths);
-
   const rightImagePaths = rightImage.map(item => item.path);
-  console.log('rightImagePaths....', rightImagePaths);
 
   const allImagePaths = [
     ...new Set([...imagePaths, ...leftImagePaths, ...rightImagePaths]),
   ];
-  console.log('allImagePaths....', allImagePaths.length);
   // Api intrigation......
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + 'job/get';
+    console.log('Request URL:', jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then(response => {
+        console.log('API Response JobDetails for updateImage:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          const images = response?.data?.data?.image_file_path || [];
+          setUpdateAllImage(images);
+          console.log('updateAllImage.....', images);
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed jobDetails in edit mode ', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handleUpdateAndNavigate = async () => {
+    // if (videoRef.current) {
+    //   videoRef.current.pause();
+    // }
+    await handleUpdateJobFiles();
+  };
+  const handleUpdateJobFiles = async () => {
+    const formData = new FormData();
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      const imagePaths = MultiImageName.map(image => image.path);
+      imagePaths.forEach((path, index) => {
+        console.log('update time image path..', path);
+        formData.append('frontImage', {
+          uri: path,
+          name: String(path.split('/').pop()) || `image.jpg`,
+          type: 'image/jpeg',
+        });
+      });
+    } else {
+      console.error(
+        'MultiImageName is not defined or not an array:',
+        MultiImageName,
+      );
+      return;
+    }
+
+    if (leftImage && Array.isArray(leftImage)) {
+      const leftImagePaths = leftImage.map(image => image.path);
+
+      leftImagePaths.forEach((path, index) => {
+        formData.append('leftImage', {
+          uri: path,
+          name: String(path.split('/').pop()) || `left_image.jpg`,
+          type: 'image/jpeg',
+        });
+      });
+    } else {
+      console.error('leftImage is not defined or not an array:', leftImage);
+      return;
+    }
+
+    if (rightImage && Array.isArray(rightImage)) {
+      const rightImagePaths = rightImage.map(image => image.path);
+      rightImagePaths.forEach((path, index) => {
+        formData.append('rightImage', {
+          uri: path,
+          name: String(path.split('/').pop()) || `right_image_${index}.jpg`,
+          type: 'image/jpeg',
+        });
+      });
+    } else {
+      console.error('rightImage is not defined or not an array:', rightImage);
+      return;
+    }
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoInfo, index) => {
+        const {path, mime} = videoInfo;
+        const videoName = path.substring(path.lastIndexOf('/') + 1);
+        formData.append(`video`, {
+          uri: path,
+          name: videoName,
+          type: mime,
+        });
+      });
+    } else {
+      console.log('invalid video');
+    }
+
+    // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
+    console.log('formData', formData);
+    console.log('length data ...', formData.length);
+    const url = Config.BASE_URL;
+    const update_uploadFile_url =
+      url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
+    console.log('Request URL image:', update_uploadFile_url);
+    setIsLoading(true);
+    try {
+      const response = await axios.put(update_uploadFile_url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('update_uploadJobFilesData....', response?.data);
+      if (response?.data?.success === true) {
+        setIsLoading(false);
+        alert(response?.data?.message);
+        props.navigation.navigate('JobDetails', {
+          JobId: JobId,
+          // JobId: JobId > 0 ? JobId : job_id,
+          editMode: editMode,
+        });
+        console.log('update_uploadJobFilesDatas', response?.data);
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
+        setSelectedVideos([]);
+      } else {
+        console.log('update_uploadJobFilesData', response?.data?.error);
+        // alert('Oops Somthing went wrong! please try again later.');
+      }
+    } catch (error) {
+      // alert(error);
+      console.log('update_error...', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleUploadAndNavigate = async () => {
+    // if (videoRef.current) {
+    //   videoRef.current.pause();
+    // }
+    await handleuploadJobFiles();
+  };
   const handleuploadJobFiles = async () => {
     const formData = new FormData();
     formData.append('JM_JOB_ID', JobId > 0 ? JobId : job_id);
@@ -336,12 +492,14 @@ const CreateJobSecondScreen = props => {
         Alert.alert('Success', response?.data?.message);
         // props.navigation.navigate('JobDetails', {job_id: job_id});
         props.navigation.navigate('JobDetails', {
-          job_id: JobId > 0 ? JobId : job_id,
+          // job_id: JobId > 0 ? JobId : job_id,
+          JobId: JobId,
         });
         // clear state for image..
-        // setMultiImageName([]);
-        // setLeftImage([]);
-        // setRightImage([]);
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
+        setSelectedVideos([]);
       } else {
         const errorMessage = response?.data
           ? response?.data?.error
@@ -358,144 +516,9 @@ const CreateJobSecondScreen = props => {
     }
   };
 
-  const getJobDetails = () => {
-    const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
-    setIsLoading(true);
-    const jobDetails_Data = {
-      jm_job_id: JobId,
-    };
-    axios
-      .post(jobDetails_url, jobDetails_Data)
-      .then(response => {
-        console.log('API Response JobDetails for updateImage:', response?.data);
-        if (response?.data?.success === true) {
-          setJobDetailsData(response?.data?.data);
-          console.log('jobDetailsData_term....', response?.data?.data);
-          const images = response?.data?.data?.image_file_path || [];
-          setUpdateAllImage(images);
-          console.log('updateAllImage.....', images);
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed jobDetails in edit mode ', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-  const handleUpdateJobFiles = async () => {
-    const formData = new FormData();
-    if (MultiImageName && Array.isArray(MultiImageName)) {
-      const imagePaths = MultiImageName.map(image => image.path);
-      imagePaths.forEach((path, index) => {
-        console.log('update time image path..', path);
-        formData.append('frontImage', {
-          uri: path,
-          name: String(path.split('/').pop()) || `image.jpg`,
-          type: 'image/jpeg',
-        });
-      });
-    } else {
-      console.error(
-        'MultiImageName is not defined or not an array:',
-        MultiImageName,
-      );
-      return;
-    }
-
-    if (leftImage && Array.isArray(leftImage)) {
-      const leftImagePaths = leftImage.map(image => image.path);
-
-      leftImagePaths.forEach((path, index) => {
-        formData.append('leftImage', {
-          uri: path,
-          name: String(path.split('/').pop()) || `left_image.jpg`,
-          type: 'image/jpeg',
-        });
-      });
-    } else {
-      console.error('leftImage is not defined or not an array:', leftImage);
-      return;
-    }
-
-    if (rightImage && Array.isArray(rightImage)) {
-      const rightImagePaths = rightImage.map(image => image.path);
-      rightImagePaths.forEach((path, index) => {
-        formData.append('rightImage', {
-          uri: path,
-          name: String(path.split('/').pop()) || `right_image_${index}.jpg`,
-          type: 'image/jpeg',
-        });
-      });
-    } else {
-      console.error('rightImage is not defined or not an array:', rightImage);
-      return;
-    }
-    if (selectedVideos && selectedVideos.length > 0) {
-      selectedVideos.forEach((videoInfo, index) => {
-        const {path, mime} = videoInfo;
-        console.log('path..', path);
-        console.log('mime..', mime);
-        const videoName = path.substring(path.lastIndexOf('/') + 1);
-        formData.append('video', {
-          uri: path,
-          name: videoName,
-          type: mime,
-        });
-      });
-    } else {
-      console.log('invalid video');
-    }
-
-    // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
-    console.log('formData', formData);
-    console.log('length data ...', formData.length);
-    const url = Config.BASE_URL;
-    const update_uploadFile_url =
-      url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
-    console.log('Request URL image:', update_uploadFile_url);
-    setIsLoading(true);
-    try {
-      const response = await axios.put(update_uploadFile_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('update_uploadJobFilesData....', response?.data);
-      if (response?.data?.success === true) {
-        setIsLoading(false);
-        alert(response?.data?.message);
-        props.navigation.navigate('JobDetails', {
-          // JobId: JobId,
-          JobId: JobId > 0 ? JobId : job_id,
-          editMode: editMode,
-        });
-        console.log('update_uploadJobFilesDatas', response?.data);
-        // setMultiImageName([]);
-        // setLeftImage([]);
-        // setRightImage([]);
-      } else {
-        console.log('update_uploadJobFilesData', response?.data?.error);
-        // alert('Oops Somthing went wrong! please try again later.');
-      }
-    } catch (error) {
-      // alert(error);
-      console.log('update_error...', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <SafeAreaView style={CreateJobSecondStyle.container}>
       <TopHeader
-        // isprofileImage
-        // IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />
@@ -503,7 +526,6 @@ const CreateJobSecondScreen = props => {
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={2}
-          // onPress={onStepPress}
           renderStepIndicator={renderStepIndicator}
           labels={stepLabels}
           stepCount={4}
@@ -551,7 +573,7 @@ const CreateJobSecondScreen = props => {
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the front profile'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              {/* <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text> */}
             </Text>
             <AntDesign
               name="questioncircle"
@@ -570,11 +592,11 @@ const CreateJobSecondScreen = props => {
             {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
           </View>
 
-          {MultiImageName.length > 0 ? null : (
+          {/* {MultiImageName.length > 0 ? null : (
             <Text style={CreateJobSecondStyle.error_text}>
               {MultiImageNameError}
             </Text>
-          )}
+          )} */}
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the left side profile'}
@@ -628,13 +650,11 @@ const CreateJobSecondScreen = props => {
           <UploadImageBoxes
             Box_Text={'Add Video'}
             onPress={() => {
-              // refRBSheet.current.open();
               openVideoPicker();
             }}
           />
           {selectedVideos.length > 0 && (
             <View style={{marginTop: 10}}>
-              {/* <Text>Selected Videos:</Text> */}
               <FlatList
                 horizontal
                 data={selectedVideos}
@@ -642,15 +662,13 @@ const CreateJobSecondScreen = props => {
                 renderItem={({item, index}) => (
                   <View>
                     <Video
+                      ref={videoRef}
                       source={{uri: item.path}}
                       style={{
-                        // flex:1,
-                        width: 310,
-                        // width: "100%",
+                        flex: 1,
+                        width: 325,
                         height: 150,
                         borderRadius: 5,
-                        marginLeft: 10,
-                        // backgroundColor: "black",
                         borderWidth: 1,
                         borderColor: _COLORS.Kodie_GrayColor,
                         marginTop: 10,
@@ -664,7 +682,6 @@ const CreateJobSecondScreen = props => {
                         right: 5,
                         backgroundColor: 'rgba(255,255,255,0.7)',
                         borderRadius: 15,
-                        // padding: 3,
                         justifyContent: 'center',
                         width: '12%',
                         height: '20%',
@@ -675,12 +692,10 @@ const CreateJobSecondScreen = props => {
                         size={20}
                         color={_COLORS.Kodie_BlackColor}
                         style={{
-                          // marginTop: 10,
                           alignSelf: 'center',
                         }}
                       />
                     </TouchableOpacity>
-                    {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                   </View>
                 )}
               />
@@ -692,8 +707,6 @@ const CreateJobSecondScreen = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                // props.navigation.navigate("JobDetails");
-                // handleuploadJobFiles();
                 handleValidate();
               }}
             />
@@ -714,7 +727,6 @@ const CreateJobSecondScreen = props => {
           </TouchableOpacity>
           <RBSheet
             ref={refRBSheet}
-            // closeOnDragDown={true}
             closeOnPressMask={false}
             height={180}
             customStyles={{
@@ -729,7 +741,6 @@ const CreateJobSecondScreen = props => {
             <UploadMultipleImage
               onClose={CloseUp}
               heading_Text={'Upload image'}
-              // multipleImage={handleImageNameChange}
               multipleImage={handlefrontImage}
             />
           </RBSheet>
@@ -755,7 +766,6 @@ const CreateJobSecondScreen = props => {
           </RBSheet>
           <RBSheet
             ref={refRBSheet2}
-            // closeOnDragDown={true}
             closeOnPressMask={false}
             height={180}
             customStyles={{

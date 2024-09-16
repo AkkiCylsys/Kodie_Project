@@ -23,9 +23,9 @@ const BottomModalData = ({
   onDeleteData,
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const userRole = loginData?.Account_details[0]?.user_role_id;
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '3,4';
-  const roleArray = userRole.split(',');
+  const roleArray = userRole ? userRole.split(',') : [];
   const hasLandlordRole = roleArray.includes('3');
 
   const options = hasLandlordRole
