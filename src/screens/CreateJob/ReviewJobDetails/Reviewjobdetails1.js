@@ -169,7 +169,7 @@ const Reviewjobdetails1 = props => {
                 : moment(jobDetailsData.job_date).format('MMM DD, YYYY' || '')
             }
           />
-          <RowTexts
+          {/* <RowTexts
             leftText={'Proposed time'}
             rightText={
               jobDetailsData.job_time === 'null' ||
@@ -181,6 +181,18 @@ const Reviewjobdetails1 = props => {
                 ? `${moment(jobDetailsData.job_time, 'h:mm a').format(
                     'h:mm A',
                   )} - ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
+                    'h:mm A',
+                  )}`
+                : ''
+            }
+          /> */}
+          <RowTexts
+            leftText={'Proposed time'}
+            rightText={
+              jobDetailsData.proposed_time === ''
+                ? '-'
+                : jobDetailsData.proposed_time
+                ? ` ${moment(jobDetailsData.proposed_time, 'h:mm a').format(
                     'h:mm A',
                   )}`
                 : ''

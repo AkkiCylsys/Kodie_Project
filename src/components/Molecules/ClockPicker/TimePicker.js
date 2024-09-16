@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, Keyboard } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
@@ -42,6 +42,7 @@ const TimePicker = (props) => {
           props.timerConStyle,
         ]}
         onPress={() => {
+          Keyboard.dismiss();
           setDatePickerVisibility(true);
         }}
       >
@@ -67,6 +68,7 @@ const TimePicker = (props) => {
           <TouchableOpacity
             disabled={props?.isDisable ? true : false}
             onPress={() => {
+              Keyboard.dismiss();
               setDatePickerVisibility(true);
             }}
             style={[clockStyle.mainView]}

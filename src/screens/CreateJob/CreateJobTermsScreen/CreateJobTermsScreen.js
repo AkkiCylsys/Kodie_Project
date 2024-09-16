@@ -625,7 +625,7 @@ export default CreateJobTermsScreen = props => {
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{'Terms'}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {' What date and time would you prefer?'}
+            {'What date and time would you prefer?'}
             <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
