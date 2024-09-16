@@ -5,9 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  Image,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { PropertyReviewStyle } from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -15,8 +13,6 @@ import { _goBack } from '../../../../services/CommonServices';
 import { SliderBox } from 'react-native-image-slider-box';
 import {
   _COLORS,
-  BANNERS,
-  IMAGES,
   LABEL_STYLES,
   FONTFAMILY,
 } from '../../../../Themes';
@@ -29,7 +25,6 @@ import Share from 'react-native-share';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import { Config } from '../../../../Config';
 import axios from 'axios';
-import StepIndicator from 'react-native-step-indicator';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -40,33 +35,16 @@ import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/Acti
 import { DetailsStyle } from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-
-import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import { BackHandler } from 'react-native';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { clockRunning } from 'react-native-reanimated';
-
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 import Geolocation from '@react-native-community/geolocation';
-const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReviewDetails = props => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation()
   const property_id = props?.route?.params?.property_id;
-
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
   const propertyVacantListing = props?.route?.params?.propertyVacantListing;
   const backProperty = props?.route?.params?.backProperty;
-  const MultiImageName = props?.route?.params?.MultiImageName;
-  const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
   const DocTab = props?.route?.params?.DocTab;
-  console.log('DocTab..', DocTab);
-  console.log(propertyView, propertyid);
-  console.log('propertyid...', propertyid);
-  console.log('propertyView.....', propertyView);
   const [activeTab, setActiveTab] = useState('Tab4');
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
@@ -78,27 +56,22 @@ export default PropertyReviewDetails = props => {
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
   const [like, setLike] = useState(false);
-  const [addtionalFeaturesID, setAddtionalFeaturesID] = useState('');
+  const [addtionalFeaturesID, setAddtionalFeaturesID] = useState([]);
   const [propertyDetailsClp, setPropertyDetailsClp] = useState(false);
   const [roomClp, setRoomClp] = useState(false);
   const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
   const [pointOfInterest, setPointOfInterest] = useState(false);
-  const [GenerateLink, setGenerateLink] = useState("");
-  const buildLink = async () => {
+  const shareContent = async () => {
+    const shareOptions = {
+      message: `Check out this page: https://kodie.com/PropertyReviewDetails/${propertyid}`,  // Include id in the deep link
+    };
     try {
-      const link = await dynamicLinks().buildLink({
-        link: `https://kodie.page.link/DwNd?page=PropertyReviewDetails&id=${propertyid}`, // Use the current page parameters
-        domainUriPrefix: 'https://kodie.page.link',
-        analytics: {
-          campaign: 'banner',
-        },
-      });
-      setGenerateLink(link);
-      console.log('Generated Link:', link);
+      await Share.open(shareOptions);
     } catch (error) {
-      console.error('Failed to build dynamic link:', error);
+      console.log(error);
     }
   };
+
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -107,7 +80,6 @@ export default PropertyReviewDetails = props => {
         console.log(latitude,longitude);
         fetchPointsOfInterest(latitude,longitude);
         // fetchPointsOfInterest("27.149994", "79.499901");
-
       },
       error => console.error(error),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
@@ -184,46 +156,6 @@ export default PropertyReviewDetails = props => {
      
     </View>
   );
-  // Function to share the generated link
-  const shareContent = async () => {
-    const shareOptions = {
-      title: 'Share this page',
-      message: property_Detail?.property_type,
-      url: GenerateLink,
-    };
-
-    try {
-      const shareResponse = await Share.open(shareOptions);
-      console.log('Share Response:', shareResponse);
-    } catch (error) {
-      if (error.message === 'User did not share') {
-        console.log('User canceled the sharing action.');
-      } else {
-        console.log('Error while sharing:', error);
-      }
-    }
-  };
-
-  // Build link when component mounts
-  useEffect(() => {
-    buildLink(propertyid);
-  }, []);
-  const shareDocFile = async () => {
-    setTimeout(() => {
-      Share.open({ url: inviteFriendPath })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          err && console.log(err);
-        });
-    }, 300);
-    // try {
-    //   await Share.open({url: inviteFriendPath});
-    // } catch (error) {
-    //   console.error('Error sharing property ', error);
-    // }
-  };
   const iconMapping = {
     Pool: { component: MaterialIcons, name: 'pool' },
     Garage: { component: MaterialCommunityIcons, name: 'garage' },
@@ -322,8 +254,11 @@ export default PropertyReviewDetails = props => {
       const additionalFeatures_id =
         response?.data?.property_details[0].additional_features_id;
       console.log('additionalFeaturesid....', additionalFeatures_id);
-      const is_additionalFeaturesid = additionalFeatures_id.split(',');
-      setAddtionalFeaturesID(is_additionalFeaturesid);
+      const additionalFeaturesIds = additionalFeatures_id
+      .split(',')
+      .map(value => value.trim()); // ['1', '1', '1', '0']
+      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+      setAddtionalFeaturesID(additionalFeaturesIds);
     } catch (error) {
       console.error('Error:', error);
       setIsLoading(false);
@@ -355,99 +290,7 @@ export default PropertyReviewDetails = props => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
   }, []);
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
-    const iconConfig = {
-      name: 'feed',
-      color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
-      size: 20,
-    };
 
-    switch (position) {
-      case 0: {
-        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
-        break;
-      }
-      case 1: {
-        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
-        break;
-      }
-      case 2: {
-        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
-        break;
-      }
-      case 3: {
-        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-    return iconConfig;
-  };
-  const firstIndicatorSignUpStepStyle = {
-    stepIndicatorSize: 40,
-    currentStepIndicatorSize: 20,
-    separatorStrokeWidth: 1,
-    currentStepStrokeWidth: 2,
-    separatorFinishedColor: _COLORS.Kodie_GrayColor,
-    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
-    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
-    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
-    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
-    stepIndicatorLabelFontSize: 15,
-    currentStepIndicatorLabelFontSize: 15,
-    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
-    labelColor: _COLORS.Kodie_BlackColor,
-    labelSize: 14,
-    labelAlign: 'center',
-  };
-  const renderStepIndicator = params => (
-    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
-  );
-  const renderLabel = ({ position, stepStatus }) => {
-    const iconColor =
-      position === currentPage
-        ? _COLORS.Kodie_BlackColor
-        : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
-    const iconName =
-      position === 0
-        ? 'Details'
-        : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
-
-    return (
-      <View style={{}}>
-        <Text
-          style={{
-            fontSize: 14,
-            marginTop: 1,
-            marginHorizontal: 10,
-            color: iconColor,
-            alignSelf: 'center',
-          }}>{`Step ${position + 1}`}</Text>
-        <Text
-          style={{
-            fontSize: 14,
-            marginTop: 5,
-            marginHorizontal: 10,
-            color: iconColor,
-          }}>
-          {iconName}
-        </Text>
-      </View>
-    );
-  };
   const goBack = () => {
     props.navigation.pop();
   };
@@ -468,7 +311,7 @@ export default PropertyReviewDetails = props => {
     console.error('Detail is not an array:', Detail);
   }
 
-  console.log('Parking / garage spaces value:', parkingSpaceValue);
+  console.log('Parking / garage spaces value:', addtionalFeaturesID);
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -594,7 +437,7 @@ export default PropertyReviewDetails = props => {
                             LABEL_STYLES.commontext,
                             { fontFamily: FONTFAMILY.K_Medium },
                           ]}>
-                          {addtionalFeaturesID[0]}
+                          {addtionalFeaturesID[3] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
@@ -607,7 +450,7 @@ export default PropertyReviewDetails = props => {
                             LABEL_STYLES.commontext,
                             { fontFamily: FONTFAMILY.K_Medium },
                           ]}>
-                          {addtionalFeaturesID[1] == 'Furnished' ? 'Yes' : 'No'}
+                          {addtionalFeaturesID[0] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
@@ -910,18 +753,6 @@ export default PropertyReviewDetails = props => {
               </View>
               {propertyView ? null : (
                 <>
-                  {/* <View style={PropertyReviewStyle.btnView}>
-                    <CustomSingleButton
-                      _ButtonText={
-                        editMode
-                          ? 'Edit property features later'
-                          : 'Add property features later'
-                      }
-                      Text_Color={_COLORS.Kodie_BlackColor}
-                      backgroundColor={_COLORS.Kodie_WhiteColor}
-                      disabled={isLoading ? true : false}
-                    />
-                  </View> */}
                   <TouchableOpacity
                     style={PropertyReviewStyle.goBack_View}
                     onPress={() => {
@@ -946,35 +777,11 @@ export default PropertyReviewDetails = props => {
       case 'Tab2':
         return (
           <Leases property_id={propertyid} />
-          // <>
-          // {Alert.alert('Lease', 'Coming soon', [
-          //   {
-          //     text: 'OK',
-          //     onPress: () => {
-          //       console.log('OK Pressed');
-          //       setActiveTab('Tab1');
-          //     },
-          //   },
-          // ])}
-          // </>
-
         );
 
       case 'Tab3':
         return (
           <Expenses property_id={propertyid} />
-          // // Alert.alert('Alert!', 'Coming soon')
-          // <>
-          // {Alert.alert('Expenses', 'Coming soon', [
-          //   {
-          //     text: 'OK',
-          //     onPress: () => {
-          //       console.log('OK Pressed');
-          //       setActiveTab('Tab1');
-          //     },
-          //   },
-          // ])}
-          // </>
         );
       case 'Tab4':
         return (
@@ -998,7 +805,6 @@ export default PropertyReviewDetails = props => {
     <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={
-          // propertyView ? () => props.navigation.navigate('Properties') : goBack
           backProperty
             ? () => props.navigation.navigate('Properties')
             : propertyVacantListing
@@ -1013,21 +819,6 @@ export default PropertyReviewDetails = props => {
               : 'Add new property'
         }
       />
-      {propertyView || propertyVacantListing ? null : (
-        <View
-          style={{
-            marginTop: 15,
-          }}>
-          <StepIndicator
-            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-            currentPosition={currentPage}
-            renderStepIndicator={renderStepIndicator}
-            labels={stepLabels}
-            stepCount={4}
-            renderLabel={renderLabel}
-          />
-        </View>
-      )}
       <ScrollView contentContainerStyle={{}}>
         {propertyView || propertyVacantListing ? null : (
           <View style={[PropertyReviewStyle.headingView]}>

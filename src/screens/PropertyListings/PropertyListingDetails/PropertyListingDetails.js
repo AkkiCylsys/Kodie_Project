@@ -25,8 +25,10 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import ToggleButton from "../../../components/Molecules/ToggleButton/ToggleButton";
 import { Divider } from "react-native-paper";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import { insertMarketDetails } from "../../../services/PropertyListing/ListingServices";
+import { AddBidDetails, insertMarketDetails } from "../../../services/PropertyListing/ListingServices";
 import { useSelector } from "react-redux";
+import { Config } from "../../../Config";
+import axios from "axios";
 
 const PropertyListingDetail = (props) => {
   const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(false);
@@ -146,8 +148,41 @@ const PropertyListingDetail = (props) => {
     }
     if (isValid) {
       handleInsertList();
+      handle_addlease_Bid();
      }
   }
+  const handle_addlease_Bid = async () => {
+    setIsLoading(true);
+    const Bid_Data = {
+      user_id: loginData?.Login_details?.user_id,
+      account_id: loginData?.Login_details?.user_account_id,
+      property_id: propertyid,
+      commencement_date: "2024-09-19 18:05:12",
+      duration: 314,
+      list_price:ListPrice,
+      auto_threshold:"1000",
+      notif_type: 1,
+      bid_open_reminder: 0,
+      bid_open_day: 86,
+      bid_open_before: 0,
+      bid_close_reminder: "0",
+      bid_close_day: 116,
+      bid_close_before: '0',
+      new_bid: 0,
+      new_bid_days: "358",
+      new_bid_before: "0",
+    };
+    console.log(Bid_Data);
+    try {
+      const response = await AddBidDetails(Bid_Data);
+      console.log(response,"bidresponse");
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error,'fkdd');
+      // Alert.alert('Error', 'Failed to insert market details.');
+      setIsLoading(false)
+    }
+  };
 
   const handleInsertList = async () => {
     console.log("dsdsadfgds");

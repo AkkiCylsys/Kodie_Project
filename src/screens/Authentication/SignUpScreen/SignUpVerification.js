@@ -50,7 +50,7 @@ export default SignUpVerification = props => {
       };
       const response = await signupSendCode(SignUpData);
       // alert(response?.message); // as per manish discussion he said use static alert.
-      alert("OTP resent successfully!");
+      alert("OTP resent successfully.");
       setIsTimerActive(true);
       setValue('');
     } catch (error) {

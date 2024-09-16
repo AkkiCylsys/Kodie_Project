@@ -32,7 +32,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import store, {persistor} from './src/redux/Store/index';
 import withNetworkConnectivity from './src/errorPages/NoInternet/withNetworkConnectivity'; // Import the HOC
-
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -63,7 +63,6 @@ const Section = ({children, title}): Node => {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-
   useEffect(() => {
     //SplashScreen.hide()
     LogBox.ignoreAllLogs(true);

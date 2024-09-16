@@ -35,6 +35,7 @@ import {_goBack} from '../../../../services/CommonServices';
 import {LABEL_STYLES, _COLORS, IMAGES} from '../../../../Themes';
 import {SignUpStepStyle} from './SignUpStepsStyle';
 import {AccountStyle} from '../Account/AccountStyle';
+import GoogleMapScreen from '../../../../components/Molecules/GoogleMapScreens/GoogleMapScreen';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -191,79 +192,96 @@ const SignUpSteps = props => {
       })
       .catch(error => console.warn(error));
   };
-  const validateFirstName = text => {
+  // const validMobileNumber = () => {
+  //   const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
+  // };
+  // const validateMobileNumber = text => {
+  //   if (text === '') {
+  //     setMobileNumberError('Phone number is required!');
+  //   } else if (!validMobileNumber(text)) {
+  //     setMobileNumberError('Invalid phone number format!');
+  //   } else {
+  //     setMobileNumberError('');
+  //   }
+  //   setMobileNumber(text);
+  // };
+  // const phoneNumber = mobileNumber;
+  // const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
+  // if (phoneNumberParts) {
+  //   const countryCode = phoneNumberParts[1];
+  //   const remainingNumber = phoneNumberParts[2];
+  //   console.log('CountryCode:', countryCode);
+  //   setCountry_Code_Get(countryCode);
+  //   console.log('RemainingsNumber:', remainingNumber);
+  //   setMobileNumber(remainingNumber);
+  //   console.log(country_Code_Get, 'country_Code_Get');
+  // } else {
+  //   console.error('Invalid phone number format!');
+  // }
+
+  const isValidFirstName = text => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
       setFirstNameError('First name is required!');
+      return false;
     } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
       setFirstNameError(
         'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
+      return false;
     } else {
       setFirstNameError('');
+      return true;
     }
-    setFirstName(text);
   };
 
-  const validateLastName = text => {
+  const isValidLastName = text => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
       setLastNameError('Last name is required!');
+      return false;
     } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
       setLastNameError(
         'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
+      return false;
     } else {
       setLastNameError('');
+      return true;
     }
-    setLastName(text);
   };
 
-  const validMobileNumber = () => {
-    const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
-  };
-  const validateMobileNumber = text => {
-    if (text === '') {
+  const isValidPhoneNumber = text => {
+    if (text.trim() === '') {
       setMobileNumberError('Phone number is required!');
-    } else if (!validMobileNumber(text)) {
-      setMobileNumberError('Invalid phone number format!');
+      return false;
+    } else if (!/^[24][0-9]{8}$/.test(text)) {
+      setMobileNumberError('Invalid phone number!');
+      return false;
     } else {
       setMobileNumberError('');
+      return true;
     }
-    setMobileNumber(text);
   };
-  const phoneNumber = mobileNumber;
-  const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
-  if (phoneNumberParts) {
-    const countryCode = phoneNumberParts[1];
-    const remainingNumber = phoneNumberParts[2];
-    console.log('CountryCode:', countryCode);
-    setCountry_Code_Get(countryCode);
-    console.log('RemainingsNumber:', remainingNumber);
-    setMobileNumber(remainingNumber);
-    console.log(country_Code_Get, 'country_Code_Get');
-  } else {
-    console.error('Invalid phone number format!');
-  }
+  
+  
 
   const handleNextBtn = () => {
-    if (firstName.trim() === '') {
-      setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(firstName.trim())) {
-      setFirstNameError(
-        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
-      );
-    } else if (lastName.trim() === '') {
-      setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s?-\s?[A-Za-z]+)*$/.test(lastName.trim())) {
-      setLastNameError(
-        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
-      );
-    } else if (mobileNumber.trim() === '') {
-      setMobileNumberError('Phone number is required!');
-    } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
-      setMobileNumberError('Invalid phone number format!');
-    } else {
+    const isFirstNameValid = isValidFirstName(firstName);
+    if (!isFirstNameValid) {
+      return;
+    }
+
+    const isLastNameValid = isValidLastName(lastName);
+    if (!isLastNameValid) {
+      return;
+    }
+    const isPhoneNumberValid = isValidPhoneNumber(mobileNumber);
+    if (!isPhoneNumberValid) {
+      return;
+    }
+
+    if (isFirstNameValid && isLastNameValid && isPhoneNumberValid) {
       props.navigation.navigate('AboutYou', {
         firstName: firstName,
         lastName: lastName,
@@ -401,8 +419,11 @@ const SignUpSteps = props => {
                 },
               ]}
               value={firstName}
-              onChangeText={validateFirstName}
-              onBlur={() => validateFirstName(firstName)}
+              onChangeText={text => {
+                isValidFirstName(text);
+                setFirstName(text);
+              }}
+              onBlur={() => isValidFirstName(firstName)}
               placeholder="Enter your first name"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
@@ -423,8 +444,11 @@ const SignUpSteps = props => {
                 },
               ]}
               value={lastName}
-              onChangeText={validateLastName}
-              onBlur={() => validateLastName(lastName)}
+              onChangeText={text => {
+                isValidLastName(text);
+                setLastName(text);
+              }}
+              onBlur={() => isValidLastName(lastName)}
               placeholder="Enter your last name"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
@@ -528,16 +552,10 @@ const SignUpSteps = props => {
                     borderColor: mobileNumberError
                       ? _COLORS.Kodie_lightRedColor
                       : _COLORS.Kodie_GrayColor,
-                      fontSize: 16,
+                    fontSize: 16,
                   }}
                   onChangeText={text => {
-                    if (text === '') {
-                      setMobileNumberError('Phone number is required!');
-                    } else if (!/^[0-9]{9}$/.test(text)) {
-                      setMobileNumberError('Invalid phone number format!');
-                    } else {
-                      setMobileNumberError('');
-                    }
+                    isValidPhoneNumber(text);
                     setMobileNumber(text);
                   }}
                 />
@@ -636,54 +654,14 @@ const SignUpSteps = props => {
             </View>
           )}
           {IsMap ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-              }}>
-              <MapScreen
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  alignSelf: 'center',
-                  marginBottom: 10,
-                }}
-                onRegionChange={onRegionChange}
+            <GoogleMapScreen
+            onRegionChange={onRegionChange}
                 Maplat={p_latitude}
                 Maplng={p_longitude}
-              />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  width: '96%',
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  backgroundColor: 'white',
-                  borderColor: '#E5E4E2',
-                  marginTop: 10,
-                  position: 'absolute',
-                }}>
-                <TextInput
-                  style={{
-                    backgroundColor: 'transparent',
-                    width: '90%',
-                    height: 45,
-                    alignSelf: 'center',
-                  }}
-                  onFocus={() => openMapandClose()}
-                  placeholder={'Search Place'}
-                  placeholderTextColor={_COLORS.Kodie_BlackColor}
-                />
-              </View>
-              <TouchableOpacity
-                style={SignUpStepStyle.BtnContainer}
-                onPress={ConfirmAddress}>
-                {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
-                <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-              </TouchableOpacity>
-            </View>
+                openMapandClose={() => openMapandClose()}
+                ConfirmAddress={ConfirmAddress}
+            />
+           
           ) : IsSearch ? (
             <SearchPlaces
               onPress={(data, details = null) => {

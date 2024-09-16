@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, Linking} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {_COLORS} from '../../Themes/CommonColors/CommonColor';
 import {
@@ -155,8 +155,6 @@ import TenantDocumentsDetails from '../../screens/TenantManagement/ManagingTenan
 import ManagingProspectsTenants from '../../screens/TenantManagement/ManagingTenantsScreen/ManagingProspectsTenants/ManagingProspectsTenants';
 import Renthistory from '../../screens/Tenant/Renthistory/Renthistory';
 import PropertyListingDetail from '../../screens/PropertyListings/PropertyListingDetails/PropertyListingDetails';
-
-import dynamicLinks from '@react-native-firebase/dynamic-links';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -407,25 +405,7 @@ const DrawerNavigatorLeftMenu = props => {
 };
 const AuthStack = createNativeStackNavigator();
 const AuthStackRouts = props => {
-  const handleDynamicLink = async (link) => {
-    const url = link.url;
-    const params = new URLSearchParams(url.split('?')[1]);
-    const page = params.get('page'); // Example parameter
-
-    if (page === 'PropertyReviewDetails') {
-      const id = params.get('id'); // Extract the 'id' if needed
-      navigationRef.current?.navigate('PropertyReviewDetails', { id });
-    } else {
-      navigationRef.current?.navigate('Dashboard');
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  
   return (
     <AuthStack.Navigator
       screenOptions={{headerShown: false}}
@@ -443,21 +423,32 @@ export const navigationRef =React.createRef();;
 const Stack = createNativeStackNavigator();
 const AllStackRouts = props => {
   const [routeName, setRouteName] = useState();
+  const handleDeepLink = (event) => {
+    console.log('Received deep link:', event.url);
+    const url = event.url;
+    const [,route, id] = url.replace(/.*?:\/\//g, '').split('/')[1]; // Extract the route from the URL
+
+    if (route === 'PropertyReviewDetails' && id ) {
+      navigationRef.current?.navigate('PropertyReviewDetails', { propertyid: id });
+    } 
+  };
+
+  useEffect(() => {
+    // Listen to URL changes while the app is running
+    Linking.addEventListener('url', handleDeepLink);
+
+    // Check if the app was opened with a URL
+    Linking.getInitialURL().then((url) => {
+      if (url) handleDeepLink({ url });
+    });
+
+    // Clean up the event listener
+    return () => {
+      Linking.removeEventListener('url', handleDeepLink);
+    };
+  }, []);
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      // onStateChange={async () => {
-      //   const previousRouteName = routeName;
-      //   const currentRouteName = navigationRef.getCurrentRoute().name;
-      //   // console.log('previousRouteName...............', previousRouteName);
-      //   // console.log('currentRouteName...............', currentRouteName);
-      //   setRouteName(currentRouteName);
-      // }}
-      // onReady={() => {
-      //   // isReadyRef.current = true;
-      //   setRouteName(navigationRef.getCurrentRoute().name);
-      // }}
-    >
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
         initialRouteName={'SplashScreen'}>
@@ -1045,12 +1036,6 @@ const AllStackRouts = props => {
           component={BidforJob}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        {/* <Stack.Screen
-          name={'PaymentScreen'}
-          component={PaymentScreen}
-          options={{headerShown: false}}
-        /> */}
-
         <Stack.Screen
           name={'CreditCard'}
           component={CreditCard}
@@ -1061,11 +1046,7 @@ const AllStackRouts = props => {
           component={ApplePay}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        {/* <Stack.Screen
-          name={'SubscriptionScreen'}
-          component={SubscriptionScreen}
-          options={{headerShown: false}}
-        /> */}
+     
         <Stack.Screen
           name={'Partners'}
           component={Partners}
@@ -1081,11 +1062,6 @@ const AllStackRouts = props => {
           component={JobReviewDetails}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        {/* <Stack.Screen
-          name={'Subscriptions'}
-          component={withIAPContext(Subscriptions)}
-          options={{headerShown: false, gestureEnabled: false}}
-        /> */}
         <Stack.Screen
           name={'MarketplacePropertyListing'}
           component={MarketplacePropertyListing}

@@ -1140,7 +1140,7 @@ export default FirstProperty = props => {
                         <View style={{ margin: 11 }} />
                         <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
-                            {'Pets allowed?'}
+                            {'Disability access??'}
                           </Text>
                           <ToggleButton
                             tabValue={selectedButtonDepositId}

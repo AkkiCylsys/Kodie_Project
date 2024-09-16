@@ -7,7 +7,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   },
   headingView: {
     marginHorizontal: 16,
-    marginTop: 10,
+    marginTop: 38,
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
