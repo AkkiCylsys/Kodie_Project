@@ -423,30 +423,30 @@ export const navigationRef =React.createRef();;
 const Stack = createNativeStackNavigator();
 const AllStackRouts = props => {
   const [routeName, setRouteName] = useState();
-  const handleDeepLink = (event) => {
-    console.log('Received deep link:', event.url);
-    const url = event.url;
-    const [,route, id] = url.replace(/.*?:\/\//g, '').split('/')[1]; // Extract the route from the URL
+  // const handleDeepLink = (event) => {
+  //   console.log('Received deep link:', event.url);
+  //   const url = event.url;
+  //   const [,route, id] = url.replace(/.*?:\/\//g, '').split('/')[1]; // Extract the route from the URL
 
-    if (route === 'PropertyReviewDetails' && id ) {
-      navigationRef.current?.navigate('PropertyReviewDetails', { propertyid: id });
-    } 
-  };
+  //   if (route === 'PropertyReviewDetails' && id ) {
+  //     navigationRef.current?.navigate('PropertyReviewDetails', { propertyid: id });
+  //   } 
+  // };
 
-  useEffect(() => {
-    // Listen to URL changes while the app is running
-    Linking.addEventListener('url', handleDeepLink);
+  // useEffect(() => {
+  //   // Listen to URL changes while the app is running
+  //   Linking.addEventListener('url', handleDeepLink);
 
-    // Check if the app was opened with a URL
-    Linking.getInitialURL().then((url) => {
-      if (url) handleDeepLink({ url });
-    });
+  //   // Check if the app was opened with a URL
+  //   Linking.getInitialURL().then((url) => {
+  //     if (url) handleDeepLink({ url });
+  //   });
 
-    // Clean up the event listener
-    return () => {
-      Linking.removeEventListener('url', handleDeepLink);
-    };
-  }, []);
+  //   // Clean up the event listener
+  //   return () => {
+  //     Linking.removeEventListener('url', handleDeepLink);
+  //   };
+  // }, []);
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator

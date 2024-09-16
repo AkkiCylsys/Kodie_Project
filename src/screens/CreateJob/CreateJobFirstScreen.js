@@ -823,6 +823,8 @@ export default CreateJobFirstScreen = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
+            iscancel={()=> setIsMap(false)}
+
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}

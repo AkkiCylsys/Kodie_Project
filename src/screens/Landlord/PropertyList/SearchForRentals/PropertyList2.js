@@ -419,6 +419,7 @@ const PropertyList2 = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
+            
             onRegionChange={onRegionChange}
             // onRegionChangeComplete={onRegionChangeComplete}
             Maplat={latitude}

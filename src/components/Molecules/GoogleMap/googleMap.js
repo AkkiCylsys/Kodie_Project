@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
@@ -9,48 +9,37 @@ import {
   View,
   Text,
   Platform,
-  GoogleMapStyleheet,
   PermissionsAndroid,
   Alert,
   Linking,
   AppState,
+  TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Entypo';
-import {GoogleMapStyle} from './googleMapStyle';
-import SearchPlaces from '../SearchPlaces/SearchPlaces';
-import {useState} from 'react';
+import Icon from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { GoogleMapStyle } from './googleMapStyle';
+import { useState } from 'react';
 import Geolocation from '@react-native-community/geolocation';
-// import Geolocation from "react-native-geolocation-service";
-import {CommonLoader} from '../ActiveLoader/ActiveLoader';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { CommonLoader } from '../ActiveLoader/ActiveLoader';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import RNSettings from 'react-native-settings';
+import { useNavigation } from '@react-navigation/native';
+import { _COLORS } from '../../../Themes';
 
-import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
   const mapRef = useRef(null);
   const navigation = useNavigation();
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [location, setLocation] = useState('');
-  const [UserCurrentCity, setUserCurrentCity] = useState('');
-  const [UserZip_Code, setUserZip_Code] = useState('');
   useEffect(() => {
-    console.log('props?.Maplat........', props?.Maplat);
-    console.log('props?.Maplng........', props?.Maplng);
-    // fetchCurrentLocation();
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    // curLocation()
-    // checkpermissionlocation()
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-    // Add AppState listener
     const appStateListener = AppState.addEventListener('change', handleAppStateChange);
-
     return () => {
-      // Remove AppState listener
       appStateListener.remove();
     };
   }, []);
@@ -60,26 +49,31 @@ const MapScreen = props => {
       Platform.OS === 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
     }
   };
- 
 
-  // useLayoutEffect(() => {
+  const getCenterOffsetForAnchor = (anchorPoint, markerWidth, markerHeight) => {
+    const offsetX = (markerWidth * 0.5) - (markerWidth * anchorPoint.x);
+    const offsetY = (markerHeight * 0.5) - (markerHeight * anchorPoint.y);
+
+    return { x: offsetX, y: offsetY };
+
+  };
+  // Usage Example
+  const markerWidth = 40; // Marker width in pixels
+  const markerHeight = 40; // Marker height in pixels
+
+  // Anchor point, where (0.5, 0.5) is the center of the marker
+  const anchorPoint = { x: 0.5, y: 0.5 };
+
+  // Calculate the center offset
+  const offset = getCenterOffsetForAnchor(anchorPoint, markerWidth, markerHeight);
+
+  console.log(`Offset X: ${offset.x}, Offset Y: ${offset.y}`);// useLayoutEffect(() => {
   //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
   //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
 
   // }, []);
 
   const getLOcation = () => {
-    // Geolocation.getCurrentPosition(position => {
-    //   console.log('you are here.');
-    //   const {latitude, longitude} = position.coords;
-    //   console.log('position.coords in map components....', position.coords);
-    //   // setlatitude(latitude);
-    //   setLat(latitude);
-    //   setLong(longitude);
-    //   setIsLoading(false);
-    //   // setlongitude(longitude);
-    //   // animateToCoordinate(latitude, longitude)
-    // });
     Geolocation.getCurrentPosition(
       (position) => {
         console.log('you are here.');
@@ -99,69 +93,8 @@ const MapScreen = props => {
       }
     );
   };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('you are here.');
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords in map components....', position.coords);
-        // setlatitude(latitude);
-        setLat(latitude);
-        setLong(longitude);
-        setIsLoading(false);
-        // setlongitude(longitude);
-        // animateToCoordinate(latitude, longitude)
-      },
-      error => {
-        RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-          result => {
-            if (result === RNSettings.ENABLED) {
-              console.log('location is enabled');
-              getLOcation();
-            } else {
-              Alert.alert(
-                'Location Alert',
-
-                "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => {
-                      props.iscancel ? props.iscancel() : navigation.pop();
-                    },
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      RNSettings.openSetting(
-                        RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
-                      ).then(result => {
-                        if (result === RNSettings.ENABLED) {
-                          console.log('location is enabled');
-                          getLOcation();
-                        }
-                      });
-                    },
-                  },
-                ],
-              );
-              setIsLoading(false);
-            }
-          },
-        );
-      },
-      {
-        enableHighAccuracy: true,
-        // timeout: 24000,
-        // maximumAge: 1000,
-      },
-    );
-  };
-
   const checkpermissionlocation = async () => {
     try {
-      // Check if permission is already granted
       const permissionGranted = await PermissionsAndroid.check(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
@@ -246,11 +179,10 @@ const MapScreen = props => {
         }
       });
     } catch (err) {
-      // alert("hjhjh")
       console.warn(err);
     }
   };
- 
+
   const CheckIOSMapPermission = async () => {
     try {
       const statusWhenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
@@ -299,7 +231,6 @@ const MapScreen = props => {
     }
   };
   const checkLocationServices = () => {
-    // Use RNSettings to check if location services are enabled
     RNSettings.getSetting(RNSettings.LOCATION_SETTING).then((result) => {
       if (result === RNSettings.ENABLED) {
         console.log('Location services enabled');
@@ -316,7 +247,9 @@ const MapScreen = props => {
       [
         {
           text: 'Cancel',
-          onPress: () => navigation.pop(),
+          onPress: () =>props.iscancel
+          ? props.iscancel()
+          : navigation.pop(),
           style: 'cancel',
         },
         {
@@ -328,6 +261,20 @@ const MapScreen = props => {
       ],
     );
   };
+  const focusOnLocation = () => {
+    if (lat && long) {
+      const newRegion = {
+        latitude: parseFloat(lat),
+        longitude: parseFloat(long),
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+      if (mapRef.current) {
+        mapRef.current.animateToRegion(newRegion, 1000)
+      }
+    }
+  }
+
   return (
     <>
       {isLoading ? (
@@ -348,24 +295,70 @@ const MapScreen = props => {
             latitudeDelta: 0.02,
             longitudeDelta: 0.02,
           }}
-          showsMyLocationButton={true}>
-          <Marker
-            draggable={true}
-            coordinate={{
-              latitude: props?.Maplat ? parseFloat(props?.Maplat) : lat,
-              longitude: props?.Maplng ? parseFloat(props?.Maplng) : long,
-            }}
-            onPress={props?.onPress}>
-            <Icon name="location-pin" size={30} color={'red'} />
+          showsMyLocationButton={true}
+          ref={mapRef}
+        >
+          <View style={{
+            position: 'absolute', 
+            screentop: '50%', 
+            verticallyleft: '50%', 
+            horizontallymarginLeft: -24, 
+            centermarginTop: -48, 
 
-            <Callout tooltip onPress={props?.onPressTooltip}>
-              {/* <View style={GoogleMapStyle.tooltipView}>
+          }}>
+            <Marker
+              anchor={anchorPoint}
+              centerOffset={offset}
+              draggable={true}
+              coordinate={{
+                latitude: props?.Maplat ? parseFloat(props?.Maplat) : lat,
+                longitude: props?.Maplng ? parseFloat(props?.Maplng) : long,
+              }}
+              onPress={props?.onPress}>
+
+              {/* <Icon name="location-pin" size={30} color={'red'} /> */}
+                          
+               <View style={{ width: markerWidth, height: markerHeight, }}>
+        <Text style={{fontSize:30}}>📍</Text>
+      </View>
+
+              <Callout tooltip onPress={props?.onPressTooltip}>
+                {/* <View style={GoogleMapStyle.tooltipView}>
       <Text style={GoogleMapStyle.tooltipText}>
         {props?.ToolTxt ? props?.ToolTxt : "Cayman island"}
       </Text>
     </View> */}
-            </Callout>
-          </Marker>
+              </Callout>
+
+            </Marker>
+            </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingVertical: 3,
+                borderRadius: 10,
+                width: '24%',
+                height: 60,
+                bottom: -15,
+                left: 20,
+                marginBottom: 30,
+                position: 'absolute',
+              }}
+              onPress={() => {
+                focusOnLocation();
+              }}
+            >
+{/* <Text>c</Text> */}
+              <Ionicons
+                name="location-sharp"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
+
         </MapView>
       )}
     </>

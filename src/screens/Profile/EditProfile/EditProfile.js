@@ -651,6 +651,8 @@ const hasTenantRole = selectedServices.includes(2);
               alignSelf: 'center',
               marginBottom: 10,
             }}
+            iscancel={()=> setIsMap(false)}
+
             onRegionChange={onRegionChange}
             Maplat={activeTab === 'Tab1' ? latitude : company_latitude}
             Maplng={activeTab === 'Tab1' ? longitude : company_longitude}

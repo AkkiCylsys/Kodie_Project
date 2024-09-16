@@ -1008,6 +1008,8 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 alignSelf: 'center',
                 marginBottom: 10,
               }}
+              iscancel={()=> setIsMap(false)}
+
               onRegionChange={onRegionChange}
               Maplat={
                 tabValue == 'IndividualInProfile' ? latitude : Companylatitude

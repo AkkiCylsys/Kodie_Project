@@ -180,6 +180,7 @@ export default Location = (props) => {
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
+            iscancel={()=> setShowMap(false)}
           />
         </View>
       ) : (

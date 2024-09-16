@@ -610,6 +610,8 @@ export default SearchForContractor = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
+            iscancel={()=> setIsMap(false)}
+
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}

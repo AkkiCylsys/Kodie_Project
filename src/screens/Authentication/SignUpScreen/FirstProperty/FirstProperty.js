@@ -862,6 +862,8 @@ export default FirstProperty = props => {
                 onRegionChange={onRegionChange}
                 Maplat={latitude}
                 Maplng={longitude}
+              iscancel={()=> setIsMap(false)}
+
               />
               <View
                 style={{

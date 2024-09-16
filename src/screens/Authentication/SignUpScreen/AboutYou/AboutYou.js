@@ -1583,6 +1583,8 @@ export default AboutYou = props => {
               Maplng={
                 tabValue == 'IndividualSignup' ? longitude : Companylongitude
               }
+              iscancel={()=> setIsMap(false)}
+
             />
             <View
               style={{

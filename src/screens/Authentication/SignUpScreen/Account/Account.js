@@ -288,6 +288,8 @@ export default Account = props => {
               onRegionChange={onRegionChange}
               Maplat={latitude}
               Maplng={longitude}
+              iscancel={()=> setIsMap(false)}
+
             />
             <View
               style={{

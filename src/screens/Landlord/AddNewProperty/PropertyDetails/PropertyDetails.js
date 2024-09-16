@@ -228,6 +228,7 @@ export default PropertyDetails = props => {
     //   // setlongitude(longitude);
     //   // animateToCoordinate(latitude, longitude)
     // });
+    alert('location')
     Geolocation.getCurrentPosition(
       (position) => {
         console.log('you are here.',position);
@@ -570,11 +571,13 @@ export default PropertyDetails = props => {
           </View>
         )}
         {IsMap ? (
+          
           <View
             style={{
               flex: 1,
               backgroundColor: 'transparent',
             }}>
+              
             <MapScreen
               style={{
                 height: '100%',
@@ -585,6 +588,7 @@ export default PropertyDetails = props => {
               onRegionChange={onRegionChange}
               Maplat={latitude}
               Maplng={longitude}
+              iscancel={()=> setIsMap(false)}
               // Maplat={getLat}
               // Maplng={getLong}
             />
@@ -613,40 +617,6 @@ export default PropertyDetails = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-<TouchableOpacity
-              style={{
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: 3,
-                borderRadius: 10,
-                width: '24%',
-                height: 60,
-                bottom: -15,
-                left: 20,
-                marginBottom: 30,
-                position: 'absolute',
-              }}
-              onPress={() => {
-                getLocation();
-              }}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={SignUpStepStyle.c_locationBtn}
-              onPress={() => {}}>
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
