@@ -36,10 +36,17 @@ const data = [
   {label: '6 hours', value: '4'},
 ];
 export default CreateJobTermsScreen = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  // const userRole = '2';
+  const roleArray = userRole ? userRole.split(',') : [];
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+
   const dispatch = useDispatch();
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId.....', createJobId);
-  const loginData = useSelector(state => state.authenticationReducer.data);
 
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
@@ -694,29 +701,35 @@ export default CreateJobTermsScreen = props => {
               {currentTimeError}
             </Text>
           ) : null}
-          <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {'How many hours do you need?'}
-          </Text>
-          <Dropdown
-            style={CreateJobTermsStyle.dropdown}
-            placeholderStyle={CreateJobTermsStyle.placeholderStyle}
-            selectedTextStyle={CreateJobTermsStyle.selectedTextStyle}
-            inputSearchStyle={CreateJobTermsStyle.inputSearchStyle}
-            iconStyle={CreateJobTermsStyle.iconStyle}
-            data={hourlyNeedData}
-            search
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="Select number"
-            searchPlaceholder="Search..."
-            value={hourlyNeedValue}
-            onChange={item => {
-              setHourlyNeedValue(item?.lookup_key);
-              // alert(item.lookup_key);
-            }}
-            renderItem={NeedHour_render}
-          />
+          {hasContractorRole ? (
+            <>
+              <Text
+                style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
+                {'How many hours do you need?'}
+              </Text>
+              <Dropdown
+                style={CreateJobTermsStyle.dropdown}
+                placeholderStyle={CreateJobTermsStyle.placeholderStyle}
+                selectedTextStyle={CreateJobTermsStyle.selectedTextStyle}
+                inputSearchStyle={CreateJobTermsStyle.inputSearchStyle}
+                iconStyle={CreateJobTermsStyle.iconStyle}
+                data={hourlyNeedData}
+                search
+                maxHeight={300}
+                labelField="lookup_description"
+                valueField="lookup_key"
+                placeholder="Select number"
+                searchPlaceholder="Search..."
+                value={hourlyNeedValue}
+                onChange={item => {
+                  setHourlyNeedValue(item?.lookup_key);
+                  // alert(item.lookup_key);
+                }}
+                renderItem={NeedHour_render}
+              />
+            </>
+          ) : null}
+
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {'How often do you need this service?'}
           </Text>
