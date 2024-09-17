@@ -12,6 +12,8 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native';
 import {_COLORS, LABEL_STYLES} from '../../../../Themes';
 import {RepairCss} from './RepairCss';
@@ -376,15 +378,15 @@ export default Repair = props => {
                     {item.service_looking}
                   </Text>
                   <Text
-                style={[
-                  LABEL_STYLES.commonMidtext
-                ]}>{`Ref #${item.job_reference}`}</Text>
+                    style={[
+                      LABEL_STYLES.commonMidtext,
+                    ]}>{`Ref #${item.job_reference}`}</Text>
                 </View>
                 <TouchableOpacity
                   style={[
                     RepairCss.buttonView,
                     {
-                      backgroundColor: _COLORS.Kodie_minLiteGrayColor
+                      backgroundColor: _COLORS.Kodie_minLiteGrayColor,
                     },
                   ]}>
                   <View style={{alignSelf: 'center'}}>
@@ -460,7 +462,7 @@ export default Repair = props => {
     );
   };
   return (
-    <View style={RepairCss.mainContainer}>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={RepairCss.mainContainer}>
       <ScrollView>
         <>
           <View style={RepairCss.BtnView}>{renderRowButtons()}</View>
@@ -510,22 +512,22 @@ export default Repair = props => {
           </View>
         </View>
         <DividerIcon borderBottomWidth={2} />
-        {activeScreen ? (
-          <FlatList
-            //  data={JobData}
-            data={searchQuery ? filteredRequestpropertyData : JobData}
-            renderItem={propertyData_render1}
-          />
-        ) : (
-          // <ArchiveJob />
-          <FlatList
-            // data={servicingJobData}
-            data={
-              searchQuery ? filteredServicingpropertyData : servicingJobData
-            }
-            renderItem={propertyData_render1}
-          />
-        )}
+          {activeScreen ? (
+            <FlatList
+              //  data={JobData}
+              data={searchQuery ? filteredRequestpropertyData : JobData}
+              renderItem={propertyData_render1}
+            />
+          ) : (
+            // <ArchiveJob />
+            <FlatList
+              // data={servicingJobData}
+              data={
+                searchQuery ? filteredServicingpropertyData : servicingJobData
+              }
+              renderItem={propertyData_render1}
+            />
+          )}
       </ScrollView>
       <Modal
         isVisible={isDeleteBottomSheetVisible}
@@ -559,6 +561,6 @@ export default Repair = props => {
         </View>
       </Modal>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
