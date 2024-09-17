@@ -277,33 +277,25 @@ export const PropertyList2Css = StyleSheet.create({
   },
   tagContainer: {
     borderWidth: 1,
-    height: 28,
+    height: 30,
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
   textTag: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    alignSelf:'center'
   },
   textDropdown: {
-    marginLeft: 20,
+    // marginLeft: 20,
   },
   dropdownMenu: {
     flex: 1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    // marginTop: 10,
+    marginTop: 10,
     borderRadius: 8,
   },
-  itemView: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 10,
-    marginHorizontal: 10,
-  },
-  textItem: {
-    marginLeft: 10,
-    color: _COLORS.Kodie_BlackColor,
-  },
+
 });

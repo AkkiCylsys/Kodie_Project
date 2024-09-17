@@ -334,8 +334,8 @@ const MapScreen = props => {
             </View>
             <TouchableOpacity
               style={{
+                flex:1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
-                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingVertical: 3,
@@ -351,14 +351,15 @@ const MapScreen = props => {
                 focusOnLocation();
               }}
             >
-{/* <Text>c</Text> */}
+
               <Ionicons
                 name="location-sharp"
                 size={30}
                 color={_COLORS.Kodie_lightGreenColor}
+                style={{justifyContent: 'center',
+                alignItems: 'center',}}
               />
             </TouchableOpacity>
-
         </MapView>
       )}
     </>

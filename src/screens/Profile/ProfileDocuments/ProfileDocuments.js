@@ -42,8 +42,10 @@ const ProfileDocuments = props => {
     useState('');
   const [insuranceDocument, setInsuranceDocument] = useState([]);
   const [insuranceDocumentLength, setInsuranceDocumentLength] = useState('');
-
   const isfocused = useIsFocused();
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  const roleArray = userRole ? userRole.split(',') : [];
+  const hasContractorRole = roleArray.includes('4');
   useEffect(() => {
     getUploadedDocumentsByModule('Identity_documents');
     getUploadedDocumentsByModule('Proof_of_address');
@@ -339,7 +341,19 @@ const ProfileDocuments = props => {
   };
   return (
     <View style={ProfileDocumentStyle.mainContainer}>
-      <View style={ProfileDocumentStyle.btnContainer}>
+      {hasContractorRole?  
+     ( <View style={{flex:1,marginHorizontal:16,marginVertical:10}}> 
+      <CustomSingleButton
+        _ButtonText={'Personal documents'}
+        Text_Color={_COLORS.Kodie_BlackColor}
+        text_Size={14}
+        backgroundColor={_COLORS.Kodie_lightGreenColor}
+        height={40}
+        onPress={() => {}}
+        disabled={isLoading ? true : false}
+      />
+      </View>): 
+      (<View style={ProfileDocumentStyle.btnContainer}>
         <RowButtons
           LeftButtonText={'Personal documents'}
           leftButtonbackgroundColor={
@@ -386,8 +400,9 @@ const ProfileDocuments = props => {
             // alert(selectedTabId);
           }}
         />
-      </View>
-      <DividerIcon borderBottomWidth={6} />
+      </View>)
+            }
+                  <DividerIcon borderBottomWidth={6} />
       {folderId == null && companyDocumentId == null ? (
         <Text style={ProfileDocumentStyle.reacentDocText}>{'All folders'}</Text>
       ) : null}

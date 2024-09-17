@@ -622,11 +622,12 @@ const EditProfile = props => {
       case 'Tab2':
         return (
           <>
-            <CompanyDetails />
+           {shouldShowCompanyDetailsTab ? 
+            <CompanyDetails /> : <ProfileDocuments />}
           </>
         );
       case 'Tab3':
-        return <ProfileDocuments />;
+        return <ProfileDocuments shouldShowCompanyDetailsTab={selectedServices}/>;
     }
   };
   return (

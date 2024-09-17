@@ -46,7 +46,7 @@ const PropertyList2 = props => {
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [proteryTypeData, setProteryTypeData] = useState([]);
-  const [proteryTypeValue, setProteryTypeValue] = useState(0);
+  const [proteryTypeValue, setProteryTypeValue] = useState([]);
   const [proteryTypeValueError, setProteryTypeValueError] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -89,6 +89,8 @@ const PropertyList2 = props => {
   console.log('city....', city);
   console.log('country....', country);
   console.log('state....', state);
+  console.log('proteryTypeValue....', proteryTypeValue);
+  const propertyArray= proteryTypeValue.join(",");
 
   useEffect(() => {
     handle_property_Type();
@@ -99,7 +101,7 @@ const PropertyList2 = props => {
 
   const dataToSend = {
     input_Location: location,
-    input_PropertyType: proteryTypeValue,
+    input_PropertyType: propertyArray,
     input_minRange: min,
     input_maxRange: max,
     input_KeyFeature: AllCountsData,
@@ -198,6 +200,11 @@ const PropertyList2 = props => {
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
+  const onSelectedItemsPropertyChange = selectedItems => {
+    setProteryTypeValue(selectedItems);
+                // setProteryTypeValueError(false);
+  };
+
   // renderItem....
   const additional_key_feature_render = item => {
     return (
@@ -288,7 +295,7 @@ const PropertyList2 = props => {
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
-      property_type: proteryTypeValue,
+      property_type: propertyArray,
       min_price: max,
       max_price: min,
       bedrooms: CountBedroom,
@@ -515,27 +522,52 @@ const PropertyList2 = props => {
               <Text style={PropertyList2Css.error_text}>{locationError}</Text>
             ) : null}
             <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>Property Type:</Text>
-            <Dropdown
-              style={PropertyList2Css.dropdown}
-              placeholderStyle={PropertyList2Css.placeholderStyle}
-              selectedTextStyle={PropertyList2Css.selectedTextStyle}
-              inputSearchStyle={PropertyList2Css.inputSearchStyle}
-              iconStyle={PropertyList2Css.iconStyle}
-              data={proteryTypeData}
-              search
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Apartment"
-              searchPlaceholder="Search..."
-              value={proteryTypeValue}
-              onChange={item => {
-                setProteryTypeValue(item.lookup_key);
-                setProteryTypeValueError(false);
-              }}
-              renderItem={propertyType_render}
-
-            />
+            <MultiSelect
+                hideDropdown
+                items={proteryTypeData}
+                uniqueKey="lookup_key"
+                noItemsText={
+                  'The feature you are searching for is not available on the list'
+                }
+                onSelectedItemsChange={onSelectedItemsPropertyChange}
+                selectedItems={proteryTypeValue}
+                selectText="Apartment"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="lookup_description"
+                searchInputStyle={PropertyList2Css.searchInput}
+                styleListContainer={PropertyList2Css.listContainer}
+                styleRowList={PropertyList2Css.rowList}
+                tagContainerStyle={PropertyList2Css.tagContainer}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={PropertyList2Css.textTag}
+                styleTextDropdown={[
+                  PropertyList2Css.textDropdown,
+                  {
+                    paddingHorizontal:
+                    proteryTypeValue.length > 0 ? 10 : 5,
+                  },
+                ]}
+                styleDropdownMenu={[
+                  PropertyList2Css.dropdownMenu,
+                  {
+                    paddingHorizontal:
+                    proteryTypeValue.length > 0 ? 10 : 5,
+                  },
+                ]}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  proteryTypeValue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
+           
             {proteryTypeValueError ? (
               <Text style={PropertyList2Css.error_text}>
                 {'Property type is required!'}
