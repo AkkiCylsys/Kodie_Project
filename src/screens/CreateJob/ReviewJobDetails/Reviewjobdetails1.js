@@ -230,15 +230,17 @@ const Reviewjobdetails1 = props => {
                   }`
             }
           />
-          <RowTexts
-            leftText={'Payment'}
-            rightText={
-              jobDetailsData.payment_by == 'null' ||
-              jobDetailsData.payment_by == ''
-                ? '-'
-                : jobDetailsData.payment_by
-            }
-          />
+          {hasContractorRole ? null : (
+            <RowTexts
+              leftText={'Payment'}
+              rightText={
+                jobDetailsData.payment_by == 'null' ||
+                jobDetailsData.payment_by == ''
+                  ? '-'
+                  : jobDetailsData.payment_by
+              }
+            />
+          )}
           {/* This is hide for now client requirement. */}
           {/* <RowTexts
           leftText={"Booking insurance"}

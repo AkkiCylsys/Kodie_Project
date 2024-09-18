@@ -764,6 +764,9 @@ export default CreateJobTermsScreen = props => {
             onLowRange={handleminRange}
             onLowrange={2}
           />
+          {
+            hasContractorRole ? null :
+          
           <View style={CreateJobTermsStyle.resp_View}>
             <Text style={LABEL_STYLES.commontext}>
               {'Who is responsible for paying for this?'}
@@ -821,6 +824,7 @@ export default CreateJobTermsScreen = props => {
               }}
             />
           </View>
+}
           {/* <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"Booking insurance?"}
           </Text>

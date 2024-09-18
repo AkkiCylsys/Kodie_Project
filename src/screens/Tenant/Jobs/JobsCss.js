@@ -6,7 +6,7 @@ export const JobsCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Line: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     borderBottomColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 4,
     marginTop:3

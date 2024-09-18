@@ -43,7 +43,6 @@ export default Repair = props => {
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
 
-  
   const [activeScreen, setActiveScreen] = useState(false);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
@@ -441,13 +440,56 @@ export default Repair = props => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        <>
-          <View style={RepairCss.BtnView}>{renderRowButtons()}</View>
-          <DividerIcon
-            borderBottomWidth={9}
-            color={_COLORS.Kodie_LiteWhiteColor}
+        <View style={{marginHorizontal: 16,marginVertical:15}}>
+          {/* <View style={RepairCss.BtnView}>{renderRowButtons()}</View> */}
+          <RowButtons
+            LeftButtonText={'Jobs I am servicing'}
+            leftButtonHeight={40}
+            LeftButtonfontSize={12}
+            leftButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_lightGreenColor
+            }
+            LeftButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_DarkGreenColor
+            }
+            RightButtonText={'Jobs I have requested'}
+            RightButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_DarkGreenColor
+                : _COLORS.Kodie_GrayColor
+            }
+            LeftButtonTextColor={
+              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
+            }
+            RightButtonTextColor={
+              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+            }
+            RightButtonHeight={40}
+            RightButtonfontSize={12}
+            onPressLeftButton={() => {
+              setActiveScreen(false);
+              setSelectedFilter('All');
+            }}
+            onPressRightButton={() => {
+              setActiveScreen(true);
+              setSelectedFilter('All');
+            }}
           />
-        </>
+        </View>
+        <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+          marginTop={6}
+        />
         {/* {hasTenantRole || hasLandlordRole ? ( */}
         <>
           <View style={RepairCss.Container}>
