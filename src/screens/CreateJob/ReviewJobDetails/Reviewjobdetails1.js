@@ -22,6 +22,13 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 const Reviewjobdetails1 = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  // const userRole = '4,2';
+  const roleArray = userRole ? userRole.split(',') : [];
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
   const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   console.log('createJobId in reviewjobDetails.....', createJobId);
   const navigation = useNavigation();
@@ -34,16 +41,6 @@ const Reviewjobdetails1 = props => {
   const JobId = props?.JobId;
   console.log('JobId finalin review..', JobId);
   useEffect(() => {
-    // if (props.editMode) {
-    //   getUpdateJobDetails();
-    // } else {
-    //   getJobDetails();
-    // }
-    console.log(
-      'min budget and max buggets..',
-      jobDetailsData.job_max_budget,
-      jobDetailsData.job_max_budget,
-    );
     if (JobId) {
       getJobDetails();
     }
@@ -198,15 +195,17 @@ const Reviewjobdetails1 = props => {
                 : ''
             }
           />
-          <RowTexts
-            leftText={'Number of hours'}
-            rightText={
-              jobDetailsData.number_of_hours === 'null' ||
-              jobDetailsData.number_of_hours === ''
-                ? '-'
-                : jobDetailsData.number_of_hours
-            }
-          />
+          {hasContractorRole ? (
+            <RowTexts
+              leftText={'Number of hours'}
+              rightText={
+                jobDetailsData.number_of_hours === 'null' ||
+                jobDetailsData.number_of_hours === ''
+                  ? '-'
+                  : jobDetailsData.number_of_hours
+              }
+            />
+          ) : null}
           <RowTexts
             leftText={'How often'}
             rightText={
@@ -231,15 +230,17 @@ const Reviewjobdetails1 = props => {
                   }`
             }
           />
-          <RowTexts
-            leftText={'Payment'}
-            rightText={
-              jobDetailsData.payment_by == 'null' ||
-              jobDetailsData.payment_by == ''
-                ? '-'
-                : jobDetailsData.payment_by
-            }
-          />
+          {hasContractorRole ? null : (
+            <RowTexts
+              leftText={'Payment'}
+              rightText={
+                jobDetailsData.payment_by == 'null' ||
+                jobDetailsData.payment_by == ''
+                  ? '-'
+                  : jobDetailsData.payment_by
+              }
+            />
+          )}
           {/* This is hide for now client requirement. */}
           {/* <RowTexts
           leftText={"Booking insurance"}

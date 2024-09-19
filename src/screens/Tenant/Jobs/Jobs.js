@@ -8,10 +8,10 @@ import {JobsCss} from './JobsCss';
 import Repair from './Repair/Repair';
 import SearchForContractor from './SearchforContractor/SearchForContractor';
 import SearchforJob from './SearchforJob/SearchforJob';
-import {
-  useFocusEffect
-} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {fontSize} from '../../../Themes/FontStyle/FontStyle';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 const Jobs = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
@@ -128,6 +128,9 @@ const Jobs = props => {
         <CustomTabNavigator
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          TabTextStyle={{
+            fontSize: 12,
+          }}
           TAB3={hasContractorRole ? 'TAB3' : null}
           Tab1={'My jobs'}
           Tab2={'Search for contractors'}
@@ -164,7 +167,13 @@ const Jobs = props => {
           styleTab3={activeTab === 'Tab3' && JobsCss.activeTab}
         />
       </View>
-      <View style={JobsCss.Line} />
+      {/* <View style={JobsCss.Line} /> */}
+      <DividerIcon
+        marginTop={1}
+        marginBottom={1}
+        borderBottomWidth={4}
+        color={_COLORS.Kodie_LiteWhiteColor}
+      />
       {checkTabs()}
     </SafeAreaView>
   );

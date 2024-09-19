@@ -1,9 +1,3 @@
-//ScreenNo:107
-//ScreenNo:108
-//ScreenNo:109
-//ScreenNo:112
-//ScreenNo:113
-//ScreenNo:114
 import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
@@ -12,8 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  KeyboardAvoidingView,
-  Platform
+  Keyboard,
 } from 'react-native';
 import {_COLORS, LABEL_STYLES} from '../../../../Themes';
 import {RepairCss} from './RepairCss';
@@ -42,24 +35,6 @@ const HorizontalData = [
   'Complete - Paid',
   'Completed',
 ];
-
-const property_List1 = [
-  {
-    id: '1',
-    name: 'Electricals',
-    location: '1729 Melbourne St Australia',
-    buttonName: 'Awaiting payment',
-    tanentname: 'Tom',
-    budget: 'Budget',
-    spend: '$500',
-    readText:
-      'My door handle is broken and need some simple repairmen for this and need some Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    isPosted: true,
-    isongoing: false,
-    isCompleted: false,
-    refno: 'Ref #16694',
-  },
-];
 export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -67,6 +42,7 @@ export default Repair = props => {
   // const userRole = '4';
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
+
   const [activeScreen, setActiveScreen] = useState(false);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
@@ -86,13 +62,13 @@ export default Repair = props => {
     useState([]);
 
   const myJob_Type = props.myJob_Type;
-  // console.log('myJob_Type in job module', myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
 
   const roleArray = userRole ? userRole.split(',') : [];
   const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
   const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
   const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+
   const renderRowButtons = () => {
     const renderSingleButton = buttonText => (
       <CustomSingleButton
@@ -462,15 +438,58 @@ export default Repair = props => {
     );
   };
   return (
-    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={RepairCss.mainContainer}>
+    <View style={RepairCss.mainContainer}>
       <ScrollView>
-        <>
-          <View style={RepairCss.BtnView}>{renderRowButtons()}</View>
-          <DividerIcon
-            borderBottomWidth={9}
-            color={_COLORS.Kodie_LiteWhiteColor}
+        <View style={{marginHorizontal: 16,marginVertical:15}}>
+          {/* <View style={RepairCss.BtnView}>{renderRowButtons()}</View> */}
+          <RowButtons
+            LeftButtonText={'Jobs I am servicing'}
+            leftButtonHeight={40}
+            LeftButtonfontSize={12}
+            leftButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_lightGreenColor
+            }
+            LeftButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_DarkGreenColor
+            }
+            RightButtonText={'Jobs I have requested'}
+            RightButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_DarkGreenColor
+                : _COLORS.Kodie_GrayColor
+            }
+            LeftButtonTextColor={
+              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
+            }
+            RightButtonTextColor={
+              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+            }
+            RightButtonHeight={40}
+            RightButtonfontSize={12}
+            onPressLeftButton={() => {
+              setActiveScreen(false);
+              setSelectedFilter('All');
+            }}
+            onPressRightButton={() => {
+              setActiveScreen(true);
+              setSelectedFilter('All');
+            }}
           />
-        </>
+        </View>
+        <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+          marginTop={6}
+        />
         {/* {hasTenantRole || hasLandlordRole ? ( */}
         <>
           <View style={RepairCss.Container}>
@@ -512,22 +531,22 @@ export default Repair = props => {
           </View>
         </View>
         <DividerIcon borderBottomWidth={2} />
-          {activeScreen ? (
-            <FlatList
-              //  data={JobData}
-              data={searchQuery ? filteredRequestpropertyData : JobData}
-              renderItem={propertyData_render1}
-            />
-          ) : (
-            // <ArchiveJob />
-            <FlatList
-              // data={servicingJobData}
-              data={
-                searchQuery ? filteredServicingpropertyData : servicingJobData
-              }
-              renderItem={propertyData_render1}
-            />
-          )}
+        {activeScreen ? (
+          <FlatList
+            //  data={JobData}
+            data={searchQuery ? filteredRequestpropertyData : JobData}
+            renderItem={propertyData_render1}
+          />
+        ) : (
+          // <ArchiveJob />
+          <FlatList
+            // data={servicingJobData}
+            data={
+              searchQuery ? filteredServicingpropertyData : servicingJobData
+            }
+            renderItem={propertyData_render1}
+          />
+        )}
       </ScrollView>
       <Modal
         isVisible={isDeleteBottomSheetVisible}
@@ -561,6 +580,6 @@ export default Repair = props => {
         </View>
       </Modal>
       {isLoading ? <CommonLoader /> : null}
-    </KeyboardAvoidingView>
+    </View>
   );
 };
