@@ -213,9 +213,9 @@ const OfferForMyProperties = () => {
                     <View style={OfferForMyPropertiesStyle.ratting}>
                       <View style={{alignSelf: 'center', alignItems: 'center'}}>
                         <AntDesign
-                          color={_COLORS.Kodie_GreenColor}
+                          color={_COLORS.Kodie_lightGreenColor}
                           name={'star'}
-                          size={20}
+                          size={18}
                         />
                       </View>
                       <Text style={OfferForMyPropertiesStyle.rattingText}>
