@@ -66,7 +66,7 @@ const SearchPlaces = props => {
         styles={{
           textInputContainer: {
             marginHorizontal: 16,
-            borderWidth: Platform.OS == 'ios' ? 0 : 1,
+            borderWidth: Platform.OS == 'ios' ? 1 : 1,
             borderColor: _COLORS.Kodie_WhiteColor,
             borderRadius: 8,
             marginTop: 10,
@@ -75,7 +75,7 @@ const SearchPlaces = props => {
             // backgroundColor: _COLORS.Kodie_ExtraLiteGrayColor,
             backgroundColor:
               Platform.OS === 'ios'
-                ? _COLORS.Kodie_ExtraLiteGrayColor
+                ? _COLORS.Kodie_WhiteColor
                 : _COLORS.Kodie_WhiteColor,
             height: 44,
             borderRadius: 5,
@@ -84,10 +84,10 @@ const SearchPlaces = props => {
             fontSize: 15,
             flex: 1,
             color: _COLORS.Kodie_BlackColor,
-            borderWidth: Platform.OS === 'ios' ? 0 : 1,
+            borderWidth: Platform.OS === 'ios' ? 1: 1,
             borderColor:
               Platform.OS === 'ios'
-                ? _COLORS.Kodie_ExtraLiteGrayColor
+                ? _COLORS.Kodie_GrayColor
                 : _COLORS.Kodie_GrayColor,
           },
         }}

@@ -198,11 +198,11 @@ export const SearchResultCss = StyleSheet.create({
   },
   availableBtn: {
     marginHorizontal: 25,
-    marginRight: Platform.OS == 'ios' ? 240 : 200,
-    borderWidth: 1,
+    marginRight: Platform.OS == 'ios' ? 270 : 230,
+    // borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    flex: 1,
+    // flex: 1,
     backgroundColor: _COLORS.Kodie_LightOrange,
     padding: 8,
     marginTop: 10,
@@ -223,8 +223,8 @@ export const SearchResultCss = StyleSheet.create({
   bedIconView: {
     borderWidth: 1,
     padding: 5,
-    borderRadius: 10,
-    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 15,
+    borderColor: _COLORS.Kodie_ExtraMinLightGrayColor,
     alignSelf: 'center',
   },
   DetailsView: {

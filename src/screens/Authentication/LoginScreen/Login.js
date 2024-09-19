@@ -161,8 +161,9 @@ export default Login = props => {
     const activateAccount = url + 'sendMail';
     console.log('Request URL:', activateAccount);
     setIsLoading(true);
+    const trimmedEmail = email.trim();
     const activateAccount_Data = {
-      email: email,
+      email: trimmedEmail,
     };
     await axios
       .post(activateAccount, activateAccount_Data)
@@ -222,8 +223,9 @@ export default Login = props => {
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
     const emailPattern =
-      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    return emailPattern.test(resetEmail);
+    /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+  // Trim the email to remove spaces from the start or end
+  return emailPattern.test(resetEmail.trim());
   };
 
   //... inner reset password email variable define here
@@ -281,8 +283,8 @@ export default Login = props => {
   //... inner reset password rejex variable define here
   const validateEmail = email => {
     const emailPattern =
-      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    return emailPattern.test(email);
+    /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(email.trim());
   };
 
   //... inner  email variable define here
@@ -322,6 +324,7 @@ export default Login = props => {
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
     const encryptedPassword = await encryptPassword(newpassword, secretKey);
+    const trimmedEmail = email.trim();
     if (email.trim() === '') {
       setEmailError('Email is required!');
     } else if (!validateEmail(email)) {
@@ -334,7 +337,7 @@ export default Login = props => {
       Keyboard.dismiss();
       setIsLoading(true);
       let data = {
-        email: email,
+        email: trimmedEmail,
         password: password,
         device_id: deviceId,
         device_os_type: deviceType,
@@ -350,7 +353,7 @@ export default Login = props => {
         );
       } else if (res?.LoginStatuscode == 6) {
         props.navigation.navigate('SignUpSteps', {
-          email: email,
+          email: trimmedEmail,
           user_key: res?.User_key,
           password: encryptedPassword,
         });
@@ -375,7 +378,7 @@ export default Login = props => {
         if (res.data.code == 6) {
           alert(res.data.message);
           props.navigation.navigate('SignUpSteps', {
-            email: email,
+            email: trimmedEmail,
             user_key: res?.User_key,
             password: encryptedPassword,
           });
@@ -418,6 +421,7 @@ export default Login = props => {
   const send_verification_code = () => {
     const url = Config.BASE_URL;
     // const verification_code_url = url + "user_reset_password_email_verify";
+    const trimmedEmail = resetEmail.trim();
 
     // const url = "https://e3.cylsys.com/api/v1/SendOTP";
     const verification_code_url = url + 'SendOTP_Forget_password';
@@ -425,7 +429,7 @@ export default Login = props => {
     setIsLoading(true);
     axios
       .post(verification_code_url, {
-        email: resetEmail,
+        email: trimmedEmail,
       })
       .then(response => {
         console.log('API Response send otp:', response?.data);
@@ -464,11 +468,13 @@ export default Login = props => {
   const verify_Otp = () => {
     const url = Config.BASE_URL;
     const verify_Otp_url = url + 'verifyotp';
+    const trimmedEmail = resetEmail.trim();
+
     console.log('Request URL:', verify_Otp_url);
     setIsLoading(true);
     axios
       .post(verify_Otp_url, {
-        email: resetEmail,
+        email: trimmedEmail,
         otp: verificationcode,
       })
       .then(response => {
@@ -537,9 +543,11 @@ export default Login = props => {
       const url = Config.BASE_URL;
       const create_password_url = url + 'forgetpassword';
       console.log('Request URL:', create_password_url);
+    const trimmedEmail = resetEmail.trim();
+
       setIsLoading(true);
       const response = await axios.post(create_password_url, {
-        email: resetEmail,
+        email: trimmedEmail,
         password: encryptedPassword,
       });
       if (response?.data?.success === true) {
@@ -600,7 +608,7 @@ export default Login = props => {
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
-                maxLength={30}
+                // maxLength={30}
                 autoCapitalize={'none'}
                 keyboardType={'email-address'}
               />
@@ -787,7 +795,7 @@ export default Login = props => {
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
-                  maxLength={30}
+                  // maxLength={30}
                   autoCapitalize={'none'}
                   editable={isLoading?false:true}
                 />
@@ -854,7 +862,7 @@ export default Login = props => {
                       }}>
                       {({ remainingTime }) => (
                         <Text style={{ color: _COLORS.Kodie_WhiteColor,fontSize:14,fontFamily:FONTFAMILY.K_Bold}}>
-                          {remainingTime} S
+                          {remainingTime}s
                         </Text>
                       )}
                     </CountdownCircleTimer>

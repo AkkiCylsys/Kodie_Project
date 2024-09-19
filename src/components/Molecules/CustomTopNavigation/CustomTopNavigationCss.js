@@ -16,6 +16,6 @@ export const TopNavigationstyles = StyleSheet.create({
   },
   tabText: {
     fontSize: 11,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Bold,
   },
 });

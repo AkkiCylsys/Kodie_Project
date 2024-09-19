@@ -834,8 +834,18 @@ const PropertyList2 = props => {
               tagContainerStyle={PropertyList2Css.tagContainer}
               tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
               styleTextTag={PropertyList2Css.textTag}
-              styleTextDropdown={PropertyList2Css.textDropdown}
-              styleDropdownMenu={PropertyList2Css.dropdownMenu}
+              styleTextDropdown={[
+                PropertyList2Css.textDropdown,
+                {
+                  paddingHorizontal:
+                  additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                },
+              ]}
+              styleDropdownMenu={[PropertyList2Css.dropdownMenu,{
+                paddingHorizontal:
+                  additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                
+              }]}
               submitButtonColor={_COLORS.Kodie_GreenColor}
               submitButtonText={
                 additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'

@@ -224,7 +224,7 @@ export default SearchResult = props => {
               <Ionicons
                 color={_COLORS.Kodie_GreenColor}
                 name="bed-outline"
-                size={20}
+                size={16}
                 style={SearchResultCss.bedIconView}
               />
               <Text style={SearchResultCss.bedcont}>
@@ -238,7 +238,7 @@ export default SearchResult = props => {
               <MaterialCommunityIcons
                 color={_COLORS.Kodie_GreenColor}
                 name="shower-head"
-                size={20}
+                size={16}
                 style={SearchResultCss.bedIconView}
               />
               <Text style={SearchResultCss.bedcont}>
@@ -253,7 +253,7 @@ export default SearchResult = props => {
               <Ionicons
                 color={_COLORS.Kodie_GreenColor}
                 name="car"
-                size={20}
+                size={16}
                 style={SearchResultCss.bedIconView}
               />
               <Text style={SearchResultCss.bedcont}>
@@ -267,10 +267,10 @@ export default SearchResult = props => {
               <MaterialCommunityIcons
                 color={_COLORS.Kodie_GreenColor}
                 name="floor-plan"
-                size={20}
+                size={16}
                 style={SearchResultCss.bedIconView}
               />
-              <Text style={SearchResultCss.bedcont}>{item?.floor_size}</Text>
+              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m2</Text>
             </View>
           </View>
 

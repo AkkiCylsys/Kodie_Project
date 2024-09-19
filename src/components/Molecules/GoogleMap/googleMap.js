@@ -332,9 +332,12 @@ const MapScreen = props => {
 
             </Marker>
             </View>
-            <TouchableOpacity
+           
+        </MapView>
+      )}
+       <TouchableOpacity
               style={{
-                flex:1,
+                flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -360,8 +363,6 @@ const MapScreen = props => {
                 alignItems: 'center',}}
               />
             </TouchableOpacity>
-        </MapView>
-      )}
     </>
   );
 };

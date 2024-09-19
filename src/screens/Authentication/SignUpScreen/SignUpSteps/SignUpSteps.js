@@ -377,18 +377,18 @@ const SignUpSteps = props => {
             {ImageName ? (
               <Image
                 source={{uri: ImageName.path || ImageName}}
-                style={[AccountStyle.logo, {borderRadius: 110 / 2}]}
+                style={[AccountStyle.logo, {borderRadius: 130 / 2}]}
               />
             ) : (
               <View style={AccountStyle.profilelogo}>
                 <FontAwesome
-                  size={50}
+                  size={60}
                   name={'user-circle-o'}
                   style={{
                     alignSelf: 'center',
                     justifyContent: 'center',
                   }}
-                  color={_COLORS.Kodie_ExtraLightGrayColor}
+                  color={_COLORS.Kodie_LightGrayColor}
                 />
               </View>
             )}
@@ -397,8 +397,8 @@ const SignUpSteps = props => {
               <Fontisto
                 name="camera"
                 color={_COLORS.Kodie_WhiteColor}
-                size={14}
-                style={{alignSelf: 'center'}}
+                size={15}
+                style={{alignItems: 'center'}}
               />
             </View>
           </TouchableOpacity>

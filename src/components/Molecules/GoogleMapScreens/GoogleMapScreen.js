@@ -22,7 +22,7 @@ const GoogleMapScreen = ({ Maplat, Maplng, onRegionChange, openMapandClose, Conf
         />
       </View>
       <TouchableOpacity style={GoogleMapScreenStyle.btnContainer} onPress={ConfirmAddress}>
-        <Image source={IMAGES?.Shape} style={styles.icon} />
+        <Image source={IMAGES?.Shape} style={GoogleMapScreenStyle.icon} />
       </TouchableOpacity>
     </View>
   );

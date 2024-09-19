@@ -56,6 +56,7 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     marginVertical: 5,
     marginLeft: 15,
   },
+  ViewIconStyle:{ height: 28, width: 28, borderRadius: 12,borderWidth:1,justifyContent:'center',alignSelf:'center',borderColor:_COLORS.Kodie_LiteWhiteColor },
   details_text: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,

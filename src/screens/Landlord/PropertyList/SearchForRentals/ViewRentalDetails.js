@@ -68,136 +68,69 @@ const ViewRentalDetails = props => {
       console.error('Error parsing additional_key_features:', error);
     }
   }, [additionalKeyFeaturesString, propertyId]);
-  const Detail_rander = ({item, index}) => {
+  const iconMapping = {
+    Pool: { component: MaterialIcons, name: 'pool' },
+    Garage: { component: MaterialCommunityIcons, name: 'garage' },
+    Balcony: { component: MaterialCommunityIcons, name: 'balcony' },
+    'Outdoor area': { component: MaterialCommunityIcons, name: 'table-chair' },
+    Ensuite: { component: MaterialCommunityIcons, name: 'shower' },
+    Dishwasher: { component: MaterialCommunityIcons, name: 'dishwasher' },
+    Study: { component: MaterialCommunityIcons, name: 'bookshelf' },
+    'Built-in wardrobes': { component: MaterialCommunityIcons, name: 'wardrobe' },
+    'Air conditioning': { component: MaterialCommunityIcons, name: 'air-conditioner' },
+    'Solar panels': { component: MaterialCommunityIcons, name: 'solar-panel' },
+    Heating: { component: MaterialCommunityIcons, name: 'fireplace' },
+    'High energy efficiency': { component: SimpleLineIcons, name: 'energy' },
+    Bedrooms: { component: MaterialCommunityIcons, name: 'bed-double-outline' },
+    Bathrooms: { component: MaterialCommunityIcons, name: 'shower-head' },
+    'Parking / garage spaces': { component: Ionicons, name: 'car-outline' },
+    'On-street parking': { component: Ionicons, name: 'car-sport-outline' },
+    Default: { component: MaterialCommunityIcons, name: 'garage' },
+  };
+  const Detail_rander = ({ item }) => {
+    const itemKey = Object.keys(item)[0];
+    const itemValue = Object.values(item)[0];
+    const IconComponent = iconMapping[itemKey]?.component || iconMapping.Default.component;
+    const iconName = iconMapping[itemKey]?.name || iconMapping.Default.name;
+
     return (
-      <>
-        <View style={ViewRentalDetailsStyle.DetailsView}>
-          {Object.keys(item)[0] == 'Bedrooms' ? (
-            <MaterialCommunityIcons
-              name="bed-double-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Bathrooms' ? (
-            <MaterialCommunityIcons
-              name="shower-head"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Parking / garage spaces' ? (
-            <Ionicons
-              name="car-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : (
-            <MaterialCommunityIcons
-              name="garage"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          )}
-          <Text style={ViewRentalDetailsStyle.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
-          </Text>
+      <View style={ViewRentalDetailsStyle.DetailsView}>
+        <View style={ViewRentalDetailsStyle.ViewIconStyle}>
+
+          <IconComponent
+            name={iconName}
+            size={22}
+            color={_COLORS.Kodie_GreenColor}
+            style={{alignSelf:'center'}}
+          />
         </View>
-      </>
+
+        <Text style={[ViewRentalDetailsStyle.details_text, { flexShrink: 1 }]}>
+          {`${itemKey}: ${itemValue}`}
+        </Text>
+      </View>
     );
   };
-  const renderItem = ({item}) => (
-    <View style={ViewRentalDetailsStyle.DetailsView}>
-      {item === 'Pool' ? (
-        <MaterialIcons
-          name="pool"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Garage' ? (
-        <MaterialCommunityIcons
-          name="garage"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Balcony' ? (
-        <MaterialCommunityIcons
-          name="balcony"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === '' ? (
-        <MaterialCommunityIcons
-          name="table-chair"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Ensuite' ? (
-        <MaterialCommunityIcons
-          name="shower"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Dishwasher' ? (
-        <MaterialCommunityIcons
-          name="dishwasher"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Study' ? (
-        <MaterialCommunityIcons
-          name="bookshelf"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Built in robes' ? (
-        <MaterialCommunityIcons
-          name="cupboard"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Air conditioning' ? (
-        <MaterialCommunityIcons
-          name="air-conditioner"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Solar panels' ? (
-        <MaterialCommunityIcons
-          name="solar-panel"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'Heating' ? (
-        <MaterialCommunityIcons
-          name="fireplace"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : item === 'High energy efficiency' ? (
-        <SimpleLineIcons
-          name="energy"
-          size={25}
-          color={_COLORS.Kodie_GreenColor}
-          resizeMode={'contain'}
-        />
-      ) : null}
-      <Text style={ViewRentalDetailsStyle.details_text}>{item}</Text>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    const IconComponent = iconMapping[item]?.component;
+    const iconName = iconMapping[item]?.name;
+
+    return (
+      <View style={ViewRentalDetailsStyle.DetailsView}>
+         <View style={ViewRentalDetailsStyle.ViewIconStyle}>
+        {IconComponent && (
+          <IconComponent
+            name={iconName}
+            size={22}
+            color={_COLORS.Kodie_GreenColor}
+            style={{alignSelf:'center'}}
+          />
+        )}
+        </View>
+        <Text style={[ViewRentalDetailsStyle.details_text, { flexShrink: 1 }]}>{item}</Text>
+      </View>
+    );
+  };
   // Api intrigation...
   const fetchData = async () => {
     try {
@@ -369,6 +302,7 @@ const ViewRentalDetails = props => {
             borderBottomWidth={3}
             color={_COLORS.Kodie_LiteWhiteColor}
           />
+          
           <Text
             style={[
               ViewRentalDetailsStyle.propery_det,
@@ -376,15 +310,17 @@ const ViewRentalDetails = props => {
             ]}>
             {'Key features'}
           </Text>
-          <FlatList
-            data={Detail}
-            scrollEnabled
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
-            numColumns={numColumns}
-            keyExtractor={item => item?.id}
-            renderItem={Detail_rander}
-          />
+          <View style={{marginHorizontal:'10%'}}>
+              <FlatList
+                data={Detail}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ flexGrow: 1 }}
+                numColumns={numColumns}
+                keyExtractor={item => item?.id}
+                renderItem={Detail_rander}
+              />
+            </View>
           <DividerIcon/>
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <Text
@@ -395,12 +331,16 @@ const ViewRentalDetails = props => {
               {'Additional key features'}
             </Text>
           )}
-          <FlatList
-            data={additionalKeyFeatures}
-            numColumns={numColumns}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
+           <View style={{marginHorizontal:'10%'}}>
+              <FlatList
+                data={additionalKeyFeatures}
+                numColumns={numColumns}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={{ flexGrow: 1 }}
+
+              />
+            </View>
           <DividerIcon
             borderBottomWidth={3}
             color={_COLORS.Kodie_LiteWhiteColor}

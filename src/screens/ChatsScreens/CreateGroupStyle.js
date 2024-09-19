@@ -6,6 +6,7 @@ export const CreateGroupStyle = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: _COLORS.white,
+    marginHorizontal:16
   },
   title: {
     fontSize: 24,
@@ -14,7 +15,7 @@ export const CreateGroupStyle = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: _COLORS.lightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
@@ -24,15 +25,24 @@ export const CreateGroupStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: _COLORS.lightGrayColor,
+    // borderBottomWidth: 1,
+    // borderBottomColor: _COLORS.lightGrayColor,
   },
   selectedUserItem: {
-    backgroundColor: _COLORS.Kodie_LightGrayColor,
+    backgroundColor: _COLORS.Kodie_MidLightGreenColor,
   },
   userName: {
     marginLeft: 10,
     fontSize: 18,
+    alignItems:'center',
+  color:_COLORS.Kodie_BlackColor
+  },
+  EmailStyle: {
+    marginLeft: 10,
+    fontSize: 13,
+    alignItems:'center',
+    color:_COLORS.Kodie_DarkGrayColor
+
   },
   createButton: {
     backgroundColor: _COLORS.Kodie_OrangeColor,

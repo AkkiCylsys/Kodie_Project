@@ -88,8 +88,11 @@ console.log(JSON.stringify(newGroup));
             ]}
             onPress={() => toggleUserSelection(item)}
           >
-            <FontAwesome name="user-circle-o" size={30} color={_COLORS.Kodie_ExtraLightGrayColor} />
+            <FontAwesome name="user-circle-o" size={40} color={_COLORS.Kodie_ExtraLightGrayColor} />
+            <View >
             <Text style={CreateGroupStyle.userName}>{item.name}</Text>
+            <Text style={CreateGroupStyle.EmailStyle}>{item.email}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />

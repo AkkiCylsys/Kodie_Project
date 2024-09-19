@@ -44,7 +44,7 @@
         <category android:name="android.intent.category.BROWSABLE" />
         <!-- <data android:scheme="https" />
         <data android:host="kodie" android:pathPattern = "/"/> -->
-         <data android:scheme="https" android:host="kodie" android:pathPattern=".*" />
+         <data android:scheme="https" android:host="kodietestapi.cylsys.com"  android:pathPrefix="/"/>
     </intent-filter>
       </activity>
     </application>
