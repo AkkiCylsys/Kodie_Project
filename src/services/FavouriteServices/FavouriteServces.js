@@ -4,7 +4,7 @@ import {Config} from '../../Config';
 export const FavouriteServices = async favourtiesPayload => {
   try {
     const url = Config.BASE_URL;
-    const FavouriteUri = `${url}accepting_landlord`;
+    const FavouriteUri = `${url}saveFavoriteMapping`;
     console.log('FavouriteUri:', FavouriteUri);
 
     const response = await axios.post(FavouriteUri, favourtiesPayload, {
