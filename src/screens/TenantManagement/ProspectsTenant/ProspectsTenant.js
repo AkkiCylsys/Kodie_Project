@@ -14,7 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 
 export default ProspectsTenant = ({TenantAllDetails}) => {
-  console.log('TenantAllDetails in prospects:', JSON.stringify(TenantAllDetails));
+  console.log(
+    'TenantAllDetails in prospects:',
+    JSON.stringify(TenantAllDetails),
+  );
 
   const navigation = useNavigation();
   const [rating, setRating] = useState(2);
@@ -60,13 +63,11 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                 <AntDesign
                   name="star"
                   size={20}
-                  color={_COLORS?.Kodie_GreenColor}
+                  color={_COLORS?.Kodie_lightGreenColor}
                 />
                 <Text style={ProspectsTenantStyle.ratingText}>
                   {'0.0'}
-                  <Text style={{color: _COLORS?.Kodie_GrayColor}}>
-                    {'(0)'}
-                  </Text>
+                  <Text style={{color: _COLORS?.Kodie_GrayColor}}>{'(0)'}</Text>
                 </Text>
               </View>
             </View>
@@ -112,7 +113,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
               RightButtonText="Add to property"
               RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
               RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-              onPressRightButton={()=>{}}
+              onPressRightButton={() => {}}
             />
           </View>
         </View>
@@ -135,7 +136,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
       )}
       <RBSheet
         ref={refRBSheet}
-        height={210}
+        height={239}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
