@@ -503,15 +503,17 @@ export default NewInspection = (props) => {
             props.navigation.navigate('CreateNewInspection');
           }}
           disabled={isLoading ? true : false}
+          marginTop={22}
+          marginBottom={8}
         />
       </View>
-      <DividerIcon borderBottomWidth={4} color={_COLORS.Kodie_GrayColor} />
+      <DividerIcon borderBottomWidth={10} color={_COLORS.Kodie_LiteWhiteColor} />
       <SearchBar
         frontSearchIcon
         filterImage={IMAGES.up_down_Arrow}
         updownSearch
         height={48}
-        marginTop={20}
+        marginTop={10}
         searchData={searchInspection}
         placeholder="Search inspections"
         SortedData={sortByDate}
