@@ -1253,7 +1253,7 @@ export default CreateJobFirstScreen = props => {
             ) : null}
             {selectedAddress?.propertyType ? (
               <View style={{marginTop: 12}}>
-                <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+                <Text style={LABEL_STYLES.commontext}>{'Property type:'}</Text>
                 <TextInput
                   style={[
                     CreateJobFirstStyle.input,

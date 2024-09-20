@@ -33,7 +33,6 @@ const HorizontalData = [
   'Scheduled',
   'Pending',
   'Complete - Paid',
-  'Completed',
 ];
 export default Repair = props => {
   const isvisible = useIsFocused();
