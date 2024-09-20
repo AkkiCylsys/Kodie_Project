@@ -25,6 +25,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
   },
   textcode: {
     marginTop: 24,
+    color:_COLORS?.Kodie_VeryLightGrayColor
   },
   customBtn: {
     marginTop: 30,

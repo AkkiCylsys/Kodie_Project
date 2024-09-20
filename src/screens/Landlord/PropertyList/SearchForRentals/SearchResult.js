@@ -26,6 +26,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 export default SearchResult = props => {
   const refRBSheet = useRef();
   const navigation = useNavigation();
@@ -49,6 +50,29 @@ export default SearchResult = props => {
   useEffect(() => {
     additional_key_features();
   }, []);
+
+  const handleFavouriteItem = async () => {
+    setIsLoading(true);
+    const favourtiesPayload = {
+      user_id: 0,
+      uad_key: 0,
+      favorite_type: 'property',
+      favorite_ref_id: 0,
+      is_active: 1,
+      created_by: 'string',
+    };
+    try {
+      const response = await FavouriteServices(favourtiesPayload);
+      console.log('response in FavouriteServices', response);
+      if (response?.success === true) {
+        alert(response?.message);
+      }
+    } catch (error) {
+      console.error('Error fetchingFavouriteServices', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const toggleLike = propertyId => {
     setLikedItems(prevState => ({

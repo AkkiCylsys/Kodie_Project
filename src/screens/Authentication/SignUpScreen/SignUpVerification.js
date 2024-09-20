@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 import {SignUpVerificationStyle} from './SignUpVerificationStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -50,7 +50,7 @@ export default SignUpVerification = props => {
       };
       const response = await signupSendCode(SignUpData);
       // alert(response?.message); // as per manish discussion he said use static alert.
-      alert("OTP resent successfully.");
+      alert('OTP resent successfully.');
       setIsTimerActive(true);
       setValue('');
     } catch (error) {
@@ -70,7 +70,7 @@ export default SignUpVerification = props => {
       .then(responseData => {
         console.log('sign_verification_Api response', responseData);
         if (responseData?.success === true) {
-          Alert.alert("Success", responseData?.message);
+          Alert.alert('Success', responseData?.message);
           setValue('');
           props.navigation.navigate('SignUpSteps', {
             email: email,
@@ -128,7 +128,8 @@ export default SignUpVerification = props => {
 
   return (
     <SafeAreaView style={SignUpVerificationStyle.mainContainer}>
-      <KeyboardAvoidingView style={{flex:1}}
+      <KeyboardAvoidingView
+        style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <TopHeader
           MiddleText={'Verify your email'}
@@ -188,8 +189,12 @@ export default SignUpVerification = props => {
             <TouchableOpacity
               style={SignUpVerificationStyle.getButtonView}
               onPress={() => {
-                send_verification_code();
-              }}>
+                if (!isTimerActive) {
+                  send_verification_code();
+                }
+              }}
+              disabled={isTimerActive} // Disable the button when the timer is active
+            >
               {isTimerActive ? (
                 <CountdownCircleTimer
                   isPlaying

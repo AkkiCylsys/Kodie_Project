@@ -13,6 +13,7 @@ import {DrawerStyle} from './DrawerStyle';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {logoutActionCreator} from '../../redux/Actions/Authentication/AuthenticationApiCreator';
@@ -87,6 +88,10 @@ const CustomSidebarMenu = props => {
       case 'Partners':
         setselectedId('Partners');
         props.navigation.navigate('Partners');
+        break;
+      case 'Favourites':
+        setselectedId('Favourites');
+        props.navigation.navigate('Favourites');
         break;
       case 'Logout':
         setselectedId('LogOut');
@@ -315,6 +320,21 @@ const CustomSidebarMenu = props => {
             />
           </View>
           <Text style={DrawerStyle.SubHeading}>{'Partners'}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[DrawerStyle.rowFlex]}
+          onPress={() => check('Favourites')}>
+          <View style={DrawerStyle.IconView}>
+            <AntDesign
+              name="hearto"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+              style={{alignSelf: 'center'}}
+            />
+          </View>
+          <Text style={DrawerStyle.SubHeading}>{'Favourites'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
