@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,30 +8,30 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from '../../../../Themes';
-import { SearchResultCss } from './SearchResultCss';
+import {_COLORS, LABEL_STYLES, BANNERS, IMAGES} from '../../../../Themes';
+import {SearchResultCss} from './SearchResultCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from './../../../../services/CommonServices/index';
+import {_goBack} from './../../../../services/CommonServices/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { SliderBox } from 'react-native-image-slider-box';
-import { Config } from '../../../../Config';
+import {SliderBox} from 'react-native-image-slider-box';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { FONTFAMILY, fontFamily } from '../../../../Themes/FontStyle/FontStyle';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { FavouriteServices } from '../../../../services/FavouriteServices/FavouriteServces';
-import { useSelector } from 'react-redux';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
+import {useSelector} from 'react-redux';
 export default SearchResult = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const userAccountId = loginData?.Login_details?.user_account_id
-  const userId = loginData?.Login_details?.user_id
+  const userAccountId = loginData?.Login_details?.user_account_id;
+  const userId = loginData?.Login_details?.user_id;
   const refRBSheet = useRef();
   const navigation = useNavigation();
   const isFocus = useIsFocused();
@@ -52,12 +52,12 @@ export default SearchResult = props => {
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
 
-  console.log("searchRentalResponse...", searchRentalResponse)
+  console.log('searchRentalResponse...', searchRentalResponse);
   useEffect(() => {
     additional_key_features();
   }, []);
 
-  const handleFavouriteItem = async (propertyId) => {
+  const handleFavouriteItem = async propertyId => {
     setIsLoading(true);
     const favourtiesPayload = {
       user_id: userId,
@@ -67,7 +67,7 @@ export default SearchResult = props => {
       is_active: likedItems[propertyId] ? 0 : 1,
       created_by: userAccountId.toString(),
     };
-    console.log("favourtiesPayload..",favourtiesPayload)
+    console.log('favourtiesPayload..', favourtiesPayload);
     try {
       const response = await FavouriteServices(favourtiesPayload);
       console.log('response in FavouriteServices', response);
@@ -120,7 +120,7 @@ export default SearchResult = props => {
         setIsLoading(false);
       });
   };
-  const propertyData2_render = ({ item, index }) => {
+  const propertyData2_render = ({item, index}) => {
     console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
     return (
@@ -176,7 +176,7 @@ export default SearchResult = props => {
             <View>
               <Image
                 source={BANNERS?.imageNotFound} // Set your default image path
-                style={{ width: '100%', height: 200, resizeMode: 'cover' }}
+                style={{width: '100%', height: 200, resizeMode: 'cover'}}
               />
             </View>
           )}
@@ -185,11 +185,11 @@ export default SearchResult = props => {
               <Text
                 style={[
                   SearchResultCss.propertyHeading,
-                  { fontFamily: FONTFAMILY.K_Regular },
+                  {fontFamily: FONTFAMILY.K_Regular},
                 ]}>
                 {item?.property_type || ''}
               </Text>
-              <Text style={[SearchResultCss.propertyHeading, { marginTop: 5 }]}>
+              <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
                 {`$ ${item?.rental_amount || '0'}`}
               </Text>
             </View>
@@ -214,7 +214,7 @@ export default SearchResult = props => {
                   }
                   name={likedItems[item.property_id] ? 'heart' : 'hearto'}
                   size={25}
-                  style={{ marginHorizontal: 20 }}
+                  style={{marginHorizontal: 20}}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -327,27 +327,33 @@ export default SearchResult = props => {
             {searchInputData?.city || ''}
           </Text>
           <Text style={SearchResultCss.LeftTextRentText}>
-            {`${propertyType === 22
+            {`${
+              propertyType === 22
                 ? 'House'
                 : propertyType === 23
-                  ? 'Cottage'
-                  : propertyType === 24
-                    ? 'Apartment/Flat'
-                    : propertyType === 25
-                      ? 'Townhouse'
-                      : propertyType === 26
-                        ? 'Land/Vacant Plot'
-                        : propertyType === 27
-                          ? 'Farm'
-                          : ''
-              }; $${searchInputData?.input_minRange} to $${searchInputData?.input_maxRange
-              }; ${AllCountsData[0]?.Bedrooms} Beds; ${AllCountsData[1]?.Bathrooms
-              } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${AllCountsData[3]?.StreetParking
-              } on-street parking; ${searchInputData?.input_Fur_unFurnished == 67
+                ? 'Cottage'
+                : propertyType === 24
+                ? 'Apartment/Flat'
+                : propertyType === 25
+                ? 'Townhouse'
+                : propertyType === 26
+                ? 'Land/Vacant Plot'
+                : propertyType === 27
+                ? 'Farm'
+                : ''
+            }; $${searchInputData?.input_minRange} to $${
+              searchInputData?.input_maxRange
+            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
+              AllCountsData[1]?.Bathrooms
+            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
+              AllCountsData[3]?.StreetParking
+            } on-street parking; ${
+              searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
                 : 'unfurnished'
-              }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
-              }`}
+            }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${
+              searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
+            }`}
           </Text>
         </View>
         <View style={SearchResultCss.payButtonMainView}>
@@ -361,9 +367,9 @@ export default SearchResult = props => {
         </View>
       </View>
       <DividerIcon borderBottomWidth={5} color={_COLORS.Kodie_LiteWhiteColor} />
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         {searchRentalResponse?.data &&
-          searchRentalResponse?.data?.length > 0 ? (
+        searchRentalResponse?.data?.length > 0 ? (
           <FlatList
             data={searchRentalResponse.data}
             keyExtractor={(item, index) => `item_${index}`}
