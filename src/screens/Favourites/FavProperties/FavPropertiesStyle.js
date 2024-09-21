@@ -9,6 +9,15 @@ export const FavPropertyStyle = StyleSheet.create({
     padding: 0,
     margin: 0,
   },
+  imageStyle: {
+    flex: 0.5,
+    height: 241,
+    width: 370,
+    borderRadius: 10,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: _COLORS?.Kodie_GrayColor,
+  },
   subContainer: {
     marginHorizontal: 16,
     marginTop: 19,

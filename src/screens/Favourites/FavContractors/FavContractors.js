@@ -14,6 +14,7 @@ import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import CustomRBSheet from '../../../components/Molecules/CustomRBSheet/CustomRBSheet';
 import TenantData from '../../../components/TenantScreen/TenantData';
 import CustomRBSheetContent from '../../../components/Molecules/CustomRBSheet/CustomRBSheetContent';
+import { useNavigation } from '@react-navigation/native';
 
 const RBSheetData = [
   {
@@ -58,6 +59,8 @@ const RBSheetData = [
 
 const FavContractors = () => {
   const refRBSheet = useRef();
+  const navigation = useNavigation()
+  
   const [like, setLike] = useState(false);
 
   return (
@@ -137,8 +140,8 @@ const FavContractors = () => {
             RightButtonHeight={50}
             LeftButtonText="View Profile"
             onPressLeftButton={() => {
-              navigation.navigate('TenantProfile', {TenantDetails: item});
-              console.log('item in tenant...', item);
+              // navigation.navigate('TenantProfile', {TenantDetails: item});
+              // console.log('item in tenant...', item);
             }}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}

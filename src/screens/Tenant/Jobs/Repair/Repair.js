@@ -556,7 +556,8 @@ export default Repair = props => {
         <View
           style={[
             RepairCss.modalContent,
-            {height: isDeleteData_Clicked ? '30%' : '40%'},
+            // {height: isDeleteData_Clicked ? '30%' : '40%'},
+            {height: isDeleteData_Clicked ? '30%' : '33%'},
           ]}>
           <TouchableOpacity
             style={RepairCss.closeButton}

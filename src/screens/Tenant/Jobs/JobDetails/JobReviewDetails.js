@@ -270,8 +270,8 @@ const JobReviewDetails = props => {
         }
         MiddleText={'Review job details'}
       />
-      <View style={{marginVertical: 10}}>
-        {View_Job_Details || searchView ? null : (
+      {View_Job_Details || searchView ? null : (
+        <View style={{marginVertical: 10}}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={3}
@@ -281,8 +281,8 @@ const JobReviewDetails = props => {
             stepCount={4}
             renderLabel={renderLabel}
           />
-        )}
-      </View>
+        </View>
+      )}
       <ScrollView>
         <ImageBackground>
           {imageFileData.image_file_path &&
@@ -331,11 +331,10 @@ const JobReviewDetails = props => {
             borderColor: _COLORS.Kodie_GrayColor,
             elevation: 4,
             shadowColor: _COLORS.Kodie_GrayColor,
-            shadowOffset: { width: 0, height: 4 },
+            shadowOffset: {width: 0, height: 4},
             shadowOpacity: 0.1,
             shadowRadius: 8,
           }}>
-            
           <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
