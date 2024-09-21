@@ -58,7 +58,7 @@ const FavProperties = () => {
                 name={like ? 'heart' : 'hearto'}
                 color={
                   like
-                    ? _COLORS.Kodie_GreenColor
+                    ? _COLORS.Kodie_lightGreenColor
                     : _COLORS.Kodie_MediumGrayColor
                 }
                 size={24}

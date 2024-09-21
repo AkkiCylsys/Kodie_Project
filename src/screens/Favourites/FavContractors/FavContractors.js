@@ -131,7 +131,7 @@ const FavContractors = () => {
           </View>
         </View>
         <DividerIcon />
-        <View style={FavContractorStyle.RowBtnView}>
+        <View>
           <RowButtons
             leftButtonHeight={50}
             RightButtonHeight={50}
