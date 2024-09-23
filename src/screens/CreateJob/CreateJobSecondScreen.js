@@ -80,7 +80,14 @@ const CreateJobSecondScreen = props => {
       });
     } else {
       if (editMode) {
-        handleUpdateAndNavigate();
+        if (allImagePaths.length === 0 && isVideosEmpty) {
+          props.navigation.navigate('JobDetails', {
+            JobId: JobId,
+            editMode: editMode,
+          });
+        } else {
+          handleUpdateAndNavigate();
+        }
       } else if (!isImagesEmpty || !isVideosEmpty) {
         handleUploadAndNavigate();
       }

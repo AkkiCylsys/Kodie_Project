@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {BANNERS, IMAGES} from '../../../Themes';
 import {FavPropertyStyle} from './FavPropertiesStyle';
@@ -20,6 +20,8 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {useSelector} from 'react-redux';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import CustomRBSheet from '../../../components/Molecules/CustomRBSheet/CustomRBSheet';
+import BottomModalSearchRental from '../../../components/Molecules/BottomModal/BottomModalSearchRental';
 
 const images = [
   BANNERS.cottage,
@@ -28,12 +30,17 @@ const images = [
   BANNERS.previewImage,
 ];
 const FavProperties = () => {
+  const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userAccountId = loginData?.Login_details?.user_account_id;
   const userId = loginData?.Login_details?.user_id;
   const [isLoading, setIsLoading] = useState(false);
   const [like, setLike] = useState(false);
   const [favPropertyList, setFavPropertyList] = useState(false);
+  const [propertyId, setPropertyId] = useState('');
+  const [rentalAmount, setRentalAmount] = useState('');
+  const [bibId, setBidId] = useState('');
+  const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
 
   useEffect(() => {
     handleGetFavouriteItem();
@@ -59,7 +66,7 @@ const FavProperties = () => {
       setIsLoading(false);
     }
   };
-  const handleFavouriteItem = async property_id => {
+  const handleUnFavouriteItem = async property_id => {
     setIsLoading(true);
     const favourtiesPayload = {
       user_id: userId,
@@ -87,7 +94,7 @@ const FavProperties = () => {
   const handleLikeToggle = item => {
     if (item?.like_status === 1) {
       // If currently liked, call the dislike API
-      handleFavouriteItem(item?.property_id);
+      handleUnFavouriteItem(item?.property_id);
     } else {
       // Optionally, you can add logic for when the item is not liked
       Alert.alert('This item is already disliked.');
@@ -166,7 +173,14 @@ const FavProperties = () => {
                   style={FavPropertyStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                  setPropertyId(item?.property_id);
+                  setRentalAmount(item?.rental_amount);
+                  setBidId(item?.bid_id);
+                  setPropertyDetailsItem(item);
+                }}>
                 <Entypo
                   name="dots-three-horizontal"
                   color={_COLORS.Kodie_MediumGrayColor}
@@ -239,7 +253,7 @@ const FavProperties = () => {
     <View style={{flex: 1}}>
       <FlatList
         data={favPropertyList}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => item?.property_id}
         renderItem={favPropertyRender}
         ListEmptyComponent={() => {
           return (
@@ -252,6 +266,18 @@ const FavProperties = () => {
         }}
       />
       {isLoading ? <CommonLoader /> : null}
+      <CustomRBSheet
+        ref={refRBSheet}
+        onClose={() => refRBSheet.current.close()}
+        height={245}>
+        <BottomModalSearchRental
+          onClose={() => refRBSheet.current.close()}
+          propertyId={propertyId}
+          rentalAmount={rentalAmount}
+          bibId={bibId}
+          propertyDetails={propertyDetailsItem}
+        />
+      </CustomRBSheet>
     </View>
   );
 };

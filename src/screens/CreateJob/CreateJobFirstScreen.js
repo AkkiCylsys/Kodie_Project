@@ -1278,7 +1278,7 @@ export default CreateJobFirstScreen = props => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="1 star and above"
+                placeholder="Rating threshold"
                 searchPlaceholder="Search..."
                 value={ratingThresholdValue}
                 onChange={item => {

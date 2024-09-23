@@ -7,8 +7,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
+import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {GetJobFavouriteServices} from '../../../services/FavouriteServices/FavouriteServces';
+import {FavouriteServices, GetJobFavouriteServices} from '../../../services/FavouriteServices/FavouriteServces';
 import {useSelector} from 'react-redux';
 const FavJobs = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -47,14 +48,50 @@ const FavJobs = () => {
     }
   };
 
-  const favJobRender = ({item,index}) => {
+  const handleUnFavouriteItem = async job_id => {
+    setIsLoading(true);
+    const favourtiesPayload = {
+      user_id: userId,
+      uad_key: userAccountId,
+      favorite_type: 'job',
+      favorite_ref_id: job_id,
+      is_active: 0,
+      created_by: userAccountId.toString(),
+    };
+    console.log('favourtiesPayload..', favourtiesPayload);
+    try {
+      const response = await FavouriteServices(favourtiesPayload);
+      console.log('response in FavouriteServices', response);
+      if (response?.success === true) {
+        alert(response?.message);
+        handleGetFavouriteItem();
+      }
+    } catch (error) {
+      console.error('Error fetchingFavouriteServices', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleLikeToggle = item => {
+    if (item?.like_status === 1) {
+      // If currently liked, call the dislike API
+      handleUnFavouriteItem(item?.job_id);
+    } else {
+      // Optionally, you can add logic for when the item is not liked
+      Alert.alert('This item is already disliked.');
+    }
+  };
+  const favJobRender = ({item, index}) => {
     return (
       <>
         <View style={FavJobStyle?.subContainer}>
           <View style={FavJobStyle?.jobDetailContainer}>
             <View>
-              <Text style={FavJobStyle?.jobTittle}>{'Rewire appliance'}</Text>
-              <Text style={FavJobStyle?.refNo}>{`Ref#${item?.JM_JOB_REFERENCE_NO}`}</Text>
+              <Text style={FavJobStyle?.jobTittle}>
+                {item?.service_looking}
+              </Text>
+              <Text
+                style={FavJobStyle?.refNo}>{`Ref#${item?.job_reference}`}</Text>
             </View>
             <View>
               <View style={FavJobStyle.share_View}>
@@ -64,19 +101,16 @@ const FavJobs = () => {
                     color={_COLORS.Kodie_skyBlue}
                     size={24}
                   />
-                  <Text style={FavJobStyle?.StatusText}>
-                    {'AVAILABLE: NOW'}
-                  </Text>
+                  <Text style={FavJobStyle?.StatusText}>{'Unassigned'}</Text>
                 </View>
 
                 <TouchableOpacity
-                  onPress={() => {
-                    setLike(!like);
-                  }}>
+                  onPress={() => handleLikeToggle(item)}
+                  disabled={isLoading}>
                   <AntDesign
-                    name={like ? 'heart' : 'hearto'}
+                    name={item?.like_status === 1 ? 'heart' : 'hearto'}
                     color={
-                      like
+                      item?.like_status === 1
                         ? _COLORS.Kodie_lightGreenColor
                         : _COLORS.Kodie_MediumGrayColor
                     }
@@ -97,7 +131,10 @@ const FavJobs = () => {
           </View>
           <View style={FavJobStyle?.budgetCon}>
             <View>
-              <Text style={FavJobStyle?.refNo}>{'John Smith'}</Text>
+              <Text
+                style={
+                  FavJobStyle?.refNo
+                }>{`${item?.first_name} ${item?.last_name}`}</Text>
               <View style={FavJobStyle.locationTextView}>
                 <Entypo
                   name="location-pin"
@@ -105,8 +142,11 @@ const FavJobs = () => {
                   color={_COLORS.Kodie_GreenColor}
                   style={{alignSelf: 'center'}}
                 />
-                <Text style={FavJobStyle?.locationText} ellipsizeMode='tail' numberOfLines={1}>
-                  {item?.JM_JOB_LOCATION}
+                <Text
+                  style={FavJobStyle?.locationText}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}>
+                  {item?.job_location}
                 </Text>
               </View>
             </View>
@@ -143,7 +183,7 @@ const FavJobs = () => {
     <View style={FavJobStyle?.mainContainer}>
       <FlatList
         data={favJobList}
-        keyExtractor={(item, index) => item?.JM_JOB_ID}
+        keyExtractor={(item, index) => item?.job_id}
         renderItem={favJobRender}
         ListEmptyComponent={() => {
           return (
