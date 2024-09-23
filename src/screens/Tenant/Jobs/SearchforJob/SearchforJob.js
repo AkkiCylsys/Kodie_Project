@@ -50,12 +50,8 @@ import Geolocation from 'react-native-geolocation-service';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default SearchForJob = props => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [value, setValue] = useState(null);
-  const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
-  const [isClick, setIsClick] = useState(166);
-  const [Check, setCheck] = useState(1);
+  const [isClick, setIsClick] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   // const [searchTypeData, setSearchTypeData] = useState([]);
@@ -644,7 +640,7 @@ export default SearchForJob = props => {
             isFilterImage
             searchData={searchForjob}
           />
-          <View style={[CreateJobFirstStyle.formContainer, {marginBottom: 0}]}>
+          <View style={[CreateJobFirstStyle.formContainer]}>
             <Text style={LABEL_STYLES.commontext}>{'Job category:'}</Text>
           </View>
           <FlatList
@@ -694,7 +690,7 @@ export default SearchForJob = props => {
               />
             </View>
 
-            <View style={{marginTop: 12}}>
+            <View style={{marginTop: 20}}>
               <Text style={LABEL_STYLES.commontext}>{'Availability:'}</Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -717,7 +713,7 @@ export default SearchForJob = props => {
                 renderItem={jobPriority_render}
               />
             </View>
-            <View style={{marginTop: 12}}>
+            <View style={{marginTop: 20}}>
               <Text style={LABEL_STYLES.commontext}>
                 {'What area do you service?'}
               </Text>
@@ -744,7 +740,7 @@ export default SearchForJob = props => {
                 renderItem={property_Type_render}
               />
             </View>
-
+{/* 
             <View style={CreateJobFirstStyle.locationContainer}>
               <TextInput
                 style={CreateJobFirstStyle.locationInput}
@@ -768,8 +764,8 @@ export default SearchForJob = props => {
                   style={CreateJobFirstStyle.locationIcon}
                 />
               </TouchableOpacity>
-            </View>
-            <Text style={[LABEL_STYLES.commontext, {marginTop: 15}]}>
+            </View> */}
+            <Text style={[LABEL_STYLES.commontext, {marginTop: 20}]}>
               {'What is your budget for this job?'}
             </Text>
             <RangeSlider

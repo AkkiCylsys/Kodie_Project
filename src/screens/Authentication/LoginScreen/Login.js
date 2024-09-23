@@ -639,7 +639,7 @@ export default Login = props => {
                   value={password}
                   onChangeText={setPassword}
                   onBlur={() => handleLoginPassword(password)}
-                  placeholder="Enter Password"
+                  placeholder="Enter password"
                   placeholderTextColor="#999"
                   secureTextEntry={!showPassword}
                 />
@@ -906,7 +906,7 @@ export default Login = props => {
                     value={newpassword}
                     onChangeText={handleNewPassword}
                     onBlur={() => handleNewPassword(newpassword)}
-                    placeholder=" Enter New Password"
+                    placeholder=" Enter new password"
                     placeholderTextColor="#999"
                     secureTextEntry={!showNewPassword}
                   />
@@ -942,7 +942,7 @@ export default Login = props => {
                     value={confirmPassword}
                     onChangeText={handleConfirmpassword}
                     onBlur={() => handleConfirmpassword(confirmPassword)}
-                    placeholder=" Enter Confirm Password"
+                    placeholder=" Enter confirm password"
                     placeholderTextColor="#999"
                     secureTextEntry={!showResetPassword}
                   />
