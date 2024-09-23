@@ -62,5 +62,6 @@ export const FavJobStyle = StyleSheet.create({
     color: _COLORS?.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY?.K_Regular,
     alignSelf: 'center',
+    width:250
   },
 });
