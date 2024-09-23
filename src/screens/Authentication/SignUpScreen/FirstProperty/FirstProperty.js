@@ -154,6 +154,9 @@ export default FirstProperty = props => {
   const P_state = P_addressParts[2]?.trim() ?? '';
   const p_country = P_addressParts[P_addressParts.length - 1]?.trim() ?? '';
 
+  const [error, setError] = useState('');
+  const [notesError, setNotesError] = useState('');
+  const [propertyError, setPropertyError] = useState('');
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -403,7 +406,21 @@ export default FirstProperty = props => {
         setIsLoading(false);
       });
   };
-
+  const handleTextInputFocus = () => {
+    if (error) {
+      setError('');
+      setNotesError('');
+      setPropertyError('');
+    }
+  };
+  const handleNote = text => {
+    setPropertyDesc(text);
+    if (text.trim() === '') {
+      setNotesError('Please enter note!');
+    } else {
+      setNotesError('');
+    }
+  };
   const handleSaveSignup = async () => {
     setIsLoading(true);
     let newData = {
@@ -788,6 +805,7 @@ export default FirstProperty = props => {
   const ConfirmAddress = () => {
     setIsMap(false);
     setPropertyLocation(currentLocation);
+    setError('');
   };
   const openMapandClose = text => {
     setIsMap(false);
@@ -920,7 +938,7 @@ export default FirstProperty = props => {
                   renderLabel={renderLabel}
                 />
               </View>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={FirstPropertyStyle.headingView}>
                   <Text style={FirstPropertyStyle.heading}>
                     {'Add your first property'}
@@ -928,14 +946,20 @@ export default FirstProperty = props => {
                 </View>
                 <View style={FirstPropertyStyle.card}>
                   <View style={FirstPropertyStyle.inputContainer}>
-                    <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+                    <Text style={LABEL_STYLES._texinputLabel}>Location
+                    <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
                     <View style={FirstPropertyStyle.locationConView}>
                       <View style={FirstPropertyStyle.locationContainer}>
                         <TextInput
                           style={FirstPropertyStyle.locationInput}
                           value={propertyLocation}
-                          onChangeText={setPropertyLocation}
+                          onChangeText={text => {
+                            setPropertyLocation(text);
+                            if (text && error) setError('');
+                            handleTextInputFocus(); // Clear error message if location is being filled
+                          }}
                           onFocus={() => {
+                            handleTextInputFocus();
                             setIsSearch(true);
                           }}
                           placeholder="Search location"
@@ -946,6 +970,8 @@ export default FirstProperty = props => {
                         style={FirstPropertyStyle.locationIconView}
                         onPress={() => {
                           setIsMap(true);
+                      handleTextInputFocus();
+
                         }}>
                         <Octicons
                           name={'location'}
@@ -955,26 +981,37 @@ export default FirstProperty = props => {
                         />
                       </TouchableOpacity>
                     </View>
+                    {error ? (
+                  <Text style={FirstPropertyStyle?.Error_Text}>{error}</Text>
+                ) : null}
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
-                    <Text style={LABEL_STYLES._texinputLabel}>Notes</Text>
+                    <Text style={LABEL_STYLES._texinputLabel}>Notes<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
                     <TextInput
                       style={FirstPropertyStyle.input}
                       value={propertyDesc}
-                      onChangeText={setPropertyDesc}
+                      onChangeText={handleNote}
                       placeholder="Add any information about your property"
                       placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       multiline
                       numberOfLines={5}
                       textAlignVertical={'top'}
+                  onBlur={() => handleNote(propertyDesc)}
+
                     />
                     <Text style={FirstPropertyStyle.characterLimit}>
                       {propertyDesc.length}/1000
                     </Text>
+                    {notesError ? (
+                  <Text style={FirstPropertyStyle.Error_Text}>
+                    {notesError}
+                  </Text>
+                ) : null}
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text style={LABEL_STYLES._texinputLabel}>
                       Property type
+                      <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                     </Text>
                     <Dropdown
                       style={FirstPropertyStyle.dropdown}
@@ -993,10 +1030,18 @@ export default FirstProperty = props => {
                       value={property_value}
                       onChange={item => {
                         setProperty_value(item.lookup_key);
+                    setPropertyError('');
+
                       }}
                       renderItem={propertyType_render}
                     />
+                    {propertyError ? (
+                  <Text style={FirstPropertyStyle.Error_Text}>
+                    {propertyError}
+                  </Text>
+                ) : null}
                   </View>
+                 
                   <Text
                     style={[
                       LABEL_STYLES._texinputLabel,
@@ -1142,7 +1187,7 @@ export default FirstProperty = props => {
                         <View style={{ margin: 11 }} />
                         <View style={{ flex: 1 }}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
-                            {'Disability access??'}
+                            {'Disability access?'}
                           </Text>
                           <ToggleButton
                             tabValue={selectedButtonDepositId}
@@ -1158,7 +1203,7 @@ export default FirstProperty = props => {
                       </View>
                     </View>
 
-                    <View style={FirstPropertyStyle.inputContainer}>
+                    <View style={FirstPropertyStyle?.inputContainer}>
                       <Text
                         style={[
                           LABEL_STYLES._texinputLabel,
@@ -1187,7 +1232,7 @@ export default FirstProperty = props => {
                           borderColor: _COLORS.Kodie_GrayColor,
                           height: 40,
                           borderRadius: 5,
-                          paddingHorizontal: 10,
+                          paddingHorizontal: 0,
                         }}
                         styleListContainer={{
                           paddingVertical: 10,
@@ -1206,7 +1251,7 @@ export default FirstProperty = props => {
                           fontSize: 14,
                           color: _COLORS.Kodie_WhiteColor,
                           fontFamily: FONTFAMILY.K_Medium,
-                         
+                        
                         }}
                         styleTextDropdown={{ marginLeft: 20 , paddingHorizontal:
                           additionalfeatureskeyvalue.length > 0 ? 10 : 5,}}
@@ -1228,8 +1273,36 @@ export default FirstProperty = props => {
                     _ButtonText={'Save'}
                     Text_Color={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
-                      handleSaveSignup();
+                      let isValid = true;
+                      console.log('property_value:', property_value);
+                      if (!propertyLocation) {
+                        setError('Please enter a location!');
+                        setNotesError(''); // Clear previous errors
+                        setPropertyError('');
+                        isValid = false;
+                      } else if (!propertyDesc) {
+                        setError(''); // Clear previous errors
+                        setNotesError('Please enter notes!');
+                        setPropertyError('');
+                        isValid = false;
+                      }   else if (property_value === null || property_value === undefined || property_value <= 0)  {
+                        setError(''); // Clear previous errors
+                        setNotesError('');
+                        setPropertyError('Please select a property type!');
+                        isValid = false;
+                      } else {
+                        // Clear all errors if all fields are valid
+                        setError('');
+                        setNotesError('');
+                        setPropertyError('');
+                      }
+                  
+                      if (isValid) {
+                        handleSaveSignup();
+                      }
+                      
                     }}
+                    marginBottom={20}
                   />
                 </View>
                 <View style={{ marginHorizontal: 16 }}>
@@ -1240,7 +1313,10 @@ export default FirstProperty = props => {
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
                       handleSaveSignupfill();
+                      // alert('kk')
                     }}
+                    marginBottom={20}
+
                   />
                 </View>
                 <TouchableOpacity

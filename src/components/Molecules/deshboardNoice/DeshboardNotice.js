@@ -15,9 +15,13 @@ import axios from 'axios';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 const DeshboardNotice = props => {
-  const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
-  console.log('user id..', loginData?.Login_details?.user_id);
+  const loginData = useSelector(state => state?.authenticationReducer?.data);
+  const SignData = useSelector(state => state?.authenticationReducer?.data);
+  console.log('loginResponse.....', loginData);
+  console.log('signResponse.....', SignData);
+
+  console.log(' loginData user id..', loginData?.Login_details?.user_id);
+  console.log('SignData user id..', SignData?.Login_details?.user_id);
   const [progress, setProgress] = useState(0.4);
   const [isLoading, setIsLoading] = useState(false);
   const [profileDay, setProfileDay] = useState('');

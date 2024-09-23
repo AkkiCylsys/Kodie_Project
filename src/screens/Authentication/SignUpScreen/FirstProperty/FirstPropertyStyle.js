@@ -1,5 +1,5 @@
-import {Platform, StyleSheet} from 'react-native';
-import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import { Platform, StyleSheet } from 'react-native';
+import { _COLORS, FONTFAMILY } from '../../../../Themes';
 export const FirstPropertyStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -19,11 +19,13 @@ export const FirstPropertyStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
-    padding: 20,
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    marginTop: 20
+    // padding: 20,
+    // marginBottom: 20,
   },
 
   Furnished_Text: {
@@ -36,12 +38,12 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
- 
+
   inputContainer: {
     marginBottom: 15,
   },
-  featureText:{
-    marginTop:20
+  featureText: {
+    marginTop: 20
   },
   input: {
     height: 100,
@@ -100,8 +102,8 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
   },
-  key_feature_Dropdownstyle: {flex: 1, height: 40},
-  additional: {flex: 0.85},
+  key_feature_Dropdownstyle: { flex: 1, height: 40 },
+  additional: { flex: 0.85 },
   mainfeaturesview: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -112,7 +114,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 10,
   },
-  key_feature_subView: {flex: 1},
+  key_feature_subView: { flex: 1 },
   floorsizeview: {
     flex: 0.5,
     justifyContent: 'flex-end',
@@ -319,8 +321,8 @@ export const FirstPropertyStyle = StyleSheet.create({
   },
   addition_featureView: {
     marginTop: 10,
-    flexDirection:'row',
-    justifyContent:'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
 
   },
   Furnished_Text: {
@@ -333,4 +335,9 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  Error_Text: {
+    color: _COLORS.Kodie_redColor,
+    fontFamily: FONTFAMILY?.K_Medium,
+    fontSize: 14, marginTop: 5, marginLeft: 5
+  }
 });

@@ -38,7 +38,7 @@ export const loginApiActionCreator = data => async dispatch => {
     }
   } catch (error) {
     console.error('Login API Error:', error);
-    dispatch(fetchLoginError(error.response?.data ?? error.message));
+    dispatch(fetchLoginError(error?.response?.data ?? error.message));
     return error?.response?.status;
   }
 };
@@ -56,17 +56,17 @@ export const signupAccountApiActionCreator = data => async dispatch => {
         },
       },
     );
-
-    if (res.data.success === true) {
-      dispatch(fetchRegistrationSuccess(res.data));
+    if (res?.data?.status === true) {
+      console.log(res.data,"fetchRegistrationSuccess");
+      dispatch(fetchRegistrationSuccess(res?.data));
       return res;
     } else {
-      dispatch(fetchRegistrationError(res.data));
+      dispatch(fetchRegistrationError(res?.data));
       return res;
     }
   } catch (error) {
     console.error('Signup API Error:', error);
-    dispatch(fetchRegistrationError(error.response?.data ?? error.message));
+    dispatch(fetchRegistrationError(error?.response?.data ?? error.message));
     return error;
   }
 };

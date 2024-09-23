@@ -125,7 +125,7 @@ const MapScreen = props => {
         } else {
           Alert.alert(
             'Location Alert',
-            "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+            "You haven't allowed access to your location, so location services are unavailable. Please enable location access to use this feature.",
             [
               {
                 text: 'Cancel',
@@ -243,7 +243,7 @@ const MapScreen = props => {
   const showLocationAlert = () => {
     Alert.alert(
       'Location Alert',
-      "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+      "You haven't allowed access to your location, so location services are unavailable. Please enable location access to use this feature.",
       [
         {
           text: 'Cancel',

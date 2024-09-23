@@ -251,7 +251,7 @@ export default AboutYou = props => {
   };
   const validateSelection = newSelected => {
     if (newSelected.length === 0) {
-      setSelectedServicesError('How would you describe yourself is required!');
+      setSelectedServicesError('Please select an option!');
     } else {
       setSelectedServicesError('');
     }
@@ -259,7 +259,7 @@ export default AboutYou = props => {
 
   const validateCategorySelection = newCategorySelected => {
     if (newCategorySelected.length === 0) {
-      setSelectJobTypeidError('The category of service you offer is required!');
+      setSelectJobTypeidError('Please select an option!');
     } else {
       setSelectJobTypeidError('');
     }
@@ -267,7 +267,7 @@ export default AboutYou = props => {
   const validateIndiCategorySelection = newIndiCategorySelected => {
     if (newIndiCategorySelected.length === 0) {
       setIndiSelectJobTypeidError(
-        'The category of service you offer is required!',
+        'Please select an option!',
       );
     } else {
       setIndiSelectJobTypeidError('');
@@ -312,7 +312,7 @@ export default AboutYou = props => {
   const validNextButton = () => {
     // Ensure a service is selected
     if (selectedServices.length == 0) {
-      setSelectedServicesError('How would you describe yourself is required!');
+      setSelectedServicesError('Please select an option!');
       return;
     }
   
@@ -321,7 +321,7 @@ export default AboutYou = props => {
       if (tabValue === 'IndividualSignup') {
         // Check if job type is selected for individual sign-up
         if (IndiselectJobTypeid.length == 0) {
-          setIndiSelectJobTypeidError('The category of service you offer is required!');
+          setIndiSelectJobTypeidError('Please select an option!');
         } else {
           setSelectJobTypeidError(''); // Clear error
           navigateOrHandle();
@@ -335,7 +335,7 @@ export default AboutYou = props => {
           valid = false;
         }
         if (selectJobTypeid.length == 0) {
-          setSelectJobTypeidError('The category of service you offer is required!');
+          setSelectJobTypeidError('Please select an option!');
           valid = false;
         }
         if (businessNumber === '') {

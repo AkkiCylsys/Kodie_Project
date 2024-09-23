@@ -735,8 +735,8 @@ export default PropertyDetails = props => {
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
                   onChangeText={handleNote}
-                  placeholder="Add information about your property"
-                  placeholderTextColor="#999"
+                  placeholder="Add any information about your property"
+                  placeholderTextColor={_COLORS?.Kodie_LightGrayColor}
                   multiline
                   numberOfLines={5}
                   maxLength={1000}
