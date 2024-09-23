@@ -46,6 +46,7 @@ export const FavJobStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS?.Kodie_BlackColor,
     fontFamily: FONTFAMILY?.K_Bold,
+    alignSelf:"center"
   },
   budgetCon: {
     flexDirection: 'row',
@@ -61,5 +62,6 @@ export const FavJobStyle = StyleSheet.create({
     color: _COLORS?.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY?.K_Regular,
     alignSelf: 'center',
+    width:250
   },
 });

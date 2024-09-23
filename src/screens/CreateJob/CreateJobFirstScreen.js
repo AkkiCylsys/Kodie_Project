@@ -1253,7 +1253,7 @@ export default CreateJobFirstScreen = props => {
             ) : null}
             {selectedAddress?.propertyType ? (
               <View style={{marginTop: 12}}>
-                <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+                <Text style={LABEL_STYLES.commontext}>{'Property type:'}</Text>
                 <TextInput
                   style={[
                     CreateJobFirstStyle.input,
@@ -1278,7 +1278,7 @@ export default CreateJobFirstScreen = props => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="1 star and above"
+                placeholder="Rating threshold"
                 searchPlaceholder="Search..."
                 value={ratingThresholdValue}
                 onChange={item => {

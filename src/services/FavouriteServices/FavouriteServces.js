@@ -19,3 +19,41 @@ export const FavouriteServices = async favourtiesPayload => {
     throw error;
   }
 };
+
+export const GetFavouriteServices = async getfavourtiesPayload => {
+  try {
+    const url = Config.BASE_URL;
+    const getFavouriteUri = `${url}Favoritelist`;
+    console.log('getFavouriteUri:', getFavouriteUri);
+
+    const response = await axios.post(getFavouriteUri, getfavourtiesPayload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.error('Error in getFavouriteUri:', error);
+    throw error;
+  }
+};
+
+export const GetJobFavouriteServices = async getJobfavourtiesPayload => {
+  try {
+    const url = Config.BASE_URL;
+    const getFavouriteUri = `${url}Favoritelist`;
+    console.log('getJobFavouriteUri:', getFavouriteUri);
+
+    const response = await axios.post(getFavouriteUri, getJobfavourtiesPayload, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response?.data;
+  } catch (error) {
+    console.error('Error in getJobFavouriteUri:', error);
+    throw error;
+  }
+};

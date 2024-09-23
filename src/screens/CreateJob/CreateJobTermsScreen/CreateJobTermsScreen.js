@@ -592,7 +592,7 @@ export default CreateJobTermsScreen = props => {
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
-          // alert(response?.data?.message);
+          alert(response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
             JobId: JobId,
             editMode: editMode,
