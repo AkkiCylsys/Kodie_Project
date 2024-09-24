@@ -8,7 +8,11 @@ import {
 import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../../services/CommonServices';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 import UserDetails from '../../../../../components/PropertyViewApplication/UserDetails/UserDetails';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import {UserDetailsStyle} from '../../../../../components/PropertyViewApplication/UserDetails/UserDetailsStyle';
@@ -17,10 +21,15 @@ import {PropertyViewApplicationStyle} from './PropertyViewApplicationStyle';
 import RowTexts from '../../../../../components/Molecules/RowTexts/RowTexts';
 import PreRentalQuestionnaire from '../../../../../components/PropertyViewApplication/UserDetails/PreRentalQuestionnaire/PreRentalQuestionnaire';
 import {useSelector} from 'react-redux';
-import {PropertyViewApplicationService} from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
+import {
+  PropertyViewApplicationService,
+  QuestionDetailsForTenantQues,
+} from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
 import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
+import ViewApplicationSummary from '../ViewApplicationSummary/ViewApplicationSummary';
+import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 const PropertyViewApplication = props => {
   const propertyId = props.route.params.propertyId;
   const bid_id = props.route.params.bid_id;
@@ -36,6 +45,7 @@ const PropertyViewApplication = props => {
 
   useEffect(() => {
     handlePropertyViewApplication();
+    handleQuestionDetailsForTenantQues();
     handleAcceptBidding();
   }, []);
   const handlePropertyViewApplication = async () => {
@@ -52,6 +62,29 @@ const PropertyViewApplication = props => {
       if (response?.success === true) {
         setTenantDetails(response?.data[0]);
         setTenantAccountDetails(response?.data[0]?.account_details[0]);
+        console.log('response data in view application...', response?.data[0]);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching PropertyViewApplication:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleQuestionDetailsForTenantQues = async () => {
+    setIsLoading(true);
+    const TenantQuestPayload = {
+      p_account_id: loginData?.Login_details?.user_account_id,
+      p_property_id: propertyId,
+    };
+    try {
+      const response = await QuestionDetailsForTenantQues(TenantQuestPayload);
+      console.log("response in tenant question..",JSON.stringify(response?.data?.[0].parent_json))
+      if (response?.data?.success === true) {
+        console.log(
+          'QuestionDetailsForTenantQues response....',
+          JSON.stringify(response?.data),
+        );
         setIsLoading(false);
       }
     } catch (error) {
@@ -119,7 +152,7 @@ const PropertyViewApplication = props => {
           </View>
         </View>
         <DividerIcon />
-        <View style={PropertyViewApplicationStyle.summaryView}>
+        {/* <View style={PropertyViewApplicationStyle.summaryView}>
           <Text style={PropertyViewApplicationStyle.cityText}>
             {'Offer summary'}
           </Text>
@@ -139,21 +172,84 @@ const PropertyViewApplication = props => {
               {'read more'}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
+        <Text style={PropertyViewApplicationStyle.summaryText}>
+          {tenantAccountDetails?.UAD_BIO}
+        </Text>
         <DividerIcon />
-        <View style={PropertyViewApplicationStyle.summaryView}>
+        {/* <View style={PropertyViewApplicationStyle.summaryView}>
           <Text style={PropertyViewApplicationStyle.cityText}>
             {'Pre-rental questionnaire'}
           </Text>
-        </View>
-        <PreRentalQuestionnaire
+        </View> */}
+        {/* <PreRentalQuestionnaire
           accountId={loginData?.Login_details?.user_account_id}
           propertyId={propertyId}
           bid_id={bid_id}
           tenant_id={tenant_id}
           landlord_id={landlord_id}
           acceptBiddingData={acceptBiddingData}
-        />
+        /> */}
+
+        <View style={{}}>
+          <ViewApplicationSummary />
+        </View>
+        <DividerIcon borderBottomWidth={2} />
+
+        <View style={{marginHorizontal: 16}}>
+          <Text style={PropertyViewApplicationStyle.inspections}>
+            {'Tenant  screening report (recommended)'}
+          </Text>
+
+          <View style={PropertyViewApplicationStyle.container}>
+            <View style={PropertyViewApplicationStyle.pdfInfo}>
+              <FontAwesome
+                name="file-pdf-o"
+                size={35}
+                color={_COLORS.Kodie_BlackColor}
+                resizeMode={'contain'}
+              />
+              <View style={PropertyViewApplicationStyle.textContainer}>
+                <Text style={PropertyViewApplicationStyle.pdfName}>
+                  {'Tenant  screening report.pdf'}
+                </Text>
+                <Text style={PropertyViewApplicationStyle.pdfSize}>
+                  {' '}
+                  {'4.5 MB'}
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={PropertyViewApplicationStyle.crossIcon}
+              onPress={() => {
+                // setFilePath();
+                // setFileKey();
+              }}>
+              <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <DividerIcon borderBottomWidth={2} />
+        <View style={{marginBottom: 20, marginHorizontal: 16}}>
+          <RowButtons
+            leftButtonHeight={44}
+            RightButtonHeight={44}
+            LeftButtonText={'Back'}
+            RightButtonText={'Done'}
+            leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+            LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+            onPressLeftButton={() => {
+              alert('reject');
+            }}
+            RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+            RightButtonborderColor={_COLORS.Kodie_BlackColor}
+            RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+            onPressRightButton={() => {
+              alert('approve');
+            }}
+          />
+        </View>
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
     </SafeAreaView>

@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {OfferForMyPropertiesStyle} from './OfferForMyPropertiesStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,6 +26,7 @@ import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/Act
 import {useNavigation} from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -134,7 +136,16 @@ const OfferForMyProperties = () => {
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginVertical: 10}}>
-          <View style={OfferForMyPropertiesStyle.SubContainer}>
+          <TouchableOpacity
+            style={OfferForMyPropertiesStyle.SubContainer}
+            onPress={() => {
+              navigation.navigate('PropertyViewApplication', {
+                propertyId: item?.property_id,
+                bid_id: item?.bid_id,
+                tenant_id: item?.tenant_id,
+                landlord_id: item?.landlord_id,
+              });
+            }}>
             <View>
               {item.image_path && item.image_path.length > 0 ? (
                 <Image
@@ -226,9 +237,8 @@ const OfferForMyProperties = () => {
                 </View>
               ))}
             </View>
-          </View>
-          <DividerIcon />
-          <CustomSingleButton
+          </TouchableOpacity>
+          {/* <CustomSingleButton
             _ButtonText={'View application'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             disabled={isLoading}
@@ -242,7 +252,27 @@ const OfferForMyProperties = () => {
               });
             }}
             backgroundColor={_COLORS.Kodie_BlackColor}
-          />
+          /> */}
+          <View style={{marginTop: 20}}>
+            <RowButtons
+              leftButtonHeight={44}
+              RightButtonHeight={44}
+              LeftButtonText={'Reject application'}
+              RightButtonText={'Approve application'}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              onPressLeftButton={() => {
+                alert('reject');
+              }}
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              RightButtonborderColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              onPressRightButton={() => {
+                alert('approve');
+              }}
+            />
+          </View>
         </View>
         <DividerIcon borderBottomWidth={3} />
       </View>
@@ -305,7 +335,9 @@ const OfferForMyProperties = () => {
         keyExtractor={item => item?.property_id}
         renderItem={offerPropertyRender}
         ListEmptyComponent={() => {
-          return <ListEmptyComponent EmptyText={"You don't have any properties."}/>;
+          return (
+            <ListEmptyComponent EmptyText={"You don't have any properties."} />
+          );
         }}
       />
       {isLoading ? <CommonLoader /> : null}

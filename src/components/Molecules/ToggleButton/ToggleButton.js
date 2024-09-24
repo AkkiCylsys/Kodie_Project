@@ -15,10 +15,11 @@ const ToggleButton = ({
   inactiveTextColor,
   textStyle,
   width,
+  containerstyle
 }) => {
   return (
     <View style={ToggleButtonStyle.boxContainer}>
-      <View style={[ToggleButtonStyle.boxView, { width}]}>
+      <View style={[ToggleButtonStyle.boxView, { width,containerstyle}]}>
         <TouchableOpacity
           style={[
             ToggleButtonStyle.buttonStyle,
