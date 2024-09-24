@@ -40,6 +40,7 @@ const PropertyViewApplication = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [tenantDetails, setTenantDetails] = useState(false);
   const [tenantAccountDetails, setTenantAccountDetails] = useState(false);
+  const [tenantQuestDetails, setTenantQuestDetails] = useState([]);
   const [acceptBiddingData, setAcceptBiddingData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
 
@@ -75,18 +76,27 @@ const PropertyViewApplication = props => {
     setIsLoading(true);
     const TenantQuestPayload = {
       p_account_id: loginData?.Login_details?.user_account_id,
-      p_property_id: propertyId,
+      // p_property_id: propertyId,
+      p_property_id: 1934,
     };
     try {
       const response = await QuestionDetailsForTenantQues(TenantQuestPayload);
-      console.log("response in tenant question..",JSON.stringify(response?.data?.[0].parent_json))
-      if (response?.data?.success === true) {
-        console.log(
-          'QuestionDetailsForTenantQues response....',
-          JSON.stringify(response?.data),
-        );
-        setIsLoading(false);
-      }
+      console.log(
+        'response in tenant question..',
+        JSON.stringify(response?.data?.[0].parent_json),
+      );
+      setTenantQuestDetails(response?.data?.[0].parent_json);
+      setIsLoading(false);
+
+      // if (response?.data?.success === true) {
+      //   console.log(
+      //     'QuestionDetailsForTenantQues response....',
+      //     JSON.stringify(response?.data),
+      //   );
+      //   setTenantQuestDetails(response?.data[0]?.parent_json);
+      //   console.log("setTenantQuestDetails....",JSON.stringify(response?.data))
+
+      // }
     } catch (error) {
       console.error('Error fetching PropertyViewApplication:', error);
     } finally {
@@ -192,7 +202,7 @@ const PropertyViewApplication = props => {
         /> */}
 
         <View style={{}}>
-          <ViewApplicationSummary />
+          <ViewApplicationSummary tenantQuestDetails={tenantQuestDetails} />
         </View>
         <DividerIcon borderBottomWidth={2} />
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import {ViewApplicationSummaryStyle} from './ViewApplicationSummaryStyle';
 
@@ -10,6 +10,7 @@ import ToggleButton from '../../../../../components/Molecules/ToggleButton/Toggl
 import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
+import moment from 'moment';
 
 const occupantData = [
   {
@@ -23,12 +24,21 @@ const occupantData = [
     email: 'uday@gmail.com',
   },
 ];
-const ViewApplicationSummary = () => {
+const ViewApplicationSummary = props => {
+  const {tenantQuestDetails} = props;
   const [acceptButtonId, setAcceptButtonId] = useState(0);
   const [reasonOfReject, setReasonOfReject] = useState('');
   const [applicationSummaryToggle, setApplicationSummaryToggle] = useState('');
   const [occupantDetailsToggle, setOccupantDetailsToggle] = useState('');
   const [referenceToggle, setReferenceToggle] = useState('');
+
+  console.log('tenantQuestDetails....', JSON.stringify(tenantQuestDetails));
+  console.log(
+    'move data...',
+    tenantQuestDetails?.[0]?.children?.[0]?.id == 2
+      ? tenantQuestDetails?.[0]?.children?.[0]?.tqm_Question_value
+      : null,
+  );
 
   const occupantRenderItem = ({item, index}) => {
     return (
@@ -157,13 +167,47 @@ const ViewApplicationSummary = () => {
               </Text>
               <RowTexts
                 leftText={'Move in date'}
-                rightText={'1 September 2023'}
+                rightText={moment(
+                  tenantQuestDetails?.[0]?.children?.[0]?.id == 2
+                    ? tenantQuestDetails?.[0]?.children?.[0]?.tqm_Question_value
+                    : '',
+                ).format('DD MMMM YYYY')}
               />
-              <RowTexts leftText={'Length of lease'} rightText={'12 months'} />
-              <RowTexts leftText={'Budget'} rightText={'$1000'} />
+              <RowTexts
+                leftText={'Length of lease'}
+                rightText={
+                  tenantQuestDetails?.[0]?.children?.[1]?.id == 3
+                    ? tenantQuestDetails[0].children[1]
+                        .tqm_Question_value_data == null
+                      ? '-'
+                      : tenantQuestDetails[0].children[1]
+                          ?.tqm_Question_value_data
+                    : ''
+                }
+              />
+              <RowTexts
+                leftText={'Budget'}
+                rightText={`${
+                  tenantQuestDetails?.[0]?.children?.[3]?.id == 5
+                    ? tenantQuestDetails?.[0]?.children?.[3]
+                        ?.tqm_Question_value == null
+                      ? '-'
+                      : tenantQuestDetails?.[0]?.children?.[3]
+                          ?.tqm_Question_value
+                    : ''
+                }`}
+              />
               <RowTexts
                 leftText={'Frequency of payments'}
-                rightText={'Weekly'}
+                rightText={
+                  tenantQuestDetails?.[0]?.children?.[4]?.id == 6
+                    ? tenantQuestDetails[0].children[4]
+                        .tqm_Question_value_data == null
+                      ? '-'
+                      : tenantQuestDetails[0].children[4]
+                          ?.tqm_Question_value_data
+                    : ''
+                }
               />
             </View>
 
@@ -173,11 +217,25 @@ const ViewApplicationSummary = () => {
               </Text>
               <RowTexts
                 leftText={'Employment status'}
-                rightText={'Full-time employed'}
+                rightText={
+                    tenantQuestDetails?.[1]?.children?.[1]?.id === 9 
+                    ? (tenantQuestDetails[1].children[1].tqm_Question_value == null 
+                        ? '-' 
+                        : moment(tenantQuestDetails[1].children[1].tqm_Question_value).format('DD MMMM YYYY')) 
+                    : ''
+                }
               />
               <RowTexts
                 leftText={'Employment start'}
-                rightText={'1 February 2024'}
+                rightText={
+                  tenantQuestDetails?.[1]?.children?.[0]?.id == 8
+                    ? tenantQuestDetails[1].children[0]
+                        .tqm_Question_value_data == null
+                      ? '-'
+                      : tenantQuestDetails[1].children[0]
+                          ?.tqm_Question_value_data
+                    : ''
+                }
               />
               <RowTexts
                 leftText={'Length of employment'}
