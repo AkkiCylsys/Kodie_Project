@@ -520,7 +520,7 @@ export default PropertyFeature = props => {
                     style={PropertyFeatureStyle.flor_input_field}
                     value={florSize}
                     onChangeText={setFlorSize}
-                    placeholder="0m2"
+                    placeholder="- m2"
                     keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_GrayColor}
                   />
@@ -539,7 +539,7 @@ export default PropertyFeature = props => {
                     style={PropertyFeatureStyle.flor_input_field}
                     value={landArea}
                     onChangeText={setLandArea}
-                    placeholder="0m2"
+                    placeholder="- m2"
                     keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_GrayColor}
                   />
