@@ -58,7 +58,7 @@ const PropertyDeletePopup = props => {
       // console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
         Alert.alert(
-          'Property Deleted',
+          'Property deleted',
           'The property was deleted successfully.',
         );
         handleCloseModal();

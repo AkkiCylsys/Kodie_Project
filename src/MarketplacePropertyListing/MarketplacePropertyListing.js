@@ -159,7 +159,7 @@ const MarketplacePropertyListing = props => {
       });
       // console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
-        Alert.alert('Property Deleted', response?.data?.message);
+        Alert.alert('Property deleted', response?.data?.message);
         get_MarketplacePropertyListing();
         setIsLoading(false);
       }

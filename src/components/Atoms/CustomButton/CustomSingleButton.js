@@ -20,7 +20,9 @@ const CustomSingleButton = props => {
          
         },
       ]}
-      disabled={props?.disabled}>
+      disabled={props?.disabled}
+      testID={props?.testID} // Add testID here
+      >
       {props.isLeftImage ? (
         <Image source={props.leftImage} style={CustomButtonstyles.leftIcon} />
       ) : null}
