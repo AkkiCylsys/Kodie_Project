@@ -82,16 +82,18 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
-	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
-	<dict>
-		<key>AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw</key>
-		<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
-	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+    <string>App requies access to your maps to allow you to take user current location of your place to process your request.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>App requies access to your maps to allow you to take user current location of your place to process your request.</string>
+    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+    <dict>
+        <key>AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw</key>
+        <string>App requies access to your maps to allow you to take user current location of your place to process your request.</string>
+    </dict>
+    <key>NSLocationUsageDescription</key>
+    <string>App requies access to your maps to allow you to take user current location of your place to process your request.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>App requies access to your maps to allow you to take user current location of your place to process your request.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Kodie requires Microphone access to allows you quick and secure access.</string>
 	<key>NSMotionUsageDescription</key>
