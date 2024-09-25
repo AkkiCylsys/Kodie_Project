@@ -23,6 +23,7 @@ import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveL
 import messaging from '@react-native-firebase/messaging';
 import { encryptPassword, signup } from '../../../services/Authentication/Authentication';
 import {SignUpStyles} from "./SignUpStyle"
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const SignUp = (props) => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -33,13 +34,42 @@ const SignUp = (props) => {
   const [privacy, setPrivacy] = useState(false);
   const [Fcm_token, setFcm_token] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [googleSignIn, setGoogleSignIn] = useState([]);
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
   useEffect(() => {
     requestUserPermission();
     handlemessage();
+    const configureGoogleSignIn = () => {
+      GoogleSignin.configure({
+        webClientId:
+          '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
+      });
+    };
+    configureGoogleSignIn();
   }, []);
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('userInfo....', userInfo);
+      setGoogleSignIn(userInfo);
+    } catch (error) {
+      console.log('Error during signIn:', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('SIGN_IN_CANCELLED');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('IN_PROGRESS');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('PLAY_SERVICES_NOT_AVAILABLE');
+      } else {
+        console.log('Error occurred:', error.message);
+        console.log('Error stack trace:', error.stack);
+        console.log('Full error object:', error);
+      }
+    }
+  };
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -443,7 +473,8 @@ console.log(SignUpData);
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                Alert.alert('Sign with Google', 'Coming soon');
+                // Alert.alert('Sign with Google', 'Coming soon');
+                signIn();
               }}
             />
             <View style={{marginTop:30}}>

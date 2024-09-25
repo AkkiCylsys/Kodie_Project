@@ -686,6 +686,7 @@ export default Login = props => {
               _ButtonText={'Login'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               marginTop={20}
+              testID={'xyz123'} // Add testID here
             />
             {/* <View style={LoginStyles.loderview}></View> */}
             <DividerIcon

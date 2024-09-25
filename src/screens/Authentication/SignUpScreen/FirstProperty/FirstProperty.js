@@ -988,6 +988,7 @@ export default FirstProperty = props => {
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text style={LABEL_STYLES._texinputLabel}>Notes<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
                     <TextInput
+                    
                       style={FirstPropertyStyle.input}
                       value={propertyDesc}
                       onChangeText={handleNote}
