@@ -31,12 +31,20 @@ import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/
 import ViewApplicationSummary from '../ViewApplicationSummary/ViewApplicationSummary';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 const PropertyViewApplication = props => {
-  const propertyId = props.route.params.propertyId;
-  const bid_id = props.route.params.bid_id;
-  const tenant_id = props.route.params.tenant_id;
-  const landlord_id = props.route.params.landlord_id;
-  const Pre_screening = props.route.params.Pre_screening;
+  const {
+    propertyId,
+    bid_id,
+    tenant_id,
+    landlord_id,
+    Pre_screening,
+    accpetingLandlordId,
+  } = props.route.params; // Accessing params from props
+
+  // Logging the values for debugging
+  console.log('accpetingLandlordId...', accpetingLandlordId);
   console.log('bid_id..', bid_id);
+  console.log('propertyId..', propertyId);
+  console.log('tenant_id..', tenant_id);
   const [isLoading, setIsLoading] = useState(false);
   const [tenantDetails, setTenantDetails] = useState(false);
   const [tenantAccountDetails, setTenantAccountDetails] = useState(false);
@@ -76,8 +84,8 @@ const PropertyViewApplication = props => {
     setIsLoading(true);
     const TenantQuestPayload = {
       p_account_id: loginData?.Login_details?.user_account_id,
-      // p_property_id: propertyId,
-      p_property_id: 1934,
+      p_property_id: propertyId,
+      // p_property_id: 1934,
     };
     try {
       const response = await QuestionDetailsForTenantQues(TenantQuestPayload);
@@ -202,9 +210,16 @@ const PropertyViewApplication = props => {
         /> */}
 
         <View style={{}}>
-          <ViewApplicationSummary tenantQuestDetails={tenantQuestDetails} />
+          <ViewApplicationSummary
+            tenantQuestDetails={tenantQuestDetails}
+            tenant_id={tenant_id}
+            bid_id={bid_id}
+            propertyId={propertyId}
+            landlord_id={landlord_id}
+            accpetingLandlordId={accpetingLandlordId}
+          />
         </View>
-        <DividerIcon borderBottomWidth={2} />
+        {/* <DividerIcon borderBottomWidth={2} />
 
         <View style={{marginHorizontal: 16}}>
           <Text style={PropertyViewApplicationStyle.inspections}>
@@ -259,7 +274,7 @@ const PropertyViewApplication = props => {
               alert('approve');
             }}
           />
-        </View>
+        </View> */}
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
     </SafeAreaView>

@@ -30,13 +30,14 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 const PropertyRentalOffer = props => {
+ const {acceptLanlordPassed} =props
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '4';
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(true);
+  const [selectedButton, setSelectedButton] = useState(acceptLanlordPassed == "acceptLanlordPassed" ? false :true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
   const [expandedPropertyId, setExpandedPropertyId] = useState(null);
   const [saveCurrentOffer, setSaveCurrentOffer] = useState(false);

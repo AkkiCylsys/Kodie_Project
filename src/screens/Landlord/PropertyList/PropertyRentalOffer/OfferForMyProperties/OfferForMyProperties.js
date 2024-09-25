@@ -23,7 +23,7 @@ import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
@@ -34,6 +34,7 @@ const OfferForMyProperties = () => {
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
   const [offerPropertyData, setOfferPropertyData] = useState([]);
+  const [lanlordAcceptingId, setLanlordAcceptingId] = useState('');
   const [filteredOfferPropertyData, setFilteredOfferPropertyData] = useState(
     [],
   );
@@ -41,9 +42,13 @@ const OfferForMyProperties = () => {
 
   useEffect(() => {
     handleAddressType();
-    handleOfferForProperty();
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      handleOfferForProperty();
+    }, [addressTypeValue?.property_id]),
+  );
   const handleAddressType = async () => {
     setIsLoading(true);
     const addressData = {
@@ -70,26 +75,36 @@ const OfferForMyProperties = () => {
 
   const handleOfferForProperty = async () => {
     setIsLoading(true);
+
+    // Adjust the Filter logic
     const offerPropertyData = {
-      Filter: addressTypeValue?.latitude ? 'AllData' : 'All',
+      // Check if addressTypeValue has a location selected
+      Filter: addressTypeValue?.property_id ? 'AllData' : 'All', // Changed from latitude check to property_id
       account_id: loginData?.Login_details?.user_account_id,
       property_id: addressTypeValue?.property_id
         ? addressTypeValue?.property_id
         : 0,
       limit: '10',
     };
+
     console.log('Request Payload:', offerPropertyData);
+
     try {
       const response = await offerForMyProperty(offerPropertyData);
-      console.log('response in offerForMyProperty..', response?.data);
-      setOfferPropertyData(response?.data || []);
-      setIsLoading(true);
+      console.log('response in offerForMyProperty..', response);
+
+      if (response?.success == true) {
+        setOfferPropertyData(response?.data || []);
+        setIsLoading(false); // Change to set loading false here to avoid multiple state updates
+      }
+      // Update the state with the fetched data
     } catch (error) {
       console.error('Error fetching OfferForProperty:', error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // This will always run, ensure loading is false
     }
   };
+
   const searchOfferForMyProperty = query => {
     setSearchQuery(query);
     const filtered = query
@@ -144,6 +159,7 @@ const OfferForMyProperties = () => {
                 bid_id: item?.bid_id,
                 tenant_id: item?.tenant_id,
                 landlord_id: item?.landlord_id,
+                accpetingLandlordId: item?.landlord_accepting_id,
               });
             }}>
             <View>

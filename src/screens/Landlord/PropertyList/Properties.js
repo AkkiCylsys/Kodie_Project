@@ -20,6 +20,8 @@ import PropertyRentalOffer from './PropertyRentalOffer/PropertyRentalOffer';
 
 const Properties = props => {
   const tab3 = props?.route?.params?.tab3;
+  const acceptLanlordPassed = props?.route?.params?.acceptLanlordPassed
+  console.log("acceptLanlordPassed...",acceptLanlordPassed);
   const routesLength = useNavigationState(state => state.routes.length);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -28,7 +30,7 @@ const Properties = props => {
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
-    setActiveTab(tab3 == 'tab3' ? 'Tab3' : 'Tab1');
+    setActiveTab(tab3 == 'tab3' || acceptLanlordPassed == "acceptLanlordPassed" ? 'Tab3' : 'Tab1');
   }, []);
   useFocusEffect(
     React.useCallback(() => {
@@ -88,7 +90,7 @@ const Properties = props => {
           </>
         );
       case 'Tab3':
-        return <PropertyRentalOffer />;
+        return <PropertyRentalOffer  acceptLanlordPassed={"acceptLanlordPassed"}/>;
 
       default:
         return <PropertyList />;
