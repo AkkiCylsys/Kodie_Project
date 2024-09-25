@@ -13,3 +13,21 @@ export const PropertyViewApplicationService = async (propertyViewApplicationData
       throw error;  // Rethrow the error for higher-level handling
     }
   };
+
+
+  export const QuestionDetailsForTenantQues = async (TenantQuestPayload) => {
+    try {
+      const url = Config.BASE_URL;
+      const QuestionDetailsForTenantQuesUrl = url + 'question_details_for_tenant_ques';
+      console.log('QuestionDetailsForTenantQues Url ...', QuestionDetailsForTenantQuesUrl);
+      const response = await axios.post(QuestionDetailsForTenantQuesUrl, TenantQuestPayload);
+      return response?.data;
+    } catch (error) {
+      console.log('error in QuestionDetailsForTenantQuesUrl ..', error);
+      throw error;  // Rethrow the error for higher-level handling
+    }
+  };
+
+
+
+
