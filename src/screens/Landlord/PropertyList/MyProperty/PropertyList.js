@@ -58,7 +58,8 @@ const PropertyList = props => {
     useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
-  const swipeableRef = useRef();
+  const swipeableRef = useRef([]);
+  const [openSwipeableIndex, setOpenSwipeableIndex] = useState(null);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -68,7 +69,12 @@ const PropertyList = props => {
     setIsDeleteData_Clicked(false);
     getPropertyDetailsByFilter(selectedFilter);
   };
-
+ 
+const closeSwipeable = (index) => {
+  if (swipeableRef.current[index] && swipeableRef.current[index].close) {
+    swipeableRef.current[index].close(); // Close the swipeable at the given index
+  }
+};
   // search propertyList....
   const searchPropertyList = query => {
     setSearchQuery(query);
@@ -99,7 +105,11 @@ const PropertyList = props => {
         if (response?.data?.success === true) {
           // Remove the item from the list
           getPropertyDetailsByFilter(selectedFilter);
+          swipeableRef.current[id]?.close();
+
         } else {
+          swipeableRef.current[id]?.close();
+
           // If the request failed, revert the item to its original state
           setPropertyData(prevData =>
             prevData.map(item =>
@@ -139,7 +149,7 @@ const PropertyList = props => {
     }
   };
 
-  const renderRightActions = (id, isArchived, location) => {
+  const renderRightActions = (id, isArchived, location,index) => {
     if (isArchived) return null;
     return (
       <View style={PropertyListCSS.actionsContainer}>
@@ -160,7 +170,10 @@ const PropertyList = props => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton]}
-          onPress={() => archiveProperty(id)}>
+          onPress={() => {
+            archiveProperty(id);
+            swipeableRef.current[index]?.close(); // Close the specific swipeable
+          }}>
           <MaterialCommunityIcons name="archive" size={24} color="white" />
           <Text style={PropertyListCSS.actionText}>
             {selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}
@@ -232,7 +245,7 @@ const PropertyList = props => {
                 backgroundColor:
                   selectedFilter === item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_VeryLightGrayColor,
               },
             ]}
           />
@@ -240,7 +253,7 @@ const PropertyList = props => {
         <Text
           style={[
             PropertyListCSS.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            {color: selectedFilter === item ?   _COLORS?.Kodie_WhiteColor: _COLORS?.Kodie_VeryLightGrayColor},
           ]}>
           {item}
         </Text>
@@ -249,6 +262,7 @@ const PropertyList = props => {
             name={'check'}
             size={18}
             color={_COLORS.Kodie_WhiteColor}
+            style={{marginLeft:6}}
           />
         ) : null}
       </TouchableOpacity>
@@ -259,15 +273,26 @@ const PropertyList = props => {
     const isExpanded = expandedItems.includes(item.property_id);
     return (
       <Swipeable
-        // ref={swipeableRef}
-        // overshootRight={false}
-        // onSwipeableWillClose={() => {
-        //   if (item.isArchived) {
-        //     swipeableRef.current?.close();
-        //   }
-        // }}
+        ref={ref => swipeableRef.current[index] = ref}
+        overshootRight={false}
+        friction={2}
+        onSwipeableWillOpen={() => {
+          // Close the currently open swipeable (if any)
+          if (openSwipeableIndex !== null && openSwipeableIndex !== index) {
+            closeSwipeable(openSwipeableIndex);
+          }
+  
+          // Set the new swipeable as open
+          setOpenSwipeableIndex(index);
+        }}
+        onSwipeableWillClose={() => {
+          // Clear the open swipeable index when it's closed
+          if (openSwipeableIndex === index) {
+            setOpenSwipeableIndex(null);
+          }
+        }}
         renderRightActions={() =>
-          renderRightActions(item.property_id, isArchived, item.location)
+          renderRightActions(item.property_id, isArchived, item.location,index)
         }>
         <TouchableOpacity
           style={[
@@ -283,7 +308,11 @@ const PropertyList = props => {
               propertyid: item?.property_id,
             });
           }}>
-          {item?.auto_list == 0 ? null : (
+         
+
+          {item.result ? null : (
+            <>
+             {item?.auto_list == 0 ? null : (
             <View
               style={{
                 justifyContent: 'center',
@@ -305,9 +334,6 @@ const PropertyList = props => {
               </Text>
             </View>
           )}
-
-          {item.result ? null : (
-            <>
               {item.isArchived ? (
                 <View
                   style={[
@@ -665,7 +691,7 @@ const PropertyList = props => {
         backgroundColor={_COLORS.Kodie_lightGreenColor}
         height={40}
         onPress={() => {}}
-        disabled={isLoading ? true : false}
+        disabled={true}
       />
     );
 
@@ -740,14 +766,14 @@ const PropertyList = props => {
           ]}>
           {renderRowButtons()}
         </View>
-        {userRole == '4' ? null : (
+        {userRole == '4' || userRole == '2'? null : (
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
             // marginTop={1}
           />
         )}
-        {userRole == '4' ? null : (
+        {userRole == '4' || userRole == '2' ? null : (
           <View style={PropertyListCSS.Container}>
             <CustomSingleButton
               _ButtonText={'+ Add New Property'}
@@ -770,6 +796,7 @@ const PropertyList = props => {
         )}
         <View style={{marginTop: userRole == '4' ? 15 : 0}}>
           <SearchBar
+          placeholder={'Search properties'}
             filterImage={IMAGES.filter}
             frontSearchIcon
             marginTop={3}
