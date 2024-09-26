@@ -40,6 +40,13 @@ const OfferForMyProperties = () => {
   );
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [occupantButtonId, setOccupantButtonId] = useState(null);
+
+  const [applicationSumAcceptButtonId, setApplicationSumAcceptButtonId] =
+    useState(null);
+
+  const [referenceAcceptButtonId, setReferenceAcceptButtonId] = useState(null);
+
   useEffect(() => {
     handleAddressType();
   }, []);
@@ -148,6 +155,10 @@ const OfferForMyProperties = () => {
     );
   };
   const offerPropertyRender = ({item, index}) => {
+    const isScreeningDisabled =
+      item.screening_one === 556 ||
+      item.screening_two === 556 ||
+      item.screening_three === 556;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginVertical: 10}}>
@@ -269,7 +280,7 @@ const OfferForMyProperties = () => {
             }}
             backgroundColor={_COLORS.Kodie_BlackColor}
           /> */}
-          <View style={{marginTop: 20}}>
+          {/* <View style={{marginTop: 20}}>
             <RowButtons
               leftButtonHeight={44}
               RightButtonHeight={44}
@@ -287,6 +298,33 @@ const OfferForMyProperties = () => {
               onPressRightButton={() => {
                 alert('approve');
               }}
+            />
+          </View> */}
+          <View style={{marginTop: 20}}>
+            <RowButtons
+              leftButtonHeight={44}
+              RightButtonHeight={44}
+              LeftButtonText={'Reject application'}
+              RightButtonText={'Approve application'}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              onPressLeftButton={() => {
+                alert('reject');
+              }}
+              RightButtonbackgroundColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={isScreeningDisabled ?_COLORS.Kodie_LightGrayColor: _COLORS.Kodie_BlackColor}
+              RightButtonTextColor={isScreeningDisabled ? _COLORS.Kodie_ExtraLightGrayColor: _COLORS.Kodie_WhiteColor}
+              onPressRightButton={() => {
+                if (!isScreeningDisabled) {
+                  alert('approve');
+                }
+              }}
+              RightButtonDisabled={isScreeningDisabled}
             />
           </View>
         </View>

@@ -73,13 +73,13 @@ const ViewApplicationSummary = props => {
   useFocusEffect(
     React.useCallback(() => {
       handleAcceptLanlordToggle();
-      
+
       if (accpetingLandlordId !== null) {
-        handleGetLandLordDeatils();  // Invoke the function here
+        handleGetLandLordDeatils(); // Invoke the function here
       }
     }, [accpetingLandlordId]),
   );
-  
+
   console.log('tenantQuestDetails....', JSON.stringify(tenantQuestDetails));
   console.log(
     'tenantQuestDetails in second obj....',
@@ -147,7 +147,13 @@ const ViewApplicationSummary = props => {
       );
       console.log('response in save GetLandLordDeatils', response);
       if (response?.success === true) {
-
+        console.log('responsein get time..', response?.data[0]);
+        setApplicationSumAcceptButtonId(response?.data[0]?.status_one);
+        setOccupantButtonId(response?.data[0]?.status_two);
+        setReferenceAcceptButtonId(response?.data[0]?.status_three);
+        setApplicationSumReasonOfReject(response?.data[0]?.reason_one);
+        setOccupantReasonOfReject(response?.data[0]?.reason_two);
+        setReferenceReasonOfReject(response?.data[0]?.reason_three);
       }
     } catch (error) {
       console.error('Error fetching GetLandLordDeatils:', error);
@@ -199,13 +205,16 @@ const ViewApplicationSummary = props => {
       );
       console.log('response in save landlord accepting....', response);
       if (response?.success === true) {
-        alert(response?.data);
+        Alert.alert("Success",response?.data);
         navigation?.navigate('Properties', {
           acceptLanlordPassed: 'acceptLanlordPassed',
         });
         applicationSumAcceptButtonId(null);
         occupantButtonId(null);
         referenceAcceptButtonId(null);
+        setApplicationSumReasonOfReject('');
+        setOccupantReasonOfReject('');
+        setReferenceReasonOfReject('');
       }
     } catch (error) {
       console.error('Error fetching saveLandlordAccepotingDetails:', error);
@@ -222,9 +231,12 @@ const ViewApplicationSummary = props => {
       screening_one_status: applicationSumAcceptButtonId,
       screening_two_status: occupantButtonId,
       screening_three_status: referenceAcceptButtonId,
-      screening_one_reason: applicationSumReasonOfReject,
-      screening_two_reason: occupantReasonOfReject,
-      screening_three_reason: referenceReasonOfReject,
+      screening_one_reason:
+        applicationSumAcceptButtonId == 555 ? '' : applicationSumReasonOfReject,
+      screening_two_reason:
+        occupantButtonId == 555 ? '' : occupantReasonOfReject,
+      screening_three_reason:
+        referenceAcceptButtonId == 555 ? '' : referenceReasonOfReject,
     };
     console.log(
       'updateAcceptingDetailsPayload...',
@@ -236,13 +248,16 @@ const ViewApplicationSummary = props => {
       );
       console.log('response in Update landlord accepting....', response);
       if (response?.success === true) {
-        alert(response?.data);
+        Alert.alert("Success",response?.data);
         navigation?.navigate('Properties', {
           acceptLanlordPassed: 'acceptLanlordPassed',
         });
         applicationSumAcceptButtonId(null);
         occupantButtonId(null);
         referenceAcceptButtonId(null);
+        setApplicationSumReasonOfReject('');
+        setOccupantReasonOfReject('');
+        setReferenceReasonOfReject('');
       }
     } catch (error) {
       console.error('Error fetching updateLandlordAccepotingDetails :', error);
@@ -287,6 +302,7 @@ const ViewApplicationSummary = props => {
 
   const handleApplicationSumToggle = key => {
     setApplicationSumAcceptButtonId(key);
+    // alert(key)
   };
   const handleReferencesToggle = key => {
     setReferenceAcceptButtonId(key);
@@ -557,8 +573,10 @@ const ViewApplicationSummary = props => {
               <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                 {applicationSumAcceptButtonData.length > 0 && (
                   <ToggleButton
-                    tabValue={applicationSumAcceptButtonId}
-                    setTabValue={handleApplicationSumToggle} // Directly pass handleToggle
+                    tabValue={applicationSumAcceptButtonId} // This reflects the currently selected value
+                    setTabValue={newValue =>
+                      handleApplicationSumToggle(newValue)
+                    } // Pass the new value here
                     activeColor={_COLORS.Kodie_GreenColor}
                     inactiveColor={_COLORS.Kodie_WhiteColor}
                     activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -570,10 +588,10 @@ const ViewApplicationSummary = props => {
                       applicationSumAcceptButtonData[1].lookup_description
                     }
                     width={200}
-                    firstTabValue={applicationSumAcceptButtonData[0].lookup_key} // Pass the first tab key
+                    firstTabValue={applicationSumAcceptButtonData[0].lookup_key} // This is the value for the first tab
                     secondTabValue={
                       applicationSumAcceptButtonData[1].lookup_key
-                    } // Pass the second tab key
+                    } // This is the value for the second tab
                   />
                 )}
               </View>
@@ -685,8 +703,8 @@ const ViewApplicationSummary = props => {
                   <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                     {occupantButtonData.length > 0 && (
                       <ToggleButton
-                        tabValue={occupantButtonId}
-                        setTabValue={handleToggle} // Directly pass handleToggle
+                        tabValue={occupantButtonId} // This reflects the currently selected value
+                        setTabValue={newValue => handleToggle(newValue)} // Pass the new value here
                         activeColor={_COLORS.Kodie_GreenColor}
                         inactiveColor={_COLORS.Kodie_WhiteColor}
                         activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -696,8 +714,8 @@ const ViewApplicationSummary = props => {
                           occupantButtonData[1].lookup_description
                         }
                         width={200}
-                        firstTabValue={occupantButtonData[0].lookup_key} // Pass the first tab key
-                        secondTabValue={occupantButtonData[1].lookup_key} // Pass the second tab key
+                        firstTabValue={occupantButtonData[0].lookup_key} // This is the value for the first tab
+                        secondTabValue={occupantButtonData[1].lookup_key} // This is the value for the second tab
                       />
                     )}
                   </View>
@@ -786,8 +804,8 @@ const ViewApplicationSummary = props => {
               <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                 {referenceAcceptButtonData.length > 0 && (
                   <ToggleButton
-                    tabValue={referenceAcceptButtonId}
-                    setTabValue={handleReferencesToggle} // Directly pass handleToggle
+                    tabValue={referenceAcceptButtonId} // Current selected value
+                    setTabValue={newValue => handleReferencesToggle(newValue)} // Pass new value here
                     activeColor={_COLORS.Kodie_GreenColor}
                     inactiveColor={_COLORS.Kodie_WhiteColor}
                     activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -799,8 +817,8 @@ const ViewApplicationSummary = props => {
                       referenceAcceptButtonData[1].lookup_description
                     }
                     width={200}
-                    firstTabValue={referenceAcceptButtonData[0].lookup_key} // Pass the first tab key
-                    secondTabValue={referenceAcceptButtonData[1].lookup_key} // Pass the second tab key
+                    firstTabValue={referenceAcceptButtonData[0].lookup_key} // First tab key
+                    secondTabValue={referenceAcceptButtonData[1].lookup_key} // Second tab key
                   />
                 )}
               </View>

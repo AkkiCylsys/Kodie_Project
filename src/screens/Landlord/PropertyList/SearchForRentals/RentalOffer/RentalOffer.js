@@ -348,6 +348,8 @@ const RentalOffer = props => {
       p_property_id: propertyId,
     };
 
+    console.log("QuesData in edit offer..",QuesData);
+
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
@@ -1141,6 +1143,7 @@ const RentalOffer = props => {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
+    console.log("tenant_ques payload..",tenantQuesData);
     axios
       .post(tenantQues_url, tenantQuesData)
       .then(response => {

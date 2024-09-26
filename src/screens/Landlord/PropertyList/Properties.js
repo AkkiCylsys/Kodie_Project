@@ -90,7 +90,7 @@ const Properties = props => {
           </>
         );
       case 'Tab3':
-        return <PropertyRentalOffer  acceptLanlordPassed={"acceptLanlordPassed"}/>;
+        return <PropertyRentalOffer  acceptLanlordPassed={acceptLanlordPassed}/>;
 
       default:
         return <PropertyList />;

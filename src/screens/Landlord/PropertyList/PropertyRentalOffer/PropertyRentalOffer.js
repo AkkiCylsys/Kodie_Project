@@ -31,6 +31,7 @@ import ListEmptyComponent from '../../../../components/Molecules/ListEmptyCompon
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 const PropertyRentalOffer = props => {
  const {acceptLanlordPassed} =props
+ console.log("acceptLanlordPassed in offer page...",acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '4';

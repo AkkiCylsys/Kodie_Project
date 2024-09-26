@@ -64,7 +64,7 @@ export const UpdateLandLordAcceptingService =
     try {
       const url = Config.BASE_URL;
       const UpdateLandLordAcceptingurl =
-        url + 'save_landlord_accepting_details';
+        url + 'update_landlord_accepting_details';
       console.log(
         'UpdateLandLordAcceptingService Url ...',
         UpdateLandLordAcceptingurl,
