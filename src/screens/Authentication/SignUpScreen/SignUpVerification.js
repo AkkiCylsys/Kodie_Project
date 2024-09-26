@@ -24,6 +24,8 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import DeviceInfo from 'react-native-device-info';
+
 import {
   SignupVerification,
   signupSendCode,
@@ -37,6 +39,9 @@ export default SignUpVerification = props => {
     value,
     setValue,
   });
+
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
@@ -47,6 +52,8 @@ export default SignUpVerification = props => {
     try {
       const SignUpData = {
         email: email,
+        device_id:deviceId,
+      device_os_type:deviceType
       };
       const response = await signupSendCode(SignUpData);
       // alert(response?.message); // as per manish discussion he said use static alert.
@@ -65,6 +72,8 @@ export default SignUpVerification = props => {
     const data = {
       email: email,
       otp: value,
+      device_id:deviceId,
+      device_os_type:deviceType
     };
     SignupVerification(data)
       .then(responseData => {
@@ -167,7 +176,11 @@ export default SignUpVerification = props => {
                   style={[
                     SignUpVerificationStyle.cell,
                     isFocused && SignUpVerificationStyle.focusCell,
-                  ]}
+                    {
+                      borderColor:valueError ? _COLORS?.Kodie_redColor: _COLORS.Kodie_GrayColor,
+                    }
+                  ]
+                }
                   onLayout={getCellOnLayoutHandler(index)}>
                   {symbol || (isFocused ? <Cursor /> : null)}
                 </Text>

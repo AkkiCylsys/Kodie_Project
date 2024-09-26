@@ -304,6 +304,8 @@ export default Login = props => {
     setNewPassword(text);
     if (text.trim() === '') {
       setNewPasswordError('New password is required!');
+    } else if (text.length < 8) {
+      setNewPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setNewPasswordError('');
     }
@@ -430,6 +432,8 @@ export default Login = props => {
     axios
       .post(verification_code_url, {
         email: trimmedEmail,
+        device_id:deviceId,
+        device_os_type:deviceType
       })
       .then(response => {
         console.log('API Response send otp:', response?.data);
@@ -476,6 +480,8 @@ export default Login = props => {
       .post(verify_Otp_url, {
         email: trimmedEmail,
         otp: verificationcode,
+        device_id:deviceId,
+        device_os_type:deviceType
       })
       .then(response => {
         console.log('API Response verify otp:', response?.data);
