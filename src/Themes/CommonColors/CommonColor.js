@@ -67,6 +67,9 @@ export const _COLORS = {
   Kodie_LightOrange: '#FFEFE3',
   Kodie_ExtraLightOrange: '#F44336',
   Kodie_DarkOrange: '#F48444',
+  Kodie_backDarkOrange: '#FFEDB5',
+  Kodie_textDarkOrange: '#F9A000',
+
   Kodie_yellow: '#FFA800',
   Kodie_mostLightGreenColor: '#E9F2E9',
   Kodie_BlueColor: '#336FC3',
@@ -74,6 +77,7 @@ export const _COLORS = {
   Kodie_redColor: '#D30000',
   Kodie_ExtraDarkGreen: '#309E63',
   Kodie_lightRedColor: '#FF5A5A',
+  Kodie_extralightRedColor: '#FFD9D9',
   Kodie_MediumGreenColor: '#D7FFE0',
   Kodie_MidLightGreenColor: '#45B7410B',
   Kodie_DarkGrayColor: '#787D8B',

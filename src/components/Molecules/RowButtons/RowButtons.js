@@ -24,7 +24,7 @@ const RowButtons = (props) => {
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
           // disabled={isLoading ? true : false}
-          disabled={isLoading || props.disabled}
+          disabled={isLoading || props.disabled || props.RightButtonDisabled}
           height={props.RightButtonHeight}
           onPress={props.onPressRightButton}
           backgroundColor={props.RightButtonbackgroundColor}
@@ -52,6 +52,7 @@ RowButtons.defaultProps = {
   RightButtonHeight: 45,
   isShowRightButton:true,
   disabled: false,
+  RightButtonDisabled: false,
 };
 
 export default RowButtons;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,25 +8,26 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {OfferForMyPropertiesStyle} from './OfferForMyPropertiesStyle';
+import { OfferForMyPropertiesStyle } from './OfferForMyPropertiesStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {Dropdown} from 'react-native-element-dropdown';
-import {_COLORS, IMAGES} from '../../../../../Themes';
+import { Dropdown } from 'react-native-element-dropdown';
+import { _COLORS, FONTFAMILY, IMAGES } from '../../../../../Themes';
 import {
   addressType,
   offerForMyProperty,
 } from '../../../../../services/PropertyRentalOfferApi/OfferForMyPropertyApi';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
-import {useSelector} from 'react-redux';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
+import { acceptingLandlord } from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -34,16 +35,29 @@ const OfferForMyProperties = () => {
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
   const [offerPropertyData, setOfferPropertyData] = useState([]);
+  const [lanlordAcceptingId, setLanlordAcceptingId] = useState('');
   const [filteredOfferPropertyData, setFilteredOfferPropertyData] = useState(
     [],
   );
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [occupantButtonId, setOccupantButtonId] = useState(null);
+
+  const [applicationSumAcceptButtonId, setApplicationSumAcceptButtonId] =
+    useState(null);
+
+  const [referenceAcceptButtonId, setReferenceAcceptButtonId] = useState(null);
+
   useEffect(() => {
     handleAddressType();
-    handleOfferForProperty();
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      handleOfferForProperty();
+    }, [addressTypeValue?.property_id]),
+  );
+  // APi intrigation..
   const handleAddressType = async () => {
     setIsLoading(true);
     const addressData = {
@@ -55,7 +69,7 @@ const OfferForMyProperties = () => {
       if (response?.success === true) {
         const propertyDetails = response?.property_details || [];
         const updatedPropertyDetails = [
-          {latitude: 'All', location: 'All'},
+          { latitude: 'All', location: 'All' },
           ...propertyDetails,
         ];
         setAddressTypeData(updatedPropertyDetails);
@@ -70,38 +84,89 @@ const OfferForMyProperties = () => {
 
   const handleOfferForProperty = async () => {
     setIsLoading(true);
+
+    // Adjust the Filter logic
     const offerPropertyData = {
-      Filter: addressTypeValue?.latitude ? 'AllData' : 'All',
+      // Check if addressTypeValue has a location selected
+      Filter: addressTypeValue?.property_id ? 'AllData' : 'All', // Changed from latitude check to property_id
       account_id: loginData?.Login_details?.user_account_id,
       property_id: addressTypeValue?.property_id
         ? addressTypeValue?.property_id
         : 0,
       limit: '10',
     };
+
     console.log('Request Payload:', offerPropertyData);
+
     try {
       const response = await offerForMyProperty(offerPropertyData);
-      console.log('response in offerForMyProperty..', response?.data);
-      setOfferPropertyData(response?.data || []);
-      setIsLoading(true);
+      console.log('response in offerForMyProperty..', response);
+
+      if (response?.success == true) {
+        setOfferPropertyData(response?.data || []);
+        setIsLoading(false); // Change to set loading false here to avoid multiple state updates
+      }
+      // Update the state with the fetched data
     } catch (error) {
       console.error('Error fetching OfferForProperty:', error);
+    } finally {
+      setIsLoading(false); // This will always run, ensure loading is false
+    }
+  };
+
+  const handleAcceptingLandlord = async data => {
+    const { propertyId, bid_id, tenant_id, landlord_id, actionType } = data;
+    setIsLoading(true);
+
+    const acceptingLandlordData = {
+      property_id: propertyId,
+      bid_id: bid_id,
+      tenant_id: tenant_id,
+      landlord_id: landlord_id,
+      accepting_details: actionType, // Either ACCEPT or REJECT
+    };
+
+    console.log('acceptingLandlordData:', acceptingLandlordData);
+
+    try {
+      const response = await acceptingLandlord(acceptingLandlordData);
+      console.log('Response in handleAcceptingLandlord:', response);
+
+      if (response?.success === true) {
+        alert(response?.data);
+        // navigation.navigate('Properties', { tab3: 'tab3' });
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          'Server responded with a status code:',
+          error.response.status,
+        );
+        console.error('Response data:', error.response.data);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error setting up request:', error.message);
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
   const searchOfferForMyProperty = query => {
     setSearchQuery(query);
     const filtered = query
       ? offerPropertyData.filter(
-          item =>
-            item.property_type &&
-            item.property_type.toLowerCase().includes(query.toLowerCase()),
-        )
+        item =>
+          item.property_type &&
+          item.property_type.toLowerCase().includes(query.toLowerCase()),
+      )
       : offerPropertyData;
     console.log('filtered.........', filtered);
     setFilteredOfferPropertyData(filtered);
   };
+
+  // render item...
 
   const property_render = item => {
     const isSelected = addressTypeValue?.property_id === item.property_id;
@@ -132,24 +197,62 @@ const OfferForMyProperties = () => {
       </View>
     );
   };
-  const offerPropertyRender = ({item, index}) => {
+  const offerPropertyRender = ({ item, index }) => {
+    // Check if screening conditions are met (disable right button if true)
+    const isScreeningDisabled =
+      item.screening_one === 556 ||
+      item.screening_two === 556 ||
+      item.screening_three === 556 ||
+      item.screening_one === null ||
+      item.screening_two === null ||
+      item.screening_three === null ||
+      item?.landlord_approve == -1
+
     return (
       <View key={index}>
-        <View style={{flex: 1, marginHorizontal: 20, marginVertical: 10}}>
+        <View style={{ flex: 1, marginHorizontal: 20, marginVertical: 10 }}>
+          {item?.landlord_approve == -1 ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                width: 180,
+                marginLeft: 4,
+                backgroundColor: _COLORS.Kodie_GreenColor,
+                paddingVertical: 5,
+                borderRadius: 8,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 11,
+                  fontFamily: FONTFAMILY.K_SemiBold,
+                  color: _COLORS.Kodie_WhiteColor,
+                }}>
+                {'Landlord reject application'}
+              </Text>
+            </View>
+          ) : null}
+
+          {/* Main Property Card */}
           <TouchableOpacity
             style={OfferForMyPropertiesStyle.SubContainer}
             onPress={() => {
-              navigation.navigate('PropertyViewApplication', {
-                propertyId: item?.property_id,
-                bid_id: item?.bid_id,
-                tenant_id: item?.tenant_id,
-                landlord_id: item?.landlord_id,
-              });
+              if (!isScreeningDisabled) {
+                alert("Lanlord approve application")
+              } else {
+                navigation.navigate('PropertyViewApplication', {
+                  propertyId: item?.property_id,
+                  bid_id: item?.bid_id,
+                  tenant_id: item?.tenant_id,
+                  landlord_id: item?.landlord_id,
+                  accpetingLandlordId: item?.landlord_accepting_id,
+                });
+              }
             }}>
             <View>
               {item.image_path && item.image_path.length > 0 ? (
                 <Image
-                  source={{uri: item.image_path[0]}}
+                  source={{ uri: item.image_path[0] }}
                   style={OfferForMyPropertiesStyle.imageStyle}
                   resizeMode="cover"
                 />
@@ -157,7 +260,7 @@ const OfferForMyProperties = () => {
                 <View
                   style={[
                     OfferForMyPropertiesStyle.imageStyle,
-                    {justifyContent: 'center'},
+                    { justifyContent: 'center' },
                   ]}>
                   <Text style={OfferForMyPropertiesStyle.Img_found}>
                     {'Image not found'}
@@ -165,7 +268,7 @@ const OfferForMyProperties = () => {
                 </View>
               )}
             </View>
-            <View style={{flex: 1, marginLeft: 20}}>
+            <View style={{ flex: 1, marginLeft: 20 }}>
               <View style={OfferForMyPropertiesStyle.apartmentView}>
                 <View>
                   <Text style={OfferForMyPropertiesStyle.apartmentText}>
@@ -175,21 +278,22 @@ const OfferForMyProperties = () => {
                     {item?.city}
                   </Text>
                 </View>
-                <View style={{alignItems: 'flex-end'}}>
+                <View style={{ alignItems: 'flex-end' }}>
                   <Text style={OfferForMyPropertiesStyle.apartmentText}>
                     {'Bid amount'}
                   </Text>
-                  <Text style={OfferForMyPropertiesStyle.amount}>{`$${
-                    item?.offer_amount || ''
-                  }`}</Text>
+                  <Text style={OfferForMyPropertiesStyle.amount}>{`$${item?.offer_amount || ''
+                    }`}</Text>
                 </View>
               </View>
+
+              {/* Account details */}
               <View style={OfferForMyPropertiesStyle.flat_MainView}>
                 <MaterialCommunityIcons
                   name={'map-marker'}
                   size={15}
                   color={_COLORS.Kodie_GreenColor}
-                  style={{marginTop: 10}}
+                  style={{ marginTop: 10 }}
                 />
                 <Text
                   style={OfferForMyPropertiesStyle.locationText}
@@ -198,14 +302,15 @@ const OfferForMyProperties = () => {
                   {item?.location}
                 </Text>
               </View>
+
               {item.account_details?.map((detail, index) => (
                 <View key={index}>
                   <View style={OfferForMyPropertiesStyle.userMainCon}>
                     <View style={OfferForMyPropertiesStyle.userContainer}>
                       {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
-                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                        detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
                         <Image
-                          source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
+                          source={{ uri: detail.UAD_PROFILE_PHOTO_PATH[0] }}
                           style={OfferForMyPropertiesStyle.userImg}
                           resizeMode="cover"
                         />
@@ -222,7 +327,7 @@ const OfferForMyProperties = () => {
                       </Text>
                     </View>
                     <View style={OfferForMyPropertiesStyle.ratting}>
-                      <View style={{alignSelf: 'center', alignItems: 'center'}}>
+                      <View style={{ alignSelf: 'center', alignItems: 'center' }}>
                         <AntDesign
                           color={_COLORS.Kodie_lightGreenColor}
                           name={'star'}
@@ -238,39 +343,57 @@ const OfferForMyProperties = () => {
               ))}
             </View>
           </TouchableOpacity>
-          {/* <CustomSingleButton
-            _ButtonText={'View application'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading}
-            isLeftImage={true}
-            onPress={() => {
-              navigation.navigate('PropertyViewApplication', {
-                propertyId: item?.property_id,
-                bid_id: item?.bid_id,
-                tenant_id: item?.tenant_id,
-                landlord_id: item?.landlord_id,
-              });
-            }}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-          /> */}
-          <View style={{marginTop: 20}}>
+
+          {/* Buttons */}
+          <View style={{ marginTop: 20 }}>
             <RowButtons
               leftButtonHeight={44}
               RightButtonHeight={44}
               LeftButtonText={'Reject application'}
-              RightButtonText={'Approve application'}
+              RightButtonText={
+                item?.tenant_approve === 0
+                  ? 'Final approve'
+                  : 'Approve application'
+              }
               leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
               LeftButtonborderColor={_COLORS.Kodie_BlackColor}
               LeftButtonTextColor={_COLORS.Kodie_BlackColor}
               onPressLeftButton={() => {
-                alert('reject');
+                handleAcceptingLandlord({
+                  propertyId: item?.property_id,
+                  bid_id: item?.bid_id,
+                  tenant_id: item?.tenant_id,
+                  landlord_id: item?.landlord_id,
+                  actionType: 'REJECT',
+                });
               }}
-              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-              RightButtonborderColor={_COLORS.Kodie_BlackColor}
-              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              RightButtonbackgroundColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonTextColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_ExtraLightGrayColor
+                  : _COLORS.Kodie_WhiteColor
+              }
               onPressRightButton={() => {
-                alert('approve');
+                if (!isScreeningDisabled) {
+                  handleAcceptingLandlord({
+                    propertyId: item?.property_id,
+                    bid_id: item?.bid_id,
+                    tenant_id: item?.tenant_id,
+                    landlord_id: item?.landlord_id,
+                    actionType: item?.tenant_approve === 0 ? 'FINAL' : 'ACCEPT',
+                  });
+                }
               }}
+              RightButtonDisabled={isScreeningDisabled}
             />
           </View>
         </View>
@@ -278,6 +401,7 @@ const OfferForMyProperties = () => {
       </View>
     );
   };
+
   return (
     <View style={OfferForMyPropertiesStyle.mainContainer}>
       <View style={{}}>
@@ -293,7 +417,7 @@ const OfferForMyProperties = () => {
         />
         <DividerIcon />
       </View>
-      <View style={{marginHorizontal: 16}}>
+      <View style={{ marginHorizontal: 16 }}>
         <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
           {'Select property:'}
         </Text>
@@ -301,7 +425,7 @@ const OfferForMyProperties = () => {
           style={OfferForMyPropertiesStyle.dropdown}
           placeholderStyle={[
             OfferForMyPropertiesStyle.placeholderStyle,
-            {color: _COLORS.Kodie_LightGrayColor},
+            { color: _COLORS.Kodie_LightGrayColor },
           ]}
           selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
           inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
