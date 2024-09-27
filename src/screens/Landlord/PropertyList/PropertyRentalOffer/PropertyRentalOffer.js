@@ -27,7 +27,7 @@ import {
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 import {useSelector} from 'react-redux';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 const PropertyRentalOffer = props => {
@@ -48,10 +48,11 @@ const PropertyRentalOffer = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
 
+  const accoutId = loginData?.Login_details?.user_account_id
   const handleGetCurrectOffer = async () => {
     setIsLoading(true);
     const current_Data = {
-      account_id: loginData?.Login_details?.user_account_id,
+      account_id: accoutId,
       limit: 10,
     };
     try {
@@ -116,9 +117,15 @@ const PropertyRentalOffer = props => {
     }
   };
 
-  useEffect(() => {
-    handleGetCurrectOffer();
-  }, [isFocus]);
+  // useEffect(() => {
+  //   handleGetCurrectOffer();
+  // }, [isFocus]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      handleGetCurrectOffer();
+    }, [accoutId])
+  );
 
   const searchCurrentOffer = query => {
     setSearchQuery(query);
@@ -575,10 +582,10 @@ const PropertyRentalOffer = props => {
 
     const isDisabled = item.screening_status === 'REJECT';
     const isScreenComplet =
-      item?.screening_one === 555 ||
-      item?.screening_two === 555 ||
+      item?.screening_one === 555 &&
+      item?.screening_two === 555 &&
       item?.screening_three === 555;
-    const isScreenProgress =
+      const isScreenProgress =
       item?.screening_one === 556 ||
       item?.screening_two === 556 ||
       item?.screening_three === 556;
@@ -903,7 +910,7 @@ const PropertyRentalOffer = props => {
   return (
     <View style={PropertyRentalOfferStyle.mainContainer}>
       <View
-        style={[PropertyRentalOfferStyle.rowButtonView, {marginVertical: 15}]}>
+        style={[PropertyRentalOfferStyle.rowButtonView, {marginVertical: 15,marginHorizontal:16}]}>
         {renderRowButtons()}
       </View>
       <DividerIcon borderBottomWidth={5} marginTop={7} />
