@@ -103,8 +103,6 @@ const ViewApplicationSummary = props => {
       item => item.tqm_Question_view !== null,
     ) || [];
 
-
-
   const occupantDataListString =
     tenantQuestDetails[0]?.children[2]?.sub_children[1]?.tqm_Question_value;
 
@@ -117,8 +115,6 @@ const ViewApplicationSummary = props => {
     }
   }
   console.log('occupantDataList....', occupantDataList);
-
-
 
   const leaseholderDataString =
     tenantQuestDetails[0]?.children[2]?.sub_children[3]?.tqm_Question_value; // Access the specific object
@@ -133,29 +129,44 @@ const ViewApplicationSummary = props => {
   }
   console.log('leaseholderDataList....', leaseholderDataList);
 
-
-
   const employeeReferencesDataString =
-  tenantQuestDetails?.[1]?.children?.[9]?.tqm_Question_value;
+    tenantQuestDetails?.[1]?.children?.[9]?.tqm_Question_value;
 
-console.log('employeeReferencesDataString...', employeeReferencesDataString);
+  console.log('employeeReferencesDataString...', employeeReferencesDataString);
 
-let employeeReferencesList = [];
+  let employeeReferencesList = [];
 
-if (employeeReferencesDataString) {
-  try {
-    // Attempt to parse the string into JSON if it exists
-    employeeReferencesList = JSON.parse([employeeReferencesDataString]);
-  } catch (error) {
-    // Log the error in case of invalid JSON
-    console.error('Error parsing JSON:', error);
+  if (employeeReferencesDataString) {
+    try {
+      // Attempt to parse the string into JSON if it exists
+      employeeReferencesList = JSON.parse([employeeReferencesDataString]);
+    } catch (error) {
+      // Log the error in case of invalid JSON
+      console.error('Error parsing JSON:', error);
+    }
   }
-}
-console.log('employeeReferencesList....', employeeReferencesList);
+  console.log('employeeReferencesList....', employeeReferencesList);
 
+  const ReferencesDataString =
+    tenantQuestDetails?.[2]?.children?.[4]?.tqm_Question_value;
 
-// employeeReferencesList will either contain the parsed data or remain an empty array
+  console.log('ReferencesDataString..', ReferencesDataString);
+  let ReferencesList = [];
 
+  if (ReferencesDataString) {
+    try {
+      // Attempt to parse the string into JSON if it exists
+      ReferencesList = JSON.parse(ReferencesDataString);
+    } catch (error) {
+      // Log the error in case of invalid JSON
+      console.error('Error parsing JSON:', error);
+    }
+  }
+
+  // You can use ReferencesList here for further processing
+  console.log('ReferencesList:', ReferencesList);
+
+  // employeeReferencesList will either contain the parsed data or remain an empty array
 
   // Api intrigation ....
 
@@ -428,6 +439,51 @@ console.log('employeeReferencesList....', employeeReferencesList);
       </View>
     );
   };
+  const employeeReferenceRenderItem = ({item, index}) => {
+    return (
+      <View style={ViewApplicationSummaryStyle.occupants_item_View}>
+        <View>
+          <Text style={ViewApplicationSummaryStyle.occupants_name}>
+            {item?.fullName}
+          </Text>
+          <Text style={ViewApplicationSummaryStyle.occupants_email}>
+            {item?.email}
+          </Text>
+        </View>
+        <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
+          <CustomSingleButton
+            _ButtonText={'Contact'}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            borderColor={_COLORS.Kodie_GrayColor}
+            height={35}
+            width={90}
+            marginTop={0}
+            onPress={() => {
+              Alert.alert(
+                'Remove person?',
+                'This person will be permanently removed from the application.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Remove',
+                    onPress: () => {
+                      console.log('Remove');
+                      //   removeOccupant(index);
+                    },
+                  },
+                ],
+              );
+            }}
+          />
+        </View>
+      </View>
+    );
+  };
+
   const referenceRenderItem = ({item, index}) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
@@ -797,7 +853,7 @@ console.log('employeeReferencesList....', employeeReferencesList);
               <FlatList
                 data={employeeReferencesList}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={referenceRenderItem}
+                renderItem={employeeReferenceRenderItem}
               />
             </View>
             <View>
@@ -805,7 +861,7 @@ console.log('employeeReferencesList....', employeeReferencesList);
                 {'Rental references'}
               </Text>
               <FlatList
-                data={occupantData}
+                data={ReferencesList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={referenceRenderItem}
               />

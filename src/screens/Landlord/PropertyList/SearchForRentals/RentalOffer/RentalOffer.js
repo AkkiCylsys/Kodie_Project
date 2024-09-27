@@ -289,12 +289,15 @@ const RentalOffer = props => {
   //         const dropdownQuestions = [];
   //         let occupants = [];
   //         let leaseHolders = [];
+  //         let employeeReferences = [];
+  //         let rentalReferences = [];
 
   //         data.forEach(parentQuestion => {
   //           if (Array.isArray(parentQuestion.children)) {
   //             parentQuestion.children.forEach(childQuestion => {
   //               if (Array.isArray(childQuestion.sub_children)) {
   //                 childQuestion.sub_children.forEach(subChildQuestion => {
+  //                   // Parsing Occupants
   //                   if (
   //                     subChildQuestion.tqm_Question_description?.trim() ===
   //                     'Add Occupant'
@@ -305,16 +308,10 @@ const RentalOffer = props => {
   //                         subChildQuestion.tqm_Question_value || '[]',
   //                       );
   //                       if (Array.isArray(parsedOccupants)) {
-  //                         occupants = parsedOccupants; // Update the local variable
+  //                         occupants = parsedOccupants;
   //                         console.log(
   //                           'Occupant data parsed successfully:',
   //                           occupants,
-  //                         );
-  //                         // Call setOccupants outside of the loop to update the state once
-  //                       } else {
-  //                         console.error(
-  //                           'Occupant data is not an array:',
-  //                           parsedOccupants,
   //                         );
   //                       }
   //                     } catch (e) {
@@ -322,6 +319,7 @@ const RentalOffer = props => {
   //                     }
   //                   }
 
+  //                   // Parsing Leaseholders
   //                   if (
   //                     subChildQuestion.tqm_Question_description?.trim() ===
   //                     'Add leaseholders'
@@ -332,20 +330,59 @@ const RentalOffer = props => {
   //                         subChildQuestion.tqm_Question_value || '[]',
   //                       );
   //                       if (Array.isArray(parsedLeaseHolders)) {
-  //                         leaseHolders = parsedLeaseHolders; // Update the local variable
+  //                         leaseHolders = parsedLeaseHolders;
   //                         console.log(
   //                           'Leaseholder data parsed successfully:',
   //                           leaseHolders,
   //                         );
-  //                         // Call setLeaseHolderItem outside of the loop to update the state once
-  //                       } else {
-  //                         console.error(
-  //                           'Leaseholder data is not an array:',
-  //                           parsedLeaseHolders,
-  //                         );
   //                       }
   //                     } catch (e) {
   //                       console.error('Error parsing leaseholders:', e);
+  //                     }
+  //                   }
+
+  //                   // Parsing Employee References
+  //                   if (
+  //                     subChildQuestion.tqm_Question_description?.trim() ===
+  //                     'Add employee reference'
+  //                   ) {
+  //                     console.log("subChildQuestion.tqm_Question_description?.trim()...",subChildQuestion.tqm_Question_description?.trim());
+  //                     console.log("Found 'Add employee reference' question");
+  //                     try {
+  //                       const parsedEmployeeReferences = JSON.parse(
+  //                         subChildQuestion.tqm_Question_value || '[]',
+  //                       );
+  //                       if (Array.isArray(parsedEmployeeReferences)) {
+  //                         employeeReferences = parsedEmployeeReferences;
+  //                         console.log(
+  //                           'Employee reference data parsed successfully:',
+  //                           employeeReferences,
+  //                         );
+  //                       }
+  //                     } catch (e) {
+  //                       console.error('Error parsing employee references:', e);
+  //                     }
+  //                   }
+
+  //                   // Parsing Rental References
+  //                   if (
+  //                     subChildQuestion.tqm_Question_description?.trim() ===
+  //                     'Add rental reference'
+  //                   ) {
+  //                     console.log("Found 'Add rental reference' question");
+  //                     try {
+  //                       const parsedRentalReferences = JSON.parse(
+  //                         subChildQuestion.tqm_Question_value || '[]',
+  //                       );
+  //                       if (Array.isArray(parsedRentalReferences)) {
+  //                         rentalReferences = parsedRentalReferences;
+  //                         console.log(
+  //                           'Rental reference data parsed successfully:',
+  //                           rentalReferences,
+  //                         );
+  //                       }
+  //                     } catch (e) {
+  //                       console.error('Error parsing rental references:', e);
   //                     }
   //                   }
   //                 });
@@ -373,13 +410,23 @@ const RentalOffer = props => {
   //           }
   //         });
 
-  //         // Set occupants and leaseholders state
+  //         // Set occupants, leaseholders, employee references, and rental references
   //         setOccupants(occupants);
   //         setLeaseHolderItem(leaseHolders);
+  //         setEmployeeReferences(employeeReferences);
+  //         setRentalReferences(rentalReferences);
+
+  //         // Update the counts if needed
   //         setNumberOccupants(occupants.length);
   //         setNumberLeaseHolder(leaseHolders.length);
-  //         console.log('occupants in edit mode...', occupants);
-  //         console.log('leaseHolderItem in edit mode...', leaseHolderItem);
+  //         console.log('Occupants in edit mode...', occupants);
+  //         console.log('Leaseholder item in edit mode...', leaseHolders);
+  //         console.log(
+  //           'Employee references in edit mode...',
+  //           employeeReferences,
+  //         );
+  //         console.log('Rental references in edit mode...', rentalReferences);
+
   //         // Fetch dropdown data and set initial values
   //         const dropdownDataPromises = dropdownQuestions.map(
   //           async questionCode => {
@@ -408,7 +455,7 @@ const RentalOffer = props => {
   //           setLocation(initialValues['PREVIOUS_ADDRESS']);
   //         }
 
-  //         console.log('response in edit mode...', JSON.stringify(data));
+  //         console.log('Response data in edit mode...', JSON.stringify(data));
   //       } else {
   //         console.error(
   //           'Invalid data structure: parent_json is not an array',
@@ -422,7 +469,6 @@ const RentalOffer = props => {
   //     setIsLoading(false);
   //   }
   // };
-
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
@@ -440,7 +486,7 @@ const RentalOffer = props => {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
 
-      if (response?.data?.success === true) {
+      if (response?.data?.success) {
         const data = response?.data?.data?.[0]?.parent_json;
 
         if (Array.isArray(data)) {
@@ -499,54 +545,54 @@ const RentalOffer = props => {
                         console.error('Error parsing leaseholders:', e);
                       }
                     }
-
-                    // Parsing Employee References
-                    if (
-                      subChildQuestion.tqm_Question_description?.trim() ===
-                      'Add employee reference'
-                    ) {
-                      console.log("subChildQuestion.tqm_Question_description?.trim()...",subChildQuestion.tqm_Question_description?.trim());
-                      console.log("Found 'Add employee reference' question");
-                      try {
-                        const parsedEmployeeReferences = JSON.parse(
-                          subChildQuestion.tqm_Question_value || '[]',
-                        );
-                        if (Array.isArray(parsedEmployeeReferences)) {
-                          employeeReferences = parsedEmployeeReferences;
-                          console.log(
-                            'Employee reference data parsed successfully:',
-                            employeeReferences,
-                          );
-                        }
-                      } catch (e) {
-                        console.error('Error parsing employee references:', e);
-                      }
-                    }
-
-                    // Parsing Rental References
-                    if (
-                      subChildQuestion.tqm_Question_description?.trim() ===
-                      'Add rental reference'
-                    ) {
-                      console.log("Found 'Add rental reference' question");
-                      try {
-                        const parsedRentalReferences = JSON.parse(
-                          subChildQuestion.tqm_Question_value || '[]',
-                        );
-                        if (Array.isArray(parsedRentalReferences)) {
-                          rentalReferences = parsedRentalReferences;
-                          console.log(
-                            'Rental reference data parsed successfully:',
-                            rentalReferences,
-                          );
-                        }
-                      } catch (e) {
-                        console.error('Error parsing rental references:', e);
-                      }
-                    }
                   });
                 }
 
+                // Parsing Employee References
+                if (
+                  childQuestion.tqm_Question_description?.trim() ===
+                  'Add employment references'
+                ) {
+                  console.log("Found 'Add employment references' question");
+                  try {
+                    const parsedEmployeeReferences = JSON.parse(
+                      childQuestion.tqm_Question_value || '[]',
+                    );
+                    if (Array.isArray(parsedEmployeeReferences)) {
+                      employeeReferences = parsedEmployeeReferences;
+                      console.log(
+                        'Employee reference data parsed successfully:',
+                        employeeReferences,
+                      );
+                    }
+                  } catch (e) {
+                    console.error('Error parsing employee references:', e);
+                  }
+                }
+
+                // Parsing Rental References
+                if (
+                  childQuestion.tqm_Question_description?.trim() ===
+                  'Add rental references'
+                ) {
+                  console.log("Found 'Add rental references' question");
+                  try {
+                    const parsedRentalReferences = JSON.parse(
+                      childQuestion.tqm_Question_value || '[]',
+                    );
+                    if (Array.isArray(parsedRentalReferences)) {
+                      rentalReferences = parsedRentalReferences;
+                      console.log(
+                        'Rental reference data parsed successfully:',
+                        rentalReferences,
+                      );
+                    }
+                  } catch (e) {
+                    console.error('Error parsing rental references:', e);
+                  }
+                }
+
+                // Handling Dropdown and Yes/No questions
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
@@ -558,6 +604,7 @@ const RentalOffer = props => {
                   );
                 }
 
+                // Setting initial values
                 if (
                   childQuestion.tqm_Question_value !== undefined &&
                   childQuestion.tqm_Question_value !== null
@@ -569,15 +616,15 @@ const RentalOffer = props => {
             }
           });
 
-          // Set occupants, leaseholders, employee references, and rental references
+          // Set state variables
           setOccupants(occupants);
           setLeaseHolderItem(leaseHolders);
-          setEmployeeReferences(employeeReferences);
-          setRentalReferences(rentalReferences);
+          // setEmployeeReferences(employeeReferences);
+          setEmployeeReferencesItem(employeeReferences);
+          // setRentalReferences(rentalReferences);
+          setReferencesItem(rentalReferences);
 
-          // Update the counts if needed
-          setNumberOccupants(occupants.length);
-          setNumberLeaseHolder(leaseHolders.length);
+          // Logging the counts
           console.log('Occupants in edit mode...', occupants);
           console.log('Leaseholder item in edit mode...', leaseHolders);
           console.log(
@@ -586,7 +633,7 @@ const RentalOffer = props => {
           );
           console.log('Rental references in edit mode...', rentalReferences);
 
-          // Fetch dropdown data and set initial values
+          // Handle dropdown data
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
               const options = await handleDropdown(questionCode);
@@ -608,7 +655,6 @@ const RentalOffer = props => {
           );
 
           await Promise.all(dropdownDataPromises);
-
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
@@ -951,10 +997,10 @@ const RentalOffer = props => {
       <View style={RentalOfferStyle.occupants_item_View}>
         <View>
           <Text style={RentalOfferStyle.occupants_name}>
-            {item?.referenceFullName}
+            {item?.fullName ? item?.fullName : item?.referenceFullName}
           </Text>
           <Text style={RentalOfferStyle.occupants_email}>
-            {item?.referenceEmail}
+            { item?.email ? item?.email :item?.referenceEmail}
           </Text>
         </View>
         <View style={{marginHorizontal: 5}}>
@@ -995,10 +1041,10 @@ const RentalOffer = props => {
       <View style={RentalOfferStyle.occupants_item_View}>
         <View>
           <Text style={RentalOfferStyle.occupants_name}>
-            {item?.employeeReferenceFullName}
+            {item?.fullName ? item?.fullName : item?.employeeReferenceFullName}
           </Text>
           <Text style={RentalOfferStyle.occupants_email}>
-            {item?.employeeReferenceEmail}
+            {item?.email ? item?.email : item?.employeeReferenceEmail}
           </Text>
         </View>
         <View style={{marginHorizontal: 5}}>
@@ -1735,12 +1781,11 @@ const RentalOffer = props => {
   //   // resetDynamicFields();
   // };
 
-
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-  
+
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -1751,10 +1796,10 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-  
+
     // Use a Set to track processed question codes to prevent duplicates
     const processedQuestionCodes = new Set();
-  
+
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
@@ -1777,7 +1822,7 @@ const RentalOffer = props => {
         }
       });
     });
-  
+
     // Add Yes/No button values to jsonData
     const yesNoButtonValues = {
       EARN_INCOME: selectedButton, // EARN_INCOME question code
@@ -1785,19 +1830,22 @@ const RentalOffer = props => {
       EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
       ANY_PETS: selectedPetsButton, // ANY_PETS question code
     };
-  
+
     Object.keys(yesNoButtonValues).forEach(questionCode => {
       const questionId = questionCodeToId[questionCode];
       const isYesSelected = yesNoButtonValues[questionCode];
-  
+
       const value =
         isYesSelected === undefined || isYesSelected === null
           ? 1
           : isYesSelected
           ? 0
           : 1;
-  
-      if (questionId !== undefined && !processedQuestionCodes.has(questionCode)) {
+
+      if (
+        questionId !== undefined &&
+        !processedQuestionCodes.has(questionCode)
+      ) {
         jsonData.push({
           question_id: questionId,
           question_value: value,
@@ -1807,7 +1855,7 @@ const RentalOffer = props => {
         processedQuestionCodes.add(questionCode);
       }
     });
-  
+
     // Add smoking button value to jsonData
     const smokingQuestionId = questionCodeToId['S/NS'];
     const smokingValue = selectedSomokingButton ? 0 : 1;
@@ -1825,10 +1873,10 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('S/NS');
     }
-  
+
     // Add 'Number of pets' value to jsonData
     const numberOfPetsQuestion = petsSubChildren.find(
-      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS'
+      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
     );
     const petsQuestionId = numberOfPetsQuestion?.id;
     if (
@@ -1845,12 +1893,12 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('NUMBER_OF_PETS');
     }
-  
+
     // Add location data if available
     const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS'];
     if (locationQuestionId !== undefined && location) {
       const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId
+        item => item.question_id === locationQuestionId,
       );
       if (existingLocationIndex !== -1) {
         jsonData[existingLocationIndex].question_value = location;
@@ -1864,30 +1912,36 @@ const RentalOffer = props => {
       }
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
-  
+
     // Group occupants and leaseholders by question_id
     const occupantGroups = groupBy(occupants, 'questionId');
     addGroupedDataToJsonData(jsonData, occupantGroups);
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    addGroupedDataToJsonData(jsonData, leaseHolderGroups, 'leaseFullName', 'leaseEmailAddress', 'leaseConfirmEmailAddress');
-  
+    addGroupedDataToJsonData(
+      jsonData,
+      leaseHolderGroups,
+      'leaseFullName',
+      'leaseEmailAddress',
+      'leaseConfirmEmailAddress',
+    );
+
     // Add references and employee references as arrays (ensure uniqueness)
-    const referenceIds = { 34: [], 33: [] };
-  
+    const referenceIds = {34: [], 33: []};
+
     referencesItem.forEach(reference => {
       referenceIds[34].push({
         fullName: reference.referenceFullName,
         email: reference.referenceEmail,
       });
     });
-  
+
     employeeReferencesItem.forEach(employeeReference => {
       referenceIds[33].push({
         fullName: employeeReference.employeeReferenceFullName,
         email: employeeReference.employeeReferenceEmail,
       });
     });
-  
+
     // Push references once for each ID
     Object.keys(referenceIds).forEach(questionId => {
       if (referenceIds[questionId].length > 0) {
@@ -1899,16 +1953,16 @@ const RentalOffer = props => {
         });
       }
     });
-  
+
     const finalJson = {
       json_data: jsonData,
     };
-  
+
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
     edit_offer === 'edit_offer' ? null : saveBiddingDetails();
   };
-  
+
   const resetDynamicFields = () => {
     Object.keys(inputValues).forEach(key => {
       inputValues[key] = '';

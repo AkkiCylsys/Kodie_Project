@@ -29,8 +29,12 @@ const Properties = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
+  // useEffect(() => {
+  //   setActiveTab(tab3 == 'tab3' || acceptLanlordPassed == "acceptLanlordPassed" ? 'Tab3' : 'Tab1');
+  // }, []);
+
   useEffect(() => {
-    setActiveTab(tab3 == 'tab3' || acceptLanlordPassed == "acceptLanlordPassed" ? 'Tab3' : 'Tab1');
+    setActiveTab(tab3 == 'tab3'  ? 'Tab3' : 'Tab1');
   }, []);
   useFocusEffect(
     React.useCallback(() => {
