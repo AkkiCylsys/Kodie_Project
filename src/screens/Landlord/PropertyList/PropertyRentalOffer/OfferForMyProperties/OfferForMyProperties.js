@@ -14,7 +14,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {Dropdown} from 'react-native-element-dropdown';
-import {_COLORS, IMAGES} from '../../../../../Themes';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../../../Themes';
 import {
   addressType,
   offerForMyProperty,
@@ -27,6 +27,7 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
+import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -56,6 +57,7 @@ const OfferForMyProperties = () => {
       handleOfferForProperty();
     }, [addressTypeValue?.property_id]),
   );
+  // APi intrigation..
   const handleAddressType = async () => {
     setIsLoading(true);
     const addressData = {
@@ -112,6 +114,45 @@ const OfferForMyProperties = () => {
     }
   };
 
+  const handleAcceptingLandlord = async data => {
+    const {propertyId, bid_id, tenant_id, landlord_id, actionType} = data;
+    setIsLoading(true);
+
+    const acceptingLandlordData = {
+      property_id: propertyId,
+      bid_id: bid_id,
+      tenant_id: tenant_id,
+      landlord_id: landlord_id,
+      accepting_details: actionType, // Either ACCEPT or REJECT
+    };
+
+    console.log('acceptingLandlordData:', acceptingLandlordData);
+
+    try {
+      const response = await acceptingLandlord(acceptingLandlordData);
+      console.log('Response in handleAcceptingLandlord:', response);
+
+      if (response?.success === true) {
+        alert(response?.data);
+        // navigation.navigate('Properties', { tab3: 'tab3' });
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          'Server responded with a status code:',
+          error.response.status,
+        );
+        console.error('Response data:', error.response.data);
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+      } else {
+        console.error('Error setting up request:', error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const searchOfferForMyProperty = query => {
     setSearchQuery(query);
     const filtered = query
@@ -124,6 +165,8 @@ const OfferForMyProperties = () => {
     console.log('filtered.........', filtered);
     setFilteredOfferPropertyData(filtered);
   };
+
+  // render item...
 
   const property_render = item => {
     const isSelected = addressTypeValue?.property_id === item.property_id;
@@ -156,12 +199,36 @@ const OfferForMyProperties = () => {
   };
   const offerPropertyRender = ({item, index}) => {
     const isScreeningDisabled =
-      item.screening_one === 556 ||
-      item.screening_two === 556 ||
-      item.screening_three === 556;
+      item.screening_one === null ||
+      item.screening_two === null ||
+      item.screening_three === null;
+
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginVertical: 10}}>
+          {item?.landlord_approve == -1 ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                width: 180,
+                marginLeft: 4,
+                backgroundColor: _COLORS.Kodie_GreenColor,
+                paddingVertical: 5,
+                // borderTopLeftRadius: 8,
+                // borderTopRightRadius: 8,
+                borderRadius: 8,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 11,
+                  fontFamily: FONTFAMILY.K_SemiBold,
+                  color: _COLORS.Kodie_WhiteColor,
+                }}>
+                {'Landlord reject application'}
+              </Text>
+            </View>
+          ) : null}
           <TouchableOpacity
             style={OfferForMyPropertiesStyle.SubContainer}
             onPress={() => {
@@ -265,63 +332,55 @@ const OfferForMyProperties = () => {
               ))}
             </View>
           </TouchableOpacity>
-          {/* <CustomSingleButton
-            _ButtonText={'View application'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading}
-            isLeftImage={true}
-            onPress={() => {
-              navigation.navigate('PropertyViewApplication', {
-                propertyId: item?.property_id,
-                bid_id: item?.bid_id,
-                tenant_id: item?.tenant_id,
-                landlord_id: item?.landlord_id,
-              });
-            }}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-          /> */}
-          {/* <View style={{marginTop: 20}}>
-            <RowButtons
-              leftButtonHeight={44}
-              RightButtonHeight={44}
-              LeftButtonText={'Reject application'}
-              RightButtonText={'Approve application'}
-              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              onPressLeftButton={() => {
-                alert('reject');
-              }}
-              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-              RightButtonborderColor={_COLORS.Kodie_BlackColor}
-              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-              onPressRightButton={() => {
-                alert('approve');
-              }}
-            />
-          </View> */}
+
           <View style={{marginTop: 20}}>
             <RowButtons
               leftButtonHeight={44}
               RightButtonHeight={44}
               LeftButtonText={'Reject application'}
-              RightButtonText={'Approve application'}
+              RightButtonText={
+                item?.tenant_approve === 0
+                  ? 'Final approve'
+                  : 'Approve application'
+              }
               leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
               LeftButtonborderColor={_COLORS.Kodie_BlackColor}
               LeftButtonTextColor={_COLORS.Kodie_BlackColor}
               onPressLeftButton={() => {
-                alert('reject');
+                alert('Reject');
+                handleAcceptingLandlord({
+                  propertyId: item?.property_id,
+                  bid_id: item?.bid_id,
+                  tenant_id: item?.tenant_id,
+                  landlord_id: item?.landlord_id,
+                  actionType: 'REJECT',
+                });
               }}
               RightButtonbackgroundColor={
                 isScreeningDisabled
                   ? _COLORS.Kodie_LightGrayColor
                   : _COLORS.Kodie_BlackColor
               }
-              RightButtonborderColor={isScreeningDisabled ?_COLORS.Kodie_LightGrayColor: _COLORS.Kodie_BlackColor}
-              RightButtonTextColor={isScreeningDisabled ? _COLORS.Kodie_ExtraLightGrayColor: _COLORS.Kodie_WhiteColor}
+              RightButtonborderColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonTextColor={
+                isScreeningDisabled
+                  ? _COLORS.Kodie_ExtraLightGrayColor
+                  : _COLORS.Kodie_WhiteColor
+              }
               onPressRightButton={() => {
                 if (!isScreeningDisabled) {
-                  alert('approve');
+                  alert('Approve');
+                  handleAcceptingLandlord({
+                    propertyId: item?.property_id,
+                    bid_id: item?.bid_id,
+                    tenant_id: item?.tenant_id,
+                    landlord_id: item?.landlord_id,
+                    actionType: item?.tenant_approve === 0 ? 'FINAL' : 'ACCEPT',
+                  });
                 }
               }}
               RightButtonDisabled={isScreeningDisabled}

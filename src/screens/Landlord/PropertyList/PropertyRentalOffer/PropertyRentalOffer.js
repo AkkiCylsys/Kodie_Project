@@ -17,6 +17,7 @@ import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {
   getCurrentOffer,
   withdowBid,
@@ -30,15 +31,17 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 const PropertyRentalOffer = props => {
- const {acceptLanlordPassed} =props
- console.log("acceptLanlordPassed in offer page...",acceptLanlordPassed);
+  const {acceptLanlordPassed} = props;
+  console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '4';
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(acceptLanlordPassed == "acceptLanlordPassed" ? false :true);
+  const [selectedButton, setSelectedButton] = useState(
+    acceptLanlordPassed == 'acceptLanlordPassed' ? false : true,
+  );
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
   const [expandedPropertyId, setExpandedPropertyId] = useState(null);
   const [saveCurrentOffer, setSaveCurrentOffer] = useState(false);
@@ -141,7 +144,7 @@ const PropertyRentalOffer = props => {
       ...prev,
       [item.property_id]: true,
     }));
-    if (item.accepting_landlord == 556) {
+    if (item.accepting_landlord == 556 || item?.accepting_landlord == 0) {
       handleAcceptTenants(
         item?.tenant_id,
         item?.landlord_id,
@@ -153,9 +156,413 @@ const PropertyRentalOffer = props => {
         edit_offer: 'edit_offer',
         propertyId: item.property_id,
         propertyDetails: item,
+        bibId: item?.bid_id,
       });
     }
   };
+
+  const getButtonBackgroundColor = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return _COLORS.Kodie_lightseskyBule; // Color for completed screening
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return _COLORS.Kodie_mostLightBlueColor;
+    } else if (screeningStatus === 'REJECT') {
+      return _COLORS.Kodie_extralightRedColor; // Color for rejected application
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_backDarkOrange; // Color for rejected application
+    } else if (acceptLandlord === 0) {
+      // Color for accepted application
+      return _COLORS.Kodie_mostLightGreenColor;
+    }
+    return _COLORS.Kodie_backDarkOrange; // Default color for bid submitted
+  };
+
+  const getButtonTextColor = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return _COLORS.Kodie_skyBlue; // Color for completed screening text
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return _COLORS.Kodie_BlueColor;
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
+    } else if (screeningStatus === 'REJECT') {
+      return _COLORS.Kodie_lightRedColor; // Color for rejected application text
+    } else if (acceptLandlord === 0) {
+      // Color for accepted application text
+      return _COLORS.Kodie_DarkGreenColor;
+    }
+    return _COLORS.Kodie_textDarkOrange; // Default color for bid submitted text
+  };
+
+  const getIconColor = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return _COLORS.Kodie_skyBlue; // Color for completed screening icon
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return _COLORS.Kodie_BlueColor;
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
+    } else if (screeningStatus === 'REJECT') {
+      return _COLORS.Kodie_lightRedColor; // Color for rejected application icon
+    } else if (acceptLandlord === 0) {
+      // Color for accepted application icon
+      return _COLORS.Kodie_DarkGreenColor;
+    }
+    return _COLORS.Kodie_textDarkOrange; // Default color for bid submitted icon
+  };
+
+  const getButtonText = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return 'Screening completed';
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return 'Application submitted';
+    } else if (isScreenProgress) {
+      return 'Screening in progress'; // Color for rejected application
+    } else if (screeningStatus === 'REJECT') {
+      return 'Application rejected';
+    } else if (acceptLandlord === 0) {
+      // Message for accepted application
+      return 'Application accepted';
+    }
+    return 'Screening in progress';
+  };
+  // const currentOffer_render = ({item, index}) => {
+  //   const isExpanded = expandedPropertyId === item.property_id;
+  //   const keyFeatures = JSON.parse(item.key_features);
+  //   const parkingSpaceFeature = keyFeatures.find(feature =>
+  //     feature.hasOwnProperty('Parking / garage spaces'),
+  //   );
+  //   const parkingSpaceValue = parkingSpaceFeature
+  //     ? parkingSpaceFeature['Parking / garage spaces']
+  //     : null;
+  //   isDisabled = item.screening_status == 'REJECT';
+  //   const isScreenComplet =
+  //     item?.screening_one === 555 ||
+  //     item?.screening_two === 555 ||
+  //     item?.screening_three === 555;
+
+  //   const backgroundColor = getButtonBackgroundColor(
+  //     isScreenComplet,
+  //     item.screening_status,
+  //   );
+  //   const textColor = getButtonTextColor(
+  //     isScreenComplet,
+  //     item.screening_status,
+  //   );
+  //   const buttonText = getButtonText(isScreenComplet, item.screening_status);
+
+  //   return (
+  //     <View onPress={() => {}}>
+  //       <>
+  //         <View key={index} style={PropertyRentalOfferStyle.flatListContainer}>
+  //           {/* <View
+  //             style={[
+  //               PropertyRentalOfferStyle.flat_MainView,
+  //               {marginBottom: 10},
+  //             ]}>
+  //             <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+  //               <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+  //                 Accepting bids
+  //               </Text>
+  //             </TouchableOpacity>
+  //             <Text style={PropertyRentalOfferStyle.biddingText}>
+  //               Bidding closes in:
+  //             </Text>
+  //             <View style={PropertyRentalOfferStyle.daysViewStl}>
+  //               <Text style={PropertyRentalOfferStyle.biddingText}>
+  //                 {'o days'}
+  //               </Text>
+  //             </View>
+  //             <View style={PropertyRentalOfferStyle.daysViewStl}>
+  //               <Text style={PropertyRentalOfferStyle.biddingText}>
+  //                 {'6 hrs'}
+  //               </Text>
+  //             </View>
+  //             <View style={PropertyRentalOfferStyle.daysViewStl}>
+  //               <Text style={PropertyRentalOfferStyle.biddingText}>
+  //                 {'10 mins'}
+  //               </Text>
+  //             </View>
+  //           </View> */}
+  //           <View style={PropertyRentalOfferStyle.flat_MainView}>
+  //             <View style={PropertyRentalOfferStyle.flexContainer}>
+  //               <Text style={PropertyRentalOfferStyle.apartmentText}>
+  //                 {item?.property_type}
+  //               </Text>
+  //               <Text style={[LABEL_STYLES.commontext, {fontSize: 16}]}>
+  //                 {item?.city}
+  //               </Text>
+  //               <View style={PropertyRentalOfferStyle.flat_MainView}>
+  //                 <MaterialCommunityIcons
+  //                   name={'map-marker'}
+  //                   size={12}
+  //                   color={_COLORS.Kodie_GreenColor}
+  //                   style={{alignSelf: 'center', marginTop: 4}}
+  //                 />
+  //                 <Text
+  //                   style={PropertyRentalOfferStyle.locationText}
+  //                   numberOfLines={1}
+  //                   ellipsizeMode="tail">
+  //                   {item?.location}
+  //                 </Text>
+  //               </View>
+  //             </View>
+  //             {item.image_path && item.image_path.length > 0 ? (
+  //               <Image
+  //                 source={{uri: item.image_path[0]}}
+  //                 style={PropertyRentalOfferStyle.imageStyle}
+  //                 resizeMode="cover"
+  //               />
+  //             ) : (
+  //               <View
+  //                 style={[
+  //                   PropertyRentalOfferStyle.imageStyle,
+  //                   {justifyContent: 'center'},
+  //                 ]}>
+  //                 <Text style={PropertyRentalOfferStyle.Img_found}>
+  //                   {'Image not found'}
+  //                 </Text>
+  //               </View>
+  //             )}
+
+  //             <View
+  //               style={[
+  //                 PropertyRentalOfferStyle.flexContainer,
+  //                 {alignSelf: 'center'},
+  //               ]}>
+  //               <View style={PropertyRentalOfferStyle.noteStyle}>
+  //                 <TouchableOpacity onPress={() => {}}>
+  //                   <AntDesign
+  //                     name="sharealt"
+  //                     size={25}
+  //                     color={_COLORS.Kodie_LightGrayColor}
+  //                     resizeMode={'contain'}
+  //                   />
+  //                 </TouchableOpacity>
+  //                 <View />
+  //                 <TouchableOpacity style={{marginHorizontal: 15}}>
+  //                   <AntDesign
+  //                     name="hearto"
+  //                     size={25}
+  //                     color={_COLORS.Kodie_LightGrayColor}
+  //                     resizeMode={'contain'}
+  //                   />
+  //                 </TouchableOpacity>
+
+  //                 <TouchableOpacity style={{}} onPress={() => {}}>
+  //                   <MaterialCommunityIcons
+  //                     name={'dots-horizontal'}
+  //                     size={25}
+  //                     color={_COLORS.Kodie_LightGrayColor}
+  //                   />
+  //                 </TouchableOpacity>
+  //               </View>
+  //               <TouchableOpacity
+  //                 style={[
+  //                   PropertyRentalOfferStyle.buttonView,
+  //                   {
+  //                     backgroundColor: backgroundColor, // Using the helper function for background color
+  //                   },
+  //                 ]}>
+  //                 <Text
+  //                   style={[
+  //                     PropertyRentalOfferStyle.buttonText,
+  //                     {
+  //                       color: textColor, // Using the helper function for text color
+  //                     },
+  //                   ]}>
+  //                   {buttonText}
+  //                   {/* Using the helper function for button text */}
+  //                 </Text>
+  //               </TouchableOpacity>
+  //             </View>
+  //           </View>
+  //           <DividerIcon
+  //             IsShowIcon
+  //             iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+  //             onPress={() => handleExpandToggle(item.property_id)}
+  //           />
+  //           {isExpanded && (
+  //             <View style={PropertyRentalOfferStyle.expandedView}>
+  //               <View style={PropertyRentalOfferStyle.bedCountView}>
+  //                 <View style={PropertyRentalOfferStyle.locationView}>
+  //                   <Ionicons
+  //                     color={_COLORS.Kodie_GreenColor}
+  //                     name="bed-outline"
+  //                     size={20}
+  //                     style={PropertyRentalOfferStyle.bedIconView}
+  //                   />
+  //                   <Text style={PropertyRentalOfferStyle.bedcont}>
+  //                     {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
+  //                       ?.Bedrooms || 'N/A'}
+  //                   </Text>
+  //                 </View>
+  //                 <View style={PropertyRentalOfferStyle.locationView}>
+  //                   <MaterialCommunityIcons
+  //                     color={_COLORS.Kodie_GreenColor}
+  //                     name="shower-head"
+  //                     size={20}
+  //                     style={PropertyRentalOfferStyle.bedIconView}
+  //                   />
+  //                   <Text style={PropertyRentalOfferStyle.bedcont}>
+  //                     {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
+  //                       ?.Bathrooms || 'N/A'}
+  //                   </Text>
+  //                 </View>
+  //                 <View style={PropertyRentalOfferStyle.locationView}>
+  //                   <Ionicons
+  //                     color={_COLORS.Kodie_GreenColor}
+  //                     name="car"
+  //                     size={20}
+  //                     style={PropertyRentalOfferStyle.bedIconView}
+  //                   />
+  //                   <Text style={PropertyRentalOfferStyle.bedcont}>
+  //                     {parkingSpaceValue}
+  //                   </Text>
+  //                 </View>
+  //                 <View style={PropertyRentalOfferStyle.locationView}>
+  //                   <MaterialCommunityIcons
+  //                     color={_COLORS.Kodie_GreenColor}
+  //                     name="floor-plan"
+  //                     size={20}
+  //                     style={PropertyRentalOfferStyle.bedIconView}
+  //                   />
+  //                   <Text style={PropertyRentalOfferStyle.bedcont}>
+  //                     {`${
+  //                       keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
+  //                         ?.Garages
+  //                     } m2` || 'N/A'}
+  //                   </Text>
+  //                 </View>
+  //               </View>
+  //               <View style={{alignSelf: 'flex-end', marginLeft: 10}}>
+  //                 <Text style={PropertyRentalOfferStyle.listpriceText}>
+  //                   {'Listed price'}
+  //                 </Text>
+  //                 <Text style={PropertyRentalOfferStyle.listprice}>
+  //                   {`$${item.offer_amount}`}
+  //                 </Text>
+  //               </View>
+  //             </View>
+  //           )}
+  //         </View>
+  //         <View style={PropertyRentalOfferStyle.rowButtonView}>
+  //           {/* <RowButtons
+  //             LeftButtonText={'Withdraw'}
+  //             leftButtonbackgroundColor={
+  //               !selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_WhiteColor
+  //                 : _COLORS.Kodie_WhiteColor
+  //             }
+  //             LeftButtonTextColor={
+  //               !selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_BlackColor
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             LeftButtonborderColor={
+  //               !selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_BlackColor
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             onPressLeftButton={() =>
+  //               handlePressLeftButton(item.property_id, item.bid_id)
+  //             }
+  //             RightButtonText={
+  //               item.accepting_landlord == 556 ? 'Accept offer' : 'Edit offer'
+  //             }
+  //             RightButtonbackgroundColor={
+  //               selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_BlackColor
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             RightButtonTextColor={
+  //               selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_WhiteColor
+  //                 : _COLORS.Kodie_WhiteColor
+  //             }
+  //             RightButtonborderColor={
+  //               selectedButtonBid[item.property_id]
+  //                 ? _COLORS.Kodie_BlackColor
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             onPressRightButton={() => handlePressRightButton(item)}
+  //           /> */}
+  //           <RowButtons
+  //             LeftButtonText={'Withdraw bid'}
+  //             leftButtonbackgroundColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_LightGrayColor // Disabled background color
+  //                 : _COLORS.Kodie_WhiteColor
+  //             }
+  //             LeftButtonTextColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_ExtraLightGrayColor // Disabled text color
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             LeftButtonborderColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_LightGrayColor // Disabled border color
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             onPressLeftButton={() => {
+  //               if (!isDisabled) {
+  //                 handlePressLeftButton(item.property_id, item.bid_id);
+  //               }
+  //             }}
+  //             RightButtonText={
+  //               item.accepting_landlord === 556 ? 'Accept offer' : 'Edit offer'
+  //             }
+  //             RightButtonbackgroundColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_LightGrayColor // Disabled background color
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             RightButtonTextColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_ExtraLightGrayColor // Disabled text color
+  //                 : _COLORS.Kodie_WhiteColor
+  //             }
+  //             RightButtonborderColor={
+  //               isDisabled
+  //                 ? _COLORS.Kodie_LightGrayColor // Disabled border color
+  //                 : _COLORS.Kodie_BlackColor
+  //             }
+  //             onPressRightButton={() => {
+  //               if (!isDisabled) {
+  //                 handlePressRightButton(item);
+  //               }
+  //             }}
+  //             RightButtonDisabled={isDisabled} // This will disable the button
+  //           />
+  //         </View>
+  //         <DividerIcon />
+  //       </>
+  //     </View>
+  //   );
+  // };
+
   const currentOffer_render = ({item, index}) => {
     const isExpanded = expandedPropertyId === item.property_id;
     const keyFeatures = JSON.parse(item.key_features);
@@ -164,254 +571,264 @@ const PropertyRentalOffer = props => {
     );
     const parkingSpaceValue = parkingSpaceFeature
       ? parkingSpaceFeature['Parking / garage spaces']
-      : null;
+      : 'N/A';
+
+    const isDisabled = item.screening_status === 'REJECT';
+    const isScreenComplet =
+      item?.screening_one === 555 ||
+      item?.screening_two === 555 ||
+      item?.screening_three === 555;
+    const isScreenProgress =
+      item?.screening_one === 556 ||
+      item?.screening_two === 556 ||
+      item?.screening_three === 556;
+    const screeningStatus = item.screening_status; // e.g., "ACCEPT"
+    const acceptLandlord = item?.accepting_landlord; // e.g., 0
+    const finalLandlordApprove = item?.final_landlord_approve; // e.g., 1
+
+    const backgroundColor = getButtonBackgroundColor(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
+    const textColor = getButtonTextColor(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
+    const buttonText = getButtonText(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
+    const iconColor = getIconColor(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
+
     return (
-      <TouchableOpacity onPress={() => {}}>
-        <>
-          <View key={index} style={PropertyRentalOfferStyle.flatListContainer}>
+      <View key={index} style={PropertyRentalOfferStyle.flatListContainer}>
+        <View style={PropertyRentalOfferStyle.flat_MainView}>
+          <View style={PropertyRentalOfferStyle.flexContainer}>
+            <Text style={PropertyRentalOfferStyle.apartmentText}>
+              {item?.property_type}
+            </Text>
+            <Text style={[LABEL_STYLES.commontext, {fontSize: 16}]}>
+              {item?.city}
+            </Text>
+            <View style={PropertyRentalOfferStyle.flat_MainView}>
+              <MaterialCommunityIcons
+                name={'map-marker'}
+                size={12}
+                color={_COLORS.Kodie_GreenColor}
+                style={{alignSelf: 'center', marginTop: 4}}
+              />
+              <Text
+                style={PropertyRentalOfferStyle.locationText}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {item?.location}
+              </Text>
+            </View>
+          </View>
+
+          {item.image_path && item.image_path.length > 0 ? (
+            <Image
+              source={{uri: item.image_path[0]}}
+              style={PropertyRentalOfferStyle.imageStyle}
+              resizeMode="cover"
+            />
+          ) : (
             <View
               style={[
-                PropertyRentalOfferStyle.flat_MainView,
-                {marginBottom: 10},
+                PropertyRentalOfferStyle.imageStyle,
+                {justifyContent: 'center'},
               ]}>
-              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                  Accepting bids
-                </Text>
-              </TouchableOpacity>
-              <Text style={PropertyRentalOfferStyle.biddingText}>
-                Bidding closes in:
+              <Text style={PropertyRentalOfferStyle.Img_found}>
+                {'Image not found'}
               </Text>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'o days'}
-                </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'6 hrs'}
-                </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'10 mins'}
-                </Text>
-              </View>
             </View>
-            <View style={PropertyRentalOfferStyle.flat_MainView}>
-              <View style={PropertyRentalOfferStyle.flexContainer}>
-                <Text style={PropertyRentalOfferStyle.apartmentText}>
-                  {item?.property_type}
-                </Text>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 16}]}>
-                  {item?.city}
-                </Text>
-                <View style={PropertyRentalOfferStyle.flat_MainView}>
-                  <MaterialCommunityIcons
-                    name={'map-marker'}
-                    size={12}
-                    color={_COLORS.Kodie_GreenColor}
-                    style={{alignSelf: 'center', marginTop: 4}}
-                  />
-                  <Text
-                    style={PropertyRentalOfferStyle.locationText}
-                    numberOfLines={1}
-                    ellipsizeMode="tail">
-                    {item?.location}
-                  </Text>
-                </View>
-              </View>
-              {item.image_path && item.image_path.length > 0 ? (
-                <Image
-                  source={{uri: item.image_path[0]}}
-                  style={PropertyRentalOfferStyle.imageStyle}
-                  resizeMode="cover"
+          )}
+
+          <View style={PropertyRentalOfferStyle.flexContainer}>
+            <View style={PropertyRentalOfferStyle.noteStyle}>
+              <TouchableOpacity onPress={() => {}}>
+                <AntDesign
+                  name="sharealt"
+                  size={25}
+                  color={_COLORS.Kodie_LightGrayColor}
                 />
-              ) : (
-                <View
-                  style={[
-                    PropertyRentalOfferStyle.imageStyle,
-                    {justifyContent: 'center'},
-                  ]}>
-                  <Text style={PropertyRentalOfferStyle.Img_found}>
-                    {'Image not found'}
-                  </Text>
-                </View>
-              )}
-
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal: 15}}>
+                <AntDesign
+                  name="hearto"
+                  size={25}
+                  color={_COLORS.Kodie_LightGrayColor}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {}}>
+                <MaterialCommunityIcons
+                  name={'dots-horizontal'}
+                  size={25}
+                  color={_COLORS.Kodie_LightGrayColor}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={[PropertyRentalOfferStyle.buttonView, {backgroundColor}]}>
+              <Entypo
+                name="dot-single"
+                color={iconColor}
+                size={24}
+                style={{alignSelf: 'center'}}
+              />
+              <Text
                 style={[
-                  PropertyRentalOfferStyle.flexContainer,
-                  {alignSelf: 'center'},
+                  PropertyRentalOfferStyle.buttonText,
+                  {color: textColor},
                 ]}>
-                <View style={PropertyRentalOfferStyle.noteStyle}>
-                  <TouchableOpacity onPress={() => {}}>
-                    <AntDesign
-                      name="sharealt"
-                      size={25}
-                      color={_COLORS.Kodie_LightGrayColor}
-                      resizeMode={'contain'}
-                    />
-                  </TouchableOpacity>
-                  <View />
-                  <TouchableOpacity style={{marginHorizontal: 15}}>
-                    <AntDesign
-                      name="hearto"
-                      size={25}
-                      color={_COLORS.Kodie_LightGrayColor}
-                      resizeMode={'contain'}
-                    />
-                  </TouchableOpacity>
+                {buttonText}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
-                  <TouchableOpacity style={{}} onPress={() => {}}>
-                    <MaterialCommunityIcons
-                      name={'dots-horizontal'}
-                      size={25}
-                      color={_COLORS.Kodie_LightGrayColor}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity
-                  style={[
-                    PropertyRentalOfferStyle.buttonView,
-                    {
-                      backgroundColor:
-                        item.bid_status_id == 0
-                          ? _COLORS.Kodie_LightOrange
-                          : _COLORS.Kodie_mostLightBlueColor,
-                    },
-                  ]}>
-                  <Text
-                    style={[
-                      PropertyRentalOfferStyle.buttonText,
-                      {
-                        color:
-                          item.bid_status_id == 0
-                            ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_BlueColor,
-                      },
-                    ]}>
-                    {item.bid_status_id == 0 ? 'Pending bid' : 'Bid submitted'}
-                  </Text>
-                </TouchableOpacity>
+        <DividerIcon
+          IsShowIcon
+          iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+          onPress={() => handleExpandToggle(item.property_id)}
+        />
+
+        {isExpanded && (
+          <View style={PropertyRentalOfferStyle.expandedView}>
+            <View style={PropertyRentalOfferStyle.bedCountView}>
+              <View style={PropertyRentalOfferStyle.locationView}>
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="bed-outline"
+                  size={20}
+                  style={PropertyRentalOfferStyle.bedIconView}
+                />
+                <Text style={PropertyRentalOfferStyle.bedcont}>
+                  {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
+                    ?.Bedrooms || 'N/A'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.locationView}>
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="shower-head"
+                  size={20}
+                  style={PropertyRentalOfferStyle.bedIconView}
+                />
+                <Text style={PropertyRentalOfferStyle.bedcont}>
+                  {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
+                    ?.Bathrooms || 'N/A'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.locationView}>
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="car"
+                  size={20}
+                  style={PropertyRentalOfferStyle.bedIconView}
+                />
+                <Text style={PropertyRentalOfferStyle.bedcont}>
+                  {parkingSpaceValue}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.locationView}>
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="floor-plan"
+                  size={20}
+                  style={PropertyRentalOfferStyle.bedIconView}
+                />
+                <Text style={PropertyRentalOfferStyle.bedcont}>
+                  {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
+                    ?.Garages || 'N/A'}{' '}
+                  m²
+                </Text>
               </View>
             </View>
-            <DividerIcon
-              IsShowIcon
-              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-              onPress={() => handleExpandToggle(item.property_id)}
-            />
-            {isExpanded && (
-              <View style={PropertyRentalOfferStyle.expandedView}>
-                <View style={PropertyRentalOfferStyle.bedCountView}>
-                  <View style={PropertyRentalOfferStyle.locationView}>
-                    <Ionicons
-                      color={_COLORS.Kodie_GreenColor}
-                      name="bed-outline"
-                      size={20}
-                      style={PropertyRentalOfferStyle.bedIconView}
-                    />
-                    <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
-                        ?.Bedrooms || 'N/A'}
-                    </Text>
-                  </View>
-                  <View style={PropertyRentalOfferStyle.locationView}>
-                    <MaterialCommunityIcons
-                      color={_COLORS.Kodie_GreenColor}
-                      name="shower-head"
-                      size={20}
-                      style={PropertyRentalOfferStyle.bedIconView}
-                    />
-                    <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
-                        ?.Bathrooms || 'N/A'}
-                    </Text>
-                  </View>
-                  <View style={PropertyRentalOfferStyle.locationView}>
-                    <Ionicons
-                      color={_COLORS.Kodie_GreenColor}
-                      name="car"
-                      size={20}
-                      style={PropertyRentalOfferStyle.bedIconView}
-                    />
-                    <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {parkingSpaceValue}
-                    </Text>
-                  </View>
-                  <View style={PropertyRentalOfferStyle.locationView}>
-                    <MaterialCommunityIcons
-                      color={_COLORS.Kodie_GreenColor}
-                      name="floor-plan"
-                      size={20}
-                      style={PropertyRentalOfferStyle.bedIconView}
-                    />
-                    <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {`${
-                        keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
-                          ?.Garages
-                      } m2` || 'N/A'}
-                    </Text>
-                  </View>
-                </View>
-                <View style={{alignSelf: 'flex-end', marginLeft: 10}}>
-                  <Text style={PropertyRentalOfferStyle.listpriceText}>
-                    {'Listed price'}
-                  </Text>
-                  <Text style={PropertyRentalOfferStyle.listprice}>
-                    {`$${item.offer_amount}`}
-                  </Text>
-                </View>
-              </View>
-            )}
+            <View style={{alignSelf: 'flex-end', marginLeft: 10}}>
+              <Text style={PropertyRentalOfferStyle.listpriceText}>
+                {'Listed price'}
+              </Text>
+              <Text style={PropertyRentalOfferStyle.listprice}>
+                {`$${item.offer_amount}`}
+              </Text>
+            </View>
           </View>
-          <View style={PropertyRentalOfferStyle.rowButtonView}>
-            <RowButtons
-              LeftButtonText={'Withdraw bid'}
-              leftButtonbackgroundColor={
-                !selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_WhiteColor
+        )}
+
+        <View style={PropertyRentalOfferStyle.rowButtonView}>
+          <RowButtons
+            LeftButtonText={'Withdraw bid'}
+            leftButtonbackgroundColor={
+              isDisabled
+                ? _COLORS.Kodie_LightGrayColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              isDisabled
+                ? _COLORS.Kodie_ExtraLightGrayColor
+                : _COLORS.Kodie_BlackColor
+            }
+            LeftButtonborderColor={
+              isDisabled
+                ? _COLORS.Kodie_LightGrayColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressLeftButton={() => {
+              if (!isDisabled) {
+                handlePressLeftButton(item.property_id, item.bid_id);
               }
-              LeftButtonTextColor={
-                !selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
+            }}
+            RightButtonText={
+              acceptLandlord === 0 && finalLandlordApprove === 0
+                ? 'Pay Now' // Show 'Pay Now' if acceptLandlord is 0 and final_landlord_approve is 0
+                : acceptLandlord === 0
+                ? 'Accept offer' // Show 'Accept offer' if only acceptLandlord is 0
+                : 'Edit offer'
+            }
+            RightButtonbackgroundColor={
+              isDisabled
+                ? _COLORS.Kodie_LightGrayColor
+                : _COLORS.Kodie_BlackColor
+            }
+            RightButtonTextColor={
+              isDisabled
+                ? _COLORS.Kodie_ExtraLightGrayColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonborderColor={
+              isDisabled
+                ? _COLORS.Kodie_LightGrayColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressRightButton={() => {
+              if (!isDisabled) {
+                handlePressRightButton(item);
               }
-              LeftButtonborderColor={
-                !selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressLeftButton={() =>
-                handlePressLeftButton(item.property_id, item.bid_id)
-              }
-              RightButtonText={
-                item.accepting_landlord == 556 ? 'Accept offer' : 'Edit offer'
-              }
-              RightButtonbackgroundColor={
-                selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonTextColor={
-                selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonborderColor={
-                selectedButtonBid[item.property_id]
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressRightButton={() => handlePressRightButton(item)}
-            />
-          </View>
-          <DividerIcon />
-        </>
-      </TouchableOpacity>
+            }}
+            RightButtonDisabled={isDisabled}
+          />
+        </View>
+        <DividerIcon />
+      </View>
     );
   };
+
   const renderRowButtons = () => {
     const roleArray = userRole ? userRole.split(',') : [];
 

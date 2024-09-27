@@ -103,6 +103,8 @@ const ViewApplicationSummary = props => {
       item => item.tqm_Question_view !== null,
     ) || [];
 
+
+
   const occupantDataListString =
     tenantQuestDetails[0]?.children[2]?.sub_children[1]?.tqm_Question_value;
 
@@ -116,6 +118,8 @@ const ViewApplicationSummary = props => {
   }
   console.log('occupantDataList....', occupantDataList);
 
+
+
   const leaseholderDataString =
     tenantQuestDetails[0]?.children[2]?.sub_children[3]?.tqm_Question_value; // Access the specific object
 
@@ -127,8 +131,31 @@ const ViewApplicationSummary = props => {
       console.error('Error parsing JSON:', error);
     }
   }
-
   console.log('leaseholderDataList....', leaseholderDataList);
+
+
+
+  const employeeReferencesDataString =
+  tenantQuestDetails?.[1]?.children?.[9]?.tqm_Question_value;
+
+console.log('employeeReferencesDataString...', employeeReferencesDataString);
+
+let employeeReferencesList = [];
+
+if (employeeReferencesDataString) {
+  try {
+    // Attempt to parse the string into JSON if it exists
+    employeeReferencesList = JSON.parse([employeeReferencesDataString]);
+  } catch (error) {
+    // Log the error in case of invalid JSON
+    console.error('Error parsing JSON:', error);
+  }
+}
+console.log('employeeReferencesList....', employeeReferencesList);
+
+
+// employeeReferencesList will either contain the parsed data or remain an empty array
+
 
   // Api intrigation ....
 
@@ -205,7 +232,7 @@ const ViewApplicationSummary = props => {
       );
       console.log('response in save landlord accepting....', response);
       if (response?.success === true) {
-        Alert.alert("Success",response?.data);
+        Alert.alert('Success', response?.data);
         navigation?.navigate('Properties', {
           acceptLanlordPassed: 'acceptLanlordPassed',
         });
@@ -248,7 +275,7 @@ const ViewApplicationSummary = props => {
       );
       console.log('response in Update landlord accepting....', response);
       if (response?.success === true) {
-        Alert.alert("Success",response?.data);
+        Alert.alert('Success', response?.data);
         navigation?.navigate('Properties', {
           acceptLanlordPassed: 'acceptLanlordPassed',
         });
@@ -406,16 +433,10 @@ const ViewApplicationSummary = props => {
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
         <View>
           <Text style={ViewApplicationSummaryStyle.occupants_name}>
-            {'Jason Macfie'}
+            {item?.fullName}
           </Text>
           <Text style={ViewApplicationSummaryStyle.occupants_email}>
-            {'Manager'}
-          </Text>
-          <Text style={ViewApplicationSummaryStyle.occupants_email}>
-            {'info@kodie.com.au'}
-          </Text>
-          <Text style={ViewApplicationSummaryStyle.occupants_email}>
-            {'0402 123 124'}
+            {item?.email}
           </Text>
         </View>
         <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
@@ -774,7 +795,7 @@ const ViewApplicationSummary = props => {
                 {'Employment references'}
               </Text>
               <FlatList
-                data={occupantData}
+                data={employeeReferencesList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={referenceRenderItem}
               />

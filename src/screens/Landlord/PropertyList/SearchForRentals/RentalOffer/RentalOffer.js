@@ -40,7 +40,7 @@ import Geocoder from 'react-native-geocoding';
 import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
@@ -58,11 +58,25 @@ const RentalOffer = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setFullName] = useState('');
   const [fullNameError, setFullNameError] = useState('');
+
   const [referenceFullName, setReferenceFullName] = useState('');
   const [referenceFullNameError, setReferenceFullNameError] = useState('');
   const [referenceEmail, setReferenceEmail] = useState('');
   const [referenceEmailError, setReferenceEmailError] = useState('');
   const [referencesItem, setReferencesItem] = useState([]);
+
+  const [employeeReferenceFullName, setEmployeeReferenceFullName] =
+    useState('');
+  const [employeereferenceFullNameError, setEmployeeReferenceFullNameError] =
+    useState('');
+  const [employeeReferenceEmail, setEmployeeReferenceEmail] = useState('');
+  const [employeeReferenceEmailError, setEmployeeReferenceEmailError] =
+    useState('');
+  const [employeeReferencesItem, setEmployeeReferencesItem] = useState([]);
+
+  const [employeeReferences, setEmployeeReferences] = useState([]);
+  const [rentalReferences, setRentalReferences] = useState([]);
+
   const [leaseFullName, setLeaseFullName] = useState('');
   const [leaseFullNameError, setLeaseFullNameError] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
@@ -104,6 +118,7 @@ const RentalOffer = props => {
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
   const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
   const [toggleReference, setToggleReference] = useState(false);
+  const [toggleEmployeeReference, setToggleEmployeeReference] = useState(false);
 
   const [location, setLocation] = useState('');
   const [IsMap, setIsMap] = useState(false);
@@ -121,7 +136,7 @@ const RentalOffer = props => {
   const [subChildren, setSubChildren] = useState([]);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   const [biddingDetailsMessage, setBiddingDetailsMessage] = useState('');
-  const isFocus = useIsFocused()
+  const isFocus = useIsFocused();
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -212,7 +227,7 @@ const RentalOffer = props => {
   useEffect(() => {
     handleTenantQues();
     edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
-  }, [question,isFocus]);
+  }, [question, isFocus]);
 
   useEffect(() => {
     if (inputValues['PREVIOUS_ADDRESS']) {
@@ -260,6 +275,8 @@ const RentalOffer = props => {
   //     p_property_id: propertyId,
   //   };
 
+  //   console.log('QuesData in edit offer..', QuesData);
+
   //   try {
   //     const response = await axios.post(Ques_url, QuesData);
   //     console.log('Response edit question..', response?.data);
@@ -270,18 +287,81 @@ const RentalOffer = props => {
   //       if (Array.isArray(data)) {
   //         const initialValues = {};
   //         const dropdownQuestions = [];
+  //         let occupants = [];
+  //         let leaseHolders = [];
 
   //         data.forEach(parentQuestion => {
   //           if (Array.isArray(parentQuestion.children)) {
   //             parentQuestion.children.forEach(childQuestion => {
+  //               if (Array.isArray(childQuestion.sub_children)) {
+  //                 childQuestion.sub_children.forEach(subChildQuestion => {
+  //                   if (
+  //                     subChildQuestion.tqm_Question_description?.trim() ===
+  //                     'Add Occupant'
+  //                   ) {
+  //                     console.log("Found 'Add Occupant' question");
+  //                     try {
+  //                       const parsedOccupants = JSON.parse(
+  //                         subChildQuestion.tqm_Question_value || '[]',
+  //                       );
+  //                       if (Array.isArray(parsedOccupants)) {
+  //                         occupants = parsedOccupants; // Update the local variable
+  //                         console.log(
+  //                           'Occupant data parsed successfully:',
+  //                           occupants,
+  //                         );
+  //                         // Call setOccupants outside of the loop to update the state once
+  //                       } else {
+  //                         console.error(
+  //                           'Occupant data is not an array:',
+  //                           parsedOccupants,
+  //                         );
+  //                       }
+  //                     } catch (e) {
+  //                       console.error('Error parsing occupants:', e);
+  //                     }
+  //                   }
+
+  //                   if (
+  //                     subChildQuestion.tqm_Question_description?.trim() ===
+  //                     'Add leaseholders'
+  //                   ) {
+  //                     console.log("Found 'Add leaseholders' question");
+  //                     try {
+  //                       const parsedLeaseHolders = JSON.parse(
+  //                         subChildQuestion.tqm_Question_value || '[]',
+  //                       );
+  //                       if (Array.isArray(parsedLeaseHolders)) {
+  //                         leaseHolders = parsedLeaseHolders; // Update the local variable
+  //                         console.log(
+  //                           'Leaseholder data parsed successfully:',
+  //                           leaseHolders,
+  //                         );
+  //                         // Call setLeaseHolderItem outside of the loop to update the state once
+  //                       } else {
+  //                         console.error(
+  //                           'Leaseholder data is not an array:',
+  //                           parsedLeaseHolders,
+  //                         );
+  //                       }
+  //                     } catch (e) {
+  //                       console.error('Error parsing leaseholders:', e);
+  //                     }
+  //                   }
+  //                 });
+  //               }
+
   //               if (childQuestion.tqm_Question_type === 'Dropdown') {
   //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
   //               }
-  //               // Set the initial state for Yes/No buttons dynamically
+
   //               if (childQuestion.tqm_Question_type === 'Yes_no') {
-  //                 const value = childQuestion.tqm_Question_value;
-  //                 setButtonState(childQuestion.tqm_Question_code, value);
+  //                 setButtonState(
+  //                   childQuestion.tqm_Question_code,
+  //                   childQuestion.tqm_Question_value,
+  //                 );
   //               }
+
   //               if (
   //                 childQuestion.tqm_Question_value !== undefined &&
   //                 childQuestion.tqm_Question_value !== null
@@ -293,6 +373,13 @@ const RentalOffer = props => {
   //           }
   //         });
 
+  //         // Set occupants and leaseholders state
+  //         setOccupants(occupants);
+  //         setLeaseHolderItem(leaseHolders);
+  //         setNumberOccupants(occupants.length);
+  //         setNumberLeaseHolder(leaseHolders.length);
+  //         console.log('occupants in edit mode...', occupants);
+  //         console.log('leaseHolderItem in edit mode...', leaseHolderItem);
   //         // Fetch dropdown data and set initial values
   //         const dropdownDataPromises = dropdownQuestions.map(
   //           async questionCode => {
@@ -302,26 +389,25 @@ const RentalOffer = props => {
   //               [questionCode]: options,
   //             }));
 
-  //             // Convert initialValues to match dropdown options format
   //             const value = initialValues[questionCode];
   //             if (value) {
   //               const selectedOption = options.find(
   //                 option => String(option.lookup_key) === String(value),
   //               );
   //               if (selectedOption) {
-  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
+  //                 initialValues[questionCode] = selectedOption.lookup_key;
   //               }
   //             }
   //           },
   //         );
 
-  //         // Wait for all dropdown data to be fetched and set
   //         await Promise.all(dropdownDataPromises);
 
   //         setInputValues(initialValues);
   //         if (initialValues['PREVIOUS_ADDRESS']) {
   //           setLocation(initialValues['PREVIOUS_ADDRESS']);
   //         }
+
   //         console.log('response in edit mode...', JSON.stringify(data));
   //       } else {
   //         console.error(
@@ -348,7 +434,7 @@ const RentalOffer = props => {
       p_property_id: propertyId,
     };
 
-    console.log("QuesData in edit offer..",QuesData);
+    console.log('QuesData in edit offer..', QuesData);
 
     try {
       const response = await axios.post(Ques_url, QuesData);
@@ -362,12 +448,15 @@ const RentalOffer = props => {
           const dropdownQuestions = [];
           let occupants = [];
           let leaseHolders = [];
+          let employeeReferences = [];
+          let rentalReferences = [];
 
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
                 if (Array.isArray(childQuestion.sub_children)) {
                   childQuestion.sub_children.forEach(subChildQuestion => {
+                    // Parsing Occupants
                     if (
                       subChildQuestion.tqm_Question_description?.trim() ===
                       'Add Occupant'
@@ -378,16 +467,10 @@ const RentalOffer = props => {
                           subChildQuestion.tqm_Question_value || '[]',
                         );
                         if (Array.isArray(parsedOccupants)) {
-                          occupants = parsedOccupants; // Update the local variable
+                          occupants = parsedOccupants;
                           console.log(
                             'Occupant data parsed successfully:',
                             occupants,
-                          );
-                          // Call setOccupants outside of the loop to update the state once
-                        } else {
-                          console.error(
-                            'Occupant data is not an array:',
-                            parsedOccupants,
                           );
                         }
                       } catch (e) {
@@ -395,6 +478,7 @@ const RentalOffer = props => {
                       }
                     }
 
+                    // Parsing Leaseholders
                     if (
                       subChildQuestion.tqm_Question_description?.trim() ===
                       'Add leaseholders'
@@ -405,20 +489,59 @@ const RentalOffer = props => {
                           subChildQuestion.tqm_Question_value || '[]',
                         );
                         if (Array.isArray(parsedLeaseHolders)) {
-                          leaseHolders = parsedLeaseHolders; // Update the local variable
+                          leaseHolders = parsedLeaseHolders;
                           console.log(
                             'Leaseholder data parsed successfully:',
                             leaseHolders,
                           );
-                          // Call setLeaseHolderItem outside of the loop to update the state once
-                        } else {
-                          console.error(
-                            'Leaseholder data is not an array:',
-                            parsedLeaseHolders,
-                          );
                         }
                       } catch (e) {
                         console.error('Error parsing leaseholders:', e);
+                      }
+                    }
+
+                    // Parsing Employee References
+                    if (
+                      subChildQuestion.tqm_Question_description?.trim() ===
+                      'Add employee reference'
+                    ) {
+                      console.log("subChildQuestion.tqm_Question_description?.trim()...",subChildQuestion.tqm_Question_description?.trim());
+                      console.log("Found 'Add employee reference' question");
+                      try {
+                        const parsedEmployeeReferences = JSON.parse(
+                          subChildQuestion.tqm_Question_value || '[]',
+                        );
+                        if (Array.isArray(parsedEmployeeReferences)) {
+                          employeeReferences = parsedEmployeeReferences;
+                          console.log(
+                            'Employee reference data parsed successfully:',
+                            employeeReferences,
+                          );
+                        }
+                      } catch (e) {
+                        console.error('Error parsing employee references:', e);
+                      }
+                    }
+
+                    // Parsing Rental References
+                    if (
+                      subChildQuestion.tqm_Question_description?.trim() ===
+                      'Add rental reference'
+                    ) {
+                      console.log("Found 'Add rental reference' question");
+                      try {
+                        const parsedRentalReferences = JSON.parse(
+                          subChildQuestion.tqm_Question_value || '[]',
+                        );
+                        if (Array.isArray(parsedRentalReferences)) {
+                          rentalReferences = parsedRentalReferences;
+                          console.log(
+                            'Rental reference data parsed successfully:',
+                            rentalReferences,
+                          );
+                        }
+                      } catch (e) {
+                        console.error('Error parsing rental references:', e);
                       }
                     }
                   });
@@ -446,13 +569,23 @@ const RentalOffer = props => {
             }
           });
 
-          // Set occupants and leaseholders state
+          // Set occupants, leaseholders, employee references, and rental references
           setOccupants(occupants);
           setLeaseHolderItem(leaseHolders);
+          setEmployeeReferences(employeeReferences);
+          setRentalReferences(rentalReferences);
+
+          // Update the counts if needed
           setNumberOccupants(occupants.length);
           setNumberLeaseHolder(leaseHolders.length);
-          console.log('occupants in edit mode...', occupants);
-          console.log('leaseHolderItem in edit mode...', leaseHolderItem);
+          console.log('Occupants in edit mode...', occupants);
+          console.log('Leaseholder item in edit mode...', leaseHolders);
+          console.log(
+            'Employee references in edit mode...',
+            employeeReferences,
+          );
+          console.log('Rental references in edit mode...', rentalReferences);
+
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -481,7 +614,7 @@ const RentalOffer = props => {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
           }
 
-          console.log('response in edit mode...', JSON.stringify(data));
+          console.log('Response data in edit mode...', JSON.stringify(data));
         } else {
           console.error(
             'Invalid data structure: parent_json is not an array',
@@ -639,6 +772,16 @@ const RentalOffer = props => {
       setReferenceFullNameError('');
     }
   };
+  const validEmployeeReferenceFullName = text => {
+    setEmployeeReferenceFullName(text);
+    if (employeeReferenceFullName === '') {
+      setEmployeeReferenceFullNameError(
+        'Employee references fullName is required.',
+      );
+    } else {
+      setEmployeeReferenceFullNameError('');
+    }
+  };
   const validReferencesEmailAddress = text => {
     setReferenceEmail(text);
     if (referenceEmail === '') {
@@ -649,6 +792,20 @@ const RentalOffer = props => {
       );
     } else {
       setReferenceEmailError('');
+    }
+  };
+  const validEmployeeReferencesEmailAddress = text => {
+    setEmployeeReferenceEmail(text);
+    if (employeeReferenceEmail === '') {
+      setEmployeeReferenceEmailError(
+        'Employee references email Address is required.',
+      );
+    } else if (!validateResetEmail(employeeReferenceEmail)) {
+      setEmployeeReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.bdjhb',
+      );
+    } else {
+      setEmployeeReferenceEmailError('');
     }
   };
   const handleReferences = () => {
@@ -662,6 +819,23 @@ const RentalOffer = props => {
       );
     } else {
       addReferences();
+    }
+  };
+  const handleEmployeeReferences = () => {
+    if (employeeReferenceFullName === '') {
+      setEmployeeReferenceFullNameError(
+        'Employee references fullName is required.',
+      );
+    } else if (employeeReferenceEmail === '') {
+      setEmployeeReferenceEmailError(
+        'Employee references email Address is required.',
+      );
+    } else if (!validateResetEmail(employeeReferenceEmail)) {
+      setEmployeeReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.b',
+      );
+    } else {
+      addEmployeeReferences();
     }
   };
   // render item
@@ -680,6 +854,7 @@ const RentalOffer = props => {
       </View>
     );
   };
+
   const addOccupantRender = ({item, index}) => {
     return (
       <View style={RentalOfferStyle.occupants_item_View}>
@@ -805,6 +980,50 @@ const RentalOffer = props => {
                     onPress: () => {
                       console.log('Remove');
                       removeReferenceItem(index);
+                    },
+                  },
+                ],
+              );
+            }}
+          />
+        </View>
+      </View>
+    );
+  };
+  const addEmployeeReferencesRender = ({item, index}) => {
+    return (
+      <View style={RentalOfferStyle.occupants_item_View}>
+        <View>
+          <Text style={RentalOfferStyle.occupants_name}>
+            {item?.employeeReferenceFullName}
+          </Text>
+          <Text style={RentalOfferStyle.occupants_email}>
+            {item?.employeeReferenceEmail}
+          </Text>
+        </View>
+        <View style={{marginHorizontal: 5}}>
+          <CustomSingleButton
+            _ButtonText={'Remove'}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            borderColor={_COLORS.Kodie_GrayColor}
+            height={35}
+            width={90}
+            marginTop={0}
+            onPress={() => {
+              Alert.alert(
+                'Remove person?',
+                'This person will be permanently removed from the application.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Remove',
+                    onPress: () => {
+                      console.log('Remove');
+                      EmployeeRemoveReferenceItem(index);
                     },
                   },
                 ],
@@ -1119,8 +1338,31 @@ const RentalOffer = props => {
       console.log('referencesItem...', referencesItem);
       setReferenceFullName('');
       setReferenceEmail('');
+      setToggleReference(false);
     }
   };
+  const addEmployeeReferences = () => {
+    if (employeeReferenceFullName && employeeReferenceEmail) {
+      const newReferences = {
+        employeeReferenceFullName,
+        employeeReferenceEmail, // Corrected key to employeeReferenceEmail
+      };
+
+      // Ensure you are spreading the correct state variable
+      setEmployeeReferencesItem(prevReferences => [
+        ...prevReferences,
+        newReferences,
+      ]);
+
+      console.log('referencesItem...', [...referencesItem, newReferences]); // Log the updated references
+
+      // Reset input fields
+      setEmployeeReferenceFullName('');
+      setEmployeeReferenceEmail('');
+      setToggleEmployeeReference(false);
+    }
+  };
+
   const removeOccupant = index => {
     const updatedOccupants = occupants.filter((_, i) => i !== index);
     setOccupants(updatedOccupants);
@@ -1133,6 +1375,12 @@ const RentalOffer = props => {
     const updatedReferences = referencesItem.filter((_, i) => i !== index);
     setReferencesItem(updatedReferences);
   };
+  const EmployeeRemoveReferenceItem = index => {
+    const updatedEmployeeReferences = employeeReferencesItem.filter(
+      (_, i) => i !== index,
+    );
+    setEmployeeReferencesItem(updatedEmployeeReferences);
+  };
   // Api intrigation....
   const handleTenantQues = () => {
     const url = Config.BASE_URL;
@@ -1143,7 +1391,7 @@ const RentalOffer = props => {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-    console.log("tenant_ques payload..",tenantQuesData);
+    console.log('tenant_ques payload..', tenantQuesData);
     axios
       .post(tenantQues_url, tenantQuesData)
       .then(response => {
@@ -1285,11 +1533,214 @@ const RentalOffer = props => {
     }));
   };
 
+  // const handleSubmit = () => {
+  //   const jsonData = [];
+  //   console.log('quesHeading:', quesHeading);
+  //   console.log('subChildren:', subChildren);
+
+  //   // Create a mapping of questionCode to id from quesHeading and subChildren
+  //   const questionCodeToId = {};
+  //   quesHeading.forEach(parentQuestion => {
+  //     parentQuestion.children.forEach(childQuestion => {
+  //       questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
+  //     });
+  //   });
+  //   subChildren.forEach(subChild => {
+  //     questionCodeToId[subChild.tqm_Question_code] = subChild.id;
+  //   });
+
+  //   // Use a Set to track processed question codes to prevent duplicates
+  //   const processedQuestionCodes = new Set();
+
+  //   // Process main questions
+  //   quesHeading.forEach(parentQuestion => {
+  //     parentQuestion.children.forEach(childQuestion => {
+  //       const questionValue = inputValues[childQuestion.tqm_Question_code];
+  //       if (
+  //         questionValue !== undefined &&
+  //         questionValue !== null &&
+  //         questionValue !== '' && // Check if value is not empty
+  //         !processedQuestionCodes.has(childQuestion.tqm_Question_code)
+  //       ) {
+  //         jsonData.push({
+  //           question_id: childQuestion.id,
+  //           question_value: questionValue,
+  //           question_reference:
+  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+  //           question_is_lookup:
+  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+  //         });
+  //         processedQuestionCodes.add(childQuestion.tqm_Question_code);
+  //       }
+  //     });
+  //   });
+  //   // Add Yes/No button values to jsonData
+  //   const yesNoButtonValues = {
+  //     EARN_INCOME: selectedButton, // EARN_INCOME question code
+  //     EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
+  //     EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
+  //     ANY_PETS: selectedPetsButton, // ANY_PETS question code
+  //   };
+
+  //   Object.keys(yesNoButtonValues).forEach(questionCode => {
+  //     const questionId = questionCodeToId[questionCode];
+  //     const isYesSelected = yesNoButtonValues[questionCode];
+
+  //     // Set value based on selection
+  //     const value =
+  //       isYesSelected === undefined || isYesSelected === null
+  //         ? 1
+  //         : isYesSelected
+  //         ? 0
+  //         : 1;
+
+  //     if (
+  //       questionId !== undefined &&
+  //       !processedQuestionCodes.has(questionCode)
+  //     ) {
+  //       jsonData.push({
+  //         question_id: questionId,
+  //         question_value: value,
+  //         question_reference: 0,
+  //         question_is_lookup: 0,
+  //       });
+  //       processedQuestionCodes.add(questionCode);
+  //     }
+  //   });
+  //   // Add smoking button value to jsonData
+  //   const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
+  //   const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
+  //   if (
+  //     smokingQuestionId !== undefined &&
+  //     smokingValue !== null &&
+  //     smokingValue !== undefined &&
+  //     !processedQuestionCodes.has('S/NS')
+  //   ) {
+  //     jsonData.push({
+  //       question_id: smokingQuestionId,
+  //       question_value: smokingValue,
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //     processedQuestionCodes.add('S/NS');
+  //   }
+
+  //   // Add 'Number of pets' value to jsonData
+  //   console.log('petsSubChildren:', petsSubChildren);
+  //   const numberOfPetsQuestion = petsSubChildren.find(
+  //     subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
+  //   );
+  //   console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
+  //   const petsQuestionId = numberOfPetsQuestion?.id;
+  //   console.log('petsQuestionId:', petsQuestionId); // Debugging step
+  //   console.log('numberPets:', numberPets); // Debugging step
+  //   if (
+  //     petsQuestionId !== undefined &&
+  //     numberPets !== null &&
+  //     numberPets !== undefined &&
+  //     !processedQuestionCodes.has('NUMBER_OF_PETS')
+  //   ) {
+  //     console.log('Adding number of pets to jsonData:', {
+  //       question_id: petsQuestionId,
+  //       question_value: numberPets,
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //     jsonData.push({
+  //       question_id: petsQuestionId,
+  //       question_value: numberPets,
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //     processedQuestionCodes.add('NUMBER_OF_PETS');
+  //   }
+
+  //   // Add location data if available
+  //   const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
+  //   if (locationQuestionId !== undefined && location) {
+  //     const existingLocationIndex = jsonData.findIndex(
+  //       item => item.question_id === locationQuestionId,
+  //     );
+  //     if (existingLocationIndex !== -1) {
+  //       // Update existing location value
+  //       jsonData[existingLocationIndex].question_value = location;
+  //     } else {
+  //       // Add new location value
+  //       console.log('Adding location data:', {
+  //         question_id: locationQuestionId,
+  //         question_value: location,
+  //         question_reference: 0,
+  //         question_is_lookup: 0,
+  //       });
+  //       jsonData.push({
+  //         question_id: locationQuestionId,
+  //         question_value: location,
+  //         question_reference: 0,
+  //         question_is_lookup: 0,
+  //       });
+  //     }
+  //     processedQuestionCodes.add('PREVIOUS_ADDRESS');
+  //   }
+
+  //   // Group occupants by their question_id
+  //   const occupantGroups = groupBy(occupants, 'questionId');
+  //   console.log('occupantGroups...', occupantGroups);
+  //   // Add grouped occupants data to jsonData
+  //   addGroupedDataToJsonData(jsonData, occupantGroups);
+
+  //   // Group leaseholders by their question_id
+  //   const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+  //   console.log('leaseHolderGroups...', leaseHolderGroups);
+  //   // Add grouped leaseholders data to jsonData
+  //   addGroupedDataToJsonData(
+  //     jsonData,
+  //     leaseHolderGroups,
+  //     'leaseFullName',
+  //     'leaseEmailAddress',
+  //     'leaseConfirmEmailAddress',
+  //   );
+
+  //   // Add reference items to jsonData
+  //   referencesItem.forEach((reference, index) => {
+  //     jsonData.push({
+  //       question_id: 34, // Custom question_id for references
+  //       question_value: {
+  //         fullName: reference.referenceFullName,
+  //         email: reference.referenceEmail,
+  //       },
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //   });
+
+  //   // Add employee reference items to jsonData
+  //   employeeReferencesItem.forEach((employeeReference, index) => {
+  //     jsonData.push({
+  //       question_id: 33, // Custom question_id for employee references
+  //       question_value: {
+  //         fullName: employeeReference.employeeReferenceFullName,
+  //         email: employeeReference.employeeReferenceEmail,
+  //       },
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //   });
+  //   const finalJson = {
+  //     json_data: jsonData,
+  //   };
+
+  //   console.log('Final JSON:', JSON.stringify(finalJson));
+  //   saveAllJson(finalJson);
+  //   edit_offer == 'edit_offer' ? null : saveBiddingDetails();
+  //   // resetDynamicFields();
+  // };
+
+
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-
+  
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -1300,10 +1751,10 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-
+  
     // Use a Set to track processed question codes to prevent duplicates
     const processedQuestionCodes = new Set();
-
+  
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
@@ -1326,6 +1777,7 @@ const RentalOffer = props => {
         }
       });
     });
+  
     // Add Yes/No button values to jsonData
     const yesNoButtonValues = {
       EARN_INCOME: selectedButton, // EARN_INCOME question code
@@ -1333,23 +1785,19 @@ const RentalOffer = props => {
       EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
       ANY_PETS: selectedPetsButton, // ANY_PETS question code
     };
-
+  
     Object.keys(yesNoButtonValues).forEach(questionCode => {
       const questionId = questionCodeToId[questionCode];
       const isYesSelected = yesNoButtonValues[questionCode];
-
-      // Set value based on selection
+  
       const value =
         isYesSelected === undefined || isYesSelected === null
           ? 1
           : isYesSelected
           ? 0
           : 1;
-
-      if (
-        questionId !== undefined &&
-        !processedQuestionCodes.has(questionCode)
-      ) {
+  
+      if (questionId !== undefined && !processedQuestionCodes.has(questionCode)) {
         jsonData.push({
           question_id: questionId,
           question_value: value,
@@ -1359,9 +1807,10 @@ const RentalOffer = props => {
         processedQuestionCodes.add(questionCode);
       }
     });
+  
     // Add smoking button value to jsonData
-    const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
-    const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
+    const smokingQuestionId = questionCodeToId['S/NS'];
+    const smokingValue = selectedSomokingButton ? 0 : 1;
     if (
       smokingQuestionId !== undefined &&
       smokingValue !== null &&
@@ -1376,28 +1825,18 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('S/NS');
     }
-
+  
     // Add 'Number of pets' value to jsonData
-    console.log('petsSubChildren:', petsSubChildren);
     const numberOfPetsQuestion = petsSubChildren.find(
-      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
+      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS'
     );
-    console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
     const petsQuestionId = numberOfPetsQuestion?.id;
-    console.log('petsQuestionId:', petsQuestionId); // Debugging step
-    console.log('numberPets:', numberPets); // Debugging step
     if (
       petsQuestionId !== undefined &&
       numberPets !== null &&
       numberPets !== undefined &&
       !processedQuestionCodes.has('NUMBER_OF_PETS')
     ) {
-      console.log('Adding number of pets to jsonData:', {
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
       jsonData.push({
         question_id: petsQuestionId,
         question_value: numberPets,
@@ -1406,24 +1845,16 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('NUMBER_OF_PETS');
     }
-
+  
     // Add location data if available
-    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
+    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS'];
     if (locationQuestionId !== undefined && location) {
       const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId,
+        item => item.question_id === locationQuestionId
       );
       if (existingLocationIndex !== -1) {
-        // Update existing location value
         jsonData[existingLocationIndex].question_value = location;
       } else {
-        // Add new location value
-        console.log('Adding location data:', {
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
         jsonData.push({
           question_id: locationQuestionId,
           question_value: location,
@@ -1433,35 +1864,51 @@ const RentalOffer = props => {
       }
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
-
-    // Group occupants by their question_id
+  
+    // Group occupants and leaseholders by question_id
     const occupantGroups = groupBy(occupants, 'questionId');
-    console.log('occupantGroups...', occupantGroups);
-    // Add grouped occupants data to jsonData
     addGroupedDataToJsonData(jsonData, occupantGroups);
-
-    // Group leaseholders by their question_id
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    console.log('leaseHolderGroups...', leaseHolderGroups);
-    // Add grouped leaseholders data to jsonData
-    addGroupedDataToJsonData(
-      jsonData,
-      leaseHolderGroups,
-      'leaseFullName',
-      'leaseEmailAddress',
-      'leaseConfirmEmailAddress',
-    );
-
+    addGroupedDataToJsonData(jsonData, leaseHolderGroups, 'leaseFullName', 'leaseEmailAddress', 'leaseConfirmEmailAddress');
+  
+    // Add references and employee references as arrays (ensure uniqueness)
+    const referenceIds = { 34: [], 33: [] };
+  
+    referencesItem.forEach(reference => {
+      referenceIds[34].push({
+        fullName: reference.referenceFullName,
+        email: reference.referenceEmail,
+      });
+    });
+  
+    employeeReferencesItem.forEach(employeeReference => {
+      referenceIds[33].push({
+        fullName: employeeReference.employeeReferenceFullName,
+        email: employeeReference.employeeReferenceEmail,
+      });
+    });
+  
+    // Push references once for each ID
+    Object.keys(referenceIds).forEach(questionId => {
+      if (referenceIds[questionId].length > 0) {
+        jsonData.push({
+          question_id: Number(questionId),
+          question_value: referenceIds[questionId],
+          question_reference: 0,
+          question_is_lookup: 0,
+        });
+      }
+    });
+  
     const finalJson = {
       json_data: jsonData,
     };
-
+  
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
-    edit_offer == 'edit_offer' ? null : saveBiddingDetails();
-    // resetDynamicFields();
+    edit_offer === 'edit_offer' ? null : saveBiddingDetails();
   };
-
+  
   const resetDynamicFields = () => {
     Object.keys(inputValues).forEach(key => {
       inputValues[key] = '';
@@ -1731,6 +2178,162 @@ const RentalOffer = props => {
             />
           </View>
         );
+      case 'Form':
+        if (question.id == 33) {
+          return (
+            <View style={RentalOfferStyle.AddOccupantMainView}>
+              <TouchableOpacity
+                style={RentalOfferStyle.AddOccupantView}
+                onPress={() =>
+                  setToggleEmployeeReference(!toggleEmployeeReference)
+                }>
+                <Entypo
+                  name={
+                    toggleEmployeeReference
+                      ? 'chevron-small-up'
+                      : 'chevron-small-down'
+                  }
+                  color={_COLORS.Kodie_BlackColor}
+                  size={25}
+                />
+                <Text style={RentalOfferStyle.AddOccupantText}>
+                  {'Add rental references'}
+                </Text>
+              </TouchableOpacity>
+
+              <FlatList
+                data={employeeReferencesItem}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={addEmployeeReferencesRender}
+              />
+
+              {toggleEmployeeReference && (
+                <View style={RentalOfferStyle.inputView}>
+                  <View style={{marginTop: 11}}>
+                    <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter full name'}
+                      onChangeText={setEmployeeReferenceFullName}
+                      value={employeeReferenceFullName}
+                      onBlur={() =>
+                        validEmployeeReferenceFullName(
+                          employeeReferenceFullName,
+                        )
+                      }
+                    />
+                  </View>
+                  {employeereferenceFullNameError && (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {employeereferenceFullNameError}
+                    </Text>
+                  )}
+
+                  <View style={RentalOfferStyle.inputView}>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {'Email address'}
+                    </Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter email address'}
+                      onChangeText={setEmployeeReferenceEmail}
+                      value={employeeReferenceEmail}
+                      onBlur={() =>
+                        validEmployeeReferencesEmailAddress(
+                          employeeReferenceEmail,
+                        )
+                      }
+                      keyboardType="email-address"
+                    />
+                  </View>
+                  {employeeReferenceEmailError && (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {employeeReferenceEmailError}
+                    </Text>
+                  )}
+
+                  <CustomSingleButton
+                    _ButtonText={'Add reference'}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    disabled={isLoading}
+                    onPress={handleEmployeeReferences}
+                  />
+                </View>
+              )}
+            </View>
+          );
+        } else {
+          return (
+            <View style={RentalOfferStyle.AddOccupantMainView}>
+              <TouchableOpacity
+                style={RentalOfferStyle.AddOccupantView}
+                onPress={() => {
+                  setToggleReference(!toggleReference);
+                }}>
+                <Entypo
+                  name={
+                    toggleReference ? 'chevron-small-up' : 'chevron-small-down'
+                  }
+                  color={_COLORS.Kodie_BlackColor}
+                  size={25}
+                />
+                <Text style={RentalOfferStyle.AddOccupantText}>
+                  {'Add rental references'}
+                </Text>
+              </TouchableOpacity>
+              <FlatList
+                data={referencesItem}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={addReferencesRender}
+              />
+              {toggleReference && (
+                <View style={RentalOfferStyle.inputView}>
+                  <View style={{marginTop: 11}}>
+                    <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter full name'}
+                      onChangeText={setReferenceFullName}
+                      value={referenceFullName}
+                      onBlur={() => validReferenceFullName(referenceFullName)}
+                    />
+                  </View>
+                  {referenceFullNameError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceFullNameError}
+                    </Text>
+                  ) : null}
+                  <View style={RentalOfferStyle.inputView}>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {'Email address'}
+                    </Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter email address'}
+                      onChangeText={setReferenceEmail}
+                      value={referenceEmail}
+                      onBlur={() => validReferencesEmailAddress(referenceEmail)}
+                      keyboardType="email-address"
+                    />
+                  </View>
+                  {referenceEmailError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceEmailError}
+                    </Text>
+                  ) : null}
+                  <CustomSingleButton
+                    _ButtonText={'Add reference'}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    disabled={isLoading ? true : false}
+                    onPress={() => {
+                      handleReferences();
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          );
+        }
       case 'Occupant_Count':
         return (
           <View>
@@ -1952,7 +2555,7 @@ const RentalOffer = props => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={RentalOfferStyle.AddOccupantMainView}>
+            {/* <View style={RentalOfferStyle.AddOccupantMainView}>
               <TouchableOpacity
                 style={RentalOfferStyle.AddOccupantView}
                 onPress={() => {
@@ -2019,7 +2622,7 @@ const RentalOffer = props => {
                   />
                 </View>
               )}
-            </View>
+            </View> */}
           </View>
         );
       default:
@@ -2058,8 +2661,7 @@ const RentalOffer = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
-
+            iscancel={() => setIsMap(false)}
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
@@ -2287,7 +2889,9 @@ const RentalOffer = props => {
               }}
               leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
               LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-              RightButtonText={edit_offer == 'edit_offer' ?"Edit offer":"Submit"}
+              RightButtonText={
+                edit_offer == 'edit_offer' ? 'Edit offer' : 'Submit'
+              }
               RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
               RightButtonTextColor={_COLORS.Kodie_WhiteColor}
               onPressRightButton={() => {

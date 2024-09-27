@@ -5,7 +5,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     flex: 1,
   },
   rowButtonView: {
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
   },
   subContainer: {
     flex: 1,
@@ -92,9 +92,11 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     borderRadius: 15,
     marginLeft: '10%',
     paddingBottom: 3,
+    width:150,
+    paddingHorizontal:5
   },
   buttonText: {
-    fontSize: 12,
+    fontSize: 10,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
