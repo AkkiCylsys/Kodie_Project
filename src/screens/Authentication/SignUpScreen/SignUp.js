@@ -23,6 +23,7 @@ import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveL
 import messaging from '@react-native-firebase/messaging';
 import { encryptPassword, signup } from '../../../services/Authentication/Authentication';
 import {SignUpStyles} from "./SignUpStyle"
+import DeviceInfo from 'react-native-device-info';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const SignUp = (props) => {
   const [email, setEmail] = useState('');
@@ -35,6 +36,9 @@ const SignUp = (props) => {
   const [Fcm_token, setFcm_token] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [googleSignIn, setGoogleSignIn] = useState([]);
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
+  console.log(deviceId,deviceType);
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -111,7 +115,7 @@ const SignUp = (props) => {
   const validateSignUpEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    return emailPattern.test(email);
+    return emailPattern.test(email.trim());
   };
 
   const handleSignUpEmail = (text) => {
@@ -131,6 +135,8 @@ const SignUp = (props) => {
     setPassword(text);
     if (text.trim() === '') {
       setPasswordError('Password is required!');
+    } else if (text.length < 8) {
+      setPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setPasswordError('');
     }
@@ -233,22 +239,24 @@ const SignUp = (props) => {
 
   const handleSignup = async () => {
     setIsLoading(true);
-
+    const trimmedEmail = email.trim();
     try {
       const encStr = await encryptPassword(password);
       const SignUpData = {
-        email: email,
+        email: trimmedEmail,
         password: encStr,
         is_term_condition: term,
         is_privacy_policy: privacy,
         fcm_token: Fcm_token,
+        device_id:deviceId,
+        device_os_type:deviceType
       };
 console.log(SignUpData);
       const response = await signup(SignUpData);
       if (response?.code === 3) {
         Alert.alert('Success', response?.message);
         props.navigation.navigate('SignUpVerification', {
-          email: email,
+          email: trimmedEmail,
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
@@ -261,7 +269,7 @@ console.log(SignUpData);
         // setTerm(false);
         // setPrivacy(false);
         props.navigation.navigate('SignUpVerification', {
-          email: email,
+          email: trimmedEmail,
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
@@ -327,11 +335,11 @@ console.log(SignUpData);
                   },
                 ]}
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={handleSignUpEmail}
                 onBlur={() => handleSignUpEmail(email)}
                 placeholder="Enter your email address"
                 placeholderTextColor="#999"
-                maxLength={30}
+                // maxLength={30}
                 autoCapitalize={'none'}
                 keyboardType="email-address"
               />
@@ -357,7 +365,7 @@ console.log(SignUpData);
                 <TextInput
                   style={SignUpStyles.passwordInput}
                   value={password}
-                  onChangeText={setPassword}
+                  onChangeText={handleSignUpPassword}
                   onBlur={() => handleSignUpPassword(password)}
                   placeholder="Enter your password"
                   placeholderTextColor="#999"

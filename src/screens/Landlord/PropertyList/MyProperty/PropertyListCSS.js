@@ -182,18 +182,20 @@ export const PropertyListCSS = StyleSheet.create({
     // backgroundColor: 'transparent',
   },
   actionButton: {
-    // padding: 10,
+    // padding: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '29%',
+  //  paddingHorizontal:'5%',
     height: '100%',
     marginBottom: 10,
   },
   archiveButton: {
     backgroundColor: _COLORS.Kodie_GreenColor,
+    padding: 12,
   },
   moreButton: {
-    backgroundColor: _COLORS.Kodie_GrayColor, // Blue color for the "More" button
+    backgroundColor: _COLORS.Kodie_GrayColor, 
+   padding: 18,// Blue color for the "More" button
   },
   actionText: {
     color: 'white',

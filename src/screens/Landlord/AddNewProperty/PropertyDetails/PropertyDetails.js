@@ -719,6 +719,7 @@ export default PropertyDetails = props => {
                     setPropertyError('');
                   }}
                   renderItem={propertyType_render}
+                  iconColor={_COLORS?.Kodie_BlackColor}
                 />
                 {propertyError ? (
                   <Text style={PropertyDetailsStyle.errorText}>
