@@ -264,211 +264,6 @@ const RentalOffer = props => {
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
 
-  // const getEditAllQuestion = async () => {
-  //   const url = Config.BASE_URL;
-  //   const Ques_url = url + 'question_details_for_tenant_ques';
-  //   console.log('Request URL:', Ques_url);
-  //   setIsLoading(true);
-
-  //   const QuesData = {
-  //     p_account_id: loginData?.Login_details?.user_account_id,
-  //     p_property_id: propertyId,
-  //   };
-
-  //   console.log('QuesData in edit offer..', QuesData);
-
-  //   try {
-  //     const response = await axios.post(Ques_url, QuesData);
-  //     console.log('Response edit question..', response?.data);
-
-  //     if (response?.data?.success === true) {
-  //       const data = response?.data?.data?.[0]?.parent_json;
-
-  //       if (Array.isArray(data)) {
-  //         const initialValues = {};
-  //         const dropdownQuestions = [];
-  //         let occupants = [];
-  //         let leaseHolders = [];
-  //         let employeeReferences = [];
-  //         let rentalReferences = [];
-
-  //         data.forEach(parentQuestion => {
-  //           if (Array.isArray(parentQuestion.children)) {
-  //             parentQuestion.children.forEach(childQuestion => {
-  //               if (Array.isArray(childQuestion.sub_children)) {
-  //                 childQuestion.sub_children.forEach(subChildQuestion => {
-  //                   // Parsing Occupants
-  //                   if (
-  //                     subChildQuestion.tqm_Question_description?.trim() ===
-  //                     'Add Occupant'
-  //                   ) {
-  //                     console.log("Found 'Add Occupant' question");
-  //                     try {
-  //                       const parsedOccupants = JSON.parse(
-  //                         subChildQuestion.tqm_Question_value || '[]',
-  //                       );
-  //                       if (Array.isArray(parsedOccupants)) {
-  //                         occupants = parsedOccupants;
-  //                         console.log(
-  //                           'Occupant data parsed successfully:',
-  //                           occupants,
-  //                         );
-  //                       }
-  //                     } catch (e) {
-  //                       console.error('Error parsing occupants:', e);
-  //                     }
-  //                   }
-
-  //                   // Parsing Leaseholders
-  //                   if (
-  //                     subChildQuestion.tqm_Question_description?.trim() ===
-  //                     'Add leaseholders'
-  //                   ) {
-  //                     console.log("Found 'Add leaseholders' question");
-  //                     try {
-  //                       const parsedLeaseHolders = JSON.parse(
-  //                         subChildQuestion.tqm_Question_value || '[]',
-  //                       );
-  //                       if (Array.isArray(parsedLeaseHolders)) {
-  //                         leaseHolders = parsedLeaseHolders;
-  //                         console.log(
-  //                           'Leaseholder data parsed successfully:',
-  //                           leaseHolders,
-  //                         );
-  //                       }
-  //                     } catch (e) {
-  //                       console.error('Error parsing leaseholders:', e);
-  //                     }
-  //                   }
-
-  //                   // Parsing Employee References
-  //                   if (
-  //                     subChildQuestion.tqm_Question_description?.trim() ===
-  //                     'Add employee reference'
-  //                   ) {
-  //                     console.log("subChildQuestion.tqm_Question_description?.trim()...",subChildQuestion.tqm_Question_description?.trim());
-  //                     console.log("Found 'Add employee reference' question");
-  //                     try {
-  //                       const parsedEmployeeReferences = JSON.parse(
-  //                         subChildQuestion.tqm_Question_value || '[]',
-  //                       );
-  //                       if (Array.isArray(parsedEmployeeReferences)) {
-  //                         employeeReferences = parsedEmployeeReferences;
-  //                         console.log(
-  //                           'Employee reference data parsed successfully:',
-  //                           employeeReferences,
-  //                         );
-  //                       }
-  //                     } catch (e) {
-  //                       console.error('Error parsing employee references:', e);
-  //                     }
-  //                   }
-
-  //                   // Parsing Rental References
-  //                   if (
-  //                     subChildQuestion.tqm_Question_description?.trim() ===
-  //                     'Add rental reference'
-  //                   ) {
-  //                     console.log("Found 'Add rental reference' question");
-  //                     try {
-  //                       const parsedRentalReferences = JSON.parse(
-  //                         subChildQuestion.tqm_Question_value || '[]',
-  //                       );
-  //                       if (Array.isArray(parsedRentalReferences)) {
-  //                         rentalReferences = parsedRentalReferences;
-  //                         console.log(
-  //                           'Rental reference data parsed successfully:',
-  //                           rentalReferences,
-  //                         );
-  //                       }
-  //                     } catch (e) {
-  //                       console.error('Error parsing rental references:', e);
-  //                     }
-  //                   }
-  //                 });
-  //               }
-
-  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
-  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
-  //               }
-
-  //               if (childQuestion.tqm_Question_type === 'Yes_no') {
-  //                 setButtonState(
-  //                   childQuestion.tqm_Question_code,
-  //                   childQuestion.tqm_Question_value,
-  //                 );
-  //               }
-
-  //               if (
-  //                 childQuestion.tqm_Question_value !== undefined &&
-  //                 childQuestion.tqm_Question_value !== null
-  //               ) {
-  //                 initialValues[childQuestion.tqm_Question_code] =
-  //                   childQuestion.tqm_Question_value;
-  //               }
-  //             });
-  //           }
-  //         });
-
-  //         // Set occupants, leaseholders, employee references, and rental references
-  //         setOccupants(occupants);
-  //         setLeaseHolderItem(leaseHolders);
-  //         setEmployeeReferences(employeeReferences);
-  //         setRentalReferences(rentalReferences);
-
-  //         // Update the counts if needed
-  //         setNumberOccupants(occupants.length);
-  //         setNumberLeaseHolder(leaseHolders.length);
-  //         console.log('Occupants in edit mode...', occupants);
-  //         console.log('Leaseholder item in edit mode...', leaseHolders);
-  //         console.log(
-  //           'Employee references in edit mode...',
-  //           employeeReferences,
-  //         );
-  //         console.log('Rental references in edit mode...', rentalReferences);
-
-  //         // Fetch dropdown data and set initial values
-  //         const dropdownDataPromises = dropdownQuestions.map(
-  //           async questionCode => {
-  //             const options = await handleDropdown(questionCode);
-  //             setDropdownData(prevData => ({
-  //               ...prevData,
-  //               [questionCode]: options,
-  //             }));
-
-  //             const value = initialValues[questionCode];
-  //             if (value) {
-  //               const selectedOption = options.find(
-  //                 option => String(option.lookup_key) === String(value),
-  //               );
-  //               if (selectedOption) {
-  //                 initialValues[questionCode] = selectedOption.lookup_key;
-  //               }
-  //             }
-  //           },
-  //         );
-
-  //         await Promise.all(dropdownDataPromises);
-
-  //         setInputValues(initialValues);
-  //         if (initialValues['PREVIOUS_ADDRESS']) {
-  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
-  //         }
-
-  //         console.log('Response data in edit mode...', JSON.stringify(data));
-  //       } else {
-  //         console.error(
-  //           'Invalid data structure: parent_json is not an array',
-  //           data,
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed EdittenantQues', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
@@ -1000,7 +795,7 @@ const RentalOffer = props => {
             {item?.fullName ? item?.fullName : item?.referenceFullName}
           </Text>
           <Text style={RentalOfferStyle.occupants_email}>
-            { item?.email ? item?.email :item?.referenceEmail}
+            {item?.email ? item?.email : item?.referenceEmail}
           </Text>
         </View>
         <View style={{marginHorizontal: 5}}>
@@ -1620,6 +1415,7 @@ const RentalOffer = props => {
   //       }
   //     });
   //   });
+
   //   // Add Yes/No button values to jsonData
   //   const yesNoButtonValues = {
   //     EARN_INCOME: selectedButton, // EARN_INCOME question code
@@ -1632,7 +1428,6 @@ const RentalOffer = props => {
   //     const questionId = questionCodeToId[questionCode];
   //     const isYesSelected = yesNoButtonValues[questionCode];
 
-  //     // Set value based on selection
   //     const value =
   //       isYesSelected === undefined || isYesSelected === null
   //         ? 1
@@ -1653,9 +1448,10 @@ const RentalOffer = props => {
   //       processedQuestionCodes.add(questionCode);
   //     }
   //   });
+
   //   // Add smoking button value to jsonData
-  //   const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
-  //   const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
+  //   const smokingQuestionId = questionCodeToId['S/NS'];
+  //   const smokingValue = selectedSomokingButton ? 0 : 1;
   //   if (
   //     smokingQuestionId !== undefined &&
   //     smokingValue !== null &&
@@ -1672,26 +1468,16 @@ const RentalOffer = props => {
   //   }
 
   //   // Add 'Number of pets' value to jsonData
-  //   console.log('petsSubChildren:', petsSubChildren);
   //   const numberOfPetsQuestion = petsSubChildren.find(
   //     subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
   //   );
-  //   console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
   //   const petsQuestionId = numberOfPetsQuestion?.id;
-  //   console.log('petsQuestionId:', petsQuestionId); // Debugging step
-  //   console.log('numberPets:', numberPets); // Debugging step
   //   if (
   //     petsQuestionId !== undefined &&
   //     numberPets !== null &&
   //     numberPets !== undefined &&
   //     !processedQuestionCodes.has('NUMBER_OF_PETS')
   //   ) {
-  //     console.log('Adding number of pets to jsonData:', {
-  //       question_id: petsQuestionId,
-  //       question_value: numberPets,
-  //       question_reference: 0,
-  //       question_is_lookup: 0,
-  //     });
   //     jsonData.push({
   //       question_id: petsQuestionId,
   //       question_value: numberPets,
@@ -1702,22 +1488,14 @@ const RentalOffer = props => {
   //   }
 
   //   // Add location data if available
-  //   const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
+  //   const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS'];
   //   if (locationQuestionId !== undefined && location) {
   //     const existingLocationIndex = jsonData.findIndex(
   //       item => item.question_id === locationQuestionId,
   //     );
   //     if (existingLocationIndex !== -1) {
-  //       // Update existing location value
   //       jsonData[existingLocationIndex].question_value = location;
   //     } else {
-  //       // Add new location value
-  //       console.log('Adding location data:', {
-  //         question_id: locationQuestionId,
-  //         question_value: location,
-  //         question_reference: 0,
-  //         question_is_lookup: 0,
-  //       });
   //       jsonData.push({
   //         question_id: locationQuestionId,
   //         question_value: location,
@@ -1728,57 +1506,80 @@ const RentalOffer = props => {
   //     processedQuestionCodes.add('PREVIOUS_ADDRESS');
   //   }
 
-  //   // Group occupants by their question_id
-  //   const occupantGroups = groupBy(occupants, 'questionId');
-  //   console.log('occupantGroups...', occupantGroups);
-  //   // Add grouped occupants data to jsonData
-  //   addGroupedDataToJsonData(jsonData, occupantGroups);
+  //   // Group occupants and leaseholders by question_id
+  //   // const occupantGroups = groupBy(occupants, 'questionId');
+  //   // addGroupedDataToJsonData(jsonData, occupantGroups);
+  //   // const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+  //   // addGroupedDataToJsonData(
+  //   //   jsonData,
+  //   //   leaseHolderGroups,
+  //   //   'leaseFullName',
+  //   //   'leaseEmailAddress',
+  //   //   'leaseConfirmEmailAddress',
+  //   // );
 
-  //   // Group leaseholders by their question_id
+  //   const occupantGroups = groupBy(occupants, 'questionId');
+  //   // Pass the static ID 28 for occupants
+  //   addGroupedDataToJsonData(
+  //     jsonData,
+  //     occupantGroups,
+  //     'fullName',
+  //     'emailAddress',
+  //     null,
+  //     28,
+  //   );
+
   //   const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-  //   console.log('leaseHolderGroups...', leaseHolderGroups);
-  //   // Add grouped leaseholders data to jsonData
+  //   // Pass the static ID 30 for leaseholders
   //   addGroupedDataToJsonData(
   //     jsonData,
   //     leaseHolderGroups,
   //     'leaseFullName',
   //     'leaseEmailAddress',
   //     'leaseConfirmEmailAddress',
+  //     30,
   //   );
 
-  //   // Add reference items to jsonData
-  //   referencesItem.forEach((reference, index) => {
-  //     jsonData.push({
-  //       question_id: 34, // Custom question_id for references
-  //       question_value: {
-  //         fullName: reference.referenceFullName,
-  //         email: reference.referenceEmail,
-  //       },
-  //       question_reference: 0,
-  //       question_is_lookup: 0,
+  //   // Add references and employee references as arrays (ensure uniqueness)
+  //   const referenceIds = {34: [], 33: []};
+
+  //   referencesItem.forEach(reference => {
+  //     referenceIds[34].push({
+  //       fullName: reference.referenceFullName,
+  //       email: reference.referenceEmail,
   //     });
   //   });
 
-  //   // Add employee reference items to jsonData
-  //   employeeReferencesItem.forEach((employeeReference, index) => {
-  //     jsonData.push({
-  //       question_id: 33, // Custom question_id for employee references
-  //       question_value: {
-  //         fullName: employeeReference.employeeReferenceFullName,
-  //         email: employeeReference.employeeReferenceEmail,
-  //       },
-  //       question_reference: 0,
-  //       question_is_lookup: 0,
+  //   employeeReferencesItem.forEach(employeeReference => {
+  //     referenceIds[33].push({
+  //       fullName: employeeReference.employeeReferenceFullName,
+  //       email: employeeReference.employeeReferenceEmail,
   //     });
   //   });
+
+  //   // Prevent duplicate data for 33 and 34
+  //   Object.keys(referenceIds).forEach(questionId => {
+  //     const idAsNumber = Number(questionId);
+  //     if (
+  //       referenceIds[idAsNumber].length > 0 &&
+  //       !jsonData.find(item => item.question_id === idAsNumber)
+  //     ) {
+  //       jsonData.push({
+  //         question_id: idAsNumber,
+  //         question_value: referenceIds[idAsNumber],
+  //         question_reference: 0,
+  //         question_is_lookup: 0,
+  //       });
+  //     }
+  //   });
+
   //   const finalJson = {
   //     json_data: jsonData,
   //   };
 
   //   console.log('Final JSON:', JSON.stringify(finalJson));
   //   saveAllJson(finalJson);
-  //   edit_offer == 'edit_offer' ? null : saveBiddingDetails();
-  //   // resetDynamicFields();
+  //   edit_offer === 'edit_offer' ? null : saveBiddingDetails();
   // };
 
   const handleSubmit = () => {
@@ -1914,40 +1715,90 @@ const RentalOffer = props => {
     }
 
     // Group occupants and leaseholders by question_id
+    // const occupantGroups = groupBy(occupants, 'questionId');
+    // addGroupedDataToJsonData(jsonData, occupantGroups);
+    // const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+    // addGroupedDataToJsonData(
+    //   jsonData,
+    //   leaseHolderGroups,
+    //   'leaseFullName',
+    //   'leaseEmailAddress',
+    //   'leaseConfirmEmailAddress',
+    // );
+
     const occupantGroups = groupBy(occupants, 'questionId');
-    addGroupedDataToJsonData(jsonData, occupantGroups);
+    // Pass the static ID 28 for occupants
+    addGroupedDataToJsonData(
+      jsonData,
+      occupantGroups,
+      'fullName',
+      'emailAddress',
+      null,
+      28,
+    );
+
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+    // Pass the static ID 30 for leaseholders
     addGroupedDataToJsonData(
       jsonData,
       leaseHolderGroups,
       'leaseFullName',
       'leaseEmailAddress',
       'leaseConfirmEmailAddress',
+      30,
     );
 
     // Add references and employee references as arrays (ensure uniqueness)
     const referenceIds = {34: [], 33: []};
 
     referencesItem.forEach(reference => {
+      // Push either the existing data or the newly added data
       referenceIds[34].push({
-        fullName: reference.referenceFullName,
-        email: reference.referenceEmail,
+        fullName: reference?.fullName
+          ? reference.fullName
+          : reference.referenceFullName,
+        email: reference?.email ? reference.email : reference.referenceEmail,
       });
+
+      // Add any additional data if necessary (e.g., new references)
+      if (reference.referenceFullName && reference.referenceEmail) {
+        referenceIds[34].push({
+          fullName: reference.referenceFullName, // Use the variable containing new fullName
+          email: reference.referenceEmail, // Use the variable containing new email
+        });
+      }
     });
 
     employeeReferencesItem.forEach(employeeReference => {
+      // Push either the existing data or the newly added data
       referenceIds[33].push({
-        fullName: employeeReference.employeeReferenceFullName,
-        email: employeeReference.employeeReferenceEmail,
+        fullName: employeeReference?.fullName
+          ? employeeReference.fullName
+          : employeeReference.employeeReferenceFullName,
+        email: employeeReference?.email
+          ? employeeReference.email
+          : employeeReference.employeeReferenceEmail,
       });
+
+      // Add any additional data if necessary (e.g., new employee references)
+      if (employeeReference.employeeReferenceFullName && employeeReference.employeeReferenceEmail) {
+        referenceIds[33].push({
+          fullName: employeeReference.employeeReferenceFullName, // Use the variable containing new fullName
+          email: employeeReference.employeeReferenceEmail, // Use the variable containing new email
+        });
+      }
     });
 
-    // Push references once for each ID
+    // Prevent duplicate data for 33 and 34
     Object.keys(referenceIds).forEach(questionId => {
-      if (referenceIds[questionId].length > 0) {
+      const idAsNumber = Number(questionId);
+      if (
+        referenceIds[idAsNumber].length > 0 &&
+        !jsonData.find(item => item.question_id === idAsNumber)
+      ) {
         jsonData.push({
-          question_id: Number(questionId),
-          question_value: referenceIds[questionId],
+          question_id: idAsNumber,
+          question_value: referenceIds[idAsNumber],
           question_reference: 0,
           question_is_lookup: 0,
         });
@@ -2075,12 +1926,43 @@ const RentalOffer = props => {
     }, {});
   };
 
+  // const addGroupedDataToJsonData = (
+  //   jsonData,
+  //   groups,
+  //   fullNameKey = 'fullName',
+  //   emailKey = 'emailAddress',
+  //   confirmEmailKey,
+  // ) => {
+  //   for (const questionId in groups) {
+  //     const groupData = groups[questionId].map(item => {
+  //       const data = {
+  //         fullName: item[fullNameKey],
+  //         emailAddress: item[emailKey],
+  //       };
+  //       if (confirmEmailKey) {
+  //         data.confirmEmailAddress = item[confirmEmailKey];
+  //       }
+  //       return data;
+  //     });
+
+  //     jsonData.push({
+  //       question_id: questionId,
+  //       question_value: JSON.stringify(groupData),
+  //       question_reference: 0,
+  //       question_is_lookup: 0,
+  //     });
+  //   }
+  // };
+
+  // ....buttons
+
   const addGroupedDataToJsonData = (
     jsonData,
     groups,
     fullNameKey = 'fullName',
     emailKey = 'emailAddress',
     confirmEmailKey,
+    staticQuestionId, // Add static questionId parameter
   ) => {
     for (const questionId in groups) {
       const groupData = groups[questionId].map(item => {
@@ -2094,17 +1976,15 @@ const RentalOffer = props => {
         return data;
       });
 
+      // Use the staticQuestionId if provided, else fallback to dynamic questionId
       jsonData.push({
-        question_id: questionId,
+        question_id: staticQuestionId ? staticQuestionId : questionId,
         question_value: JSON.stringify(groupData),
         question_reference: 0,
         question_is_lookup: 0,
       });
     }
   };
-
-  // ....buttons
-
   const renderYesNoButton = (question, isYesSelected, setSelectedState) => (
     <RowButtons
       LeftButtonText={'Yes'}
