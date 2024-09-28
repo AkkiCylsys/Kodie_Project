@@ -200,45 +200,43 @@ const RentalOffer = props => {
     }
   };
 
-
-  const increaseNumberYearEmp = (questionCode) => {
+  const increaseNumberYearEmp = questionCode => {
     setNumberYearEmp(prevCount => {
-      const newCount = prevCount + 1;
+      const newCount = prevCount + 1; // This will now correctly add 1 to the numeric value
       handleInputChange(questionCode, newCount); // Call handleInputChange with the updated value
       return newCount;
     });
   };
   
-  const decreaseNumberYearEmp = (questionCode) => {
+  const decreaseNumberYearEmp = questionCode => {
     setNumberYearEmp(prevCount => {
       if (prevCount > 0) {
-        const newCount = prevCount - 1;
+        const newCount = prevCount - 1; // This will now correctly subtract 1
         handleInputChange(questionCode, newCount); // Call handleInputChange with the updated value
         return newCount;
       }
-      return prevCount; // In case it's already 0
+      return prevCount; // Return the current count if it's already 0
     });
   };
-
-  const decreaseNumberPet = (questionCode) => {
+  const decreaseNumberPets = questionCode => {
     setNumberPets(prevCount => {
       if (prevCount > 0) {
         const newCount = prevCount - 1;
-        handleInputChange(questionCode, newCount);  // Update the input value
+        handleInputChange(questionCode, newCount); // Update the input value
         return newCount;
       }
-      return prevCount;
+      return prevCount; // Prevent going below 0
     });
   };
   
-  const increaseNumberPets = (questionCode) => {
+  const increaseNumberPets = questionCode => {
     setNumberPets(prevCount => {
       const newCount = prevCount + 1;
-      handleInputChange(questionCode, newCount);  // Update the input value
+      handleInputChange(questionCode, newCount); // Update the input value
       return newCount;
     });
   };
-  
+
   useEffect(() => {
     handleTenantQues();
     edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
@@ -471,6 +469,22 @@ const RentalOffer = props => {
           }
 
           console.log('Response data in edit mode...', JSON.stringify(data));
+          const EmploymentfilteredData =
+          data[1]?.children?.filter(item => item.tqm_Question_view !== null) || [];
+        
+        // Ensure to convert tqm_Question_value to a number before setting it
+        const initialValue = Number(EmploymentfilteredData[2]?.tqm_Question_value) || 0;
+        console.log('EmploymentfilteredData...', initialValue);
+        setNumberYearEmp(initialValue);
+
+        const peferencefilteredData =
+        data[3]?.children?.filter(item => item.tqm_Question_view !== null) || [];
+      
+      // Ensure to convert tqm_Question_value to a number before setting it
+      const initialPetsValue = Number(peferencefilteredData[2]?.tqm_Question_value) || 0; 
+      console.log("peferencefilteredData....", initialPetsValue);
+      setNumberPets(initialPetsValue); // Set the initial value for number of pets
+
         } else {
           console.error(
             'Invalid data structure: parent_json is not an array',
@@ -2063,7 +2077,10 @@ const RentalOffer = props => {
                   style={RentalOfferStyle.menusIconView}
                   onPress={() => {
                     decreaseNumberYearEmp(question.tqm_Question_code);
-                    handleInputChange(question.tqm_Question_code, numberYearEmp - 1);
+                    handleInputChange(
+                      question.tqm_Question_code,
+                      numberYearEmp - 1,
+                    );
                   }}>
                   <AntDesign
                     name="minus"
@@ -2076,7 +2093,10 @@ const RentalOffer = props => {
                   style={RentalOfferStyle.menusIconView}
                   onPress={() => {
                     increaseNumberYearEmp(question.tqm_Question_code);
-                    handleInputChange(question.tqm_Question_code, numberYearEmp + 1);
+                    handleInputChange(
+                      question.tqm_Question_code,
+                      numberYearEmp + 1,
+                    );
                   }}>
                   <AntDesign
                     name="plus"
@@ -2101,7 +2121,7 @@ const RentalOffer = props => {
                 <TouchableOpacity
                   style={RentalOfferStyle.menusIconView}
                   onPress={() => {
-                    decreaseNumberPet(question?.tqm_Question_code);
+                    decreaseNumberPets(question?.tqm_Question_code);
                   }}>
                   <AntDesign
                     name="minus"
