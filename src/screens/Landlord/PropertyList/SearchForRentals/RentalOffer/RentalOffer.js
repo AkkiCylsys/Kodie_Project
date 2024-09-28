@@ -72,7 +72,6 @@ const RentalOffer = props => {
     useState('');
   const [employeeReferencesItem, setEmployeeReferencesItem] = useState([]);
 
-
   const [leaseFullName, setLeaseFullName] = useState('');
   const [leaseFullNameError, setLeaseFullNameError] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
@@ -1148,9 +1147,9 @@ const RentalOffer = props => {
   ) => {
     if (fullName && emailAddress && confirmEmailAddress) {
       const newLeaseHolder = {
-        leaseFullName: fullName,
-        leaseEmailAddress: emailAddress,
-        leaseConfirmEmailAddress: confirmEmailAddress,
+        fullName: fullName,
+        emailAddress: emailAddress,
+        confirmEmailAddress: confirmEmailAddress,
         questionId, // Ensure questionId is included
       };
       setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
@@ -1498,68 +1497,53 @@ const RentalOffer = props => {
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
 
+    // const occupantGroups = groupBy(occupants, 'questionId');
+    // addGroupedDataToJsonData(
+    //   jsonData,
+    //   occupantGroups,
+    //   'fullName',
+    //   'emailAddress',
+    //   null,
+    //   28,
+    // );
+
+    // const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+    // addGroupedDataToJsonData(
+    //   jsonData,
+    //   leaseHolderGroups,
+    //   // 'leaseFullName',
+    //   // 'leaseEmailAddress',
+    //   // 'leaseConfirmEmailAddress',
+    //   'fullName',
+    //   'emailAddress',
+    //   'confirmEmailAddress',
+    //   30,
+    // );
+
+    // Occupants - Using static question ID 28
     const occupantGroups = groupBy(occupants, 'questionId');
-    // Pass the static ID 28 for occupants
     addGroupedDataToJsonData(
       jsonData,
       occupantGroups,
       'fullName',
       'emailAddress',
-      null,
-      28,
+      null, // No confirm email for occupants
+      28, // Static ID for occupants
     );
 
+    // Leaseholders - Using static question ID 30
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    // Pass the static ID 30 for leaseholders
     addGroupedDataToJsonData(
       jsonData,
       leaseHolderGroups,
-      'leaseFullName',
-      'leaseEmailAddress',
-      'leaseConfirmEmailAddress',
-      30,
+      'fullName', // Map to fullName
+      'emailAddress', // Map to emailAddress
+      'confirmEmailAddress', // Include confirm email for leaseholders
+      30, // Static ID for leaseholders
     );
 
     // Add references and employee references as arrays (ensure uniqueness)
     const referenceIds = {34: [], 33: []};
-
-    // referencesItem.forEach(reference => {
-    //   // Push either the existing data or the newly added data
-    //   referenceIds[34].push({
-    //     fullName: reference?.fullName
-    //       ? reference.fullName
-    //       : reference.referenceFullName,
-    //     email: reference?.email ? reference.email : reference.referenceEmail,
-    //   });
-
-    //   // Add any additional data if necessary (e.g., new references)
-    //   if (reference.referenceFullName && reference.referenceEmail) {
-    //     referenceIds[34].push({
-    //       fullName: reference.referenceFullName, // Use the variable containing new fullName
-    //       email: reference.referenceEmail, // Use the variable containing new email
-    //     });
-    //   }
-    // });
-
-    // employeeReferencesItem.forEach(employeeReference => {
-    //   // Push either the existing data or the newly added data
-    //   referenceIds[33].push({
-    //     fullName: employeeReference?.fullName
-    //       ? employeeReference.fullName
-    //       : employeeReference.employeeReferenceFullName,
-    //     email: employeeReference?.email
-    //       ? employeeReference.email
-    //       : employeeReference.employeeReferenceEmail,
-    //   });
-
-    //   // Add any additional data if necessary (e.g., new employee references)
-    //   if (employeeReference.employeeReferenceFullName && employeeReference.employeeReferenceEmail) {
-    //     referenceIds[33].push({
-    //       fullName: employeeReference.employeeReferenceFullName, // Use the variable containing new fullName
-    //       email: employeeReference.employeeReferenceEmail, // Use the variable containing new email
-    //     });
-    //   }
-    // });
 
     // For references (ID 34)
     referencesItem.forEach(reference => {
@@ -1725,6 +1709,7 @@ const RentalOffer = props => {
   //   fullNameKey = 'fullName',
   //   emailKey = 'emailAddress',
   //   confirmEmailKey,
+  //   staticQuestionId, // Add static questionId parameter
   // ) => {
   //   for (const questionId in groups) {
   //     const groupData = groups[questionId].map(item => {
@@ -1738,8 +1723,9 @@ const RentalOffer = props => {
   //       return data;
   //     });
 
+  //     // Use the staticQuestionId if provided, else fallback to dynamic questionId
   //     jsonData.push({
-  //       question_id: questionId,
+  //       question_id: staticQuestionId ? staticQuestionId : questionId,
   //       question_value: JSON.stringify(groupData),
   //       question_reference: 0,
   //       question_is_lookup: 0,
@@ -1747,16 +1733,22 @@ const RentalOffer = props => {
   //   }
   // };
 
-  // ....buttons
-
   const addGroupedDataToJsonData = (
     jsonData,
     groups,
     fullNameKey = 'fullName',
     emailKey = 'emailAddress',
     confirmEmailKey,
-    staticQuestionId, // Add static questionId parameter
+    staticQuestionId,
   ) => {
+    // Find existing data for the staticQuestionId in jsonData
+    const existingData = jsonData.find(
+      item => item.question_id === staticQuestionId,
+    );
+
+    // Prepare the new group data
+    let newGroupData = [];
+
     for (const questionId in groups) {
       const groupData = groups[questionId].map(item => {
         const data = {
@@ -1769,15 +1761,28 @@ const RentalOffer = props => {
         return data;
       });
 
-      // Use the staticQuestionId if provided, else fallback to dynamic questionId
+      // Append the new group data to the newGroupData array
+      newGroupData = newGroupData.concat(groupData);
+    }
+
+    if (existingData) {
+      // Merge the new group data with the existing data
+      const existingGroupData = JSON.parse(existingData.question_value);
+      existingData.question_value = JSON.stringify([
+        ...existingGroupData,
+        ...newGroupData,
+      ]);
+    } else {
+      // If no existing data, push new data to jsonData
       jsonData.push({
-        question_id: staticQuestionId ? staticQuestionId : questionId,
-        question_value: JSON.stringify(groupData),
+        question_id: staticQuestionId,
+        question_value: JSON.stringify(newGroupData),
         question_reference: 0,
         question_is_lookup: 0,
       });
     }
   };
+
   const renderYesNoButton = (question, isYesSelected, setSelectedState) => (
     <RowButtons
       LeftButtonText={'Yes'}
@@ -2282,74 +2287,6 @@ const RentalOffer = props => {
                 />
               </TouchableOpacity>
             </View>
-            {/* <View style={RentalOfferStyle.AddOccupantMainView}>
-              <TouchableOpacity
-                style={RentalOfferStyle.AddOccupantView}
-                onPress={() => {
-                  setToggleReference(!toggleReference);
-                }}>
-                <Entypo
-                  name={
-                    toggleReference ? 'chevron-small-up' : 'chevron-small-down'
-                  }
-                  color={_COLORS.Kodie_BlackColor}
-                  size={25}
-                />
-                <Text style={RentalOfferStyle.AddOccupantText}>
-                  {'Add rental references'}
-                </Text>
-              </TouchableOpacity>
-              <FlatList
-                data={referencesItem}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={addReferencesRender}
-              />
-              {toggleReference && (
-                <View style={RentalOfferStyle.inputView}>
-                  <View style={{marginTop: 11}}>
-                    <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
-                    <TextInput
-                      style={RentalOfferStyle.input}
-                      placeholder={'Enter full name'}
-                      onChangeText={setReferenceFullName}
-                      value={referenceFullName}
-                      onBlur={() => validReferenceFullName(referenceFullName)}
-                    />
-                  </View>
-                  {referenceFullNameError ? (
-                    <Text style={RentalOfferStyle.error_text}>
-                      {referenceFullNameError}
-                    </Text>
-                  ) : null}
-                  <View style={RentalOfferStyle.inputView}>
-                    <Text style={LABEL_STYLES.commontext}>
-                      {'Email address'}
-                    </Text>
-                    <TextInput
-                      style={RentalOfferStyle.input}
-                      placeholder={'Enter email address'}
-                      onChangeText={setReferenceEmail}
-                      value={referenceEmail}
-                      onBlur={() => validReferencesEmailAddress(referenceEmail)}
-                      keyboardType="email-address"
-                    />
-                  </View>
-                  {referenceEmailError ? (
-                    <Text style={RentalOfferStyle.error_text}>
-                      {referenceEmailError}
-                    </Text>
-                  ) : null}
-                  <CustomSingleButton
-                    _ButtonText={'Add reference'}
-                    Text_Color={_COLORS.Kodie_WhiteColor}
-                    disabled={isLoading ? true : false}
-                    onPress={() => {
-                      handleReferences();
-                    }}
-                  />
-                </View>
-              )}
-            </View> */}
           </View>
         );
       default:
@@ -2361,7 +2298,11 @@ const RentalOffer = props => {
     return (
       <View style={{marginHorizontal: 16, marginTop: 5}}>
         <View key={question.id}>
-          <Text style={LABEL_STYLES.commontext}>
+          <Text
+            style={[
+              LABEL_STYLES.commontext,
+              {marginTop: 20, marginBottom: 12},
+            ]}>
             {item.tqm_Question_description}
           </Text>
           {renderQuestionComponent(item, index)}
