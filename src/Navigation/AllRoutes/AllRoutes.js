@@ -165,10 +165,19 @@ const BottomNav = props => {
         gestureEnabled: false,
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
-          height: Platform.OS == 'android' ? 65 : 80,
+          height: Platform.OS === 'android' ? 65 : 80,
           flexDirection: 'row',
           paddingHorizontal: 10,
           width: '100%',
+          borderTopWidth: 1,
+          borderTopColor: _COLORS.Kodie_LightGrayColor,
+          // Adding shadow for iOS
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 1,
+          shadowRadius: 6,
+          // Adding shadow for Android
+          elevation: 5,
         },
       }}>
       <Tab.Screen

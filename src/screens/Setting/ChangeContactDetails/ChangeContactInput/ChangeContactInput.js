@@ -82,15 +82,26 @@ const ChangeContactInput = props => {
     }
   };
 
-  const handleSubmit = () => {
-    const isValid = validatenewPhoneNumber();
-    if (newnewPhoneNumber.trim() === '') {
+  const isValidPhoneNumber = text => {
+    if (text.trim() === '') {
       setnewPhoneNumberError('Phone number is required!');
-      console.log('Phone number is valid:', newnewPhoneNumber);
-    } else if (!phoneInput.current?.isValidNumber(newnewPhoneNumber)) {
-      setnewPhoneNumberError('Invalid phone number format.');
+      return false;
+    } else if (!/^[24][0-9]{8}$/.test(text)) {
+      setnewPhoneNumberError('Invalid phone number!');
+      return false;
     } else {
+      setnewPhoneNumberError('');
+      return true;
+    }
+  };
+  const handleSubmit = () => {
+    const isPhoneNumberValid = isValidPhoneNumber(newnewPhoneNumber);
+    if (!isPhoneNumberValid) {
+      return;
+    }
+    if (isPhoneNumberValid) {
       navigation.navigate('ChangeContactNotify', {
+        countryCode:'+61',
         oldnewPhoneNumber: oldnewPhoneNumber,
         newnewPhoneNumber: newnewPhoneNumber,
       });
@@ -128,6 +139,54 @@ const ChangeContactInput = props => {
             <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View
+              style={[
+                {flexDirection: 'row', alignItems: 'center', height: 60,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',},
+              ]}>
+              <View style={{position: 'relative', flex: 1}}>
+                <Text
+                  style={{
+                    position: 'absolute',
+                    left: 15,
+                    top: 14,
+                    color: _COLORS.Kodie_BlackColor,
+                    fontSize: 16,
+                    zIndex: 1,
+                  }}>
+                  +61
+                </Text>
+                <TextInput
+                  value={newnewPhoneNumber}
+                  keyboardType="number-pad"
+                  maxLength={9}
+                  placeholder="Enter your phone number"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  style={{
+                    height: 50,
+                    backgroundColor: _COLORS.Kodie_WhiteColor,
+                    paddingVertical: 2,
+                    paddingLeft: 70,
+                    paddingRight: 10,
+                    borderRadius: Platform.OS === 'ios' ? 6 : 10,
+                    borderWidth: 1,
+                    borderColor: newnewPhoneNumberError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                    fontSize: 16,
+                  }}
+                  onChangeText={text => {
+                    isValidPhoneNumber(text);
+                    setnewPhoneNumber(text);
+                  }}
+                />
+              </View>
+            </View>
+            {newnewPhoneNumberError ? (
+              <Text style={{color: 'red', marginLeft: 10,}}>{newnewPhoneNumberError}</Text>
+            ) : null}
+          {/* <View
             style={{
               height: 50,
               flexDirection: 'row',
@@ -182,7 +241,7 @@ const ChangeContactInput = props => {
             <Text style={ChangeContactInputStyle.error_text}>
               {newnewPhoneNumberError}
             </Text>
-          ) : null}
+          ) : null} */}
         </View>
 
         <View style={{marginTop: 45, marginLeft: 15, marginRight: 15}}>

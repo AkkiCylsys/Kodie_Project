@@ -14,6 +14,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import Foundation from "react-native-vector-icons/Foundation";
 
 export default RowTab = (props) => {
   const renderLeftIcon = () => {
@@ -93,6 +94,14 @@ export default RowTab = (props) => {
     } else if (props?.LeftIconLibrary === "SimpleLineIcons") {
       return (
         <SimpleLineIcons
+          name={props?.LeftIconName}
+          size={18}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      );
+    } else if (props?.LeftIconLibrary === "Foundation") {
+      return (
+        <Foundation
           name={props?.LeftIconName}
           size={18}
           color={_COLORS.Kodie_GreenColor}

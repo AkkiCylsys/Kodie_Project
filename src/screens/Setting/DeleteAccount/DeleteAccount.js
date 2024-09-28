@@ -46,7 +46,7 @@ const DeleteAccount = props => {
   const handleAccountEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
-      setEmailError('Email is required!!');
+      setEmailError('Email is required!');
     } else if (!validateAccountEmail(text)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',

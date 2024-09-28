@@ -23,9 +23,9 @@ export const RowTabStyle = StyleSheet.create({
 
     Helpimgview: {
         // padding: 8,
-        borderWidth: 0.4,
+        borderWidth: 1,
         borderRadius: 10,
-        borderColor: _COLORS.Kodie_MediumGrayColor,
+        borderColor: _COLORS.Kodie_LiteWhiteColor,
         backgroundColor: _COLORS.Kodie_TransparentColor,
         width:34,
         height:34,
