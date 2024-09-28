@@ -7,6 +7,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {OfferForMyPropertiesStyle} from './OfferForMyPropertiesStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -133,7 +134,7 @@ const OfferForMyProperties = () => {
       console.log('Response in handleAcceptingLandlord:', response);
 
       if (response?.success === true) {
-        alert(response?.data);
+        Alert.alert('Success', response?.data);
         // navigation.navigate('Properties', { tab3: 'tab3' });
       }
     } catch (error) {

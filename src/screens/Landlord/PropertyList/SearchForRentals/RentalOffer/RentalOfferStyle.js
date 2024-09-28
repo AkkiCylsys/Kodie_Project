@@ -217,7 +217,7 @@ export const RentalOfferStyle = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 10,
+    marginTop: 12,
   },
   jobD_: {height: 50},
   locationView: {flexDirection: 'row'},

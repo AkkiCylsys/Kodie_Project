@@ -199,22 +199,46 @@ const RentalOffer = props => {
       setToggleLeaseHolder(false);
     }
   };
-  const increaseNumberYearEmp = () => {
-    setNumberYearEmp(prevCount => prevCount + 1);
+
+
+  const increaseNumberYearEmp = (questionCode) => {
+    setNumberYearEmp(prevCount => {
+      const newCount = prevCount + 1;
+      handleInputChange(questionCode, newCount); // Call handleInputChange with the updated value
+      return newCount;
+    });
   };
-  const decreaseNumberYearEmp = () => {
-    if (numberYearEmp > 0) {
-      setNumberYearEmp(prevCount => prevCount - 1);
-    }
+  
+  const decreaseNumberYearEmp = (questionCode) => {
+    setNumberYearEmp(prevCount => {
+      if (prevCount > 0) {
+        const newCount = prevCount - 1;
+        handleInputChange(questionCode, newCount); // Call handleInputChange with the updated value
+        return newCount;
+      }
+      return prevCount; // In case it's already 0
+    });
   };
-  const decreaseNumberPet = () => {
-    if (numberPets > 0) {
-      setNumberPets(prevCount => prevCount - 1);
-    }
+
+  const decreaseNumberPet = (questionCode) => {
+    setNumberPets(prevCount => {
+      if (prevCount > 0) {
+        const newCount = prevCount - 1;
+        handleInputChange(questionCode, newCount);  // Update the input value
+        return newCount;
+      }
+      return prevCount;
+    });
   };
-  const increaseNumberPets = () => {
-    setNumberPets(prevCount => prevCount + 1);
+  
+  const increaseNumberPets = (questionCode) => {
+    setNumberPets(prevCount => {
+      const newCount = prevCount + 1;
+      handleInputChange(questionCode, newCount);  // Update the input value
+      return newCount;
+    });
   };
+  
   useEffect(() => {
     handleTenantQues();
     edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
@@ -1496,30 +1520,6 @@ const RentalOffer = props => {
       }
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
-
-    // const occupantGroups = groupBy(occupants, 'questionId');
-    // addGroupedDataToJsonData(
-    //   jsonData,
-    //   occupantGroups,
-    //   'fullName',
-    //   'emailAddress',
-    //   null,
-    //   28,
-    // );
-
-    // const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    // addGroupedDataToJsonData(
-    //   jsonData,
-    //   leaseHolderGroups,
-    //   // 'leaseFullName',
-    //   // 'leaseEmailAddress',
-    //   // 'leaseConfirmEmailAddress',
-    //   'fullName',
-    //   'emailAddress',
-    //   'confirmEmailAddress',
-    //   30,
-    // );
-
     // Occupants - Using static question ID 28
     const occupantGroups = groupBy(occupants, 'questionId');
     addGroupedDataToJsonData(
@@ -1702,36 +1702,6 @@ const RentalOffer = props => {
       return result;
     }, {});
   };
-
-  // const addGroupedDataToJsonData = (
-  //   jsonData,
-  //   groups,
-  //   fullNameKey = 'fullName',
-  //   emailKey = 'emailAddress',
-  //   confirmEmailKey,
-  //   staticQuestionId, // Add static questionId parameter
-  // ) => {
-  //   for (const questionId in groups) {
-  //     const groupData = groups[questionId].map(item => {
-  //       const data = {
-  //         fullName: item[fullNameKey],
-  //         emailAddress: item[emailKey],
-  //       };
-  //       if (confirmEmailKey) {
-  //         data.confirmEmailAddress = item[confirmEmailKey];
-  //       }
-  //       return data;
-  //     });
-
-  //     // Use the staticQuestionId if provided, else fallback to dynamic questionId
-  //     jsonData.push({
-  //       question_id: staticQuestionId ? staticQuestionId : questionId,
-  //       question_value: JSON.stringify(groupData),
-  //       question_reference: 0,
-  //       question_is_lookup: 0,
-  //     });
-  //   }
-  // };
 
   const addGroupedDataToJsonData = (
     jsonData,
@@ -1929,7 +1899,7 @@ const RentalOffer = props => {
                   size={25}
                 />
                 <Text style={RentalOfferStyle.AddOccupantText}>
-                  {'Add rental references'}
+                  {question.tqm_Question_description}
                 </Text>
               </TouchableOpacity>
 
@@ -2010,7 +1980,7 @@ const RentalOffer = props => {
                   size={25}
                 />
                 <Text style={RentalOfferStyle.AddOccupantText}>
-                  {'Add rental references'}
+                  {question.tqm_Question_description}
                 </Text>
               </TouchableOpacity>
               <FlatList
@@ -2081,17 +2051,20 @@ const RentalOffer = props => {
         );
       case 'Count':
         return (
-          <View>
-            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+          <View key={index}>
+            <View style={RentalOfferStyle.mainfeaturesview}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
                   {'Number of years employed'}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <View style={RentalOfferStyle.plus_minusview}>
                 <TouchableOpacity
                   style={RentalOfferStyle.menusIconView}
-                  onPress={decreaseNumberYearEmp}>
+                  onPress={() => {
+                    decreaseNumberYearEmp(question.tqm_Question_code);
+                    handleInputChange(question.tqm_Question_code, numberYearEmp - 1);
+                  }}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -2102,7 +2075,8 @@ const RentalOffer = props => {
                 <TouchableOpacity
                   style={RentalOfferStyle.menusIconView}
                   onPress={() => {
-                    increaseNumberYearEmp();
+                    increaseNumberYearEmp(question.tqm_Question_code);
+                    handleInputChange(question.tqm_Question_code, numberYearEmp + 1);
                   }}>
                   <AntDesign
                     name="plus"
@@ -2110,7 +2084,7 @@ const RentalOffer = props => {
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-              </TouchableOpacity>
+              </View>
             </View>
           </View>
         );
@@ -2120,14 +2094,15 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {/* {'Number of pets'} */}
                   {petsSubChildren[0]?.tqm_Question_description}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <View style={RentalOfferStyle.plus_minusview}>
                 <TouchableOpacity
                   style={RentalOfferStyle.menusIconView}
-                  onPress={decreaseNumberPet}>
+                  onPress={() => {
+                    decreaseNumberPet(question?.tqm_Question_code);
+                  }}>
                   <AntDesign
                     name="minus"
                     size={20}
@@ -2138,7 +2113,7 @@ const RentalOffer = props => {
                 <TouchableOpacity
                   style={RentalOfferStyle.menusIconView}
                   onPress={() => {
-                    increaseNumberPets();
+                    increaseNumberPets(question?.tqm_Question_code);
                   }}>
                   <AntDesign
                     name="plus"
@@ -2146,7 +2121,7 @@ const RentalOffer = props => {
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-              </TouchableOpacity>
+              </View>
             </View>
           </View>
         );
@@ -2298,14 +2273,12 @@ const RentalOffer = props => {
     return (
       <View style={{marginHorizontal: 16, marginTop: 5}}>
         <View key={question.id}>
-          <Text
-            style={[
-              LABEL_STYLES.commontext,
-              {marginTop: 20, marginBottom: 12},
-            ]}>
+          <Text style={[LABEL_STYLES.commontext]}>
             {item.tqm_Question_description}
           </Text>
-          {renderQuestionComponent(item, index)}
+          <View style={{marginBottom: 20}}>
+            {renderQuestionComponent(item, index)}
+          </View>
         </View>
       </View>
     );

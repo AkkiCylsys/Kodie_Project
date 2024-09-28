@@ -117,7 +117,7 @@ const PropertyRentalOffer = props => {
       const response = await acceptTenants(acceptTenantsData);
       console.log('response in acceptTenantsData...', response);
       if (response?.success === true) {
-        alert(response?.data);
+        Alert.alert("Success",response?.data);
       } else {
         console.error('Failed to accept tenants:', response?.message);
       }

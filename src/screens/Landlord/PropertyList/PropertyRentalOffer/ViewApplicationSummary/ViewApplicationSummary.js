@@ -7,7 +7,7 @@ import {
   FlatList,
   Alert,
   Linking,
-  Platform
+  Platform,
 } from 'react-native';
 import {ViewApplicationSummaryStyle} from './ViewApplicationSummaryStyle';
 
@@ -29,6 +29,7 @@ import {
   UpdateLandLordAcceptingService,
 } from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 
 const occupantData = [
   {
@@ -368,7 +369,7 @@ const ViewApplicationSummary = props => {
 
   const openGmail = emailAddress => {
     const gmailUrl = `googlegmail://co?to=${emailAddress}`;
-  
+
     if (Platform.OS === 'android') {
       Linking.canOpenURL(gmailUrl)
         .then(supported => {
@@ -377,7 +378,7 @@ const ViewApplicationSummary = props => {
           } else {
             Alert.alert(
               'Gmail app not available',
-              'Please install Gmail to use this feature.'
+              'Please install Gmail to use this feature.',
             );
           }
         })
@@ -392,7 +393,7 @@ const ViewApplicationSummary = props => {
           } else {
             Alert.alert(
               'Email client not available',
-              `Cannot open email client for ${emailAddress}`
+              `Cannot open email client for ${emailAddress}`,
             );
           }
         })
@@ -587,6 +588,10 @@ const ViewApplicationSummary = props => {
                     rightText={
                       item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
+                        : item?.tqm_Question_value === '1'
+                        ? 'Yes'
+                        : item?.tqm_Question_value === '0'
+                        ? 'No'
                         : item?.tqm_Question_value || '-'
                     }
                   />
@@ -607,17 +612,17 @@ const ViewApplicationSummary = props => {
                     rightText={
                       item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
+                        : item?.tqm_Question_value === '1'
+                        ? 'Yes'
+                        : item?.tqm_Question_value === '0'
+                        ? 'No'
                         : item?.tqm_Question_value || '-'
                     }
                   />
                 )}
               />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
+            <View style={ViewApplicationSummaryStyle?.screenReportMainview}>
               <Text
                 style={[
                   ViewApplicationSummaryStyle?.headingText,
@@ -707,7 +712,7 @@ const ViewApplicationSummary = props => {
                     {'# of occupants'}
                   </Text>
                   <Text
-                    style={ViewApplicationSummaryStyle?.occupantNumberStyle}>
+                    style={[ViewApplicationSummaryStyle?.occupantNumberStyle,{marginLeft:110}]}>
                     {occupantDataList.length}
                   </Text>
                 </View>
@@ -715,6 +720,13 @@ const ViewApplicationSummary = props => {
                   data={occupantDataList}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={occupantRenderItem}
+                  ListEmptyComponent={() => {
+                    return (
+                      <ListEmptyComponent
+                        EmptyText={'No occupant details available.'}
+                      />
+                    );
+                  }}
                 />
               </View>
               {/* Leaseholders Data  */}
@@ -743,12 +755,15 @@ const ViewApplicationSummary = props => {
                   data={leaseholderDataList}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={leaseHolderRenderItem}
+                  ListEmptyComponent={() => {
+                    return (
+                      <ListEmptyComponent
+                        EmptyText={'No leaseholders available.'}
+                      />
+                    );
+                  }}
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
+                <View style={ViewApplicationSummaryStyle?.screenReportMainview}>
                   <Text
                     style={[
                       ViewApplicationSummaryStyle?.headingText,
@@ -833,6 +848,13 @@ const ViewApplicationSummary = props => {
                 data={employeeReferencesList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={employeeReferenceRenderItem}
+                ListEmptyComponent={() => {
+                  return (
+                    <ListEmptyComponent
+                      EmptyText={'No employment references available.'}
+                    />
+                  );
+                }}
               />
             </View>
             <View>
@@ -843,13 +865,16 @@ const ViewApplicationSummary = props => {
                 data={ReferencesList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={referenceRenderItem}
+                ListEmptyComponent={() => {
+                  return (
+                    <ListEmptyComponent
+                      EmptyText={'No rental references available.'}
+                    />
+                  );
+                }}
               />
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
+            <View style={ViewApplicationSummaryStyle?.screenReportMainview}>
               <Text
                 style={[
                   ViewApplicationSummaryStyle?.headingText,
@@ -942,7 +967,7 @@ const ViewApplicationSummary = props => {
           LeftButtonborderColor={_COLORS.Kodie_BlackColor}
           LeftButtonTextColor={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => {
-            alert('reject');
+            navigation.pop();
           }}
           RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
           RightButtonborderColor={_COLORS.Kodie_BlackColor}

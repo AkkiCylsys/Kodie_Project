@@ -124,4 +124,10 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     right: 5,
     zIndex: 1,
   },
+  screenReportMainview:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop:40,
+    marginBottom:10
+  }
 });
