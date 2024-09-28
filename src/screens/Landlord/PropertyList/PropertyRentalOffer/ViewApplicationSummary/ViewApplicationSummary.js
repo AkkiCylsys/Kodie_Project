@@ -6,6 +6,8 @@ import {
   TextInput,
   FlatList,
   Alert,
+  Linking,
+  Platform
 } from 'react-native';
 import {ViewApplicationSummaryStyle} from './ViewApplicationSummaryStyle';
 
@@ -346,6 +348,58 @@ const ViewApplicationSummary = props => {
     setReferenceAcceptButtonId(key);
   };
 
+  // For contact
+  // const openEmailClient = emailAddress => {
+  //   // alert(emailAddress);
+  //   const mailtoUrl = `mailto:${emailAddress}`;
+  //   Linking.canOpenURL(mailtoUrl)
+  //     .then(supported => {
+  //       if (supported) {
+  //         Linking.openURL(mailtoUrl);
+  //       } else {
+  //         Alert.alert(
+  //           'Email client not available',
+  //           `Cannot open email client for ${emailAddress}`,
+  //         );
+  //       }
+  //     })
+  //     .catch(err => console.error('Error opening email client:', err));
+  // };
+
+  const openGmail = emailAddress => {
+    const gmailUrl = `googlegmail://co?to=${emailAddress}`;
+  
+    if (Platform.OS === 'android') {
+      Linking.canOpenURL(gmailUrl)
+        .then(supported => {
+          if (supported) {
+            Linking.openURL(gmailUrl);
+          } else {
+            Alert.alert(
+              'Gmail app not available',
+              'Please install Gmail to use this feature.'
+            );
+          }
+        })
+        .catch(err => console.error('Error opening Gmail:', err));
+    } else {
+      // For iOS or if Gmail is not available, fallback to mailto
+      const mailtoUrl = `mailto:${emailAddress}`;
+      Linking.canOpenURL(mailtoUrl)
+        .then(supported => {
+          if (supported) {
+            Linking.openURL(mailtoUrl);
+          } else {
+            Alert.alert(
+              'Email client not available',
+              `Cannot open email client for ${emailAddress}`
+            );
+          }
+        })
+        .catch(err => console.error('Error opening email client:', err));
+    }
+  };
+
   const occupantRenderItem = ({item, index}) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
@@ -365,26 +419,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => {
-              Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Remove',
-                    onPress: () => {
-                      console.log('Remove');
-                      //   removeOccupant(index);
-                    },
-                  },
-                ],
-              );
-            }}
+            onPress={() => openGmail(item?.emailAddress)}
           />
         </View>
       </View>
@@ -414,26 +449,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => {
-              Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Remove',
-                    onPress: () => {
-                      console.log('Remove');
-                      //   removeOccupant(index);
-                    },
-                  },
-                ],
-              );
-            }}
+            onPress={() => openGmail(item?.emailAddress)}
           />
         </View>
       </View>
@@ -458,26 +474,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => {
-              Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Remove',
-                    onPress: () => {
-                      console.log('Remove');
-                      //   removeOccupant(index);
-                    },
-                  },
-                ],
-              );
-            }}
+            onPress={() => openGmail(item?.email)}
           />
         </View>
       </View>
@@ -503,26 +500,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => {
-              Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Remove',
-                    onPress: () => {
-                      console.log('Remove');
-                      //   removeOccupant(index);
-                    },
-                  },
-                ],
-              );
-            }}
+            onPress={() => openGmail(item?.email)}
           />
         </View>
       </View>
@@ -684,6 +662,7 @@ const ViewApplicationSummary = props => {
                   placeholder="Please enter the Reason for rejection."
                   numberOfLines={5}
                   textAlignVertical="top"
+                  maxLength={1000}
                   style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                 />
               </View>
@@ -974,7 +953,7 @@ const ViewApplicationSummary = props => {
           }}
         />
       </View>
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

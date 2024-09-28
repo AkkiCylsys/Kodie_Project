@@ -25,7 +25,6 @@ import CalendarModal from '../../../../../components/Molecules/CalenderModal/Cal
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-// import MultiSelect from 'react-native-multiple-select';
 
 import {Config} from '../../../../../Config';
 import axios from 'axios';
@@ -34,7 +33,6 @@ import TenantScreeningReportModal from '../../../../../components/Molecules/Tena
 import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {resolvePlugin} from '@babel/core';
 import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
 import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
@@ -74,8 +72,6 @@ const RentalOffer = props => {
     useState('');
   const [employeeReferencesItem, setEmployeeReferencesItem] = useState([]);
 
-  const [employeeReferences, setEmployeeReferences] = useState([]);
-  const [rentalReferences, setRentalReferences] = useState([]);
 
   const [leaseFullName, setLeaseFullName] = useState('');
   const [leaseFullNameError, setLeaseFullNameError] = useState('');
@@ -86,12 +82,8 @@ const RentalOffer = props => {
   const [leaseConfirmEmailAddress, setLeaseConfirmEmailAddress] = useState('');
   const [leaseConfirmEmailAddressError, setLeaseConfirmEmailAddressError] =
     useState('');
-  const [RentalDetails, setRentalDetails] = useState(false);
-  const [RentalHistory, setRentalHistory] = useState(false);
-  const [TenantRooms, setTenantRooms] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+
   const [isModalVisible, setModalVisible] = useState(false);
-  const [Preferences, setPreferences] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
   const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
   // ...
@@ -1374,8 +1366,6 @@ const RentalOffer = props => {
     }));
   };
 
- 
-
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
@@ -1508,7 +1498,6 @@ const RentalOffer = props => {
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
 
-
     const occupantGroups = groupBy(occupants, 'questionId');
     // Pass the static ID 28 for occupants
     addGroupedDataToJsonData(
@@ -1534,42 +1523,63 @@ const RentalOffer = props => {
     // Add references and employee references as arrays (ensure uniqueness)
     const referenceIds = {34: [], 33: []};
 
-    referencesItem.forEach(reference => {
-      // Push either the existing data or the newly added data
-      referenceIds[34].push({
-        fullName: reference?.fullName
-          ? reference.fullName
-          : reference.referenceFullName,
-        email: reference?.email ? reference.email : reference.referenceEmail,
-      });
+    // referencesItem.forEach(reference => {
+    //   // Push either the existing data or the newly added data
+    //   referenceIds[34].push({
+    //     fullName: reference?.fullName
+    //       ? reference.fullName
+    //       : reference.referenceFullName,
+    //     email: reference?.email ? reference.email : reference.referenceEmail,
+    //   });
 
-      // Add any additional data if necessary (e.g., new references)
-      if (reference.referenceFullName && reference.referenceEmail) {
-        referenceIds[34].push({
-          fullName: reference.referenceFullName, // Use the variable containing new fullName
-          email: reference.referenceEmail, // Use the variable containing new email
-        });
-      }
+    //   // Add any additional data if necessary (e.g., new references)
+    //   if (reference.referenceFullName && reference.referenceEmail) {
+    //     referenceIds[34].push({
+    //       fullName: reference.referenceFullName, // Use the variable containing new fullName
+    //       email: reference.referenceEmail, // Use the variable containing new email
+    //     });
+    //   }
+    // });
+
+    // employeeReferencesItem.forEach(employeeReference => {
+    //   // Push either the existing data or the newly added data
+    //   referenceIds[33].push({
+    //     fullName: employeeReference?.fullName
+    //       ? employeeReference.fullName
+    //       : employeeReference.employeeReferenceFullName,
+    //     email: employeeReference?.email
+    //       ? employeeReference.email
+    //       : employeeReference.employeeReferenceEmail,
+    //   });
+
+    //   // Add any additional data if necessary (e.g., new employee references)
+    //   if (employeeReference.employeeReferenceFullName && employeeReference.employeeReferenceEmail) {
+    //     referenceIds[33].push({
+    //       fullName: employeeReference.employeeReferenceFullName, // Use the variable containing new fullName
+    //       email: employeeReference.employeeReferenceEmail, // Use the variable containing new email
+    //     });
+    //   }
+    // });
+
+    // For references (ID 34)
+    referencesItem.forEach(reference => {
+      // Push only once, either existing or new data
+      referenceIds[34].push({
+        fullName: reference.fullName || reference.referenceFullName,
+        email: reference.email || reference.referenceEmail,
+      });
     });
 
+    // For employee references (ID 33)
     employeeReferencesItem.forEach(employeeReference => {
-      // Push either the existing data or the newly added data
+      // Push only once, either existing or new data
       referenceIds[33].push({
-        fullName: employeeReference?.fullName
-          ? employeeReference.fullName
-          : employeeReference.employeeReferenceFullName,
-        email: employeeReference?.email
-          ? employeeReference.email
-          : employeeReference.employeeReferenceEmail,
+        fullName:
+          employeeReference.fullName ||
+          employeeReference.employeeReferenceFullName,
+        email:
+          employeeReference.email || employeeReference.employeeReferenceEmail,
       });
-
-      // Add any additional data if necessary (e.g., new employee references)
-      if (employeeReference.employeeReferenceFullName && employeeReference.employeeReferenceEmail) {
-        referenceIds[33].push({
-          fullName: employeeReference.employeeReferenceFullName, // Use the variable containing new fullName
-          email: employeeReference.employeeReferenceEmail, // Use the variable containing new email
-        });
-      }
     });
 
     // Prevent duplicate data for 33 and 34

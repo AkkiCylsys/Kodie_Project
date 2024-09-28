@@ -243,7 +243,10 @@ const OfferForMyProperties = () => {
             style={OfferForMyPropertiesStyle.SubContainer}
             onPress={() => {
               if (!isScreeningDisabled) {
-                alert('Lanlord approve application');
+                Alert.alert(
+                  'Landlord Approved',
+                  'The application has been approved by the landlord.',
+                );
               } else {
                 navigation.navigate('PropertyViewApplication', {
                   propertyId: item?.property_id,
@@ -470,7 +473,7 @@ const OfferForMyProperties = () => {
           );
         }}
       />
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

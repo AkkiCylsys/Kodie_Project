@@ -41,6 +41,7 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_ExtraLightOrange,
     marginVertical: 10,
     paddingLeft: 10,
+    height:100
   },
   occupantNumberStyle:{
     alignSelf: 'center',

@@ -6,6 +6,8 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   },
   rowButtonView: {
     // marginHorizontal: 16,
+    marginTop:10,
+    marginBottom:12
   },
   subContainer: {
     flex: 1,
@@ -116,7 +118,8 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   locationView: {
     flexDirection: 'row',
     marginTop: 5,
-    marginLeft: 10,
+    // marginLeft: 10,
+    marginRight:15
   },
   bedcont: {
     fontSize: 14,
