@@ -40,6 +40,10 @@ export const LoginStyles = StyleSheet.create({
 
   inputContainer: {
     marginBottom: 10,
+    // flexDirection:'column',
+    // justifyContent:'center',
+    // alignItems:'center',
+    // marginTop:100
   },
 
   input: {

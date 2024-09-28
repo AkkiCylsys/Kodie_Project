@@ -145,6 +145,7 @@ import PropertyViewApplication from '../../screens/Landlord/PropertyList/Propert
 import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
 import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
 import GroupChat from '../../screens/ChatsScreens/GroupChat';
+import PointofInterest from './../../screens/PropertyListings/PointofInterest'
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1104,6 +1105,12 @@ const AllStackRouts = props => {
           component={GroupChat}
           options={{headerShown: false}}
         />
+          <Stack.Screen
+          name={'PointofInterest'}
+          component={PointofInterest}
+          options={{headerShown: false}}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

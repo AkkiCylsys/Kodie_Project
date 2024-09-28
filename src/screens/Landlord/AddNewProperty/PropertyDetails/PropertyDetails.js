@@ -447,7 +447,7 @@ export default PropertyDetails = props => {
               // Maplat={getLat}
               // Maplng={getLong}
             />
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -471,7 +471,7 @@ export default PropertyDetails = props => {
                 placeholder={'Search Place'}
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
-            </View>
+            </View> */}
 
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
