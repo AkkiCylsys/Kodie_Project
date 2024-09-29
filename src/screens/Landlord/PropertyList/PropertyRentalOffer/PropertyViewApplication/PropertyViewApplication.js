@@ -38,10 +38,12 @@ const PropertyViewApplication = props => {
     landlord_id,
     Pre_screening,
     accpetingLandlordId,
+    offerForMyPropData,
   } = props.route.params; // Accessing params from props
 
   // Logging the values for debugging
   console.log('accpetingLandlordId...', accpetingLandlordId);
+  console.log('offerForMyPropData...', offerForMyPropData);
   console.log('bid_id..', bid_id);
   console.log('propertyId..', propertyId);
   console.log('tenant_id..', tenant_id);
@@ -191,7 +193,10 @@ const PropertyViewApplication = props => {
             </Text>
           </TouchableOpacity>
         </View> */}
-        <Text style={PropertyViewApplicationStyle.summaryText}>
+        <Text
+          style={PropertyViewApplicationStyle.summaryText}
+          numberOfLines={2}
+          ellipsizeMode="tail">
           {tenantAccountDetails?.UAD_BIO}
         </Text>
         <DividerIcon />
@@ -217,6 +222,7 @@ const PropertyViewApplication = props => {
             propertyId={propertyId}
             landlord_id={landlord_id}
             accpetingLandlordId={accpetingLandlordId}
+            offerForMyPropData={offerForMyPropData}
           />
         </View>
         {/* <DividerIcon borderBottomWidth={2} />

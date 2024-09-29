@@ -46,10 +46,12 @@ const ViewApplicationSummary = props => {
     propertyId,
     landlord_id,
     accpetingLandlordId,
+    offerForMyPropData,
   } = props;
   const navigation = useNavigation();
   console.log('accpetingLandlordId in summary page..', accpetingLandlordId);
   console.log('bid_id in summary page..', bid_id);
+  console.log('offerForMyPropData..', JSON.stringify(offerForMyPropData));
   const [isLoading, setIsLoading] = useState(false);
   const [applicationSumReasonOfReject, setApplicationSumReasonOfReject] =
     useState('');
@@ -93,7 +95,7 @@ const ViewApplicationSummary = props => {
     tenantQuestDetails[0]?.children?.filter(
       item => item.tqm_Question_view !== null,
     ) || [];
-    console.log("filteredData..",filteredData);
+  console.log('filteredData..', filteredData);
   const EmploymentfilteredData =
     tenantQuestDetails[1]?.children?.filter(
       item => item.tqm_Question_view !== null,
@@ -107,6 +109,7 @@ const ViewApplicationSummary = props => {
       item => item.tqm_Question_view !== null,
     ) || [];
 
+  console.log('peferencefilteredData..', peferencefilteredData);
   const occupantDataListString =
     tenantQuestDetails[0]?.children[2]?.sub_children[1]?.tqm_Question_value;
 
@@ -611,7 +614,9 @@ const ViewApplicationSummary = props => {
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
-                      item?.tqm_Question_type === 'Dropdown'
+                      item?.tqm_Question_code === 'PETS_THEY'
+                        ? item?.tqm_Question_value_data || '-'
+                        : item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_value === '1'
                         ? 'Yes'
@@ -713,7 +718,10 @@ const ViewApplicationSummary = props => {
                     {'# of occupants'}
                   </Text>
                   <Text
-                    style={[ViewApplicationSummaryStyle?.occupantNumberStyle,{marginLeft:110}]}>
+                    style={[
+                      ViewApplicationSummaryStyle?.occupantNumberStyle,
+                      {marginLeft: 110},
+                    ]}>
                     {occupantDataList.length}
                   </Text>
                 </View>
@@ -725,6 +733,7 @@ const ViewApplicationSummary = props => {
                     return (
                       <ListEmptyComponent
                         EmptyText={'No occupant details available.'}
+                        EmptyStyle={{marginVertical: 15}}
                       />
                     );
                   }}
@@ -760,6 +769,7 @@ const ViewApplicationSummary = props => {
                     return (
                       <ListEmptyComponent
                         EmptyText={'No leaseholders available.'}
+                        EmptyStyle={{marginVertical: 15}}
                       />
                     );
                   }}
@@ -853,13 +863,18 @@ const ViewApplicationSummary = props => {
                   return (
                     <ListEmptyComponent
                       EmptyText={'No employment references available.'}
+                      EmptyStyle={{marginVertical: 15}}
                     />
                   );
                 }}
               />
             </View>
             <View>
-              <Text style={ViewApplicationSummaryStyle.applicationSumDet}>
+              <Text
+                style={[
+                  ViewApplicationSummaryStyle.applicationSumDet,
+                  {marginTop: 10},
+                ]}>
                 {'Rental references'}
               </Text>
               <FlatList
@@ -870,6 +885,7 @@ const ViewApplicationSummary = props => {
                   return (
                     <ListEmptyComponent
                       EmptyText={'No rental references available.'}
+                      EmptyStyle={{marginVertical: 15}}
                     />
                   );
                 }}
@@ -923,8 +939,10 @@ const ViewApplicationSummary = props => {
           </View>
         )}
       </View>
-      <DividerIcon borderBottomWidth={2} />
-      <View style={{marginHorizontal: 16}}>
+      {/* <DividerIcon borderBottomWidth={2} /> */}
+
+      {/* This will open in Phase three */}
+      {/* <View style={{marginHorizontal: 16}}>
         <Text style={ViewApplicationSummaryStyle.inspections}>
           {'Tenant  screening report (recommended)'}
         </Text>
@@ -956,29 +974,46 @@ const ViewApplicationSummary = props => {
             <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
+
       <DividerIcon borderBottomWidth={2} />
-      <View style={{marginBottom: 20, marginHorizontal: 16}}>
-        <RowButtons
-          leftButtonHeight={44}
-          RightButtonHeight={44}
-          LeftButtonText={'Back'}
-          RightButtonText={accpetingLandlordId == null ? 'Done' : 'Edit'}
-          leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-          LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-          LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-          onPressLeftButton={() => {
-            navigation.pop();
-          }}
-          RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-          RightButtonborderColor={_COLORS.Kodie_BlackColor}
-          RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-          onPressRightButton={() => {
-            handleSubmit();
-            // handleSaveLandlordAcceptingDetails();
-          }}
-        />
-      </View>
+      {offerForMyPropData?.landlord_approve == 1 &&
+      offerForMyPropData?.screening_one == 555 &&
+      offerForMyPropData?.screening_two == 555 &&
+      offerForMyPropData?.screening_three == 555 ? (
+        <View style={{marginHorizontal: 16}}>
+          <CustomSingleButton
+            _ButtonText={'Back'}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            text_Size={18}
+            marginBottom={12}
+            onPress={() => {
+              navigation.pop();
+            }}
+          />
+        </View>
+      ) : (
+        <View style={{marginBottom: 20, marginHorizontal: 16}}>
+          <RowButtons
+            leftButtonHeight={44}
+            RightButtonHeight={44}
+            LeftButtonText={'Back'}
+            RightButtonText={accpetingLandlordId == null ? 'Done' : 'Edit'}
+            leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+            LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+            onPressLeftButton={() => {
+              navigation.pop();
+            }}
+            RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+            RightButtonborderColor={_COLORS.Kodie_BlackColor}
+            RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+            onPressRightButton={() => {
+              handleSubmit();
+            }}
+          />
+        </View>
+      )}
       {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );

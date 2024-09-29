@@ -34,7 +34,7 @@ const Properties = props => {
   // }, []);
 
   useEffect(() => {
-    setActiveTab(tab3 == 'tab3'  ? 'Tab3' : 'Tab1');
+    setActiveTab(tab3 == 'tab3' ||acceptLanlordPassed == "acceptLanlordPassed"  ? 'Tab3' : 'Tab1');
   }, []);
   useFocusEffect(
     React.useCallback(() => {

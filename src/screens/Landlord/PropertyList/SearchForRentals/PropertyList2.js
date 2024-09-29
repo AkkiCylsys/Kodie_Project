@@ -531,7 +531,7 @@ const PropertyList2 = props => {
                 }
                 onSelectedItemsChange={onSelectedItemsPropertyChange}
                 selectedItems={proteryTypeValue}
-                selectText="Apartment"
+                selectText="Select option"
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
                   console.warn(item);

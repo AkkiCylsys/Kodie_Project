@@ -3,9 +3,9 @@ import {Text, StyleSheet, View} from 'react-native';
 import {FONTFAMILY, _COLORS} from '../../../Themes';
 
 const ListEmptyComponent = props => {
-  const {EmptyText} = props;
+  const {EmptyText,EmptyStyle} = props;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,EmptyStyle]}>
       <Text style={styles.noResultSubtext}>
         {EmptyText || "You don't have any Data."}
       </Text>

@@ -37,8 +37,10 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY?.K_Regular,
     color: _COLORS?.Kodie_BlackColor,
-    marginVertical: 30,
+    marginVertical: 15,
     alignSelf: 'center',
+    textAlign:"center",
+    marginHorizontal:42
   },
   readMoreTextContainer: {
     borderBottomWidth: 1,

@@ -127,7 +127,7 @@ const RentalOffer = props => {
   const [subChildren, setSubChildren] = useState([]);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   const [biddingDetailsMessage, setBiddingDetailsMessage] = useState('');
-  const [budgetValue, setBudgetValue] = useState(""); 
+  const [budgetValue, setBudgetValue] = useState('');
   const isFocus = useIsFocused();
   // location....
   const ConfirmAddress = () => {
@@ -1444,7 +1444,7 @@ const RentalOffer = props => {
             />
           </TouchableOpacity>
         </TouchableOpacity>
-        <DividerIcon />
+        <DividerIcon marginTop={20}/>
         {expandedItem === item?.children && (
           <FlatList
             data={item?.children} // Use item?.children as data
@@ -1458,10 +1458,10 @@ const RentalOffer = props => {
 
   const handleInputChange = (questionCode, value) => {
     console.log(`Handling input change for ${questionCode}: ${value}`);
-    if (questionCode === "RENTAL_BUDGET") {
+    if (questionCode === 'RENTAL_BUDGET') {
       setBudgetValue(value); // Save budget value to its separate state
-      console.log("budgetValue....",value);
-  }
+      console.log('budgetValue....', value);
+    }
 
     setInputValues(prevValues => ({
       ...prevValues,
@@ -1735,7 +1735,7 @@ const RentalOffer = props => {
       loginData?.Login_details?.user_account_id,
     );
     saveBiddingDetailsData.append('property_id', propertyId);
-    saveBiddingDetailsData.append('amount', budgetValue);
+    saveBiddingDetailsData.append('amount', budgetValue ? budgetValue : 0);
 
     // Check if selectFile is defined and has at least one file
     if (selectFile && selectFile.length > 0) {
@@ -1877,7 +1877,7 @@ const RentalOffer = props => {
           <View key={index}>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_description}`}
+              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
               }}
@@ -1890,7 +1890,7 @@ const RentalOffer = props => {
           <View>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_description}`}
+              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
               onChangeText={text =>
                 handleInputChange(question.tqm_Question_code, text, index)
               }
@@ -1947,7 +1947,8 @@ const RentalOffer = props => {
               maxHeight={300}
               labelField="lookup_description"
               valueField="lookup_key"
-              placeholder="Select an option"
+              // placeholder="Select an option"
+              placeholder={question?.tqm_Question_placeholder}
               searchPlaceholder="Search..."
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}

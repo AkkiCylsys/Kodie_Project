@@ -136,7 +136,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     flexDirection: 'row',
     borderWidth: 1,
     borderRadius: 30,
-    paddingHorizontal:15,
+    paddingHorizontal:10,
     borderColor: _COLORS.Kodie_GrayColor,
     shadowColor: '#000', 
     shadowOffset: { width: 0, height: 2 },

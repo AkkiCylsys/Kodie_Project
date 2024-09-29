@@ -201,14 +201,24 @@ const OfferForMyProperties = () => {
   const offerPropertyRender = ({item, index}) => {
     // Check if screening conditions are met (disable right button if true)
     const isScreeningDisabled =
-      item.screening_one === 556 ||
-      item.screening_two === 556 ||
-      item.screening_three === 556 ||
-      item.screening_one === null ||
-      item.screening_two === null ||
-      item.screening_three === null ||
+      item?.screening_one === 556 ||
+      item?.screening_two === 556 ||
+      item?.screening_three === 556 ||
+      item?.screening_one === null ||
+      item?.screening_two === null ||
+      item?.screening_three === null ||
       item?.landlord_approve == -1;
 
+    const isApproveApplication =
+      item?.screening_one === 555 &&
+      item?.screening_two === 555 &&
+      item?.screening_three === 555 &&
+      item?.landlord_approve === 0 && 
+      item?.tenant_approve === 1 &&
+      item?.landlord_finalize === 1
+
+      const isRightButtonDisabled =
+  isScreeningDisabled || isApproveApplication || item?.landlord_finalize === 0;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
@@ -234,7 +244,7 @@ const OfferForMyProperties = () => {
                   alignSelf: 'center',
                   marginBottom: 2,
                 }}>
-                {'Landlord reject application'}
+                {'Landlord rejected the application'}
               </Text>
             </View>
           ) : null}
@@ -243,20 +253,21 @@ const OfferForMyProperties = () => {
           <TouchableOpacity
             style={OfferForMyPropertiesStyle.SubContainer}
             onPress={() => {
-              if (!isScreeningDisabled) {
-                Alert.alert(
-                  'Landlord Approved',
-                  'The application has been approved by the landlord.',
-                );
-              } else {
-                navigation.navigate('PropertyViewApplication', {
-                  propertyId: item?.property_id,
-                  bid_id: item?.bid_id,
-                  tenant_id: item?.tenant_id,
-                  landlord_id: item?.landlord_id,
-                  accpetingLandlordId: item?.landlord_accepting_id,
-                });
-              }
+              // if (isScreeningDisabled) {
+              //   Alert.alert(
+              //     'Landlord Approved',
+              //     'The application has been approved by the landlord.',
+              //   );
+              // } else {
+              navigation.navigate('PropertyViewApplication', {
+                propertyId: item?.property_id,
+                bid_id: item?.bid_id,
+                tenant_id: item?.tenant_id,
+                landlord_id: item?.landlord_id,
+                accpetingLandlordId: item?.landlord_accepting_id,
+                offerForMyPropData: item,
+              });
+              // }
             }}>
             <View>
               {item.image_path && item.image_path.length > 0 ? (
@@ -355,7 +366,7 @@ const OfferForMyProperties = () => {
           </TouchableOpacity>
 
           {/* Buttons */}
-          <View style={{marginTop: 20}}>
+          {/* <View style={{marginTop: 20}}>
             <RowButtons
               leftButtonHeight={44}
               RightButtonHeight={44}
@@ -378,22 +389,22 @@ const OfferForMyProperties = () => {
                 });
               }}
               RightButtonbackgroundColor={
-                isScreeningDisabled
+                isScreeningDisabled || isApproveApplication
                   ? _COLORS.Kodie_LightGrayColor
                   : _COLORS.Kodie_BlackColor
               }
               RightButtonborderColor={
-                isScreeningDisabled
+                isScreeningDisabled || isApproveApplication
                   ? _COLORS.Kodie_LightGrayColor
                   : _COLORS.Kodie_BlackColor
               }
               RightButtonTextColor={
-                isScreeningDisabled
+                isScreeningDisabled || isApproveApplication
                   ? _COLORS.Kodie_ExtraLightGrayColor
                   : _COLORS.Kodie_WhiteColor
               }
               onPressRightButton={() => {
-                if (!isScreeningDisabled) {
+                if (!isScreeningDisabled || !isApproveApplication) {
                   handleAcceptingLandlord({
                     propertyId: item?.property_id,
                     bid_id: item?.bid_id,
@@ -403,9 +414,58 @@ const OfferForMyProperties = () => {
                   });
                 }
               }}
-              RightButtonDisabled={isScreeningDisabled}
+              RightButtonDisabled={isScreeningDisabled || isApproveApplication}
             />
-          </View>
+          </View> */}
+          <View style={{marginTop: 20}}>
+  <RowButtons
+    leftButtonHeight={44}
+    RightButtonHeight={44}
+    LeftButtonText={'Reject application'}
+    RightButtonText={
+      item?.tenant_approve === 0 ? 'Final approve' : 'Approve application'
+    }
+    leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+    LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+    LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+    onPressLeftButton={() => {
+      handleAcceptingLandlord({
+        propertyId: item?.property_id,
+        bid_id: item?.bid_id,
+        tenant_id: item?.tenant_id,
+        landlord_id: item?.landlord_id,
+        actionType: 'REJECT',
+      });
+    }}
+    RightButtonbackgroundColor={
+      isRightButtonDisabled
+        ? _COLORS.Kodie_LightGrayColor
+        : _COLORS.Kodie_BlackColor
+    }
+    RightButtonborderColor={
+      isRightButtonDisabled
+        ? _COLORS.Kodie_LightGrayColor
+        : _COLORS.Kodie_BlackColor
+    }
+    RightButtonTextColor={
+      isRightButtonDisabled
+        ? _COLORS.Kodie_ExtraLightGrayColor
+        : _COLORS.Kodie_WhiteColor
+    }
+    onPressRightButton={() => {
+      if (!isRightButtonDisabled) {
+        handleAcceptingLandlord({
+          propertyId: item?.property_id,
+          bid_id: item?.bid_id,
+          tenant_id: item?.tenant_id,
+          landlord_id: item?.landlord_id,
+          actionType: item?.tenant_approve === 0 ? 'FINAL' : 'ACCEPT',
+        });
+      }
+    }}
+    RightButtonDisabled={isRightButtonDisabled}
+  />
+</View>
         </View>
         <DividerIcon borderBottomWidth={3} />
       </View>
