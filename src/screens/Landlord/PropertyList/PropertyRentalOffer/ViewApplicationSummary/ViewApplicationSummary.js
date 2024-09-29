@@ -55,8 +55,16 @@ const ViewApplicationSummary = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [applicationSumReasonOfReject, setApplicationSumReasonOfReject] =
     useState('');
+  const [
+    applicationSumReasonOfRejectError,
+    setApplicationSumReasonOfRejectError,
+  ] = useState('');
   const [occupantReasonOfReject, setOccupantReasonOfReject] = useState('');
+  const [occupantReasonOfRejectError, setOccupantReasonOfRejectError] =
+    useState('');
   const [referenceReasonOfReject, setReferenceReasonOfReject] = useState('');
+  const [referenceReasonOfRejectError, setReferenceReasonOfRejectError] =
+    useState('');
   const [applicationSummaryToggle, setApplicationSummaryToggle] = useState('');
   const [occupantDetailsToggle, setOccupantDetailsToggle] = useState('');
   const [referenceToggle, setReferenceToggle] = useState('');
@@ -90,6 +98,93 @@ const ViewApplicationSummary = props => {
     'tenantQuestDetails in second obj....',
     JSON.stringify(tenantQuestDetails[1]?.children),
   );
+
+  // Validation....
+
+  const handleApplicationSumReject = text => {
+    setApplicationSumReasonOfReject(text);
+    if (applicationSumReasonOfReject == '') {
+      setApplicationSumReasonOfRejectError('Please enter Reason for rejection');
+    } else {
+      setApplicationSumReasonOfRejectError('');
+    }
+  };
+  const handleOccupantReasonOfReject = text => {
+    setOccupantReasonOfReject(text);
+    if (occupantReasonOfReject == '') {
+      setOccupantReasonOfRejectError('Please enter Reason for rejection');
+    } else {
+      setOccupantReasonOfRejectError('');
+    }
+  };
+  const handleReferenceReasonOfReject = text => {
+    setReferenceReasonOfReject(text);
+    if (referenceReasonOfReject == '') {
+      setReferenceReasonOfRejectError('Please enter Reason for rejection');
+    } else {
+      setReferenceReasonOfRejectError('');
+    }
+  };
+
+  // const handleFinalAcceptOffer = () => {
+  //   if (
+  //     !occupantButtonId ||
+  //     !applicationSumAcceptButtonId ||
+  //     !referenceAcceptButtonId
+  //   ) {
+  //     Alert.alert(
+  //       'Error',
+  //       'Please choose an Accept or Reject option for all sections.',
+  //     );
+  //   } else if (applicationSumReasonOfReject == '') {
+  //     setApplicationSumReasonOfRejectError(
+  //       'Please enter Reaseon for rejection',
+  //     );
+  //   } else if (occupantReasonOfReject == '') {
+  //     setOccupantReasonOfRejectError('Please enter Reason for rejection');
+  //   } else if (referenceReasonOfReject == '') {
+  //     setReferenceReasonOfRejectError('Please enter Reason for rejection');
+  //   } else {
+  //     handleSubmit();
+  //   }
+  // };
+
+  const handleFinalAcceptOffer = () => {
+    // Check if any of the sections haven't been selected (accept or reject)
+    if (
+      !occupantButtonId ||
+      !applicationSumAcceptButtonId ||
+      !referenceAcceptButtonId
+    ) {
+      Alert.alert(
+        'Error',
+        'Please choose an Accept or Reject option for all sections.',
+      );
+      return;
+    }
+
+    // If 'Reject' is selected for any section, check for corresponding reason
+    if (
+      applicationSumAcceptButtonId === 556 &&
+      applicationSumReasonOfReject === ''
+    ) {
+      setApplicationSumReasonOfRejectError('Please enter Reason for rejection');
+      return;
+    }
+
+    if (occupantButtonId === 556 && occupantReasonOfReject === '') {
+      setOccupantReasonOfRejectError('Please enter Reason for rejection');
+      return;
+    }
+
+    if (referenceAcceptButtonId === 556 && referenceReasonOfReject === '') {
+      setReferenceReasonOfRejectError('Please enter Reason for rejection');
+      return;
+    }
+
+    // If all validations pass, submit the form
+    handleSubmit();
+  };
 
   const filteredData =
     tenantQuestDetails[0]?.children?.filter(
@@ -327,7 +422,7 @@ const ViewApplicationSummary = props => {
   };
 
   const handleSubmit = async () => {
-    if (!validateSelections()) return;
+    // if (!validateSelections()) return;
 
     // Proceed with your API call here
     console.log('Submitting with selections:', {
@@ -669,13 +764,22 @@ const ViewApplicationSummary = props => {
                 </Text>
                 <TextInput
                   value={applicationSumReasonOfReject}
-                  onChangeText={text => setApplicationSumReasonOfReject(text)}
+                  // onChangeText={text => setApplicationSumReasonOfReject(text)}
+                  onChangeText={text => handleApplicationSumReject(text)}
+                  onBlur={() => {
+                    handleApplicationSumReject(applicationSumReasonOfReject);
+                  }}
                   placeholder="Please enter the Reason for rejection."
                   numberOfLines={5}
                   textAlignVertical="top"
                   maxLength={1000}
                   style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                 />
+                {applicationSumReasonOfRejectError ? (
+                  <Text style={ViewApplicationSummaryStyle?.errorText}>
+                    {applicationSumReasonOfRejectError}
+                  </Text>
+                ) : null}
               </View>
             )}
           </View>
@@ -810,12 +914,20 @@ const ViewApplicationSummary = props => {
                   </Text>
                   <TextInput
                     value={occupantReasonOfReject}
-                    onChangeText={text => setOccupantReasonOfReject(text)}
+                    onChangeText={text => handleOccupantReasonOfReject(text)}
+                    onBlur={() =>
+                      handleOccupantReasonOfReject(occupantReasonOfReject)
+                    }
                     placeholder="Please enter the Reason for rejection."
                     numberOfLines={5}
                     textAlignVertical="top"
                     style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                   />
+                  {occupantReasonOfRejectError ? (
+                    <Text style={ViewApplicationSummaryStyle?.errorText}>
+                      {occupantReasonOfRejectError}
+                    </Text>
+                  ) : null}
                 </View>
               )}
             </View>
@@ -928,12 +1040,20 @@ const ViewApplicationSummary = props => {
                 </Text>
                 <TextInput
                   value={referenceReasonOfReject}
-                  onChangeText={text => setReferenceReasonOfReject(text)}
+                  onChangeText={text => handleReferenceReasonOfReject(text)}
+                  onBlur={() =>
+                    handleReferenceReasonOfReject(referenceReasonOfReject)
+                  }
                   placeholder="Please enter the Reason for rejection."
                   numberOfLines={5}
                   textAlignVertical="top"
                   style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                 />
+                {referenceReasonOfRejectError ? (
+                  <Text style={ViewApplicationSummaryStyle?.errorText}>
+                    {referenceReasonOfRejectError}
+                  </Text>
+                ) : null}
               </View>
             )}
           </View>
@@ -1009,7 +1129,8 @@ const ViewApplicationSummary = props => {
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             onPressRightButton={() => {
-              handleSubmit();
+              // handleSubmit();
+              handleFinalAcceptOffer();
             }}
           />
         </View>

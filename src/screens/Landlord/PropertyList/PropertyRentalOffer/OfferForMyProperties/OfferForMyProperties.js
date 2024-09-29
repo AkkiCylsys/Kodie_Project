@@ -135,6 +135,7 @@ const OfferForMyProperties = () => {
 
       if (response?.success === true) {
         Alert.alert('Success', response?.data);
+        handleOfferForProperty();
         // navigation.navigate('Properties', { tab3: 'tab3' });
       }
     } catch (error) {
@@ -213,12 +214,14 @@ const OfferForMyProperties = () => {
       item?.screening_one === 555 &&
       item?.screening_two === 555 &&
       item?.screening_three === 555 &&
-      item?.landlord_approve === 0 && 
+      item?.landlord_approve === 0 &&
       item?.tenant_approve === 1 &&
-      item?.landlord_finalize === 1
+      item?.landlord_finalize === 1;
 
-      const isRightButtonDisabled =
-  isScreeningDisabled || isApproveApplication || item?.landlord_finalize === 0;
+    const isRightButtonDisabled =
+      isScreeningDisabled ||
+      isApproveApplication ||
+      item?.landlord_finalize === 0;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
@@ -418,54 +421,82 @@ const OfferForMyProperties = () => {
             />
           </View> */}
           <View style={{marginTop: 20}}>
-  <RowButtons
-    leftButtonHeight={44}
-    RightButtonHeight={44}
-    LeftButtonText={'Reject application'}
-    RightButtonText={
-      item?.tenant_approve === 0 ? 'Final approve' : 'Approve application'
-    }
-    leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-    LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-    LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-    onPressLeftButton={() => {
-      handleAcceptingLandlord({
-        propertyId: item?.property_id,
-        bid_id: item?.bid_id,
-        tenant_id: item?.tenant_id,
-        landlord_id: item?.landlord_id,
-        actionType: 'REJECT',
-      });
-    }}
-    RightButtonbackgroundColor={
-      isRightButtonDisabled
-        ? _COLORS.Kodie_LightGrayColor
-        : _COLORS.Kodie_BlackColor
-    }
-    RightButtonborderColor={
-      isRightButtonDisabled
-        ? _COLORS.Kodie_LightGrayColor
-        : _COLORS.Kodie_BlackColor
-    }
-    RightButtonTextColor={
-      isRightButtonDisabled
-        ? _COLORS.Kodie_ExtraLightGrayColor
-        : _COLORS.Kodie_WhiteColor
-    }
-    onPressRightButton={() => {
-      if (!isRightButtonDisabled) {
-        handleAcceptingLandlord({
-          propertyId: item?.property_id,
-          bid_id: item?.bid_id,
-          tenant_id: item?.tenant_id,
-          landlord_id: item?.landlord_id,
-          actionType: item?.tenant_approve === 0 ? 'FINAL' : 'ACCEPT',
-        });
-      }
-    }}
-    RightButtonDisabled={isRightButtonDisabled}
-  />
-</View>
+            <RowButtons
+              leftButtonHeight={44}
+              RightButtonHeight={44}
+              LeftButtonText={'Reject application'}
+              RightButtonText={
+                item?.tenant_approve === 0
+                  ? 'Final approve'
+                  : 'Approve application'
+              }
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              onPressLeftButton={() => {
+                handleAcceptingLandlord({
+                  propertyId: item?.property_id,
+                  bid_id: item?.bid_id,
+                  tenant_id: item?.tenant_id,
+                  landlord_id: item?.landlord_id,
+                  actionType: 'REJECT',
+                });
+              }}
+              RightButtonbackgroundColor={
+                isRightButtonDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                isRightButtonDisabled
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonTextColor={
+                isRightButtonDisabled
+                  ? _COLORS.Kodie_ExtraLightGrayColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              onPressRightButton={() => {
+                if (!isRightButtonDisabled) {
+                  if (item?.tenant_approve === 0) {
+                    // Show confirmation alert for Final Approve
+                    Alert.alert(
+                      'Final approve',
+                      'Are you sure you want to finalize this approval?',
+                      [
+                        {text: 'Cancel', style: 'cancel'},
+                        {
+                          text: 'Confirm',
+                          onPress: () => {
+                            // Proceed with the API call on confirmation
+                            handleAcceptingLandlord({
+                              propertyId: item?.property_id,
+                              bid_id: item?.bid_id,
+                              tenant_id: item?.tenant_id,
+                              landlord_id: item?.landlord_id,
+                              actionType: 'FINAL',
+                            });
+                          },
+                        },
+                      ],
+                      {cancelable: false}, // Prevent closing by tapping outside
+                    );
+                  } else {
+                    // Handle normal approval
+                    handleAcceptingLandlord({
+                      propertyId: item?.property_id,
+                      bid_id: item?.bid_id,
+                      tenant_id: item?.tenant_id,
+                      landlord_id: item?.landlord_id,
+                      actionType: 'ACCEPT',
+                    });
+                  }
+                }
+              }}
+              RightButtonDisabled={isRightButtonDisabled}
+            />
+          </View>
         </View>
         <DividerIcon borderBottomWidth={3} />
       </View>

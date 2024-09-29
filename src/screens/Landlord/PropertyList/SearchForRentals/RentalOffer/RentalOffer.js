@@ -2563,14 +2563,14 @@ const RentalOffer = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={QuesHeadingRender}
           />
-          <View style={{marginHorizontal: 16}}>
+{/* We can use this in the future */}
+          {/* <View style={{marginHorizontal: 16}}>
             <Text style={RentalOfferStyle.inspections}>
               {'Tenant  screening report '}
               <Text style={[RentalOfferStyle.inspections, {fontSize: 14}]}>
                 {'(recommended)'}
               </Text>
             </Text>
-            {/* ... */}
             {selectFile.length > 0 && (
               <View style={RentalOfferStyle.Doc_container}>
                 <View style={RentalOfferStyle.pdfInfo}>
@@ -2600,7 +2600,6 @@ const RentalOffer = props => {
                 </TouchableOpacity>
               </View>
             )}
-            {/* ... */}
             <CustomSingleButton
               _ButtonText={'Start Now'}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -2609,9 +2608,9 @@ const RentalOffer = props => {
                 refRBSheet.current.open();
               }}
             />
-            {/* .... */}
-          </View>
-          <DividerIcon marginTop={5} />
+          </View> */}
+
+          {/* <DividerIcon marginTop={5} /> */}
           <View style={RentalOfferStyle.submitApplicationbtn}>
             <RowButtons
               leftButtonHeight={50}

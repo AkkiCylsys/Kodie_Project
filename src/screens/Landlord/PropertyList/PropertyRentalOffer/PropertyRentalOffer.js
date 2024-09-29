@@ -53,7 +53,6 @@ const PropertyRentalOffer = props => {
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
 
   const accoutId = loginData?.Login_details?.user_account_id;
-
   const handleExpandToggle = property_id => {
     setExpandedPropertyId(prevId =>
       prevId === property_id ? null : property_id,
@@ -118,6 +117,7 @@ const PropertyRentalOffer = props => {
       console.log('response in acceptTenantsData...', response);
       if (response?.success === true) {
         Alert.alert('Success', response?.data);
+        handleGetCurrectOffer();
       } else {
         console.error('Failed to accept tenants:', response?.message);
       }
@@ -135,7 +135,7 @@ const PropertyRentalOffer = props => {
   useFocusEffect(
     React.useCallback(() => {
       handleGetCurrectOffer();
-    }, [accoutId]),
+    }, [accoutId,isFocus]),
   );
 
   const searchCurrentOffer = query => {
