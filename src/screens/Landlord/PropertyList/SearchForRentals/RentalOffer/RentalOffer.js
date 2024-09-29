@@ -127,6 +127,7 @@ const RentalOffer = props => {
   const [subChildren, setSubChildren] = useState([]);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   const [biddingDetailsMessage, setBiddingDetailsMessage] = useState('');
+  const [budgetValue, setBudgetValue] = useState(""); 
   const isFocus = useIsFocused();
   // location....
   const ConfirmAddress = () => {
@@ -207,7 +208,7 @@ const RentalOffer = props => {
       return newCount;
     });
   };
-  
+
   const decreaseNumberYearEmp = questionCode => {
     setNumberYearEmp(prevCount => {
       if (prevCount > 0) {
@@ -228,7 +229,7 @@ const RentalOffer = props => {
       return prevCount; // Prevent going below 0
     });
   };
-  
+
   const increaseNumberPets = questionCode => {
     setNumberPets(prevCount => {
       const newCount = prevCount + 1;
@@ -294,6 +295,7 @@ const RentalOffer = props => {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
 
+      // This is for get Occupants ,Leaseholders,EmployeeReference and Reference Data.
       if (response?.data?.success) {
         const data = response?.data?.data?.[0]?.parent_json;
 
@@ -442,6 +444,7 @@ const RentalOffer = props => {
           console.log('Rental references in edit mode...', rentalReferences);
 
           // Handle dropdown data
+
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
               const options = await handleDropdown(questionCode);
@@ -469,22 +472,72 @@ const RentalOffer = props => {
           }
 
           console.log('Response data in edit mode...', JSON.stringify(data));
+
+          // This is for all buttons.
           const EmploymentfilteredData =
-          data[1]?.children?.filter(item => item.tqm_Question_view !== null) || [];
-        
-        // Ensure to convert tqm_Question_value to a number before setting it
-        const initialValue = Number(EmploymentfilteredData[2]?.tqm_Question_value) || 0;
-        console.log('EmploymentfilteredData...', initialValue);
-        setNumberYearEmp(initialValue);
+            data[1]?.children?.filter(
+              item => item.tqm_Question_view !== null,
+            ) || [];
+          console.log('EmploymentfilteredData...', EmploymentfilteredData);
+          // Ensure to convert tqm_Question_value to a number before setting it
+          const initialValue =
+            Number(EmploymentfilteredData[2]?.tqm_Question_value) || 0;
+          console.log('initialValue of no emp....', initialValue);
+          setNumberYearEmp(initialValue);
 
-        const peferencefilteredData =
-        data[3]?.children?.filter(item => item.tqm_Question_view !== null) || [];
-      
-      // Ensure to convert tqm_Question_value to a number before setting it
-      const initialPetsValue = Number(peferencefilteredData[2]?.tqm_Question_value) || 0; 
-      console.log("peferencefilteredData....", initialPetsValue);
-      setNumberPets(initialPetsValue); // Set the initial value for number of pets
+          const rentalHistoryfilteredData =
+            data[2]?.children?.filter(
+              item => item.tqm_Question_view !== null,
+            ) || [];
 
+          console.log(
+            'rentalHistoryfilteredData...',
+            rentalHistoryfilteredData,
+          );
+
+          const peferencefilteredData =
+            data[3]?.children?.filter(
+              item => item.tqm_Question_view !== null,
+            ) || [];
+
+          console.log('peferencefilteredData...', peferencefilteredData);
+          const initialPetsValue =
+            Number(peferencefilteredData[2]?.tqm_Question_value) || 0;
+          console.log('No of pets....', initialPetsValue);
+          setNumberPets(initialPetsValue);
+
+          const DoEarnIncomeBtn = data[1]?.children[5];
+
+          console.log('DoEarnIncomeBtn...', DoEarnIncomeBtn);
+          if (
+            DoEarnIncomeBtn?.id === 13 &&
+            DoEarnIncomeBtn?.tqm_Question_value == 1
+          ) {
+            setSelectedButton(true); // "Yes" is selected
+          }
+          rentalHistoryfilteredData.forEach(item => {
+            if (item?.id === 20 && item?.tqm_Question_value == 1) {
+              setSelectedRentalBondButton(true); // "Yes" is selected
+            }
+            if (item?.id === 21 && item?.tqm_Question_value == 1) {
+              setSelectedPreviousRentalButton(true); // "Yes" is selected
+            }
+          });
+
+          if (
+            peferencefilteredData[1]?.id === 24 &&
+            peferencefilteredData[1]?.tqm_Question_value == 1
+          ) {
+            setSelectedPetsButton(true); // "Yes" is selected
+          }
+          if (
+            peferencefilteredData[0]?.id === 23 &&
+            peferencefilteredData[0]?.tqm_Question_value == 0
+          ) {
+            setSelectedSomokingButton(true); // Non-smoking is selected (Yes)
+          } else {
+            setSelectedSomokingButton(false); // Smoking is selected (No)
+          }
         } else {
           console.error(
             'Invalid data structure: parent_json is not an array',
@@ -517,7 +570,7 @@ const RentalOffer = props => {
         setSelectedPetsButton(isYesSelected);
         break;
       case 'S/NS':
-        setSelectedSmokingButton(isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
+        setSelectedSomokingButton(isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
         break;
       default:
         console.warn(`Unhandled Yes/No question code: ${questionCode}`);
@@ -1121,10 +1174,17 @@ const RentalOffer = props => {
                 color={'black'} // Adjust color as needed
               />
             </TouchableOpacity>
+
             <Text style={RentalOfferStyle.countdata}>
               {section?.tqm_Question_code === 'NOO'
-                ? numberOccupants
-                : numberLeaseHolder}
+                ? occupants.length > 0
+                  ? occupants.length
+                  : numberOccupants
+                : section?.tqm_Question_code === 'NOL'
+                ? leaseHolderItem.length > 0
+                  ? leaseHolderItem.length
+                  : numberLeaseHolder
+                : null}
             </Text>
             <TouchableOpacity
               style={RentalOfferStyle.menusIconView}
@@ -1142,10 +1202,11 @@ const RentalOffer = props => {
           </TouchableOpacity>
         </View>
         {section?.tqm_Question_code === 'NOO' &&
-          numberOccupants > 0 &&
+          (numberOccupants > 0 || occupants.length > 0) &&
           occupantsRender()}
+
         {section?.tqm_Question_code === 'NOL' &&
-          numberLeaseHolder > 0 &&
+          (numberLeaseHolder > 0 || leaseHolderItem.length > 0) &&
           leaseHolderRenderComponents()}
       </View>
     );
@@ -1397,6 +1458,11 @@ const RentalOffer = props => {
 
   const handleInputChange = (questionCode, value) => {
     console.log(`Handling input change for ${questionCode}: ${value}`);
+    if (questionCode === "RENTAL_BUDGET") {
+      setBudgetValue(value); // Save budget value to its separate state
+      console.log("budgetValue....",value);
+  }
+
     setInputValues(prevValues => ({
       ...prevValues,
       [questionCode]: value,
@@ -1669,7 +1735,7 @@ const RentalOffer = props => {
       loginData?.Login_details?.user_account_id,
     );
     saveBiddingDetailsData.append('property_id', propertyId);
-    saveBiddingDetailsData.append('amount', 1000);
+    saveBiddingDetailsData.append('amount', budgetValue);
 
     // Check if selectFile is defined and has at least one file
     if (selectFile && selectFile.length > 0) {
@@ -1780,8 +1846,8 @@ const RentalOffer = props => {
         isYesSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
       }
       onPressLeftButton={() => {
-        setSelectedState(true);
-        handleInputChange(question.id, 1);
+        setSelectedState(true); // Set to "Yes"
+        handleInputChange(question.tqm_Question_code, 1); // Save value as 1 for "Yes"
       }}
       RightButtonText={'No'}
       RightButtonbackgroundColor={
@@ -1798,8 +1864,8 @@ const RentalOffer = props => {
         !isYesSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
       }
       onPressRightButton={() => {
-        setSelectedState(false);
-        handleInputChange(question.id, 0);
+        setSelectedState(false); // Set to "No"
+        handleInputChange(question.tqm_Question_code, 0); // Save value as 0 for "No"
       }}
     />
   );
@@ -2146,26 +2212,33 @@ const RentalOffer = props => {
           </View>
         );
       case 'Yes_no':
-        if (question.id === 13) {
-          return renderYesNoButton(question, selectedButton, setSelectedButton);
-        } else if (question.id === 20) {
-          return renderYesNoButton(
-            question,
-            selectedRentalBondButton,
-            setSelectedRentalBondButton,
-          );
-        } else if (question.id === 21) {
-          return renderYesNoButton(
-            question,
-            selectedPreviousRentalButton,
-            setSelectedPreviousRentalButton,
-          );
-        } else if (question.id === 24) {
-          return renderYesNoButton(
-            question,
-            selectedPetsButton,
-            setSelectedPetsButton,
-          );
+        switch (question.id) {
+          case 13:
+            return renderYesNoButton(
+              question,
+              selectedButton,
+              setSelectedButton,
+            );
+          case 20:
+            return renderYesNoButton(
+              question,
+              selectedRentalBondButton,
+              setSelectedRentalBondButton,
+            );
+          case 21:
+            return renderYesNoButton(
+              question,
+              selectedPreviousRentalButton,
+              setSelectedPreviousRentalButton,
+            );
+          case 24:
+            return renderYesNoButton(
+              question,
+              selectedPetsButton,
+              setSelectedPetsButton,
+            );
+          default:
+            return null;
         }
       case 'Smoking/Non-smoking':
         return (
@@ -2189,7 +2262,7 @@ const RentalOffer = props => {
               }
               onPressLeftButton={() => {
                 setSelectedSomokingButton(false);
-                handleInputChange(question.id, 1);
+                handleInputChange(question.tqm_Question_code, 1);
               }}
               RightButtonText={'Non-smoking'}
               RightButtonbackgroundColor={
@@ -2209,7 +2282,7 @@ const RentalOffer = props => {
               }
               onPressRightButton={() => {
                 setSelectedSomokingButton(true);
-                handleInputChange(question.id, 0);
+                handleInputChange(question.tqm_Question_code, 0);
               }}
             />
           </View>

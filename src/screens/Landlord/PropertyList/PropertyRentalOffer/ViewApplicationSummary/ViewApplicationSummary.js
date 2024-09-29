@@ -93,6 +93,7 @@ const ViewApplicationSummary = props => {
     tenantQuestDetails[0]?.children?.filter(
       item => item.tqm_Question_view !== null,
     ) || [];
+    console.log("filteredData..",filteredData);
   const EmploymentfilteredData =
     tenantQuestDetails[1]?.children?.filter(
       item => item.tqm_Question_view !== null,
