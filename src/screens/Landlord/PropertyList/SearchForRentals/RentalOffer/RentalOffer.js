@@ -591,13 +591,13 @@ const RentalOffer = props => {
   };
   // Validation...
   const handleValidFullName = text => {
-    const isInvalid = /[^a-zA-Z\s]/.test(text);
+    const isInvalid = !/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(text);
     setFullName(text);
     if (fullName === '') {
       setFullNameError('Full name is required!');
     } else if (isInvalid) {
       setFullNameError(
-        'Full name cannot contain special characters or numbers!',
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setFullNameError('');
@@ -632,12 +632,12 @@ const RentalOffer = props => {
 
   const validLeaseFullName = text => {
     setLeaseFullName(text);
-    const isInvalid = /[^a-zA-Z\s]/.test(text);
+    const isInvalid = !/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(text);
     if (leaseFullName === '') {
       setLeaseFullNameError('Fullname is required!');
     } else if (isInvalid) {
       setLeaseFullNameError(
-        'Full name cannot contain special characters or numbers!',
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setLeaseFullNameError('');
@@ -701,12 +701,12 @@ const RentalOffer = props => {
   // Reference validation
   const validReferenceFullName = text => {
     setReferenceFullName(text);
-    const isInvalid = /[^a-zA-Z\s]/.test(text);
+    const isInvalid = !/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(text);
     if (referenceFullName === '') {
       setReferenceFullNameError('Fullname is required!');
-    } else if(isInvalid) {
+    } else if (isInvalid) {
       setReferenceFullNameError(
-        'Full name cannot contain special characters or numbers!',
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
       );
     } else {
       setReferenceFullNameError('');
@@ -714,12 +714,13 @@ const RentalOffer = props => {
   };
   const validEmployeeReferenceFullName = text => {
     setEmployeeReferenceFullName(text);
-    const isInvalid = /[^a-zA-Z\s]/.test(text);
+    const isInvalid = !/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(text);
     if (employeeReferenceFullName === '') {
       setEmployeeReferenceFullNameError('Fullname is required.');
-    }
-    else if(isInvalid){
-      setEmployeeReferenceFullNameError('Full name cannot contain special characters or numbers!')
+    } else if (isInvalid) {
+      setEmployeeReferenceFullNameError(
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
     } else {
       setEmployeeReferenceFullNameError('');
     }
@@ -843,11 +844,11 @@ const RentalOffer = props => {
           <Text style={RentalOfferStyle.occupants_email}>
             {item?.emailAddress ? item?.emailAddress : item?.leaseEmailAddress}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          {/* <Text style={RentalOfferStyle.occupants_email}>
             {item?.confirmEmailAddress
               ? item?.confirmEmailAddress
               : item?.leaseConfirmEmailAddress}
-          </Text>
+          </Text> */}
         </View>
         <View style={{marginHorizontal: 5}}>
           <CustomSingleButton
@@ -2008,47 +2009,57 @@ const RentalOffer = props => {
             )}
           </View>
         );
+      // case 'Date':
+      //   return (
+      //     <>
+      //       <View style={RentalOfferStyle.datePickerView}>
+      //         <CalendarModal
+      //           SelectDate={
+      //             inputValues[question.tqm_Question_code] || 'Start Date'
+      //           }
+      //           _textInputStyle={{
+      //             color: inputValues[question.tqm_Question_code]
+      //               ? _COLORS.Kodie_BlackColor
+      //               : _COLORS.Kodie_GrayColor,
+      //           }}
+      //           calenderIcon={toggleModal}
+      //           onDayPress={day => {
+      //             handleInputChange(
+      //               question.tqm_Question_code,
+      //               day.dateString,
+      //               index,
+      //             );
+
+      //             // Clear the error message when a date is selected
+      //             if (errors[question.tqm_Question_code]) {
+      //               setErrors(prevErrors => ({
+      //                 ...prevErrors,
+      //                 [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+      //               }));
+      //             }
+      //           }}
+      //           Visible={isModalVisible}
+      //           onRequestClose={toggleModal}
+      //           markedDates={{
+      //             [inputValues[question.tqm_Question_code]]: {
+      //               selected: true,
+      //               selectedColor: _COLORS.Kodie_lightGreenColor,
+      //               selectedTextColor: _COLORS.Kodie_BlackColor,
+      //             },
+      //           }}
+      //           _closeButton={toggleModal}
+      //           _ApplyButton={toggleModal}
+      //         />
+      //       </View>
+      //       {errors[question.tqm_Question_code] && (
+      //         <Text style={RentalOfferStyle?.errorText}>
+      //           {errors[question.tqm_Question_code]}
+      //         </Text>
+      //       )}
+      //     </>
+      //   );
       case 'Date':
         return (
-          // <>
-          //   <View style={RentalOfferStyle.datePickerView}>
-          //     <CalendarModal
-          //       SelectDate={
-          //         inputValues[question.tqm_Question_code] || 'Start Date'
-          //       }
-          //       _textInputStyle={{
-          //         color: inputValues[question.tqm_Question_code]
-          //           ? _COLORS.Kodie_BlackColor
-          //           : _COLORS.Kodie_GrayColor,
-          //       }}
-          //       calenderIcon={toggleModal}
-          //       onDayPress={day =>
-          //         handleInputChange(
-          //           question.tqm_Question_code,
-          //           day.dateString,
-          //           index,
-          //         )
-          //       }
-          //       Visible={isModalVisible}
-          //       onRequestClose={toggleModal}
-          //       markedDates={{
-          //         [inputValues[question.tqm_Question_code]]: {
-          //           selected: true,
-          //           selectedColor: _COLORS.Kodie_lightGreenColor,
-          //           selectedTextColor: _COLORS.Kodie_BlackColor,
-          //         },
-          //       }}
-          //       _closeButton={toggleModal}
-          //       _ApplyButton={toggleModal}
-          //     />
-          //   </View>
-          //   {errors[question.tqm_Question_code] && (
-          //     <Text style={RentalOfferStyle?.errorText}>
-          //       {errors[question.tqm_Question_code]}
-          //     </Text>
-          //   )}
-          // </>
-
           <>
             <View style={RentalOfferStyle.datePickerView}>
               <CalendarModal
@@ -2085,6 +2096,12 @@ const RentalOffer = props => {
                     selectedTextColor: _COLORS.Kodie_BlackColor,
                   },
                 }}
+                // Disable past dates when question.id === 2
+                minDate={
+                  question.id === 2
+                    ? new Date().toISOString().split('T')[0]
+                    : undefined
+                }
                 _closeButton={toggleModal}
                 _ApplyButton={toggleModal}
               />
@@ -2096,6 +2113,7 @@ const RentalOffer = props => {
             )}
           </>
         );
+
       case 'Dropdown':
         return (
           <View>

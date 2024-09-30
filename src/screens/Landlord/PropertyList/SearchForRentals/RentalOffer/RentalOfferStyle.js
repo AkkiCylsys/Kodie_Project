@@ -557,6 +557,7 @@ export const RentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_redColor,
     fontFamily: FONTFAMILY?.K_Medium,
     fontSize: 14,
-    marginBottom:12
+    marginBottom:12,
+    marginTop:5
   },
 });
