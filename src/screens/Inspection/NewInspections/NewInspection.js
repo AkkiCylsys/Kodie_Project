@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useCallback } from 'react';
 import {
   View,
   Text,
@@ -59,10 +59,24 @@ export default NewInspection = (props) => {
     { id: 12, name: 'December' },
   ]);
   const [InspectionDetails, setInspectionDetails] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const getInspectionDeatils = useCallback(() => {
+    // API call with the latest values
+    getInspectionDeatilsByFilter({
+      monthId: _selectedMonthId,
+      year: _selectedYear,
+      page: 1,
+      filter: selectedFilter,
+      sortOrder: sortOrder // Latest sortOrder state
+    });
+  }, [_selectedMonthId, _selectedYear, selectedFilter, sortOrder]); // Include dependencies
+  
+  useEffect(() => {
+    getInspectionDeatils();
+  }, [_selectedMonthId, _selectedYear, selectedFilter, sortOrder]);
+ 
   useEffect(() => {
     if (isFocused) {
       getInspectionDeatilsByFilter({
@@ -73,21 +87,19 @@ export default NewInspection = (props) => {
       getInspectionDetails();
     }
   }, [isFocused, _selectedMonthId, _selectedYear, selectedFilter]);
-
-  const handleCloseModal = () => {
-    refRBSheet2.current.close();
-    // refRBSheet1.current.close();
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
   };
-
-  const sortByDate = () => {
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    getInspectionDeatilsByFilter({
-      monthId: _selectedMonthId,
-      year: _selectedYear,
-      page: 1,
-      filter: selectedFilter,
-    });
-  };
+  
+  const sortByDate = debounce(() => {
+    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+  }, 300);
   const searchInspection = query => {
     setSearchQuery(query);
     const filtered = query
@@ -99,8 +111,7 @@ export default NewInspection = (props) => {
       : InspectionDetails;
     console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
-  };
-
+  }
   const getInspectionDeatilsByFilter = async ({
     monthId,
     year,
@@ -256,9 +267,6 @@ export default NewInspection = (props) => {
       });
     }
   };
-
-  // const searchInspection = () => {};
-
   const navigateToPreviousMonth = async () => {
     let newMonthId = _selectedMonthId - 1;
     let newYear = _selectedYear;
