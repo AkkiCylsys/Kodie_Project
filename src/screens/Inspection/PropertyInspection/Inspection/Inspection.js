@@ -489,6 +489,7 @@ const Inspection = props => {
               disabled={false}
             />
           ) : null}
+          
           <FlatList
             data={AreaKey}
             scrollEnabled

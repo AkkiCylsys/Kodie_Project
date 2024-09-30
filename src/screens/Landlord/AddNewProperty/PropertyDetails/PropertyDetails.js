@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {View,Text,TouchableOpacity,TextInput,ScrollView,Image,KeyboardAvoidingView,Platform,SafeAreaView,BackHandler} from 'react-native';
-import {PropertyDetailsStyle} from './PropertyDetailsStyle';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Image, KeyboardAvoidingView, Platform, SafeAreaView, BackHandler } from 'react-native';
+import { PropertyDetailsStyle } from './PropertyDetailsStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
-import {Dropdown} from 'react-native-element-dropdown';
+import { _goBack } from '../../../../services/CommonServices';
+import { Dropdown } from 'react-native-element-dropdown';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {IMAGES, LABEL_STYLES} from '../../../../Themes';
-import {_COLORS} from '../../../../Themes';
+import { IMAGES, LABEL_STYLES } from '../../../../Themes';
+import { _COLORS } from '../../../../Themes';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
-import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import { SignUpStepStyle } from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
@@ -101,9 +101,9 @@ export default PropertyDetails = props => {
   useEffect(() => {
     handleProperty_Type();
     propertyid > 0 ||
-    (Array.isArray(addPropertySecondStepData) &&
-      addPropertySecondStepData.length > 0) ||
-    typeof addPropertySecondStepData === 'number'
+      (Array.isArray(addPropertySecondStepData) &&
+        addPropertySecondStepData.length > 0) ||
+      typeof addPropertySecondStepData === 'number'
       ? DetailsData()
       : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
@@ -176,7 +176,7 @@ export default PropertyDetails = props => {
       UPD_LAND_AREA: property_Detail?.land_area,
       additional_key_features: property_Detail?.additional_key_features_id,
       autolist: 0,
-      property_id:propertyid,
+      property_id: propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -231,7 +231,7 @@ export default PropertyDetails = props => {
     alert('location')
     Geolocation.getCurrentPosition(
       (position) => {
-        console.log('you are here.',position);
+        console.log('you are here.', position);
         // alert(JSON.stringify(position))
         const { latitude, longitude } = position.coords;
         console.log('position.coords in map components....', position.coords);
@@ -251,7 +251,7 @@ export default PropertyDetails = props => {
       }
     );
   };
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -304,23 +304,23 @@ export default PropertyDetails = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Features'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Features'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -478,11 +478,11 @@ export default PropertyDetails = props => {
       property_description: propertyDesc,
       property_type: property_value > 0 ? property_value : 0,
       key_features: [
-        {Bedrooms: 0},
-        {Bathrooms: 0},
-        {'Reception rooms': 0},
-        {'Parking / garage spaces': 0},
-        {'On-street parking': 0},
+        { Bedrooms: 0 },
+        { Bathrooms: 0 },
+        { 'Reception rooms': 0 },
+        { 'Parking / garage spaces': 0 },
+        { 'On-street parking': 0 },
       ],
       additional_features: '0,0,0,0',
       additional_key_features: 0,
@@ -548,13 +548,13 @@ export default PropertyDetails = props => {
           IsMap || IsSearch
             ? 'Location'
             : editMode
-            ? 'Edit property'
-            : 'Add new property'
+              ? 'Edit property'
+              : 'Add new property'
         }
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
+        style={{ flex: 1 }}>
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -571,13 +571,13 @@ export default PropertyDetails = props => {
           </View>
         )}
         {IsMap ? (
-          
+
           <View
             style={{
               flex: 1,
               backgroundColor: 'transparent',
             }}>
-              
+
             <MapScreen
               style={{
                 height: '100%',
@@ -588,9 +588,9 @@ export default PropertyDetails = props => {
               onRegionChange={onRegionChange}
               Maplat={latitude}
               Maplng={longitude}
-              iscancel={()=> setIsMap(false)}
-              // Maplat={getLat}
-              // Maplng={getLong}
+              iscancel={() => setIsMap(false)}
+            // Maplat={getLat}
+            // Maplng={getLong}
             />
             <View
               style={{
@@ -620,8 +620,8 @@ export default PropertyDetails = props => {
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-              
+              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+
             </TouchableOpacity>
           </View>
         ) : IsSearch ? (
@@ -643,7 +643,7 @@ export default PropertyDetails = props => {
           />
         ) : (
           <ScrollView
-            contentContainerStyle={{marginBottom: 190}}
+            contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled">
             <View style={PropertyDetailsStyle.headingView}>
@@ -656,10 +656,10 @@ export default PropertyDetails = props => {
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
                   {'Location'}
-                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                  <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
                 </Text>
                 <View style={PropertyDetailsStyle.locationConView}>
-                  <View style={[PropertyDetailsStyle.locationContainer,{
+                  <View style={[PropertyDetailsStyle.locationContainer, {
                     borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
                   }]}>
                     <TextInput
@@ -679,7 +679,7 @@ export default PropertyDetails = props => {
                     />
                   </View>
                   <TouchableOpacity
-                    style={[PropertyDetailsStyle.locationIconView,{
+                    style={[PropertyDetailsStyle.locationIconView, {
                       borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
                     }]}
                     onPress={() => {
@@ -701,17 +701,17 @@ export default PropertyDetails = props => {
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
                   Property type
-                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                  <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
                 </Text>
                 <Dropdown
-                  style={[PropertyDetailsStyle.dropdown,{
-                    
-                      borderColor: propertyError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                    
+                  style={[PropertyDetailsStyle.dropdown, {
+
+                    borderColor: propertyError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+
                   }]}
                   placeholderStyle={[
                     PropertyDetailsStyle.placeholderStyle,
-                    {color: _COLORS.Kodie_LightGrayColor},
+                    { color: _COLORS.Kodie_LightGrayColor },
                   ]}
                   selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
                   inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
@@ -738,16 +738,16 @@ export default PropertyDetails = props => {
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
                   Notes
-                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                  <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
                 </Text>
-                
+
 
                 <TextInput
-                  style={[PropertyDetailsStyle.input,{
-                    
+                  style={[PropertyDetailsStyle.input, {
+
                     borderColor: notesError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                  
-                }]}
+
+                  }]}
                   value={propertyDesc}
                   onChangeText={handleNote}
                   placeholder="Add any information about your property"
@@ -758,7 +758,7 @@ export default PropertyDetails = props => {
                   textAlignVertical={'top'}
                   onBlur={() => handleNote(propertyDesc)}
                 />
-                
+
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
                 </Text>

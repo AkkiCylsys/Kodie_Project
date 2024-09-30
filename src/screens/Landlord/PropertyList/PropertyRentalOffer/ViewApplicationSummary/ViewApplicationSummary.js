@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -9,9 +9,9 @@ import {
   Linking,
   Platform,
 } from 'react-native';
-import {ViewApplicationSummaryStyle} from './ViewApplicationSummaryStyle';
+import { ViewApplicationSummaryStyle } from './ViewApplicationSummaryStyle';
 
-import {_COLORS, FONTFAMILY} from '../../../../../Themes';
+import { _COLORS, FONTFAMILY } from '../../../../../Themes';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -20,15 +20,15 @@ import ToggleButton from '../../../../../components/Molecules/ToggleButton/Toggl
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import moment from 'moment';
-import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { SignupLookupDetails } from '../../../../../APIs/AllApi';
+import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 import {
   getLandlordDetailsByAcceptingId,
   saveLandLordAcceptingService,
   UpdateLandLordAcceptingService,
 } from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 
 const occupantData = [
@@ -168,17 +168,17 @@ const ViewApplicationSummary = props => {
       applicationSumAcceptButtonId === 556 &&
       applicationSumReasonOfReject === ''
     ) {
-      setApplicationSumReasonOfRejectError('Please enter Reason for rejection');
+      setApplicationSumReasonOfRejectError('Please enter Reason for rejection.');
       return;
     }
 
     if (occupantButtonId === 556 && occupantReasonOfReject === '') {
-      setOccupantReasonOfRejectError('Please enter Reason for rejection');
+      setOccupantReasonOfRejectError('Please enter Reason for rejection.');
       return;
     }
 
     if (referenceAcceptButtonId === 556 && referenceReasonOfReject === '') {
-      setReferenceReasonOfRejectError('Please enter Reason for rejection');
+      setReferenceReasonOfRejectError('Please enter Reason for rejection.');
       return;
     }
 
@@ -464,7 +464,7 @@ const ViewApplicationSummary = props => {
 
   const openEmailClient = emailAddress => {
     const mailtoUrl = `mailto:${emailAddress}`; // Only the recipient email address
-  
+
     // Open Gmail app or default email client
     Linking.openURL(mailtoUrl)
       .then(() => {
@@ -512,7 +512,7 @@ const ViewApplicationSummary = props => {
   //   }
   // };
 
-  const occupantRenderItem = ({item, index}) => {
+  const occupantRenderItem = ({ item, index }) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
         <View>
@@ -523,7 +523,7 @@ const ViewApplicationSummary = props => {
             {item?.emailAddress}
           </Text>
         </View>
-        <View style={{marginHorizontal: 5}}>
+        <View style={{ marginHorizontal: 5 }}>
           <CustomSingleButton
             _ButtonText={'Contact'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
@@ -537,7 +537,7 @@ const ViewApplicationSummary = props => {
       </View>
     );
   };
-  const leaseHolderRenderItem = ({item, index}) => {
+  const leaseHolderRenderItem = ({ item, index }) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
         <View>
@@ -545,7 +545,7 @@ const ViewApplicationSummary = props => {
             {item?.fullName}
           </Text>
           <Text
-            style={[ViewApplicationSummaryStyle.occupants_email, {width: 200}]}>
+            style={[ViewApplicationSummaryStyle.occupants_email, { width: 200 }]}>
             {item?.emailAddress}
           </Text>
           {/* <Text
@@ -553,7 +553,7 @@ const ViewApplicationSummary = props => {
             {item?.confirmEmailAddress}
           </Text> */}
         </View>
-        <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
+        <View style={{ marginHorizontal: 5, alignSelf: 'center' }}>
           <CustomSingleButton
             _ButtonText={'Contact'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
@@ -567,7 +567,7 @@ const ViewApplicationSummary = props => {
       </View>
     );
   };
-  const employeeReferenceRenderItem = ({item, index}) => {
+  const employeeReferenceRenderItem = ({ item, index }) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
         <View>
@@ -578,7 +578,7 @@ const ViewApplicationSummary = props => {
             {item?.email}
           </Text>
         </View>
-        <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
+        <View style={{ marginHorizontal: 5, alignSelf: 'center' }}>
           <CustomSingleButton
             _ButtonText={'Contact'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
@@ -593,7 +593,7 @@ const ViewApplicationSummary = props => {
     );
   };
 
-  const referenceRenderItem = ({item, index}) => {
+  const referenceRenderItem = ({ item, index }) => {
     return (
       <View style={ViewApplicationSummaryStyle.occupants_item_View}>
         <View>
@@ -604,7 +604,7 @@ const ViewApplicationSummary = props => {
             {item?.email}
           </Text>
         </View>
-        <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
+        <View style={{ marginHorizontal: 5, alignSelf: 'center' }}>
           <CustomSingleButton
             _ButtonText={'Contact'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
@@ -622,7 +622,7 @@ const ViewApplicationSummary = props => {
   return (
     <View style={ViewApplicationSummaryStyle?.mainContainer}>
       {/* Application summary Data */}
-      <View style={{marginHorizontal: 16}}>
+      <View style={{ marginHorizontal: 16 }}>
         <TouchableOpacity
           style={ViewApplicationSummaryStyle.applicationSum_view}
           onPress={() => {
@@ -653,7 +653,7 @@ const ViewApplicationSummary = props => {
               <FlatList
                 data={filteredData} // Use the filtered data
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
@@ -673,7 +673,7 @@ const ViewApplicationSummary = props => {
               <FlatList
                 data={EmploymentfilteredData}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
@@ -693,17 +693,17 @@ const ViewApplicationSummary = props => {
               <FlatList
                 data={rentalHistoryfilteredData}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
                       item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_value === '1'
-                        ? 'Yes'
-                        : item?.tqm_Question_value === '0'
-                        ? 'No'
-                        : item?.tqm_Question_value || '-'
+                          ? 'Yes'
+                          : item?.tqm_Question_value === '0'
+                            ? 'No'
+                            : item?.tqm_Question_value || '-'
                     }
                   />
                 )}
@@ -717,19 +717,19 @@ const ViewApplicationSummary = props => {
               <FlatList
                 data={peferencefilteredData}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => (
+                renderItem={({ item }) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
                       item?.tqm_Question_code === 'PETS_THEY'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_type === 'Dropdown'
-                        ? item?.tqm_Question_value_data || '-'
-                        : item?.tqm_Question_value === '1'
-                        ? 'Yes'
-                        : item?.tqm_Question_value === '0'
-                        ? 'No'
-                        : item?.tqm_Question_value || '-'
+                          ? item?.tqm_Question_value_data || '-'
+                          : item?.tqm_Question_value === '1'
+                            ? 'Yes'
+                            : item?.tqm_Question_value === '0'
+                              ? 'No'
+                              : item?.tqm_Question_value || '-'
                     }
                   />
                 )}
@@ -739,7 +739,7 @@ const ViewApplicationSummary = props => {
               <Text
                 style={[
                   ViewApplicationSummaryStyle?.headingText,
-                  {alignSelf: 'center'},
+                  { alignSelf: 'center' },
                 ]}>
                 {'Screening result'}
               </Text>
@@ -781,8 +781,9 @@ const ViewApplicationSummary = props => {
                   onBlur={() => {
                     handleApplicationSumReject(applicationSumReasonOfReject);
                   }}
-                  placeholder="Please enter the Reason for rejection."
+                  placeholder="Please enter the reason for rejection."
                   numberOfLines={5}
+                  multiline
                   textAlignVertical="top"
                   maxLength={1000}
                   style={ViewApplicationSummaryStyle?.reasonRejectStyle}
@@ -799,7 +800,7 @@ const ViewApplicationSummary = props => {
       </View>
 
       {/* Occupante Data  */}
-      <View style={{marginHorizontal: 16}}>
+      <View style={{ marginHorizontal: 16 }}>
         <View>
           <TouchableOpacity
             style={ViewApplicationSummaryStyle.applicationSum_view}
@@ -829,14 +830,14 @@ const ViewApplicationSummary = props => {
                   <Text
                     style={[
                       ViewApplicationSummaryStyle?.headingText,
-                      {color: _COLORS?.Kodie_MediumGrayColor},
+                      { color: _COLORS?.Kodie_MediumGrayColor },
                     ]}>
                     {'# of occupants'}
                   </Text>
                   <Text
                     style={[
                       ViewApplicationSummaryStyle?.occupantNumberStyle,
-                      {marginLeft: 110},
+                      { marginLeft: 110 },
                     ]}>
                     {occupantDataList.length}
                   </Text>
@@ -849,7 +850,7 @@ const ViewApplicationSummary = props => {
                     return (
                       <ListEmptyComponent
                         EmptyText={'No occupant details available.'}
-                        EmptyStyle={{marginVertical: 15}}
+                        EmptyStyle={{ marginVertical: 15 }}
                       />
                     );
                   }}
@@ -860,7 +861,7 @@ const ViewApplicationSummary = props => {
                 <Text
                   style={[
                     ViewApplicationSummaryStyle.applicationSumDet,
-                    {marginTop: 5},
+                    { marginTop: 5 },
                   ]}>
                   {'Leaseholders'}
                 </Text>
@@ -868,7 +869,7 @@ const ViewApplicationSummary = props => {
                   <Text
                     style={[
                       ViewApplicationSummaryStyle?.headingText,
-                      {color: _COLORS?.Kodie_MediumGrayColor},
+                      { color: _COLORS?.Kodie_MediumGrayColor },
                     ]}>
                     {'# of leaseholders'}
                   </Text>
@@ -885,7 +886,7 @@ const ViewApplicationSummary = props => {
                     return (
                       <ListEmptyComponent
                         EmptyText={'No leaseholders available.'}
-                        EmptyStyle={{marginVertical: 15}}
+                        EmptyStyle={{ marginVertical: 15 }}
                       />
                     );
                   }}
@@ -894,7 +895,7 @@ const ViewApplicationSummary = props => {
                   <Text
                     style={[
                       ViewApplicationSummaryStyle?.headingText,
-                      {alignSelf: 'center'},
+                      { alignSelf: 'center' },
                     ]}>
                     {'Screening result'}
                   </Text>
@@ -930,8 +931,9 @@ const ViewApplicationSummary = props => {
                     onBlur={() =>
                       handleOccupantReasonOfReject(occupantReasonOfReject)
                     }
-                    placeholder="Please enter the Reason for rejection."
+                    placeholder="Please enter the reason for rejection."
                     numberOfLines={5}
+                    multiline
                     textAlignVertical="top"
                     style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                   />
@@ -947,7 +949,7 @@ const ViewApplicationSummary = props => {
         </View>
       </View>
       {/* References Data */}
-      <View style={{marginHorizontal: 16}}>
+      <View style={{ marginHorizontal: 16 }}>
         <TouchableOpacity
           style={ViewApplicationSummaryStyle.applicationSum_view}
           onPress={() => {
@@ -975,7 +977,7 @@ const ViewApplicationSummary = props => {
               <Text
                 style={[
                   ViewApplicationSummaryStyle.applicationSumDet,
-                  {marginVertical: 10},
+                  { marginVertical: 10 },
                 ]}>
                 {'Employment references'}
               </Text>
@@ -987,7 +989,7 @@ const ViewApplicationSummary = props => {
                   return (
                     <ListEmptyComponent
                       EmptyText={'No employment references available.'}
-                      EmptyStyle={{marginVertical: 15}}
+                      EmptyStyle={{ marginVertical: 15 }}
                     />
                   );
                 }}
@@ -997,7 +999,7 @@ const ViewApplicationSummary = props => {
               <Text
                 style={[
                   ViewApplicationSummaryStyle.applicationSumDet,
-                  {marginTop: 10},
+                  { marginTop: 10 },
                 ]}>
                 {'Rental references'}
               </Text>
@@ -1009,7 +1011,7 @@ const ViewApplicationSummary = props => {
                   return (
                     <ListEmptyComponent
                       EmptyText={'No rental references available.'}
-                      EmptyStyle={{marginVertical: 15}}
+                      EmptyStyle={{ marginVertical: 15 }}
                     />
                   );
                 }}
@@ -1019,7 +1021,7 @@ const ViewApplicationSummary = props => {
               <Text
                 style={[
                   ViewApplicationSummaryStyle?.headingText,
-                  {alignSelf: 'center'},
+                  { alignSelf: 'center' },
                 ]}>
                 {'Screening result'}
               </Text>
@@ -1056,8 +1058,9 @@ const ViewApplicationSummary = props => {
                   onBlur={() =>
                     handleReferenceReasonOfReject(referenceReasonOfReject)
                   }
-                  placeholder="Please enter the Reason for rejection."
+                  placeholder="Please enter the reason for rejection."
                   numberOfLines={5}
+                  multiline
                   textAlignVertical="top"
                   style={ViewApplicationSummaryStyle?.reasonRejectStyle}
                 />
@@ -1110,10 +1113,10 @@ const ViewApplicationSummary = props => {
 
       <DividerIcon borderBottomWidth={2} />
       {offerForMyPropData?.landlord_approve == 1 &&
-      offerForMyPropData?.screening_one == 555 &&
-      offerForMyPropData?.screening_two == 555 &&
-      offerForMyPropData?.screening_three == 555 ? (
-        <View style={{marginHorizontal: 16}}>
+        offerForMyPropData?.screening_one == 555 &&
+        offerForMyPropData?.screening_two == 555 &&
+        offerForMyPropData?.screening_three == 555 ? (
+        <View style={{ marginHorizontal: 16 }}>
           <CustomSingleButton
             _ButtonText={'Back'}
             Text_Color={_COLORS.Kodie_WhiteColor}
@@ -1125,7 +1128,7 @@ const ViewApplicationSummary = props => {
           />
         </View>
       ) : (
-        <View style={{marginBottom: 20, marginHorizontal: 16}}>
+        <View style={{ marginBottom: 20, marginHorizontal: 16 }}>
           <RowButtons
             leftButtonHeight={44}
             RightButtonHeight={44}

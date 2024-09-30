@@ -82,6 +82,7 @@ const CreateNewInspection = props => {
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [customAreaName, setCustomAreaName] = useState('');
+  const [currentTimeError, setCurrentTimeError] = useState('');
   const [customeAreavalue, setCustomeAreaValue] = useState([]);
   const TIM_KEY = props?.route?.params?.TIM_KEY;
   const InspectionView = props?.route?.params?.InspectionView;
@@ -523,6 +524,8 @@ const CreateNewInspection = props => {
       setErrorInspection(true);
     } else if (selectedDate === '') {
       setSelectedDateError(true);
+    }  else if (currentTime == '') {
+      setCurrentTimeError('Select time is required!');
     } else if (selectedAddress == '') {
       setShowError(true);
     }else if (checkedItemIds.length === 0) {
@@ -588,6 +591,13 @@ const CreateNewInspection = props => {
   const handleClosePopup = () => {
     refRBSheet.current.close();
     refRBSheet1.current.close();
+  };
+  const handleSelectTime = text => {
+    if (text.trim() === '') {
+      setCurrentTimeError('Select time is required!');
+    } else {
+      setCurrentTimeError('');
+    }
   };
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
@@ -692,9 +702,16 @@ const CreateNewInspection = props => {
               _TextTimeColor={
                 currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_LightGrayColor
               }
+              timerConStyle={{
+                borderColor: currentTimeError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
+              }}
               data={new Date()}
               getData={date => {
-                setCurrentTime(moment(date).format('hh:mm A'));
+                const formattedTime = moment(date).format('hh:mm A');
+                setCurrentTime(formattedTime);
+                handleSelectTime(formattedTime);
               }}
             />
           </View>
@@ -704,6 +721,11 @@ const CreateNewInspection = props => {
               {'Please select a date!'}
             </Text>
           )}
+           {currentTimeError ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {currentTimeError}
+            </Text>
+          ) : null}
 
           <View style={{ marginBottom: 12, marginTop: 20 }}>
             <Text style={LABEL_STYLES.commontext}>
