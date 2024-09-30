@@ -413,6 +413,9 @@ const RentalOffer = props => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
+                if (childQuestion.tqm_Question_type === 'Search') {
+                  dropdownQuestions.push(childQuestion.tqm_Question_code);
+                }
 
                 if (childQuestion.tqm_Question_type === 'Yes_no') {
                   setButtonState(
@@ -1678,9 +1681,21 @@ const RentalOffer = props => {
         });
       });
 
+      if (!referenceIds[33]) {
+        referenceIds[33] = [];
+      }
       // For employee references (ID 33)
+      // employeeReferencesItem.forEach(employeeReference => {
+      //   // Push only once, either existing or new data
+      //   referenceIds[33].push({
+      //     fullName:
+      //       employeeReference.fullName ||
+      //       employeeReference.employeeReferenceFullName,
+      //     email:
+      //       employeeReference.email || employeeReference.employeeReferenceEmail,
+      //   });
+      // });
       employeeReferencesItem.forEach(employeeReference => {
-        // Push only once, either existing or new data
         referenceIds[33].push({
           fullName:
             employeeReference.fullName ||
@@ -2652,7 +2667,12 @@ const RentalOffer = props => {
   return (
     <SafeAreaView style={RentalOfferStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => {
+          _goBack(props);
+          props?.navigation?.navigate('Properties', {
+            tab3: 'tab3',
+          });
+        }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />
       {IsMap ? (
