@@ -450,55 +450,67 @@ const ViewApplicationSummary = props => {
 
   // For contact
   // const openEmailClient = emailAddress => {
-  //   // alert(emailAddress);
   //   const mailtoUrl = `mailto:${emailAddress}`;
-  //   Linking.canOpenURL(mailtoUrl)
-  //     .then(supported => {
-  //       if (supported) {
-  //         Linking.openURL(mailtoUrl);
-  //       } else {
-  //         Alert.alert(
-  //           'Email client not available',
-  //           `Cannot open email client for ${emailAddress}`,
-  //         );
-  //       }
-  //     })
-  //     .catch(err => console.error('Error opening email client:', err));
+
+  //   Linking.openURL(mailtoUrl).catch(err => {
+  //     // Handle any errors
+  //     console.error('Error opening email client:', err);
+  //     Alert.alert(
+  //       'Error',
+  //       'There was a problem opening your email client. Please try again later.',
+  //     );
+  //   });
   // };
 
-  const openGmail = emailAddress => {
-    const gmailUrl = `googlegmail://co?to=${emailAddress}`;
-
-    if (Platform.OS === 'android') {
-      Linking.canOpenURL(gmailUrl)
-        .then(supported => {
-          if (supported) {
-            Linking.openURL(gmailUrl);
-          } else {
-            Alert.alert(
-              'Gmail app not available',
-              'Please install Gmail to use this feature.',
-            );
-          }
-        })
-        .catch(err => console.error('Error opening Gmail:', err));
-    } else {
-      // For iOS or if Gmail is not available, fallback to mailto
-      const mailtoUrl = `mailto:${emailAddress}`;
-      Linking.canOpenURL(mailtoUrl)
-        .then(supported => {
-          if (supported) {
-            Linking.openURL(mailtoUrl);
-          } else {
-            Alert.alert(
-              'Email client not available',
-              `Cannot open email client for ${emailAddress}`,
-            );
-          }
-        })
-        .catch(err => console.error('Error opening email client:', err));
-    }
+  const openEmailClient = emailAddress => {
+    const mailtoUrl = `mailto:${emailAddress}`; // Only the recipient email address
+  
+    // Open Gmail app or default email client
+    Linking.openURL(mailtoUrl)
+      .then(() => {
+        // Optionally, show a success message or perform any additional actions
+        Alert.alert('Success', 'Your Gmail client is opened.');
+      })
+      .catch(err => {
+        // Handle any errors when opening the email client
+        console.error('Error opening Gmail client:', err);
+        Alert.alert('Error', 'There was a problem opening the Gmail client.');
+      });
   };
+
+  // const openGmail = emailAddress => {
+  //   const gmailUrl = `googlegmail://co?to=${emailAddress}`;
+
+  //   if (Platform.OS === 'android') {
+  //     Linking.canOpenURL(gmailUrl)
+  //       .then(supported => {
+  //         if (supported) {
+  //           Linking.openURL(gmailUrl);
+  //         } else {
+  //           Alert.alert(
+  //             'Gmail app not available',
+  //             'Please install Gmail to use this feature.',
+  //           );
+  //         }
+  //       })
+  //       .catch(err => console.error('Error opening Gmail:', err));
+  //   } else {
+  //     // For iOS or if Gmail is not available, fallback to mailto
+  //     const mailtoUrl = `mailto:${emailAddress}`;
+  //     Linking.canOpenURL(mailtoUrl)
+  //       .then(supported => {
+  //         if (supported) {
+  //           Linking.openURL(mailtoUrl);
+  //         } else {
+  //           Alert.alert(
+  //             'Email client not available',
+  //             `Cannot open email client for ${emailAddress}`,
+  //           );
+  //         }
+  //       })
+  //       .catch(err => console.error('Error opening email client:', err));
+  //   }
+  // };
 
   const occupantRenderItem = ({item, index}) => {
     return (
@@ -519,7 +531,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => openGmail(item?.emailAddress)}
+            onPress={() => openEmailClient(item?.emailAddress)}
           />
         </View>
       </View>
@@ -536,10 +548,10 @@ const ViewApplicationSummary = props => {
             style={[ViewApplicationSummaryStyle.occupants_email, {width: 200}]}>
             {item?.emailAddress}
           </Text>
-          <Text
+          {/* <Text
             style={[ViewApplicationSummaryStyle.occupants_email, {width: 200}]}>
             {item?.confirmEmailAddress}
-          </Text>
+          </Text> */}
         </View>
         <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
           <CustomSingleButton
@@ -549,7 +561,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => openGmail(item?.emailAddress)}
+            onPress={() => openEmailClient(item?.emailAddress)}
           />
         </View>
       </View>
@@ -574,7 +586,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => openGmail(item?.email)}
+            onPress={() => openEmailClient(item?.email)}
           />
         </View>
       </View>
@@ -600,7 +612,7 @@ const ViewApplicationSummary = props => {
             height={35}
             width={90}
             marginTop={0}
-            onPress={() => openGmail(item?.email)}
+            onPress={() => openEmailClient(item?.email)}
           />
         </View>
       </View>

@@ -1952,26 +1952,64 @@ const RentalOffer = props => {
 
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
+      // case 'Input':
+      //   return (
+      //     <View key={index}>
+      //       <TextInput
+      //         style={RentalOfferStyle.input}
+      //         placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+      //         // onChangeText={text => {
+      //         //   handleInputChange(question.tqm_Question_code, text, index);
+      //         // }}
+      //         onChangeText={text => {
+      //           handleInputChange(question.tqm_Question_code, text, index);
+      //           if (errors[question.tqm_Question_code]) {
+      //             setErrors(prevErrors => ({
+      //               ...prevErrors,
+      //               [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+      //             }));
+      //           }
+      //         }}
+      //         value={inputValues[question.tqm_Question_code] || ''}
+      //       />
+      //       {errors[question.tqm_Question_code] && (
+      //         <Text style={RentalOfferStyle?.errorText}>
+      //           {errors[question.tqm_Question_code]}
+      //         </Text>
+      //       )}
+      //     </View>
+      //   );
       case 'Input':
         return (
           <View key={index}>
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_placeholder}`}
-              // onChangeText={text => {
-              //   handleInputChange(question.tqm_Question_code, text, index);
-              // }}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
+
+                // Clear the error if any exists
                 if (errors[question.tqm_Question_code]) {
                   setErrors(prevErrors => ({
                     ...prevErrors,
                     [question.tqm_Question_code]: undefined, // Clear the error for this specific field
                   }));
                 }
+
+                // Regex validation
+                const isInvalid = !/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(text); // Allow letters, space, and hyphen
+                if (isInvalid) {
+                  setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [question.tqm_Question_code]:
+                      'Invalid input! Only letters and spaces are allowed.',
+                  }));
+                }
               }}
               value={inputValues[question.tqm_Question_code] || ''}
             />
+
+            {/* Display error if exists */}
             {errors[question.tqm_Question_code] && (
               <Text style={RentalOfferStyle?.errorText}>
                 {errors[question.tqm_Question_code]}
@@ -1979,6 +2017,7 @@ const RentalOffer = props => {
             )}
           </View>
         );
+
       case 'Number':
         return (
           <View>

@@ -506,7 +506,7 @@ export const RentalOfferStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     width: 160,
   },
-  error_text: {color: 'red', marginLeft: 10},
+  error_text: {color: 'red', marginLeft: 10,marginTop:5},
   Doc_container: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
