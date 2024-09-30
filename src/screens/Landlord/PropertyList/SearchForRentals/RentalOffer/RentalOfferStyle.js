@@ -560,4 +560,5 @@ export const RentalOfferStyle = StyleSheet.create({
     marginBottom:12,
     marginTop:5
   },
+  
 });

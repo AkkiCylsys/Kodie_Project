@@ -12,6 +12,7 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {
   useFocusEffect,
+  useIsFocused,
   useNavigation,
   useNavigationState,
 } from '@react-navigation/native';
@@ -20,8 +21,9 @@ import PropertyRentalOffer from './PropertyRentalOffer/PropertyRentalOffer';
 
 const Properties = props => {
   const tab3 = props?.route?.params?.tab3;
-  const acceptLanlordPassed = props?.route?.params?.acceptLanlordPassed
-  console.log("acceptLanlordPassed...",acceptLanlordPassed);
+  console.log('tab3...', tab3);
+  const acceptLanlordPassed = props?.route?.params?.acceptLanlordPassed;
+  console.log('acceptLanlordPassed...', acceptLanlordPassed);
   const routesLength = useNavigationState(state => state.routes.length);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -29,13 +31,27 @@ const Properties = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
+  const isFocus = useIsFocused();
   // useEffect(() => {
-  //   setActiveTab(tab3 == 'tab3' || acceptLanlordPassed == "acceptLanlordPassed" ? 'Tab3' : 'Tab1');
-  // }, []);
+  //   if (isFocus) {
+  //     setActiveTab(
+  //       tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed'
+  //         ? 'Tab3'
+  //         : 'Tab1',
+  //     );
+  //   }
+  // }, [tab3]);
 
-  useEffect(() => {
-    setActiveTab(tab3 == 'tab3' ||acceptLanlordPassed == "acceptLanlordPassed"  ? 'Tab3' : 'Tab1');
-  }, []);
+  // Handle focus event to check tab selection
+  useFocusEffect(
+    React.useCallback(() => {
+      if (tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed') {
+        setActiveTab('Tab3');
+      } else {
+        setActiveTab('Tab1');
+      }
+    }, [tab3, acceptLanlordPassed])
+  );
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -94,7 +110,9 @@ const Properties = props => {
           </>
         );
       case 'Tab3':
-        return <PropertyRentalOffer  acceptLanlordPassed={acceptLanlordPassed}/>;
+        return (
+          <PropertyRentalOffer acceptLanlordPassed={acceptLanlordPassed} />
+        );
 
       default:
         return <PropertyList />;
