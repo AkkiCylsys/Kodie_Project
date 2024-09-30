@@ -553,4 +553,10 @@ export const RentalOfferStyle = StyleSheet.create({
     right: 5,
     zIndex: 1,
   },
+  errorText: {
+    color: _COLORS.Kodie_redColor,
+    fontFamily: FONTFAMILY?.K_Medium,
+    fontSize: 14,
+    marginBottom:12
+  },
 });

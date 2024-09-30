@@ -51,6 +51,10 @@ const RentalOffer = props => {
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
   console.log('bibId in rental..', bibId);
+
+  const [errors, setErrors] = useState({});
+  const [allparentsQuestion, setAllparentsQuestion] = useState([]);
+
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -106,7 +110,7 @@ const RentalOffer = props => {
   const [selectedPetsButton, setSelectedPetsButton] = useState(false);
   const [selectedPreviousRentalButton, setSelectedPreviousRentalButton] =
     useState(false);
-  const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
+  const [selectedSomokingButton, setSelectedSomokingButton] = useState(true);
   const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
   const [toggleReference, setToggleReference] = useState(false);
   const [toggleEmployeeReference, setToggleEmployeeReference] = useState(false);
@@ -276,6 +280,8 @@ const RentalOffer = props => {
   const handleLocationChange = text => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
+    // inputValues[question.tqm_Question_code] = text;
+    // validateFields();
   };
 
   const getEditAllQuestion = async () => {
@@ -1333,7 +1339,7 @@ const RentalOffer = props => {
           );
 
           const parentJson = response?.data?.data[0]?.parent_json;
-
+          setAllparentsQuestion(parentJson);
           // Find the question with tqm_Question_code "PEOPLE_STAY_IN_PROPERTY"
           const peopleStayInProperty = parentJson.find(item =>
             item?.children?.some(
@@ -1444,7 +1450,7 @@ const RentalOffer = props => {
             />
           </TouchableOpacity>
         </TouchableOpacity>
-        <DividerIcon marginTop={20}/>
+        <DividerIcon marginTop={20} />
         {expandedItem === item?.children && (
           <FlatList
             data={item?.children} // Use item?.children as data
@@ -1470,205 +1476,213 @@ const RentalOffer = props => {
   };
 
   const handleSubmit = () => {
-    const jsonData = [];
-    console.log('quesHeading:', quesHeading);
-    console.log('subChildren:', subChildren);
+    const isValid = validateFields();
 
-    // Create a mapping of questionCode to id from quesHeading and subChildren
-    const questionCodeToId = {};
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
+    // Check if validation fails
+    if (!isValid) {
+      console.log('Validation failed. Errors:', errors); // Log errors for debugging
+      return; // Stop the submission process if validation fails
+    } else {
+      const jsonData = [];
+      console.log('quesHeading:', quesHeading);
+      console.log('subChildren:', subChildren);
+
+      // Create a mapping of questionCode to id from quesHeading and subChildren
+      const questionCodeToId = {};
+      quesHeading.forEach(parentQuestion => {
+        parentQuestion.children.forEach(childQuestion => {
+          questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
+        });
       });
-    });
-    subChildren.forEach(subChild => {
-      questionCodeToId[subChild.tqm_Question_code] = subChild.id;
-    });
+      subChildren.forEach(subChild => {
+        questionCodeToId[subChild.tqm_Question_code] = subChild.id;
+      });
 
-    // Use a Set to track processed question codes to prevent duplicates
-    const processedQuestionCodes = new Set();
+      // Use a Set to track processed question codes to prevent duplicates
+      const processedQuestionCodes = new Set();
 
-    // Process main questions
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        const questionValue = inputValues[childQuestion.tqm_Question_code];
+      // Process main questions
+      quesHeading.forEach(parentQuestion => {
+        parentQuestion.children.forEach(childQuestion => {
+          const questionValue = inputValues[childQuestion.tqm_Question_code];
+          if (
+            questionValue !== undefined &&
+            questionValue !== null &&
+            questionValue !== '' && // Check if value is not empty
+            !processedQuestionCodes.has(childQuestion.tqm_Question_code)
+          ) {
+            jsonData.push({
+              question_id: childQuestion.id,
+              question_value: questionValue,
+              question_reference:
+                childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+              question_is_lookup:
+                childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            });
+            processedQuestionCodes.add(childQuestion.tqm_Question_code);
+          }
+        });
+      });
+
+      // Add Yes/No button values to jsonData
+      const yesNoButtonValues = {
+        EARN_INCOME: selectedButton, // EARN_INCOME question code
+        EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
+        EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
+        ANY_PETS: selectedPetsButton, // ANY_PETS question code
+      };
+
+      Object.keys(yesNoButtonValues).forEach(questionCode => {
+        const questionId = questionCodeToId[questionCode];
+        const isYesSelected = yesNoButtonValues[questionCode];
+
+        const value =
+          isYesSelected === undefined || isYesSelected === null
+            ? 0
+            : isYesSelected
+            ? 1
+            : 0;
+
         if (
-          questionValue !== undefined &&
-          questionValue !== null &&
-          questionValue !== '' && // Check if value is not empty
-          !processedQuestionCodes.has(childQuestion.tqm_Question_code)
+          questionId !== undefined &&
+          !processedQuestionCodes.has(questionCode)
         ) {
           jsonData.push({
-            question_id: childQuestion.id,
-            question_value: questionValue,
-            question_reference:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-            question_is_lookup:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_id: questionId,
+            question_value: value,
+            question_reference: 0,
+            question_is_lookup: 0,
           });
-          processedQuestionCodes.add(childQuestion.tqm_Question_code);
+          processedQuestionCodes.add(questionCode);
         }
       });
-    });
 
-    // Add Yes/No button values to jsonData
-    const yesNoButtonValues = {
-      EARN_INCOME: selectedButton, // EARN_INCOME question code
-      EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
-      EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
-      ANY_PETS: selectedPetsButton, // ANY_PETS question code
-    };
-
-    Object.keys(yesNoButtonValues).forEach(questionCode => {
-      const questionId = questionCodeToId[questionCode];
-      const isYesSelected = yesNoButtonValues[questionCode];
-
-      const value =
-        isYesSelected === undefined || isYesSelected === null
-          ? 1
-          : isYesSelected
-          ? 0
-          : 1;
-
+      // Add smoking button value to jsonData
+      const smokingQuestionId = questionCodeToId['S/NS'];
+      const smokingValue = selectedSomokingButton ? 0 : 1;
       if (
-        questionId !== undefined &&
-        !processedQuestionCodes.has(questionCode)
+        smokingQuestionId !== undefined &&
+        smokingValue !== null &&
+        smokingValue !== undefined &&
+        !processedQuestionCodes.has('S/NS')
       ) {
         jsonData.push({
-          question_id: questionId,
-          question_value: value,
+          question_id: smokingQuestionId,
+          question_value: smokingValue,
           question_reference: 0,
           question_is_lookup: 0,
         });
-        processedQuestionCodes.add(questionCode);
+        processedQuestionCodes.add('S/NS');
       }
-    });
 
-    // Add smoking button value to jsonData
-    const smokingQuestionId = questionCodeToId['S/NS'];
-    const smokingValue = selectedSomokingButton ? 0 : 1;
-    if (
-      smokingQuestionId !== undefined &&
-      smokingValue !== null &&
-      smokingValue !== undefined &&
-      !processedQuestionCodes.has('S/NS')
-    ) {
-      jsonData.push({
-        question_id: smokingQuestionId,
-        question_value: smokingValue,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('S/NS');
-    }
-
-    // Add 'Number of pets' value to jsonData
-    const numberOfPetsQuestion = petsSubChildren.find(
-      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
-    );
-    const petsQuestionId = numberOfPetsQuestion?.id;
-    if (
-      petsQuestionId !== undefined &&
-      numberPets !== null &&
-      numberPets !== undefined &&
-      !processedQuestionCodes.has('NUMBER_OF_PETS')
-    ) {
-      jsonData.push({
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('NUMBER_OF_PETS');
-    }
-
-    // Add location data if available
-    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS'];
-    if (locationQuestionId !== undefined && location) {
-      const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId,
+      // Add 'Number of pets' value to jsonData
+      const numberOfPetsQuestion = petsSubChildren.find(
+        subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
       );
-      if (existingLocationIndex !== -1) {
-        jsonData[existingLocationIndex].question_value = location;
-      } else {
-        jsonData.push({
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-      }
-      processedQuestionCodes.add('PREVIOUS_ADDRESS');
-    }
-    // Occupants - Using static question ID 28
-    const occupantGroups = groupBy(occupants, 'questionId');
-    addGroupedDataToJsonData(
-      jsonData,
-      occupantGroups,
-      'fullName',
-      'emailAddress',
-      null, // No confirm email for occupants
-      28, // Static ID for occupants
-    );
-
-    // Leaseholders - Using static question ID 30
-    const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    addGroupedDataToJsonData(
-      jsonData,
-      leaseHolderGroups,
-      'fullName', // Map to fullName
-      'emailAddress', // Map to emailAddress
-      'confirmEmailAddress', // Include confirm email for leaseholders
-      30, // Static ID for leaseholders
-    );
-
-    // Add references and employee references as arrays (ensure uniqueness)
-    const referenceIds = {34: [], 33: []};
-
-    // For references (ID 34)
-    referencesItem.forEach(reference => {
-      // Push only once, either existing or new data
-      referenceIds[34].push({
-        fullName: reference.fullName || reference.referenceFullName,
-        email: reference.email || reference.referenceEmail,
-      });
-    });
-
-    // For employee references (ID 33)
-    employeeReferencesItem.forEach(employeeReference => {
-      // Push only once, either existing or new data
-      referenceIds[33].push({
-        fullName:
-          employeeReference.fullName ||
-          employeeReference.employeeReferenceFullName,
-        email:
-          employeeReference.email || employeeReference.employeeReferenceEmail,
-      });
-    });
-
-    // Prevent duplicate data for 33 and 34
-    Object.keys(referenceIds).forEach(questionId => {
-      const idAsNumber = Number(questionId);
+      const petsQuestionId = numberOfPetsQuestion?.id;
       if (
-        referenceIds[idAsNumber].length > 0 &&
-        !jsonData.find(item => item.question_id === idAsNumber)
+        petsQuestionId !== undefined &&
+        numberPets !== null &&
+        numberPets !== undefined &&
+        !processedQuestionCodes.has('NUMBER_OF_PETS')
       ) {
         jsonData.push({
-          question_id: idAsNumber,
-          question_value: referenceIds[idAsNumber],
+          question_id: petsQuestionId,
+          question_value: numberPets,
           question_reference: 0,
           question_is_lookup: 0,
         });
+        processedQuestionCodes.add('NUMBER_OF_PETS');
       }
-    });
 
-    const finalJson = {
-      json_data: jsonData,
-    };
+      // Add location data if available
+      const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS'];
+      if (locationQuestionId !== undefined && location) {
+        const existingLocationIndex = jsonData.findIndex(
+          item => item.question_id === locationQuestionId,
+        );
+        if (existingLocationIndex !== -1) {
+          jsonData[existingLocationIndex].question_value = location;
+        } else {
+          jsonData.push({
+            question_id: locationQuestionId,
+            question_value: location,
+            question_reference: 0,
+            question_is_lookup: 0,
+          });
+        }
+        processedQuestionCodes.add('PREVIOUS_ADDRESS');
+      }
+      // Occupants - Using static question ID 28
+      const occupantGroups = groupBy(occupants, 'questionId');
+      addGroupedDataToJsonData(
+        jsonData,
+        occupantGroups,
+        'fullName',
+        'emailAddress',
+        null, // No confirm email for occupants
+        28, // Static ID for occupants
+      );
 
-    console.log('Final JSON:', JSON.stringify(finalJson));
-    saveAllJson(finalJson);
-    edit_offer === 'edit_offer' ? null : saveBiddingDetails();
+      // Leaseholders - Using static question ID 30
+      const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+      addGroupedDataToJsonData(
+        jsonData,
+        leaseHolderGroups,
+        'fullName', // Map to fullName
+        'emailAddress', // Map to emailAddress
+        'confirmEmailAddress', // Include confirm email for leaseholders
+        30, // Static ID for leaseholders
+      );
+
+      // Add references and employee references as arrays (ensure uniqueness)
+      const referenceIds = {34: [], 33: []};
+
+      // For references (ID 34)
+      referencesItem.forEach(reference => {
+        // Push only once, either existing or new data
+        referenceIds[34].push({
+          fullName: reference.fullName || reference.referenceFullName,
+          email: reference.email || reference.referenceEmail,
+        });
+      });
+
+      // For employee references (ID 33)
+      employeeReferencesItem.forEach(employeeReference => {
+        // Push only once, either existing or new data
+        referenceIds[33].push({
+          fullName:
+            employeeReference.fullName ||
+            employeeReference.employeeReferenceFullName,
+          email:
+            employeeReference.email || employeeReference.employeeReferenceEmail,
+        });
+      });
+
+      // Prevent duplicate data for 33 and 34
+      Object.keys(referenceIds).forEach(questionId => {
+        const idAsNumber = Number(questionId);
+        if (
+          referenceIds[idAsNumber].length > 0 &&
+          !jsonData.find(item => item.question_id === idAsNumber)
+        ) {
+          jsonData.push({
+            question_id: idAsNumber,
+            question_value: referenceIds[idAsNumber],
+            question_reference: 0,
+            question_is_lookup: 0,
+          });
+        }
+      });
+
+      const finalJson = {
+        json_data: jsonData,
+      };
+
+      console.log('Final JSON:', JSON.stringify(finalJson));
+      saveAllJson(finalJson);
+      edit_offer === 'edit_offer' ? null : saveBiddingDetails();
+    }
   };
 
   const resetDynamicFields = () => {
@@ -1870,6 +1884,64 @@ const RentalOffer = props => {
     />
   );
 
+  // Validation function
+  const validateFields = () => {
+    let isValid = true;
+    const tempErrors = {};
+
+    // Initialize an array to hold validated children
+    const validatedChildren = [];
+
+    allparentsQuestion.forEach(question => {
+      console.log('question in validation:', question);
+
+      // Check if the question has children and loop through them
+      if (question.children && Array.isArray(question.children)) {
+        question.children.forEach(child => {
+          console.log('child question:', child);
+
+          // Check if the child's validation flag is set to 1
+          if (child.tqm_Question_validate === 1) {
+            const value = inputValues[child.tqm_Question_code]; // Get the current input value for the child
+
+            // Store validated children for further processing if needed
+            validatedChildren.push(child);
+
+            if (!value || value === '') {
+              // Updated to use trim
+              isValid = false; // Mark as invalid
+              tempErrors[child.tqm_Question_code] =
+                child.tqm_validate_msg || 'This field is required'; // Set error message
+            } else {
+              // Clear the error if the input is valid
+              delete tempErrors[child.tqm_Question_code];
+            }
+          }
+        });
+      }
+
+      // Validate the parent question if it requires validation
+      if (question.tqm_Question_validate === 1) {
+        const parentValue = inputValues[question.tqm_Question_code]; // Get the current input value for the parent
+
+        if (!parentValue || parentValue === '') {
+          // Updated to use trim
+          isValid = false; // Mark as invalid
+          tempErrors[question.tqm_Question_code] = 'This field is required'; // Set error message
+        } else {
+          // Clear the error if the input is valid
+          delete tempErrors[question.tqm_Question_code];
+        }
+      }
+    });
+
+    // Log the validated children
+    console.log('Validated children:', validatedChildren);
+
+    setErrors(tempErrors); // Update error messages state
+    return isValid; // Return form validity
+  };
+
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       case 'Input':
@@ -1878,11 +1950,25 @@ const RentalOffer = props => {
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+              // onChangeText={text => {
+              //   handleInputChange(question.tqm_Question_code, text, index);
+              // }}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
+                if (errors[question.tqm_Question_code]) {
+                  setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+                  }));
+                }
               }}
               value={inputValues[question.tqm_Question_code] || ''}
             />
+            {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )}
           </View>
         );
       case 'Number':
@@ -1891,47 +1977,117 @@ const RentalOffer = props => {
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_placeholder}`}
-              onChangeText={text =>
-                handleInputChange(question.tqm_Question_code, text, index)
-              }
+              // onChangeText={text =>
+              //   handleInputChange(question.tqm_Question_code, text, index)
+              // }
+              onChangeText={text => {
+                handleInputChange(question.tqm_Question_code, text, index);
+
+                // Clear the error message when user starts typing
+                if (errors[question.tqm_Question_code]) {
+                  setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+                  }));
+                }
+              }}
               value={inputValues[question.tqm_Question_code] || ''}
               keyboardType="number-pad"
             />
+            {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )}
           </View>
         );
       case 'Date':
         return (
-          <View style={RentalOfferStyle.datePickerView}>
-            <CalendarModal
-              SelectDate={
-                inputValues[question.tqm_Question_code] || 'Start Date'
-              }
-              _textInputStyle={{
-                color: inputValues[question.tqm_Question_code]
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_GrayColor,
-              }}
-              calenderIcon={toggleModal}
-              onDayPress={day =>
-                handleInputChange(
-                  question.tqm_Question_code,
-                  day.dateString,
-                  index,
-                )
-              }
-              Visible={isModalVisible}
-              onRequestClose={toggleModal}
-              markedDates={{
-                [inputValues[question.tqm_Question_code]]: {
-                  selected: true,
-                  selectedColor: _COLORS.Kodie_lightGreenColor,
-                  selectedTextColor: _COLORS.Kodie_BlackColor,
-                },
-              }}
-              _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
-            />
-          </View>
+          // <>
+          //   <View style={RentalOfferStyle.datePickerView}>
+          //     <CalendarModal
+          //       SelectDate={
+          //         inputValues[question.tqm_Question_code] || 'Start Date'
+          //       }
+          //       _textInputStyle={{
+          //         color: inputValues[question.tqm_Question_code]
+          //           ? _COLORS.Kodie_BlackColor
+          //           : _COLORS.Kodie_GrayColor,
+          //       }}
+          //       calenderIcon={toggleModal}
+          //       onDayPress={day =>
+          //         handleInputChange(
+          //           question.tqm_Question_code,
+          //           day.dateString,
+          //           index,
+          //         )
+          //       }
+          //       Visible={isModalVisible}
+          //       onRequestClose={toggleModal}
+          //       markedDates={{
+          //         [inputValues[question.tqm_Question_code]]: {
+          //           selected: true,
+          //           selectedColor: _COLORS.Kodie_lightGreenColor,
+          //           selectedTextColor: _COLORS.Kodie_BlackColor,
+          //         },
+          //       }}
+          //       _closeButton={toggleModal}
+          //       _ApplyButton={toggleModal}
+          //     />
+          //   </View>
+          //   {errors[question.tqm_Question_code] && (
+          //     <Text style={RentalOfferStyle?.errorText}>
+          //       {errors[question.tqm_Question_code]}
+          //     </Text>
+          //   )}
+          // </>
+
+          <>
+            <View style={RentalOfferStyle.datePickerView}>
+              <CalendarModal
+                SelectDate={
+                  inputValues[question.tqm_Question_code] || 'Start Date'
+                }
+                _textInputStyle={{
+                  color: inputValues[question.tqm_Question_code]
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_GrayColor,
+                }}
+                calenderIcon={toggleModal}
+                onDayPress={day => {
+                  handleInputChange(
+                    question.tqm_Question_code,
+                    day.dateString,
+                    index,
+                  );
+
+                  // Clear the error message when a date is selected
+                  if (errors[question.tqm_Question_code]) {
+                    setErrors(prevErrors => ({
+                      ...prevErrors,
+                      [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+                    }));
+                  }
+                }}
+                Visible={isModalVisible}
+                onRequestClose={toggleModal}
+                markedDates={{
+                  [inputValues[question.tqm_Question_code]]: {
+                    selected: true,
+                    selectedColor: _COLORS.Kodie_lightGreenColor,
+                    selectedTextColor: _COLORS.Kodie_BlackColor,
+                  },
+                }}
+                _closeButton={toggleModal}
+                _ApplyButton={toggleModal}
+              />
+            </View>
+            {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )}
+          </>
         );
       case 'Dropdown':
         return (
@@ -1952,13 +2108,32 @@ const RentalOffer = props => {
               searchPlaceholder="Search..."
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
+              // onChange={item => {
+              //   console.log(
+              //     `Dropdown change for ${question.tqm_Question_code}: ${item.lookup_key}`,
+              //   );
+              //   handleInputChange(question.tqm_Question_code, item.lookup_key);
+              // }}
               onChange={item => {
                 console.log(
                   `Dropdown change for ${question.tqm_Question_code}: ${item.lookup_key}`,
                 );
                 handleInputChange(question.tqm_Question_code, item.lookup_key);
+          
+                // Clear the error message when a valid selection is made
+                if (errors[question.tqm_Question_code]) {
+                  setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+                  }));
+                }
               }}
             />
+            {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )}
           </View>
         );
       case 'Form':
@@ -2286,6 +2461,11 @@ const RentalOffer = props => {
                 handleInputChange(question.tqm_Question_code, 0);
               }}
             />
+            {/* {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )} */}
           </View>
         );
 
@@ -2334,7 +2514,7 @@ const RentalOffer = props => {
                 <TextInput
                   style={RentalOfferStyle.locationInput}
                   value={location}
-                  onChangeText={handleLocationChange}
+                  onChangeText={() => handleLocationChange(location)}
                   onFocus={() => {
                     setIsSearch(true);
                     props.setOpenMap && props.setOpenMap(true);
@@ -2356,6 +2536,11 @@ const RentalOffer = props => {
                 />
               </TouchableOpacity>
             </View>
+            {/* {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )} */}
           </View>
         );
       default:
@@ -2368,7 +2553,7 @@ const RentalOffer = props => {
       <View style={{marginHorizontal: 16, marginTop: 5}}>
         <View key={question.id}>
           <Text style={[LABEL_STYLES.commontext]}>
-            {item.tqm_Question_description}
+            {item?.tqm_Question_description}
           </Text>
           <View style={{marginBottom: 20}}>
             {renderQuestionComponent(item, index)}
@@ -2563,7 +2748,7 @@ const RentalOffer = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={QuesHeadingRender}
           />
-{/* We can use this in the future */}
+          {/* We can use this in the future */}
           {/* <View style={{marginHorizontal: 16}}>
             <Text style={RentalOfferStyle.inspections}>
               {'Tenant  screening report '}
