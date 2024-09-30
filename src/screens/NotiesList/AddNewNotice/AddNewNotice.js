@@ -1050,7 +1050,10 @@ const AddNewNotice = props => {
                   {'Select the type of notice you want to create'}
                 </Text>
                 <Dropdown
-                  style={AddNewNoticeStyle.dropdown}
+                  style={[AddNewNoticeStyle.dropdown,{
+                borderColor:showNoticeTypeError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+
+                  }]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1070,17 +1073,21 @@ const AddNewNotice = props => {
                   }}
                   renderItem={TypeOfNotices}
                 />
-              </View>
               {showNoticeTypeError ? (
                 <Text style={AddNewNoticeStyle.errorText}>
                   {'Please select a notice type.'}
                 </Text>
               ) : null}
+              </View>
 
-              <View style={AddNewNoticeStyle.jobDetailsView}>
+              <View style={[AddNewNoticeStyle.jobDetailsView,{
+                
+              }]}>
                 <Text style={LABEL_STYLES.commontext}>{'Notice title'}</Text>
                 <TextInput
-                  style={[AddNewNoticeStyle.input]}
+                  style={[AddNewNoticeStyle.input,{
+                    
+                  }]}
                   value={noticeTittle}
                   onChangeText={validateTitle}
                   onBlur={() => validateTitle(noticeTittle)}

@@ -1026,7 +1026,7 @@ export default AboutYou = props => {
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
-    if (res.data.status === true) {
+    if (res.data.success === true) {
       setIsLoading(false);
       registerUserfill();
 

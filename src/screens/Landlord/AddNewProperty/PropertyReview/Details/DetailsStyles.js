@@ -60,6 +60,7 @@ export const DetailsStyle = StyleSheet.create({
     fontSize: 13,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    
   },
   propety_details_view: {
     flexDirection: "row",

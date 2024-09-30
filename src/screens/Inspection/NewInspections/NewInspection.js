@@ -322,7 +322,7 @@ export default NewInspection = (props) => {
                 backgroundColor:
                   selectedFilter == item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_VeryLightGrayColor,
               },
             ]}
           />
@@ -338,7 +338,7 @@ export default NewInspection = (props) => {
           style={[
             NewInspectionStyle.item_style,
             {
-              color: selectedFilter == item ? 'white' : 'black',
+              color: selectedFilter == item ?  _COLORS?.Kodie_WhiteColor :_COLORS?. Kodie_VeryLightGrayColor,
             },
           ]}>
           {item}

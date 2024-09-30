@@ -11,12 +11,16 @@ const DropdownField = ({
     value,
     onChange,
     renderItem,
+    Starpoint,
+    dropdownStyle
 }) => {
     return (
         <View style={DropdownFieldStyle.section}>
-            <Text style={[LABEL_STYLES.commontext,{marginBottom:12}]}>{label}</Text>
+            <Text style={[LABEL_STYLES.commontext,{marginBottom:12}]}>{label}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>{Starpoint}</Text>
+            </Text>
             <Dropdown
-                style={[DropdownFieldStyle.dropdown, { flex: 1, borderRadius: 5, height: 48 }]}
+                style={[DropdownFieldStyle.dropdown, dropdownStyle, { flex: 1, borderRadius: 5, height: 48 }]}
                 placeholderStyle={[
                     DropdownFieldStyle.placeholderStyle,
                     { color: _COLORS.Kodie_GrayColor },

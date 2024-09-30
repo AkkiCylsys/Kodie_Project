@@ -36,6 +36,7 @@ import {googleMapIsInstalled} from 'react-native-maps/lib/decorateMapComponent';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import { UpdateInspectionItem } from '../../../../services/InspectionModuleServices.js/InspectionServices';
 
 const Inspection = props => {
   const navigation = useNavigation();
@@ -57,6 +58,7 @@ const Inspection = props => {
   const [getAreaKey, setGetAreaKey] = useState([]);
   const [showcustomAreaNameError, setShowcustomAreaNameError] = useState('');
   const [errorSimiarArea, setErrorSimiarArea] = useState(false);
+  const [getItems, setGetItems] = useState([]);
 
   console.log('getinspection', getinspection);
   const TIM_KEY = props?.TIM_KEY;
@@ -65,7 +67,35 @@ const Inspection = props => {
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = (id, name, TAIM_ITEM_STATUS) => {
+  const onNavigateAndUpdate = async (id, name, TAIM_ITEM_STATUS) => {
+    // Call handleInspectionudateItem first and wait for it to complete
+    const items = await handleInspectionudateItem(id);
+  
+    // Then call navigateToScreen with the same id and items fetched
+    navigateToScreen(id, name, TAIM_ITEM_STATUS, items);
+  };
+  
+  const handleInspectionudateItem = async (id) => {
+    setIsLoading(true);
+    const data = {
+      p_TAM_AREA_KEY: id,
+      p_TIM_KEY: TIM_KEY,
+    };
+  
+    try {
+      const items = await UpdateInspectionItem(data);
+      setGetItems(items);  // Save items in state
+      console.log('handleInspectionudateItem.INs....', items);
+      return items;  // Return the fetched items to use in navigation
+    } catch (error) {
+      console.error('Error:', error);
+      return [];  // Return an empty array in case of error
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const navigateToScreen = (id, name, TAIM_ITEM_STATUS, getItems) => {
     console.log(TAIM_ITEM_STATUS, 'TAIM_ITEM_STATUS');
     navigation.navigate('Bedroom', {
       TeamAreaKey: id,
@@ -75,6 +105,7 @@ const Inspection = props => {
       PropertyId: PropertyId,
       teamCreateId: loginData?.Login_details?.user_account_id,
       TAIM_ITEM_STATUS: TAIM_ITEM_STATUS,
+      getItems: getItems.map(item => item.TAIM_ITEM_KEY).join(',')  // Pass the items as a string
     });
   };
   const handleCloseModal = () => {
@@ -388,7 +419,7 @@ const Inspection = props => {
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(
+                onNavigateAndUpdate(
                   item.area_key_id,
                   item?.area_name,
                   item?.TAIM_ITEM_STATUS,

@@ -145,11 +145,11 @@ export default PropertyReviewDetails = props => {
         renderItem={renderpointItem}
         keyExtractor={(item, index) => index.toString()}
         ListFooterComponent={<TouchableOpacity onPress={()=>{
-          alert(JSON.stringify(item.items.length))
+          // alert(JSON.stringify(item.items.length))
           if(item.items.length >2){
 
           }else{
-            alert(JSON.stringify("No more data found!"))
+            // alert(JSON.stringify("No more data found!"))
           }
         }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
       />
@@ -366,7 +366,7 @@ export default PropertyReviewDetails = props => {
                     onPress={() => {
                       setPropertyDetailsClp(!propertyDetailsClp);
                     }}>
-                    <Text style={DetailsStyle.propery_det}>
+                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
                       {'Property details'}
                     </Text>
 
@@ -476,7 +476,7 @@ export default PropertyReviewDetails = props => {
                     onPress={() => {
                       setRoomClp(!roomClp);
                     }}>
-                    <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
+                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>{'Rooms'}</Text>
                     <TouchableOpacity
                       style={DetailsStyle.down_Arrow_icon}
                       onPress={() => {
@@ -582,7 +582,7 @@ export default PropertyReviewDetails = props => {
                     onPress={() => {
                       setExternalfeaturesClp(!externalfeaturesClp);
                     }}>
-                    <Text style={DetailsStyle.propery_det}>
+                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
                       {'External features'}
                     </Text>
 
@@ -692,7 +692,7 @@ export default PropertyReviewDetails = props => {
                     onPress={() => {
                       setPointOfInterest(!pointOfInterest);
                     }}>
-                    <Text style={DetailsStyle.propery_det}>
+                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
                       {'Points of interest'}
                     </Text>
                     <TouchableOpacity

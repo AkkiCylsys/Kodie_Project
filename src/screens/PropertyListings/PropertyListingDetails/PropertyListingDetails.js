@@ -31,7 +31,7 @@ import { Config } from "../../../Config";
 import axios from "axios";
 
 const PropertyListingDetail = (props) => {
-  const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(false);
+  const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(true);
   const [preferencesVisible, setPreferencesVisible] = useState(false);
   const [propertyDescription, setPropertyDescription] = useState("");
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
@@ -49,6 +49,10 @@ const PropertyListingDetail = (props) => {
   const [ListPrice, setListPrice] = useState("");
   const [Otherpreference, setOtherpreference] = useState("");
   const [isLoading,setIsLoading] = useState(false)
+  const [selectedDateError, setSelectedDateError] = useState('');
+  const [lease_end_valueError, setlLease_end_valueError] = useState(false);
+
+
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData);
   const propertyid = props?.route?.params?.propertyid;
@@ -96,7 +100,14 @@ const PropertyListingDetail = (props) => {
       setMaxOccupantsError("");
     }
   };
-
+  const handleRequestDate = text => {
+    setSelectedDate(text);
+    if (text.trim() === '') {
+      setSelectedDateError('Request date is required!');
+    } else {
+      setSelectedDateError('');
+    }
+  };
   const handleListPriceChange = (text) => {
     setListPrice(text);
     if (text.trim() === '') {
@@ -136,10 +147,20 @@ const PropertyListingDetail = (props) => {
   const prereference = `${selectedButtonSmokingId}, ${selectedButtonPetId}, ${selectedButtonconsideredId}`
   const validateInputs = () => {
     let isValid = true;
+    if (selectedDate.trim() === '') {
+      setSelectedDateError('Select date is required!');
+      isValid = false;
+    }
+    else if (leaseTermValue == '') {
+      setlLease_end_valueError(true);
+      isValid = false;
+
+    }else 
     if (Occupant.trim() === '') {
       setMaxOccupantsError("Maximum number of occupants is required.");
       isValid = false;
-    } else if (ListPrice.trim() === '') {
+    } 
+    else if (ListPrice.trim() === '') {
       setListPriceError("List price is required.");
       isValid = false;
     } else {
@@ -220,7 +241,8 @@ console.log(data);
       setIsLoading(false)
     }
   };
-
+  const allPropertyFilled = propertyDescription && selectedDate && leaseTermValue && Occupant && ListPrice &&leaseEndValue;
+  const allPreferencesFilled = selectedButtonSmokingId && selectedButtonPetId && selectedButtonconsideredId && Otherpreference;
   return (
     <SafeAreaView style={DetailsStyle.mainContainer}>
       <TopHeader
@@ -239,11 +261,12 @@ console.log(data);
         <ScrollView contentContainerStyle={DetailsStyle.subContainer}>
           {/* Property Details Section */}
           <SectionToggle
-            title="Other Property Details"
+          titleStyle={{color:allPropertyFilled?_COLORS?.Kodie_GreenColor: _COLORS?.Kodie_BlackColor}}
+            title="Other property details"
             isVisible={propertyDetailsVisible}
             onPress={() => toggleVisibility(setPropertyDetailsVisible)}
           >
-            <Text style={[LABEL_STYLES.commontext, { marginBottom: 12 }]}>Pitch Your Property</Text>
+            <Text style={[LABEL_STYLES.commontext, { marginBottom: 12 }]}>Pitch your property</Text>
             <TextInput
               style={[DetailsStyle.input, { height: 100 }]}
               placeholder="Enter a sales description of your property"
@@ -257,7 +280,9 @@ console.log(data);
 
             <View style={DetailsStyle.section}>
               <Text style={[LABEL_STYLES.commontext, { marginBottom: 12 }]}>
-                Property Available From
+                Property available from
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+
               </Text>
               <CalendarModal
                 current={selectedDate}
@@ -267,8 +292,17 @@ console.log(data);
                     ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_GrayColor,
                 }}
+                calenderStyle={{
+                  marginTop: 0, height: 48 ,
+                  borderColor: selectedDateError
+                    ? _COLORS?.Kodie_redColor
+                    : _COLORS?.Kodie_GrayColor,
+                }}
                 calenderIcon={() => toggleVisibility(setCalendarModalVisible)}
-                onDayPress={handleDateSelection}
+                onDayPress={day => {
+                  handleRequestDate(day.dateString);
+                }}
+                onChangeText={() => handleRequestDate(selectedDate)}
                 Visible={isCalendarModalVisible}
                 onRequestClose={() => setCalendarModalVisible(false)}
                 markedDates={{
@@ -280,43 +314,67 @@ console.log(data);
                 }}
                 _closeButton={() => setCalendarModalVisible(false)}
                 _ApplyButton={() => setCalendarModalVisible(false)}
-                calenderStyle={{ marginTop: 0, height: 48 }}
               />
+              {selectedDateError ? (
+            <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>
+              {selectedDateError}
+            </Text>
+          ) : null}
             </View>
 
             <DropdownField
-              label="Rental Lease Term"
-              placeholder="Select Length of Lease"
+              label="Rental lease term"
+              Starpoint={'*'}
+              placeholder="Select length of lease"
               data={leaseTermData}
               value={leaseTermValue}
-              onChange={(item) => setLeaseTermValue(item.lookup_key)}
+              dropdownStyle={ { borderColor: lease_end_valueError
+                ? _COLORS?.Kodie_redColor
+                : _COLORS?.Kodie_GrayColor,}}
+              onChange={(item) => {setLeaseTermValue(item.lookup_key);
+                setlLease_end_valueError(false);
+
+              }}
               renderItem={(item) => renderDropdownItem(item, leaseTermValue)}
             />
+           { lease_end_valueError ? (
+            <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>
+              {'Please select a Rental lease term!'}
+            </Text>
+          ) : null}
             <InputField
-              label="Maximum Number of Occupants"
+              label="Maximum number of occupants"
               placeholder="Enter the maximum number of tenants"
               value={Occupant}
+              Starpoint={'*'}
               onChangeText={handleMaxOccupantsChange}
               keyboardType="number-pad"
+              inputStyle={{borderColor: maxOccupantsError
+                ? _COLORS?.Kodie_redColor
+                : _COLORS?.Kodie_GrayColor}}
             />
             {maxOccupantsError ? (
-              <Text style={{ color: 'red', marginBottom: 10 }}>{maxOccupantsError}</Text>
+              <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>{maxOccupantsError}</Text>
             ) : null}
 
             <InputField
-              label="List Price"
+              label="List price"
               placeholder="Enter the rental amount"
               value={ListPrice}
+              Starpoint={'*'}
               onChangeText={handleListPriceChange}
               keyboardType="number-pad"
+              inputStyle={{borderColor: listPriceError
+                ? _COLORS?.Kodie_redColor
+                : _COLORS?.Kodie_GrayColor}}
             />
             {listPriceError ? (
-              <Text style={{ color: 'red', marginBottom: 10 }}>{listPriceError}</Text>
+              <Text style={{ color: 'red',marginLeft: 5,marginTop:5 }}>{listPriceError}</Text>
             ) : null}
 
             <DropdownField
-              label="Frequency of Rental Payments"
-              placeholder="Select Rental Lease Term"
+              label="Frequency of rental payments"
+              placeholder="Select rental lease term"
               data={leaseEndData}
               value={leaseEndValue}
               onChange={(item) => setLeaseEndValue(item.lookup_key)}
@@ -327,6 +385,8 @@ console.log(data);
 
           {/* Preferences Section */}
           <SectionToggle
+          titleStyle={{color:allPreferencesFilled?_COLORS?.Kodie_GreenColor: _COLORS?.Kodie_BlackColor}}
+
             title="Preferences"
             isVisible={preferencesVisible}
             onPress={() => toggleVisibility(setPreferencesVisible)}

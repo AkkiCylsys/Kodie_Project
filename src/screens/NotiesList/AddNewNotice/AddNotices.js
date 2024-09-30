@@ -965,7 +965,10 @@ console.log(propertyView);
                 <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
-                style={AddNewNoticeStyle.dropdown}
+                style={[AddNewNoticeStyle.dropdown,{
+                  borderColor:showNoticeTypeError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+  
+                    }]}
                 placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                 selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                 inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -985,28 +988,31 @@ console.log(propertyView);
                 }}
                 renderItem={TypeOfNotices}
               />
-            </View>
             {showNoticeTypeError ? (
               <Text style={AddNewNoticeStyle.errorText}>
                 {'Please select a notice type.'}
               </Text>
             ) : null}
+            </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{'Notice title'}
               <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <TextInput
-                style={[AddNewNoticeStyle.input]}
+                style={[AddNewNoticeStyle.input,{
+                  borderColor:titleError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+
+                }]}
                 value={noticeTittle}
                 onChangeText={validateTitle}
                 onBlur={() => validateTitle(noticeTittle)}
                 placeholder="Notice title"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
-            </View>
             {titleError ? (
               <Text style={AddNewNoticeStyle.errorText}>{titleError}</Text>
             ) : null}
+            </View>
             <Divider style={AddNewNoticeStyle.divider} />
 
             <View style={AddNewNoticeStyle.mainreapeatview}>
@@ -1023,9 +1029,9 @@ console.log(propertyView);
                     AddNewNoticeStyle.dropdown,
                     {
                       borderRadius: 8,
-                      height: 48,
-                      alignItems: 'center',
-                      marginTop: 0,
+                      height: 30,
+                      marginLeft: '20%',
+                      marginTop:0
                     },
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
@@ -1064,12 +1070,13 @@ console.log(propertyView);
                   setToggleDayValue(toggleDay ? 0 : 1);
                   // alert(toggleDayValue);
                 }}
-                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOff={_COLORS.Kodie_ExtraminLiteGrayColor}
                 circleColorOn={_COLORS.Kodie_GreenColor}
                 backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
                 backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
                 containerStyle={AddNewNoticeStyle.toggle_con}
                 circleStyle={AddNewNoticeStyle.toggle_circle}
+              
               />
             </View>
             <View style={AddNewNoticeStyle.datetimeview}>
@@ -1323,7 +1330,7 @@ console.log(propertyView);
                     setToggleNotificationValue(toggleNotification ? 1 : 0);
                     // alert(toggle_lease_expire);
                   }}
-                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                  circleColorOff={_COLORS.Kodie_ExtraminLiteGrayColor}
                   circleColorOn={_COLORS.Kodie_GreenColor}
                   backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
                   backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}

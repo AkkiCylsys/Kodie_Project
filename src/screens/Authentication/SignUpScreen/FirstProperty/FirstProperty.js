@@ -739,7 +739,7 @@ export default FirstProperty = props => {
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
-    if (res.data.status === true) {
+    if (res.data.success === true) {
       setIsLoading(false);
       registerUserfill();
 
@@ -949,7 +949,9 @@ export default FirstProperty = props => {
                     <Text style={LABEL_STYLES._texinputLabel}>Location
                     <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
                     <View style={FirstPropertyStyle.locationConView}>
-                      <View style={FirstPropertyStyle.locationContainer}>
+                      <View style={[FirstPropertyStyle.locationContainer,{
+                    borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                  }]}>
                         <TextInput
                           style={FirstPropertyStyle.locationInput}
                           value={propertyLocation}
@@ -967,7 +969,9 @@ export default FirstProperty = props => {
                         />
                       </View>
                       <TouchableOpacity
-                        style={FirstPropertyStyle.locationIconView}
+                        style={[FirstPropertyStyle.locationIconView,{
+                          borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                        }]}
                         onPress={() => {
                           setIsMap(true);
                       handleTextInputFocus();
@@ -989,7 +993,11 @@ export default FirstProperty = props => {
                     <Text style={LABEL_STYLES._texinputLabel}>Notes<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
                     <TextInput
                     
-                      style={FirstPropertyStyle.input}
+                      style={[FirstPropertyStyle.input,{
+                    
+                        borderColor: notesError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                      
+                    }]}
                       value={propertyDesc}
                       onChangeText={handleNote}
                       placeholder="Add any information about your property"
@@ -1015,7 +1023,11 @@ export default FirstProperty = props => {
                       <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                     </Text>
                     <Dropdown
-                      style={FirstPropertyStyle.dropdown}
+                      style={[FirstPropertyStyle.dropdown,{
+                    
+                        borderColor: propertyError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                      
+                    }]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
                         { color: _COLORS.Kodie_LightGrayColor },

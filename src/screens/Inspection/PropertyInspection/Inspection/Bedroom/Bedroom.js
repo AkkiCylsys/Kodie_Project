@@ -46,10 +46,15 @@ const Bedroom = props => {
   const Created_Id = props.route.params.teamCreateId;
   const AreaName = props.route.params.AreaName;
   const PropertyId = props.route.params.PropertyId;
+  const getItem = props.route.params.getItems;
+  console.log(getItem,'getItem');
 
   useEffect(() => {
-    if (isEditing) { handleInspectionuEditItem() }
-    else { handleInspectionudateItem() }
+    TAIM_ITEM_STATUS === 1 ?
+                 null: handleAddItem();
+    handleInspectionuEditItem()
+    // if (isEditing) { handleInspectionuEditItem() }
+    // else { handleInspectionudateItem() }
     getInspectionAreas();
   }, [isEditing]);
   const getInspectionAreas = async () => {
@@ -97,7 +102,7 @@ const Bedroom = props => {
     try {
       const items = await EditInspectionItem(data);
       setEditGetItem(items);
-      // console.log('handleInspectionuEditItem.....', items);
+      console.log('handleInspectionuEditItem.....', items);
     } catch (error) {
       console.error('Error:', error);
       // Alert.alert('Error', 'Failed to edit inspection item');
@@ -107,11 +112,9 @@ const Bedroom = props => {
   };
   const handleAddItem = async () => {
     setIsLoading(true);
-    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItems.map(item => item.TAIM_ITEM_KEY).join(',');
-    console.log("AddItem", tamAreaKeys);
     const data = {
       timKey: Team_Key,
-      taimItemKey: tamAreaKeys.toString(),
+      taimItemKey: getItem.toString(),
       tamAreaKey: AreasKey,
       updKey: PropertyId,
       tiimCreatedBy: Created_Id.toString()
@@ -120,11 +123,10 @@ const Bedroom = props => {
 
     try {
       const response = await InspectionAddItem(data);
-      Alert.alert('Success', response?.message);
+      // Alert.alert('Success', response?.message);
       // console.log('API Response:', response);
       handleInspectionudateItem();
-      handleInspectionuEditItem();
-      setIsEditing(!isEditing)
+      // setIsEditing(!isEditing)
       // getInspectionAreas();
     } catch (error) {
       Alert.alert('Error', 'Failed to add custom item');
@@ -152,7 +154,7 @@ const Bedroom = props => {
       Alert.alert('Success', response?.message);
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
-      setIsEditing(!isEditing)
+      // setIsEditing(!isEditing)
       // handleInspectionuEditItem();
       // getInspectionAreas();
     } catch (error) {
@@ -282,12 +284,10 @@ const Bedroom = props => {
 
               <TouchableOpacity
                 onPress={() => {
-                  if(TAIM_ITEM_STATUS === 1 ) {
+                 
                     setSelectedItem(item);
                   refRBSheet2.current.open({ item })
-                  }else{
-                  alert('First save the inspection items')
-                  }
+          
                 }}
                 style={BedroomCss.rightIcon}>
                 <Feather
@@ -380,8 +380,8 @@ const Bedroom = props => {
                   _ButtonText={'Done'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    TAIM_ITEM_STATUS === 1 ?
-                    handleUpdateItem(): handleAddItem();
+                    handleUpdateItem();
+      setIsEditing(!isEditing)
                   }}
                   disabled={isLoading ? true : false}
                   width={'20%'}
@@ -395,8 +395,7 @@ const Bedroom = props => {
                 _ButtonText={'Save'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  TAIM_ITEM_STATUS === 1 ?
-                 handleUpdateItem(): handleAddItem();
+                 handleUpdateItem()
                 }}
                 disabled={isLoading ? true : false}
               />
