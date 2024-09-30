@@ -591,9 +591,14 @@ const RentalOffer = props => {
   };
   // Validation...
   const handleValidFullName = text => {
+    const isInvalid = /[^a-zA-Z\s]/.test(text);
     setFullName(text);
     if (fullName === '') {
       setFullNameError('Full name is required!');
+    } else if (isInvalid) {
+      setFullNameError(
+        'Full name cannot contain special characters or numbers!',
+      );
     } else {
       setFullNameError('');
     }
@@ -604,7 +609,7 @@ const RentalOffer = props => {
       setEmailAddressError('Email address is required.');
     } else if (!validateResetEmail(emailAddress)) {
       setEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else {
       setEmailAddressError('');
@@ -627,8 +632,13 @@ const RentalOffer = props => {
 
   const validLeaseFullName = text => {
     setLeaseFullName(text);
+    const isInvalid = /[^a-zA-Z\s]/.test(text);
     if (leaseFullName === '') {
-      setLeaseFullNameError('Lease fullName is required!');
+      setLeaseFullNameError('Fullname is required!');
+    } else if (isInvalid) {
+      setLeaseFullNameError(
+        'Full name cannot contain special characters or numbers!',
+      );
     } else {
       setLeaseFullNameError('');
     }
@@ -636,7 +646,7 @@ const RentalOffer = props => {
   const validLeaseEmailAddress = text => {
     setleaseEmailAddress(text);
     if (leaseEmailAddress === '') {
-      setleaseEmailAddressError('Lease Email Address is required!');
+      setleaseEmailAddressError('The lease email address is required!');
     } else if (!validateResetEmail(leaseEmailAddress)) {
       setleaseEmailAddressError(
         'Hold on, this email appears to be invalid. Please enter a valid email address!',
@@ -648,9 +658,7 @@ const RentalOffer = props => {
   const validConfirmLeaseEmailAddress = text => {
     setLeaseConfirmEmailAddress(text);
     if (leaseConfirmEmailAddress === '') {
-      setLeaseConfirmEmailAddressError(
-        'Lease Confirm Email Address is required!',
-      );
+      setLeaseConfirmEmailAddressError('Confirm email address is required!');
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
       setLeaseConfirmEmailAddressError(
         'Hold on, this email appears to be invalid. Please enter a valid email address!',
@@ -661,17 +669,15 @@ const RentalOffer = props => {
   };
   const handleValidLeaseHolder = () => {
     if (leaseFullName === '') {
-      setLeaseFullNameError('Lease full name is required!');
+      setLeaseFullNameError('fullname is required!');
     } else if (leaseEmailAddress === '') {
-      setleaseEmailAddressError('Lease email address is required!');
+      setleaseEmailAddressError('Email address is required!');
     } else if (!validateResetEmail(leaseEmailAddress)) {
       setleaseEmailAddressError(
         'Hold on, this email appears to be invalid. Please enter a valid email address!',
       );
     } else if (leaseConfirmEmailAddress === '') {
-      setLeaseConfirmEmailAddressError(
-        'Lease confirm email address is required!',
-      );
+      setLeaseConfirmEmailAddressError('Confirm email address is required!');
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
       setLeaseConfirmEmailAddressError(
         'Hold on, this email appears to be invalid. Please enter a valid email address!',
@@ -695,18 +701,25 @@ const RentalOffer = props => {
   // Reference validation
   const validReferenceFullName = text => {
     setReferenceFullName(text);
+    const isInvalid = /[^a-zA-Z\s]/.test(text);
     if (referenceFullName === '') {
-      setReferenceFullNameError('References fullName is required.');
+      setReferenceFullNameError('Fullname is required!');
+    } else if(isInvalid) {
+      setReferenceFullNameError(
+        'Full name cannot contain special characters or numbers!',
+      );
     } else {
       setReferenceFullNameError('');
     }
   };
   const validEmployeeReferenceFullName = text => {
     setEmployeeReferenceFullName(text);
+    const isInvalid = /[^a-zA-Z\s]/.test(text);
     if (employeeReferenceFullName === '') {
-      setEmployeeReferenceFullNameError(
-        'Employee references fullName is required.',
-      );
+      setEmployeeReferenceFullNameError('Fullname is required.');
+    }
+    else if(isInvalid){
+      setEmployeeReferenceFullNameError('Full name cannot contain special characters or numbers!')
     } else {
       setEmployeeReferenceFullNameError('');
     }
@@ -714,7 +727,7 @@ const RentalOffer = props => {
   const validReferencesEmailAddress = text => {
     setReferenceEmail(text);
     if (referenceEmail === '') {
-      setReferenceEmailError('References email Address is required.');
+      setReferenceEmailError('Email address is required!');
     } else if (!validateResetEmail(referenceEmail)) {
       setReferenceEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -726,12 +739,10 @@ const RentalOffer = props => {
   const validEmployeeReferencesEmailAddress = text => {
     setEmployeeReferenceEmail(text);
     if (employeeReferenceEmail === '') {
-      setEmployeeReferenceEmailError(
-        'Employee references email Address is required.',
-      );
+      setEmployeeReferenceEmailError('Email address is required!');
     } else if (!validateResetEmail(employeeReferenceEmail)) {
       setEmployeeReferenceEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.bdjhb',
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
       setEmployeeReferenceEmailError('');
@@ -739,9 +750,9 @@ const RentalOffer = props => {
   };
   const handleReferences = () => {
     if (referenceFullName === '') {
-      setReferenceFullNameError('References fullName is required.');
+      setReferenceFullNameError('Fullname is required!');
     } else if (referenceEmail === '') {
-      setReferenceEmailError('References email Address is required.');
+      setReferenceEmailError('Email address is required!');
     } else if (!validateResetEmail(referenceEmail)) {
       setReferenceEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -752,16 +763,12 @@ const RentalOffer = props => {
   };
   const handleEmployeeReferences = () => {
     if (employeeReferenceFullName === '') {
-      setEmployeeReferenceFullNameError(
-        'Employee references fullName is required.',
-      );
+      setEmployeeReferenceFullNameError('Fullname is required!');
     } else if (employeeReferenceEmail === '') {
-      setEmployeeReferenceEmailError(
-        'Employee references email Address is required.',
-      );
+      setEmployeeReferenceEmailError('Email address is required!');
     } else if (!validateResetEmail(employeeReferenceEmail)) {
       setEmployeeReferenceEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.b',
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
       addEmployeeReferences();
@@ -2119,7 +2126,7 @@ const RentalOffer = props => {
                   `Dropdown change for ${question.tqm_Question_code}: ${item.lookup_key}`,
                 );
                 handleInputChange(question.tqm_Question_code, item.lookup_key);
-          
+
                 // Clear the error message when a valid selection is made
                 if (errors[question.tqm_Question_code]) {
                   setErrors(prevErrors => ({
