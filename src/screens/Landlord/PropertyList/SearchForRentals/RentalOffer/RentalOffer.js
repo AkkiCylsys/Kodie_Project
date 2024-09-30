@@ -1230,10 +1230,22 @@ const RentalOffer = props => {
     setModalVisible(!isModalVisible);
   };
 
+  // const toggleItem = itemChildren => {
+  //   setExpandedItem(prevState =>
+  //     prevState === itemChildren ? null : itemChildren,
+  //   );
+  // };
+
+  const [openedItems, setOpenedItems] = useState([]);
   const toggleItem = itemChildren => {
-    setExpandedItem(prevState =>
-      prevState === itemChildren ? null : itemChildren,
-    );
+    if (openedItems.includes(itemChildren)) {
+      // If already in the list, collapse it but don't remove it from the opened items
+      setExpandedItem(expandedItem === itemChildren ? null : itemChildren);
+    } else {
+      // Expand the item and add it to the opened items list
+      setOpenedItems([...openedItems, itemChildren]);
+      setExpandedItem(itemChildren);
+    }
   };
 
   const onClose = () => {
@@ -1437,6 +1449,8 @@ const RentalOffer = props => {
   };
 
   const QuesHeadingRender = ({item}) => {
+    const isExpanded = expandedItem === item?.children;
+    const isOpened = openedItems.includes(item?.children);
     return (
       <View style={{marginTop: 5}}>
         <TouchableOpacity
@@ -1444,7 +1458,15 @@ const RentalOffer = props => {
           onPress={() => {
             toggleItem(item?.children);
           }}>
-          <Text style={RentalOfferStyle.propery_det}>
+          <Text
+            style={[
+              RentalOfferStyle.propery_det,
+              {
+                color: isOpened
+                  ? _COLORS.Kodie_GreenColor
+                  : _COLORS.Kodie_BlackColor,
+              },
+            ]}>
             {item?.tqm_Question_description}
           </Text>
           <TouchableOpacity
