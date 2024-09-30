@@ -7,8 +7,8 @@ export const ChangeNotifyStyle = StyleSheet.create({
     height: "100%",
   },
   headingview: {
-    width: 306,
-    height: 40,
+    // width: 306,
+    // height: 40,
     marginTop: 15,
     alignItems: "center",
     marginHorizontal: 30,
@@ -17,7 +17,8 @@ export const ChangeNotifyStyle = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     fontFamily: FONTFAMILY.K_SemiBold,
-    color: _COLORS.Kodie_LightGrayColor,
+    textAlign:'center',
+    color: _COLORS.Kodie_ExtraLightGrayColor,
   },
   numberview: {
     flexDirection: "row",
@@ -38,7 +39,7 @@ export const ChangeNotifyStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   Dividerline: {
-    color: _COLORS.Kodie_LightGrayColor,
+    color: _COLORS.Kodie_LightGrayLineColor,
     height: 1.3,
     marginTop: 30,
   },
@@ -47,7 +48,7 @@ export const ChangeNotifyStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 20,
-    marginVertical:30
+    // marginVertical:30
   },
   notifytext: {
     fontSize: 14,
@@ -62,18 +63,20 @@ export const ChangeNotifyStyle = StyleSheet.create({
   },
   buttonview: {
     marginHorizontal: 20,
-    marginTop: 30,
+    // marginTop: 30,
   },
   toggle_con: {
-    width: 35,
-    height: 18,
+    width: 45,
+    height: 25,
     borderRadius: 20,
     padding: 5,
     alignItems: "center",
+    borderWidth:1,
+    borderColor:_COLORS?.Kodie_GrayColor
   },
   toggle_circle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 15,
+    height: 15,
+    borderRadius: 7,
   },
 });

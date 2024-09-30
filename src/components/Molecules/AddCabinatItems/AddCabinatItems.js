@@ -202,7 +202,10 @@ const handleImageSelect = (images) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
         style={{ flex: 1 }}
       >
-    <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{marginBottom:80}} >
+    <ScrollView 
+    showsHorizontalScrollIndicator={false} 
+    contentContainerStyle={{marginBottom:80}} 
+    >
       <View style={BedroomCss.secondModal}>
         <View style={BedroomCss.ModalContainer}>
           <Text style={BedroomCss.ShareText}>{ItemName}</Text>
@@ -277,14 +280,15 @@ const handleImageSelect = (images) => {
         <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
           {'Upload clear images of the item'}
         </Text>
+        
         {selectedImages.length > 0 ? 
+        <ScrollView style={{}}>
         <FlatList
-          data={selectedImages}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal
-          showsHorizontalScrollIndicator={true} // Set to true to visualize if it's scrolling
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-          style={{ height: 100 }} // Ensure it has a height
+        data={selectedImages}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal={true}
+        nestedScrollEnabled={true}
+        showsHorizontalScrollIndicator={true} // Set to true to visualize if it's scrolling
           renderItem={({ item }) => (
             
             <Image
@@ -293,6 +297,7 @@ const handleImageSelect = (images) => {
             />
         )}
         />
+        </ScrollView>
         :null}
         <UploadImageBoxes
           Box_Text={'Add Photo'}
@@ -349,6 +354,7 @@ const handleImageSelect = (images) => {
         <UploadCabinateImage heading_Text={'Upload more images'} onImageSelect={handleImageSelect} />
       </RBSheet>
       {isLoading ? <CommonLoader/> :null}
+      
       </KeyboardAvoidingView>
     </>
   );

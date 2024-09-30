@@ -341,7 +341,7 @@ const ProfileDocuments = props => {
   };
   return (
     <View style={ProfileDocumentStyle.mainContainer}>
-      {hasContractorRole?  
+      {!hasContractorRole?  
      ( <View style={{flex:1,marginHorizontal:16,marginVertical:10}}> 
       <CustomSingleButton
         _ButtonText={'Personal documents'}
@@ -350,7 +350,7 @@ const ProfileDocuments = props => {
         backgroundColor={_COLORS.Kodie_lightGreenColor}
         height={40}
         onPress={() => {}}
-        disabled={isLoading ? true : false}
+        disabled={ true}
       />
       </View>): 
       (<View style={ProfileDocumentStyle.btnContainer}>

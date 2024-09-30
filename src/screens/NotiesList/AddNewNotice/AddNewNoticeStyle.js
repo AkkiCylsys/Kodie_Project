@@ -18,18 +18,18 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-  errorText: {color: 'red', marginTop: 3},
+  errorText: {color: 'red', marginTop: 5,marginLeft:5},
   mainreapeatview: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 25,
   },
   bottomModal_container: {
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
     paddingVertical: 20,
     paddingBottom: 30,
   },
@@ -63,7 +63,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     // marginHorizontal: 10,
-    marginTop: 15,
+    marginTop: 25,
   },
   alldayview: {
     flexDirection: 'row',
@@ -100,6 +100,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   secondmainview: {
     flex: 1,
+    marginTop:15
   },
   addlocationmainview: {
     marginTop: 10,
@@ -122,7 +123,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     // marginHorizontal: 5,
     // padding: 5,
     flex: 1,
-    marginTop: 15,
+    marginTop: 25,
   },
   rightimgview: {
     borderWidth: 0.5,
@@ -214,7 +215,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   // ....drop down
   jobDetailsView: {
-    marginTop: 12,
+    marginVertical: 12,
   },
   dropdown: {
     borderWidth: 1,
@@ -255,7 +256,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 20,
+    marginTop: 12,
   },
   toggle_con: {
     width: 50,
@@ -264,7 +265,9 @@ export const AddNewNoticeStyle = StyleSheet.create({
     padding: 5,
     // marginTop: 18,
     alignItems: 'center',
-    alignSelf: 'center',
+    alignSelf: 'center',  
+  borderWidth:1,
+  borderColor:_COLORS?.Kodie_GrayColor
   },
   toggle_circle: {
     width: 18,
@@ -289,7 +292,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     height: 48,
     marginLeft: 10,
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 8,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     borderColor: _COLORS.Kodie_lightGreenColor,
@@ -303,7 +306,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   firstview: {
     alignItems: 'flex-start',
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   oldnumbertext: {
     fontSize: 13,

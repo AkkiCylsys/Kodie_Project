@@ -113,6 +113,37 @@ const EditProfile = props => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
   };
+  const isValidFirstName = text => {
+    const trimmedText = text.trim();
+    if (trimmedText === '') {
+      setFirstNameError('First name is required!');
+      return false;
+    } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
+      setFirstNameError(
+        'First name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
+      return false;
+    } else {
+      setFirstNameError('');
+      return true;
+    }
+  };
+
+  const isValidLastName = text => {
+    const trimmedText = text.trim();
+    if (trimmedText === '') {
+      setLastNameError('Last name is required!');
+      return false;
+    } else if (!/^[A-Za-z]+(?:[\s-]?[A-Za-z]*)*$/.test(trimmedText)) {
+      setLastNameError(
+        'Last name should only contain alphabetic characters, spaces, or hyphens in the correct format!',
+      );
+      return false;
+    } else {
+      setLastNameError('');
+      return true;
+    }
+  };
 
   const validateFirstName = text => {
     if (text === '') {
@@ -140,15 +171,17 @@ const EditProfile = props => {
   };
 
   const handlevalidUpdation = () => {
-    if (fullName.trim() == '') {
-      setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(fullName)) {
-      setFirstNameError('First name should contain only alphabetic characters');
-    } else if (lastName.trim() == '') {
-      setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
-      setLastNameError('Last name should contain only alphabetic characters');
-    } else {
+    const isFirstNameValid = isValidFirstName(fullName);
+    if (!isFirstNameValid) {
+      return;
+    }
+
+    const isLastNameValid = isValidLastName(lastName);
+    if (!isLastNameValid) {
+      return;
+    }
+
+    if (isFirstNameValid && isLastNameValid ) {
       Updateprofile();
     }
   };
@@ -471,11 +504,16 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       First name
                     </Text>
-                    <View style={EditProfileStyle.simpleinputview}>
+                    <View style={[EditProfileStyle.simpleinputview,
+                      {
+                        borderColor: fullNameError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                      }
+                    ]}>
                       <TextInput
                         value={fullName}
-                        onChangeText={validateFirstName}
-                        onBlur={() => validateFirstName(fullName)}
+                        onChangeText={ (text)=>{isValidFirstName(text)
+                          setFirstName(text)}}
+                        onBlur={() => isValidFirstName(fullName)}
                         placeholder="First Name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}
@@ -491,12 +529,19 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Last name
                     </Text>
-                    <View style={EditProfileStyle.simpleinputview}>
+                    <View style={[EditProfileStyle.simpleinputview,
+                      {
+                        borderColor: lastNameError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                      }
+                    ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={lastName}
-                        onChangeText={validateLastName}
-                        onBlur={() => validateLastName(lastName)}
+                        onChangeText={(text)=>{
+                          isValidLastName(text)
+                          setLastName(text)
+                        }}
+                        onBlur={() => isValidLastName(lastName)}
                         placeholder="Last name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />

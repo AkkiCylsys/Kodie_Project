@@ -193,7 +193,7 @@ const GuestSelectionContent = ({
             paddingHorizontal: 20,
             paddingVertical: 10,
             backgroundColor: _COLORS?.Kodie_BlackColor,
-            borderRadius: 8,
+            borderRadius: 4,
           }}
           onPress={applySelection}>
           <Text

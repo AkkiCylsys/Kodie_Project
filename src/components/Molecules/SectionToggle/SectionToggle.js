@@ -5,11 +5,11 @@ import { SectionToggleStyle } from './SectionToggleStyle';
 import { FONTFAMILY, LABEL_STYLES, _COLORS } from '../../../Themes';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
 
-const SectionToggle = ({ title, isVisible, onPress, children }) => {
+const SectionToggle = ({ title, isVisible, onPress, children,titleStyle }) => {
   return (
     <View style={SectionToggleStyle.subContainer}>
       <TouchableOpacity style={SectionToggleStyle.propety_details_view} onPress={onPress}>
-        <Text style={[LABEL_STYLES._texinputLabel, { fontFamily: FONTFAMILY.K_Bold }]}>
+        <Text style={[LABEL_STYLES._texinputLabel, { fontFamily: FONTFAMILY.K_Bold },titleStyle]}>
           {title}
         </Text>
         <Fontisto

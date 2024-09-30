@@ -73,11 +73,11 @@ const PointofInterest = () => {
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         ListFooterComponent={<TouchableOpacity onPress={()=>{
-          alert(JSON.stringify(item.items.length))
+          // alert(JSON.stringify(item.items.length))
           if(item.items.length >2){
 
           }else{
-            alert(JSON.stringify("No more data found!"))
+            // alert(JSON.stringify("No more data found!"))
           }
         }}><Text style={styles.viewMore}>View more...</Text></TouchableOpacity>}
       />

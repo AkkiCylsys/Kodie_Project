@@ -339,9 +339,7 @@ console.log(SignUpData);
                 onBlur={() => handleSignUpEmail(email)}
                 placeholder="Enter your email address"
                 placeholderTextColor="#999"
-                // maxLength={30}
-                autoCapitalize={'none'}
-                keyboardType="email-address"
+                textContentType='oneTimeCode'
               />
               {emailError ? (
                 <Text style={SignUpStyles.error_text}>{emailError}</Text>

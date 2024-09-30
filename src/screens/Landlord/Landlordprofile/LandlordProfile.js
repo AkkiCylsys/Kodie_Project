@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused, CommonActions, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../services/CommonServices';
 import { LandlordProfileStyle } from './LandlordProfileStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,8 +24,9 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { logoutActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import { Config } from '../../../Config';
+import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 
-const LandlordProfile = (props) => {
+const LandlordProfile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -36,7 +36,27 @@ const LandlordProfile = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredSections, setFilteredSections] = useState([]);
   const refRBSheet = useRef();
+
+
+  // List of all sections you want to display
+  const sections = [
+    { id: 1, icon: 'user-alt', library: 'FontAwesome5', text: 'Account', subText: 'Manage your account & payment settings', screen: 'AccountSetting', category: 'settings' },
+    { id: 2, icon: 'video', library: 'Entypo', text: 'Manage Subscription', subText: 'Manage your Kodie subscription', screen: 'ManageSubscription', category: 'settings' },
+    { id: 3, icon: 'lock', library: 'MaterialCommunityIcons', text: 'Privacy & Security', subText: 'View your privacy and security settings', screen: null, category: 'settings' },
+    { id: 4, icon: 'storage', library: 'MaterialIcons', text: 'Storage & Data', subText: 'Manage storage and data settings', screen: null, category: 'settings' },
+    { id: 5, icon: 'help-with-circle', library: 'Entypo', text: 'Help & Feedback', subText: 'Get help and leave feedback', screen: 'Help_FeedBack', category: 'Feedback' },
+    { id: 6, icon: 'like1', library: 'AntDesign', text: 'Follow us on social media', subText: 'Follow us for news, insights, and more!', screen: 'SocialMedia', category: 'Feedback' },
+    { id: 7, icon: 'user-plus', library: 'FontAwesome5', text: 'Tell a Friend', subText: 'Tell your friends about Kodie', screen: 'Invitefriend', category: 'Share' },
+    { id: 8, icon: 'rate-review', library: 'MaterialIcons', text: 'Rate Kodie', subText: 'Rate your Kodie experience', screen: null, category: 'Share' },
+    { id: 9, icon: 'logout', library: 'MaterialCommunityIcons', text: 'Logout', subText: 'Logout of your Kodie profile', screen: 'Logout', category: 'Share' }
+  ];
+
+  useEffect(() => {
+    setFilteredSections(sections); // Initialize filtered sections
+  }, []);
 
   useEffect(() => {
     if (userId && isFocused) {
@@ -61,7 +81,7 @@ const LandlordProfile = (props) => {
     refRBSheet.current.close();
     setTimeout(() => {
       dispatch(logoutActionCreator());
-      props.navigation.dispatch(
+      navigation.dispatch(
         CommonActions.reset({
           index: 0,
           routes: [{ name: 'LoginScreen' }],
@@ -70,22 +90,35 @@ const LandlordProfile = (props) => {
     }, 500);
   };
 
-  const handleOpenSettings = (screen) => {
-    Alert.alert('Alert', 'Coming soon');
-    // props.navigation.navigate(screen);
-  };
-
-  const renderProfileImage = () => {
-    if (accountDetails?.image_path[0]) {
-      return (
-        <Image
-          source={{ uri: accountDetails.image_path[0] }}
-          style={LandlordProfileStyle.usericon}
-          resizeMode="cover"
-        />
-      );
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query === '') {
+      setFilteredSections(sections); // If search is cleared, show all sections
+    } else {
+      const lowerCaseQuery = query.toLowerCase();
+      const filtered = sections.filter(section => {
+        const matchesText = section.text.toLowerCase().includes(lowerCaseQuery);
+        const matchesSubText = section.subText.toLowerCase().includes(lowerCaseQuery);
+        const matchesCategory = section.category.toLowerCase().includes(lowerCaseQuery);
+  
+        // Show sections that match any of the criteria
+        return matchesText || matchesSubText || matchesCategory;
+      });
+  
+      setFilteredSections(filtered); // Set filtered sections based on the query
     }
-    return <FontAwesome name="user-circle" size={76} color={_COLORS.Kodie_GrayColor} />;
+  };
+  
+  const renderProfileImage = () => {
+    return accountDetails?.image_path?.[0] ? (
+      <Image
+        source={{ uri: accountDetails.image_path[0] }}
+        style={LandlordProfileStyle.usericon}
+        resizeMode="cover"
+      />
+    ) : (
+      <FontAwesome name="user-circle" size={76} color={_COLORS.Kodie_GrayColor} />
+    );
   };
 
   const renderRowTab = (iconLibrary, iconName, tabText, tabSubText, onPress) => (
@@ -105,9 +138,17 @@ const LandlordProfile = (props) => {
     <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader onPressLeftButton={() => navigation.goBack()} MiddleText="Profile" />
       <ScrollView>
+        <SearchBar
+          frontSearchIcon
+          height={48}
+          marginTop={20}
+          placeholder="Search..."
+          searchData={handleSearch}
+          textvalue={searchQuery}
+        />
         <TouchableOpacity
           style={LandlordProfileStyle.profilemainView}
-          onPress={() => props.navigation.navigate('EditProfile')}
+          onPress={() => navigation.navigate('EditProfile')}
         >
           <View style={LandlordProfileStyle.ProfileView}>
             {renderProfileImage()}
@@ -132,20 +173,46 @@ const LandlordProfile = (props) => {
 
         <DividerIcon />
 
-        <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
-        {renderRowTab('FontAwesome5', 'user-alt', 'Account', 'Manage your account & payment settings', () => props.navigation.navigate('AccountSetting'))}
-        {renderRowTab('MaterialIcons', 'subscriptions', 'Manage Subscription', 'Manage your subscription plans', () => props.navigation.navigate('ManageSubscription'))}
-        {renderRowTab('MaterialCommunityIcons', 'lock', 'Privacy & Security', 'View your privacy and security settings', handleOpenSettings)}
-        {renderRowTab('MaterialIcons', 'storage', 'Storage & Data', 'Manage storage and data settings', handleOpenSettings)}
+       {/* Render Sections */}
+       <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
+        {filteredSections
+          .filter(section => section.category === 'settings')
+          .map(section => (
+            renderRowTab(
+              section.library,
+              section.icon,
+              section.text,
+              section.subText,
+              section.screen ? () => navigation.navigate(section.screen) : () => Alert.alert('Alert', 'Coming soon')
+            )
+          ))}
 
         <Text style={LandlordProfileStyle.AllcontactsText}>Feedback</Text>
-        {renderRowTab('Entypo', 'help-with-circle', 'Help & Feedback', 'Get help and leave feedback', () => props.navigation.navigate('Help_FeedBack'))}
-        {renderRowTab('AntDesign', 'like1', 'Follow us on social media', 'Follow us for news, insights, and more!', () => props.navigation.navigate('SocialMedia'))}
-
+        {filteredSections
+          .filter(section => section.category === 'Feedback')
+          .map(section => (
+            renderRowTab(
+              section.library,
+              section.icon,
+              section.text,
+              section.subText,
+              section.screen ? () => navigation.navigate(section.screen) : () => Alert.alert('Alert', 'Coming soon')
+            )
+          ))}
+          
         <Text style={LandlordProfileStyle.AllcontactsText}>Share</Text>
-        {renderRowTab('FontAwesome5', 'user-plus', 'Tell a Friend', 'Tell your friends about Kodie', () => props.navigation.navigate('Invitefriend'))}
-        {renderRowTab('MaterialIcons', 'rate-review', 'Rate Kodie', 'Rate your Kodie experience', handleOpenSettings)}
-        {renderRowTab('MaterialCommunityIcons', 'logout', 'Logout', 'Logout of your Kodie profile',()=> refRBSheet.current.open())}
+        {filteredSections
+          .filter(section => section.category === 'Share')
+          .map(section => (
+            renderRowTab(
+              section.library,
+              section.icon,
+              section.text,
+              section.subText,
+              section.screen === 'Logout' ? ()=> refRBSheet.current.open() : section.screen? () => navigation.navigate(section.screen) : () => Alert.alert('Alert', 'Coming soon')
+            )
+          ))}
+
 
       </ScrollView>
 

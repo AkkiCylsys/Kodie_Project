@@ -41,6 +41,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
 import { useNavigation } from '@react-navigation/native';
 import { AddCustomArea, GetInspectionAreaDetail } from '../../../services/InspectionModuleServices.js/InspectionServices';
+import { log } from 'react-native-reanimated';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -156,31 +157,80 @@ const CreateNewInspection = props => {
     );
   };
   
+  const getInspectionDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const apiUrl = `${url}get_inspection_details/${TIM_KEY}`;
+  
+    try {
+      const response = await axios.get(apiUrl);
+      const data = response?.data?.data[0];
+  
+      setInspection_Details(data);
+      setInspection_value(data?.v_TIM_INSPECTION_TYPE);
+      setSelectedDate(moment(data?.v_TIM_SCHEDULE_DATE).format('YYYY-MM-DD'));
+      setCurrentTime(data?.v_TIM_SCHEDULE_TIME);
+  
+      // Initialize checkedItems based on cur_TAM_AREA_KEY
+      const areaKeys = data?.cur_TAM_AREA_KEY ? data.cur_TAM_AREA_KEY.split(',') : [];
+      const initialCheckedItems = {};
+      areaKeys.forEach(key => {
+        initialCheckedItems[key] = true; // Set true for checked areas
+      });
+      setCheckedItems(initialCheckedItems); // Set checked items based on API response
+  
+      console.log(areaKeys, 'cur_TAM_AREA_KEY');
+  
+      setSelectedAddress({
+        latitude: data?.v_TIM_LOCATION_LATITUDE,
+        longitude: data?.v_TIM_LOCATION_LONGITUDE,
+        location: data?.v_TIM_LOCATION,
+        property_id: data?.v_UPD_KEY,
+        user_Id: data?.v_CREATED_BY,
+      });
+      setSelectedAddressDetail(data?.v_UPD_KEY);
+      setDisplaySelectedValues(data?.v_TIM_ADD_ATTENDENCE);
+      setNotes(data?.v_TIM_DESCRIPTION);
+      setSelectedButtonFurnishedId(data?.v_TIM_IS_FURNISHED);
+    } catch (error) {
+      console.error('API Error PersonalDetails CIP:', error);
+    } finally {
+      setIsLoading(false); // Ensure loading state is reset in case of error
+    }
+  };
+  
   const toggleCheckBox = itemId => {
     console.log(itemId, 'itemIditemId');
+    
     setCheckedItems(prevCheckedItems => {
       const newCheckedItems = {
         ...prevCheckedItems,
-        [itemId]: !prevCheckedItems[itemId],
+        [itemId]: !prevCheckedItems[itemId], // Toggle the checked state
       };
-      console.log(newCheckedItems, 'newCheckedItems');
-      return newCheckedItems;
+      
+      console.log(newCheckedItems, 'newCheckedItems'); // Log to track changes
+      return newCheckedItems; // Return the updated checked items
     });
-    setValidationMessage('')
+    
+    setValidationMessage(''); // Clear any previous validation message
   };
+  
+  const getCheckedItemIds = () => {
+    // Filter checked items to get an array of checked IDs
+    return Object.keys(checkedItems).filter(
+      itemId => checkedItems[itemId] && itemId !== '0' && itemId !== ''
+    );
+  };
+  
+  const checkedItemIds = getCheckedItemIds();
+  console.log(checkedItemIds, 'checkedItemIds');
   const handlePress = () => {
     refRBSheet.current.open();
   };
   const handleRemove = () => {
     setDisplaySelectedValues('');
   };
-  const getCheckedItemIds = () => {
-    return Object.keys(checkedItems)
-      .filter(itemId => checkedItems[itemId] && itemId !== '0' && itemId !== '')
-      .join(',');
-  };
 
-  const checkedItemIds = getCheckedItemIds();
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -188,47 +238,7 @@ const CreateNewInspection = props => {
     setSelectedDate(day.dateString);
     setSelectedDateError(false);
   };
-  const getInspectionDetails = async () => {
-    setIsLoading(true);
-    const url = Config.BASE_URL;
 
-    const apiUrl = url + `get_inspection_details/${TIM_KEY}`;
-
-    await axios
-      .get(apiUrl)
-      .then(response => {
-        setInspection_Details(response?.data?.data[0]);
-        setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE);
-        setSelectedDate(
-          moment(response?.data?.data[0]?.v_TIM_SCHEDULE_DATE).format(
-            'YYYY-MM-DD',
-          ),
-        );
-        setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
-        setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
-        console.log(
-          response?.data?.data[0]?.cur_TAM_AREA_KEY,
-          'cur_TAM_AREA_KEY',
-        );
-        setSelectedAddress({
-          latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
-          longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
-          location: response?.data?.data[0]?.v_TIM_LOCATION,
-          property_id: response?.data?.data[0]?.v_UPD_KEY,
-          user_Id: response?.data?.data[0]?.v_CREATED_BY,
-        });
-        setSelectedAddressDetail(response?.data?.data[0]?.v_UPD_KEY);
-        setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE);
-        setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION);
-        setSelectedButtonFurnishedId(
-          response?.data?.data[0]?.v_TIM_IS_FURNISHED,
-        );
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('API Error PersonalDetails CIP:', error);
-      });
-  };
   useEffect(() => {
     if (isVisible) {
       fetchData();
@@ -594,7 +604,9 @@ const CreateNewInspection = props => {
     <ScrollView>
       <KeyboardAvoidingView
         // style={CreateNewInspectionStyle.mainConatainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Adjust this value based on your view
+  style={{ flex: 1}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={CreateNewInspectionStyle.Container}>
@@ -608,7 +620,9 @@ const CreateNewInspection = props => {
               <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
-              style={CreateNewInspectionStyle.dropdown}
+              style={[CreateNewInspectionStyle.dropdown,{
+                borderColor:errorInspection? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+              }]}
               placeholderStyle={[
                 CreateNewInspectionStyle.placeholderStyle,
                 { color: _COLORS.Kodie_LightGrayColor },
@@ -647,6 +661,11 @@ const CreateNewInspection = props => {
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_GrayColor,
               }}
+              calenderStyle={{
+                borderColor: selectedDateError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
+              }}
               calenderIcon={toggleModal}
               onDayPress={handleDayPress}
               Visible={isModalVisible}
@@ -671,7 +690,7 @@ const CreateNewInspection = props => {
                   : 'Select time'
               }
               _TextTimeColor={
-                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_LightGrayColor
               }
               data={new Date()}
               getData={date => {
@@ -692,7 +711,9 @@ const CreateNewInspection = props => {
               <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
-              style={CreateNewInspectionStyle.dropdown}
+              style={[CreateNewInspectionStyle.dropdown,{
+                borderColor:showError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+              }]}
               placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
               selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
               inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
@@ -753,7 +774,7 @@ const CreateNewInspection = props => {
                   {
                     color: displaySelectedValues
                       ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor,
+                      : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}>
                 {displaySelectedValues || 'Add people attending the inspection'}
@@ -786,7 +807,7 @@ const CreateNewInspection = props => {
               }
               LeftButtonborderColor={
                 !selectedButtonFurnished
-                  ? _COLORS.Kodie_GrayColor
+                  ? _COLORS.Kodie_GreenColor
                   : _COLORS.Kodie_LightWhiteColor
               }
               onPressLeftButton={() => {
@@ -806,7 +827,7 @@ const CreateNewInspection = props => {
               }
               RightButtonborderColor={
                 selectedButtonFurnished
-                  ? _COLORS.Kodie_GrayColor
+                  ? _COLORS.Kodie_GreenColor
                   : _COLORS.Kodie_LightWhiteColor
               }
               onPressRightButton={() => {
@@ -838,7 +859,7 @@ const CreateNewInspection = props => {
                     return (
                       <View>
                         <TouchableOpacity
-                          style={{ marginRight: 50, marginTop: 10 }}
+                          style={{ marginRight: 35, marginTop: 10 }}
                           onPress={() => {
                             refRBSheet1.current.open();
                             // Alert.alert('Add custom area', 'Coming soon');
@@ -869,7 +890,7 @@ const CreateNewInspection = props => {
             value={Notes}
             onChangeText={setNotes}
             placeholder="Enter any notes about this item"
-            placeholderTextColor="#999"
+            placeholderTextColor={_COLORS?.Kodie_LightGrayColor}
             multiline
             numberOfLines={5}
             textAlignVertical={'top'}
@@ -950,11 +971,13 @@ const CreateNewInspection = props => {
               <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <TextInput
-              style={CreateNewInspectionStyle.emailinput}
+              style={[CreateNewInspectionStyle.emailinput, {
+                borderColor:showcustomAreaNameError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+              }]}
               value={customAreaName}
               onChangeText={handleCustomName}
               placeholder="Create a name for your custom area"
-              placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="email-address"
               onBlur={()=>{
                 handleCustomName(customAreaName)
@@ -985,7 +1008,7 @@ const CreateNewInspection = props => {
               }
               LeftButtonborderColor={
                 !selectedButtonStandard
-                  ? _COLORS.Kodie_GrayColor
+                  ? _COLORS.Kodie_GreenColor
                   : _COLORS.Kodie_LightWhiteColor
               }
               onPressLeftButton={() => {
@@ -1009,7 +1032,7 @@ const CreateNewInspection = props => {
               }
               RightButtonborderColor={
                 selectedButtonStandard
-                  ? _COLORS.Kodie_GrayColor
+                  ? _COLORS.Kodie_GreenColor
                   : _COLORS.Kodie_LightWhiteColor
               }
             />
@@ -1020,7 +1043,11 @@ const CreateNewInspection = props => {
               <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
             <Dropdown
-              style={CreateNewInspectionStyle.dropdown}
+              style={[CreateNewInspectionStyle.dropdown,
+                {
+                  borderColor:errorSimiarArea? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+                }
+              ]}
               placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
               selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
               inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
@@ -1066,7 +1093,7 @@ const CreateNewInspection = props => {
             }
             LeftButtonborderColor={
               !selectedButtonFutue
-                ? _COLORS.Kodie_GrayColor
+                ? _COLORS.Kodie_GreenColor
                 : _COLORS.Kodie_LightWhiteColor
             }
             RightButtonText={'No'}
@@ -1086,7 +1113,7 @@ const CreateNewInspection = props => {
             }
             RightButtonborderColor={
               selectedButtonFutue
-                ? _COLORS.Kodie_GrayColor
+                ? _COLORS.Kodie_GreenColor
                 : _COLORS.Kodie_LightWhiteColor
             }
           />

@@ -25,7 +25,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderRadius: 8,
   },
   errorText1: {color: 'red', marginBottom:20},
-  errorText: {color: 'red',},
+  errorText: {color: 'red',marginLeft:5,marginTop:5},
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GrayColor,
@@ -170,7 +170,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_LightGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },

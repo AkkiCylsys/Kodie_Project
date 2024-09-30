@@ -335,7 +335,7 @@ export const EditProfileStyle = StyleSheet.create({
     flex: 1,
     color: _COLORS.Kodie_BlackColor,
   },
-  errorText: {color: 'red', marginLeft: 15},
+  errorText: {color: 'red', marginLeft: 25,marginTop:5},
   c_locationBtn: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     flexDirection: 'row',

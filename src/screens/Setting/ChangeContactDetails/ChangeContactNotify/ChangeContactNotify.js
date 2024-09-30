@@ -12,6 +12,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {useDispatch, useSelector} from 'react-redux';
 import SwitchToggle from 'react-native-switch-toggle';
 import axios from 'axios';
+import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 //ScreenNo:207
 const ChangeContactNotify = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -21,6 +22,7 @@ const ChangeContactNotify = props => {
   // console.log('loginResponse.....', loginData);
   let oldPhoneNumber = props?.route?.params?.oldnewPhoneNumber;
   let PhoneNumber = props?.route?.params?.newnewPhoneNumber;
+  let countryCode = props?.route?.params?.countryCode;
   const newPhoneNumber = PhoneNumber.substring(3);
   console.log('oldPhoneNumber....', oldPhoneNumber);
   console.log('newPhoneNumber....', newPhoneNumber);
@@ -70,7 +72,7 @@ const ChangeContactNotify = props => {
     console.log('url...', updateContactDetailUrl);
     const dataToSend = {
       uad_key: loginData?.Login_details?.user_account_id,
-      country_code: accountDetails?.UAD_COUNTRY_CODE,
+      country_code: countryCode,
       old_phone_number: oldPhoneNumber,
       new_phone_number: newPhoneNumber,
     };
@@ -111,17 +113,17 @@ const ChangeContactNotify = props => {
           </Text>
           <View style={ChangeNotifyStyle.numberview}>
             <Text style={ChangeNotifyStyle.firstnumbertext}>
-              {`${accountDetails?.UAD_COUNTRY_CODE || ''}${oldPhoneNumber}`}
+              {`${countryCode}${oldPhoneNumber}`}
             </Text>
             <Text style={ChangeNotifyStyle.totext}> to </Text>
             <Text style={ChangeNotifyStyle.secondnumbertext}>
               {/* {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`} */}
-              {PhoneNumber}
+              {`${countryCode}${PhoneNumber}`}
             </Text>
           </View>
         </View>
-
-        <Divider style={ChangeNotifyStyle.Dividerline} />
+<DividerIcon marginBottom={35} marginTop={35}/>
+       
         <View>
           <View style={ChangeNotifyStyle.notifyview}>
             <Text style={ChangeNotifyStyle.notifytext}>Notify others</Text>
@@ -140,7 +142,7 @@ const ChangeContactNotify = props => {
           </View>
         </View>
 
-        <Divider style={ChangeNotifyStyle.Dividerlinesecond} />
+        <DividerIcon marginBottom={35} marginTop={35}/>
 
         <View style={ChangeNotifyStyle.buttonview}>
           <CustomSingleButton

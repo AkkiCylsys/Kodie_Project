@@ -43,7 +43,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     height: 100,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_GrayColor,
+    // borderColor: _COLORS.Kodie_GrayColor,
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
@@ -52,7 +52,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     // flexDirection: "row",
     // alignItems: "center",
     flex: 1,
-    borderColor: '#ccc',
+    // borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 6,
     shadowColor: '#000',
@@ -171,5 +171,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_redColor,
     fontFamily: FONTFAMILY?.K_Medium,
     fontSize: 14,
+    marginLeft:5,
+    marginTop:5
   },
 });

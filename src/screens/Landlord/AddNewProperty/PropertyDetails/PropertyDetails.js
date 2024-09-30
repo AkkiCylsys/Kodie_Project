@@ -659,7 +659,9 @@ export default PropertyDetails = props => {
                   <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <View style={PropertyDetailsStyle.locationConView}>
-                  <View style={PropertyDetailsStyle.locationContainer}>
+                  <View style={[PropertyDetailsStyle.locationContainer,{
+                    borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                  }]}>
                     <TextInput
                       style={PropertyDetailsStyle.locationInput}
                       value={location}
@@ -677,7 +679,9 @@ export default PropertyDetails = props => {
                     />
                   </View>
                   <TouchableOpacity
-                    style={PropertyDetailsStyle.locationIconView}
+                    style={[PropertyDetailsStyle.locationIconView,{
+                      borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                    }]}
                     onPress={() => {
                       setIsMap(true);
                       handleTextInputFocus();
@@ -700,7 +704,11 @@ export default PropertyDetails = props => {
                   <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <Dropdown
-                  style={PropertyDetailsStyle.dropdown}
+                  style={[PropertyDetailsStyle.dropdown,{
+                    
+                      borderColor: propertyError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                    
+                  }]}
                   placeholderStyle={[
                     PropertyDetailsStyle.placeholderStyle,
                     {color: _COLORS.Kodie_LightGrayColor},
@@ -732,8 +740,14 @@ export default PropertyDetails = props => {
                   Notes
                   <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
+                
+
                 <TextInput
-                  style={PropertyDetailsStyle.input}
+                  style={[PropertyDetailsStyle.input,{
+                    
+                    borderColor: notesError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
+                  
+                }]}
                   value={propertyDesc}
                   onChangeText={handleNote}
                   placeholder="Add any information about your property"
@@ -744,6 +758,7 @@ export default PropertyDetails = props => {
                   textAlignVertical={'top'}
                   onBlur={() => handleNote(propertyDesc)}
                 />
+                
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
                 </Text>

@@ -616,7 +616,9 @@ export default Login = props => {
                 placeholderTextColor="#999"
                 // maxLength={30}
                 autoCapitalize={'none'}
-                keyboardType={'email-address'}
+                // returnKeyType='done'
+                // keyboardType={'default'}
+                textContentType='oneTimeCode'
               />
             {emailError ? (
               <Text style={LoginStyles.error_text}>{emailError}</Text>
@@ -803,6 +805,7 @@ export default Login = props => {
                   placeholder="Your email address"
                   placeholderTextColor="#999"
                   // maxLength={30}
+                  textContentType='oneTimeCode'
                   autoCapitalize={'none'}
                   editable={isLoading?false:true}
                 />
@@ -828,6 +831,8 @@ export default Login = props => {
                   placeholderTextColor="#999"
                   editable={false}
                   keyboardType={'email-address'}
+                textContentType='oneTimeCode'
+
                 />
               </View>
               <View style={LoginStyles.varifycode}>
