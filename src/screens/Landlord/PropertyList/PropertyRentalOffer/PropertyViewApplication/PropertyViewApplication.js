@@ -146,7 +146,9 @@ const PropertyViewApplication = props => {
   return (
     <SafeAreaView style={PropertyViewApplicationStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => {
+          _goBack(props);
+        }}
         MiddleText={Pre_screening ? 'Pre-screening' : 'View application'}
       />
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -52,7 +52,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
-  flatListContainer: {marginHorizontal: 30},
+  flatListContainer: {marginHorizontal: 16},
   flat_MainView: {flex: 1, flexDirection: 'row', marginTop: 5},
   flexContainer: {flex: 1},
   apartmentText: {fontSize: 13.48, color: _COLORS.Kodie_BlackColor},
@@ -94,14 +94,17 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     borderRadius: 15,
     marginLeft: '10%',
     paddingBottom: 3,
-    width:150,
-    paddingHorizontal:5
+    // width:130,
+    paddingHorizontal:6,
+    alignItems:"flex-end",
+    borderWidth:1
   },
   buttonText: {
     fontSize: 10,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
+    marginRight:5
   },
   bedCountView: {
     flexDirection: 'row',

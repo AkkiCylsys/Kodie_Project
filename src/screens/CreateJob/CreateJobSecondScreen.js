@@ -253,18 +253,122 @@ const CreateJobSecondScreen = props => {
   };
 
   console.log('selectedVideos .....', selectedVideos);
+
+
+  // const handlefrontImage = multipleImages => {
+  //   setMultiImageName([...MultiImageName, ...multipleImages]);
+  //   console.log('................multiFrontImage', multipleImages);
+  // };
+
   const handlefrontImage = multipleImages => {
-    setMultiImageName([...MultiImageName, ...multipleImages]);
-    console.log('................multiFrontImage', multipleImages);
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  
+    // Find if any image exceeds the 5 MB size limit
+    const oversizedImage = multipleImages.find(image => image.size > MAX_FILE_SIZE);
+  
+    if (oversizedImage) {
+      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      refRBSheet.current.close();
+      return;
+    }
+  
+    // Check the total number of images after the new selection
+    const newTotalImages = MultiImageName.length + multipleImages.length;
+  
+    if (newTotalImages > 4) {
+      Alert.alert(
+        'Maximum Image Limit Exceeded',
+        'Oops! You can add up to 4 images per card only.',
+      );
+      refRBSheet.current.close();
+    } else {
+      // Add the valid images to the state
+      setMultiImageName([...MultiImageName, ...multipleImages]);
+      console.log('................multiFrontImage', multipleImages);
+      console.log(
+        '................ImageName',
+        multipleImages.map(image => image.path),
+      );
+    }
   };
+  
+
+
+  // const handleleftImage = leftImages => {
+  //   setLeftImage([...leftImage, ...leftImages]);
+  //   console.log('................leftImage', leftImage);
+  // };
+
   const handleleftImage = leftImages => {
-    setLeftImage([...leftImage, ...leftImages]);
-    console.log('................leftImage', leftImage);
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  
+    // Find if any image exceeds the 5 MB size limit
+    const oversizedImage = leftImages.find(image => image.size > MAX_FILE_SIZE);
+  
+    if (oversizedImage) {
+      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      refRBSheet.current.close();
+      return;
+    }
+  
+    // Check the total number of images after the new selection
+    const newTotalImages = leftImage.length + leftImages.length;
+  
+    if (newTotalImages > 4) {
+      Alert.alert(
+        'Maximum Image Limit Exceeded',
+        'Oops! You can add up to 4 images per card only.',
+      );
+      refRBSheet.current.close();
+    } else {
+      // Add the valid images to the state
+      setLeftImage([...leftImage, ...leftImages]);
+      console.log('................leftImage', leftImages);
+      console.log(
+        '................ImageName',
+        leftImages.map(image => image.path),
+      );
+    }
   };
+  
+
+  // const handleRightImage = rightImages => {
+  //   setRightImage([...rightImage, ...rightImages]);
+  //   console.log('................RightImage', rightImage);
+  // };
+
   const handleRightImage = rightImages => {
-    setRightImage([...rightImage, ...rightImages]);
-    console.log('................RightImage', rightImage);
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  
+    // Find if any image exceeds the 5 MB size limit
+    const oversizedImage = rightImages.find(image => image.size > MAX_FILE_SIZE);
+  
+    if (oversizedImage) {
+      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      refRBSheet.current.close();
+      return;
+    }
+  
+    // Check the total number of images after the new selection
+    const newTotalImages = rightImage.length + rightImages.length;
+  
+    if (newTotalImages > 4) {
+      Alert.alert(
+        'Maximum Image Limit Exceeded',
+        'Oops! You can add up to 4 images per card only.',
+      );
+      refRBSheet.current.close();
+    } else {
+      // Add the valid images to the state
+      setRightImage([...rightImage, ...rightImages]);
+      console.log('................RightImage', rightImages);
+      console.log(
+        '................ImageName',
+        rightImages.map(image => image.path),
+      );
+    }
   };
+  
 
   const imagePaths = MultiImageName.map(item => item.path);
   const leftImagePaths = leftImage.map(item => item.path);

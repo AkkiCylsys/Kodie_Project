@@ -2668,10 +2668,11 @@ const RentalOffer = props => {
     <SafeAreaView style={RentalOfferStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
-          _goBack(props);
-          props?.navigation?.navigate('Properties', {
-            // tab3: 'tab3',
-          });
+          // _goBack(props);
+          props?.navigation?.pop()
+          // props?.navigation?.navigate('Properties', {
+          //   openTab3: "openTab3",
+          // });
         }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />
