@@ -194,7 +194,11 @@ const SignUp = (props) => {
       } else if (response?.data?.code === 2) {
         Alert.alert('Success', response?.data?.message);
         props.navigation.navigate('LoginScreen');
-      } else {
+      } else if (response?.data?.code === 0) {
+        Alert.alert('Success', response?.data?.message);
+        props.navigation.navigate('LoginScreen');
+      }
+       else {
         Alert.alert('Success', response?.data?.message);
       }
     } catch (error) {
@@ -276,6 +280,10 @@ console.log(SignUpData);
           user_key: response?.User_Key,
         });
       } else if (response?.code === 2) {
+        Alert.alert('Success', response?.message);
+        props.navigation.navigate('LoginScreen');
+      }
+      else if (response?.code === 0) {
         Alert.alert('Success', response?.message);
         props.navigation.navigate('LoginScreen');
       } else {

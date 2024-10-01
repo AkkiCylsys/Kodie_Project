@@ -739,7 +739,7 @@ export default FirstProperty = props => {
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
-    if (res.data.success === true) {
+    if (res.data.status === true) {
       setIsLoading(false);
       registerUserfill();
 

@@ -2,7 +2,7 @@
 //ScreenNo:95
 //ScreenNo:96
 //ScreenNo:97
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -35,8 +35,8 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {googleMapIsInstalled} from 'react-native-maps/lib/decorateMapComponent';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
-import { UpdateInspectionItem } from '../../../../services/InspectionModuleServices.js/InspectionServices';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import { GetInspectionItem, UpdateInspectionItem } from '../../../../services/InspectionModuleServices.js/InspectionServices';
 
 const Inspection = props => {
   const navigation = useNavigation();
@@ -112,13 +112,16 @@ const Inspection = props => {
     refRBSheet2.current.close();
     refRBSheet1.current.close();
   };
-  useEffect(() => {
-    getInspectionAreas();
-  }, []);
-  useEffect(() => {
-    getInspectionDetails();
-    getInspectionCustomeAreas();
-  }, []);
+  const fetchInspectionData = async () => {
+    await getInspectionAreas(); 
+    await getInspectionDetails(); 
+    await getInspectionCustomeAreas();
+  };
+  useFocusEffect(
+    useCallback(() => {
+      fetchInspectionData(); 
+    }, []) 
+  );
 
   const getInspectionCustomeAreas = async() => {
     const url = Config.BASE_URL;
@@ -257,6 +260,40 @@ const Inspection = props => {
       console.error('Error:', error.response || error.message);
     }
   };
+  const handleCancleItem = async (id) => {
+    setIsLoading(true);
+
+    try {
+      const payload = { 
+        TIM_KEY: TIM_KEY,
+        TAM_AREA_KEYS:id.toString(),
+       };
+       console.log('itempayload',payload);
+      const data = await GetInspectionItem(payload);
+      console.log(data);
+      getInspectionAreas();
+      setIsLoading(false)
+    } catch (err) {
+     console.log(err,'dfs');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const removeItem = (id) => {
+    const removedItem = AreaKey.find((item) => item.area_key_id === id);
+    if (!removedItem) {
+      console.warn(`Item with ID ${id} not found in getItems.`);
+      return;
+    }
+    console.log(`Removing item with ID ${removedItem.area_key_id}`);
+    handleCancleItem(removedItem.area_key_id);
+    const updatedItems = AreaKey.filter((item) => item.area_key_id !== id);
+    setAreaKey(updatedItems);
+  };
+
+  const renderItem = ({ item }) => (
+    <Inspection_render item={item} onPressRemove={removeItem} />
+  );
 
   const getInspectionDetails = () => {
     setIsLoading(true);
@@ -341,7 +378,7 @@ const Inspection = props => {
         handleDone();
       }
     }
-  const Inspection_render = ({item}) => {
+  const Inspection_render = ({item,onPressRemove}) => {
     console.log(item.area_key_id);
     let IconComponent;
     let iconName = '';
@@ -405,7 +442,9 @@ const Inspection = props => {
                 />
               </View>
             ) : (
-              <TouchableOpacity>
+              <TouchableOpacity 
+              onPress={() => onPressRemove(item.area_key_id)}
+              >
                 <AntDesign
                   name={'minuscircle'}
                   size={20}
@@ -495,7 +534,7 @@ const Inspection = props => {
             scrollEnabled
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.area_key_id}
-            renderItem={Inspection_render}
+            renderItem={renderItem}
           />
         </View>
         <RBSheet

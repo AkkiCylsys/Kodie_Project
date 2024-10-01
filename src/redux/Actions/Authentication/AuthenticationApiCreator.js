@@ -56,7 +56,8 @@ export const signupAccountApiActionCreator = data => async dispatch => {
         },
       },
     );
-    if (res?.data?.success === true) {
+    console.log();(JSON.stringify(res.data.status))
+    if (res?.data?.status === true) {
       console.log(res.data,"fetchRegistrationSuccess");
       dispatch(fetchRegistrationSuccess(res?.data));
       return res;

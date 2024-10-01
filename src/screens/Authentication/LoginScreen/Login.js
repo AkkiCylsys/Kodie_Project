@@ -563,7 +563,7 @@ export default Login = props => {
         ) {
           alert(response?.data?.message);
         } else {
-          openSheetWithHeight(400)
+          openSheetWithHeight(450)
           alert(response?.data?.message);
           setIsClick(isClick + 1);
         }

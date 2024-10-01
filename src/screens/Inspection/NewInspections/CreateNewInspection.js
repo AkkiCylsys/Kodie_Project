@@ -2,7 +2,7 @@
 //ScreenNo:89
 //ScreenNo:90
 //ScreenNo:92
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -39,7 +39,7 @@ import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveL
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AddCustomArea, GetInspectionAreaDetail } from '../../../services/InspectionModuleServices.js/InspectionServices';
 import { log } from 'react-native-reanimated';
 
@@ -139,7 +139,7 @@ const CreateNewInspection = props => {
   const Detail_render = ({ item }) => {
     const isChecked = checkedItems[item?.TAM_AREA_KEY];
     return (
-      <View style={CreateNewInspectionStyle.DetailsView}>
+      <TouchableOpacity style={CreateNewInspectionStyle.DetailsView} onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
         <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
           <MaterialIcons
             name={isChecked ? 'check-box' : 'check-box-outline-blank'}
@@ -154,7 +154,7 @@ const CreateNewInspection = props => {
         <Text style={CreateNewInspectionStyle.details_text}>
           {item.TAM_AREA_NAME}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
   
@@ -240,11 +240,18 @@ const CreateNewInspection = props => {
     setSelectedDateError(false);
   };
 
-  useEffect(() => {
-    if (isVisible) {
-      fetchData();
-    }
-  }, [isVisible]);
+  useFocusEffect(
+    useCallback(() => {
+      if (isVisible) {
+        fetchData();
+      }
+
+      // Optional cleanup function
+      return () => {
+        // Any cleanup code if necessary
+      };
+    }, [isVisible])
+  );
 
   const fetchData = async () => {
     await getInspectionDetails();
@@ -480,7 +487,7 @@ const CreateNewInspection = props => {
         TAM_AREA_KEYS: checkedItemIds.toString(),
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
-      console.log('inspecsd', Inspectiondata);
+      console.log('inspecsdupdate', Inspectiondata);
       const Url = Config.BASE_URL;
       const Inspection_Url = Url + 'inspection_details/update';
       console.log('Inspection_Url', Inspection_Url);

@@ -587,7 +587,7 @@ const PropertyList2 = props => {
             />
            <View style={PropertyList2Css.inputContainer}>
             <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>Key features</Text>
-            <View>
+            <View style={{flex:1}}>
               <Counter
                 label="Bedrooms"
                 count={CountBedroom}
@@ -673,7 +673,6 @@ const PropertyList2 = props => {
                   ]}>
                   {'Furnished?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
                   <ToggleButton
                     tabValue={furnished}
                     setTabValue={setFurnished}
@@ -683,11 +682,10 @@ const PropertyList2 = props => {
                     inactiveTextColor={_COLORS.Kodie_BlackColor}
                     firstTabLabel="Yes"
                     secondTabLabel="No"
-                    width={180}
                   />
-                </View>
+        
               </View>
-
+              <View style={{margin: 11}} />
               <View style={PropertyList2Css.featureItem}>
               <Text
                   style={[
@@ -696,7 +694,6 @@ const PropertyList2 = props => {
                   ]}>
                   {'External storage?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
                   <ToggleButton
                     tabValue={externalStorage}
                     setTabValue={setExternalStorage}
@@ -706,11 +703,9 @@ const PropertyList2 = props => {
                     inactiveTextColor={_COLORS.Kodie_BlackColor}
                     firstTabLabel="Yes"
                     secondTabLabel="No"
-                    width={180}
                   />
                 </View>
                 
-              </View>
             </View>
 
             <View style={PropertyList2Css.additionalFeatureView}>
@@ -722,7 +717,6 @@ const PropertyList2 = props => {
                   ]}>
                   {'Garden?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
                   <ToggleButton
                     tabValue={garden}
                     setTabValue={setGarden}
@@ -732,11 +726,9 @@ const PropertyList2 = props => {
                     inactiveTextColor={_COLORS.Kodie_BlackColor}
                     firstTabLabel="Yes"
                     secondTabLabel="No"
-                    width={180}
                   />
-                </View>
               </View>
-
+              <View style={{margin: 11}} />
               <View style={PropertyList2Css.featureItem}>
               <Text
                   style={[
@@ -745,7 +737,6 @@ const PropertyList2 = props => {
                   ]}>
                   {'Pets allowed?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
                   <ToggleButton
                     tabValue={petAllowed}
                     setTabValue={setPetAllowed}
@@ -755,9 +746,7 @@ const PropertyList2 = props => {
                     inactiveTextColor={_COLORS.Kodie_BlackColor}
                     firstTabLabel="Yes"
                     secondTabLabel="No"
-                    width={180}
                   />
-                </View>
               </View>
             </View>
 
