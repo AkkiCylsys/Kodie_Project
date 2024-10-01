@@ -134,8 +134,13 @@ const PropertyRentalOffer = props => {
 
   useFocusEffect(
     React.useCallback(() => {
-      handleGetCurrectOffer();
-    }, [accoutId, isFocus]),
+      {
+        isFocus || accoutId || selectedButton;
+      }
+      {
+        handleGetCurrectOffer();
+      }
+    }, [accoutId, isFocus, selectedButton]),
   );
 
   const searchCurrentOffer = query => {

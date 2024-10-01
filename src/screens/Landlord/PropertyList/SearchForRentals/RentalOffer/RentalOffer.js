@@ -2931,7 +2931,7 @@ const RentalOffer = props => {
           </View>
 
           {!selectFile.length > 0 && (
-            <View style={{marginHorizontal: 16, marginBottom: 20}}>
+            <View style={{marginHorizontal: 16, marginBottom: 150}}>
               <CustomSingleButton
                 _ButtonText={'Upload'}
                 Text_Color={_COLORS.Kodie_BlackColor}
