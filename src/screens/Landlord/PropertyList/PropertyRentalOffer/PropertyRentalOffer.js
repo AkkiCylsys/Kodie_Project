@@ -522,6 +522,7 @@ const PropertyRentalOffer = props => {
                   handlePressLeftButton(item.property_id, item.bid_id);
                 }
               }}
+              LeftButtonDisabled={isDisabled}
               RightButtonText={
                 showPayNowButton
                   ? 'Pay Now' // Show 'Pay Now' if conditions are met

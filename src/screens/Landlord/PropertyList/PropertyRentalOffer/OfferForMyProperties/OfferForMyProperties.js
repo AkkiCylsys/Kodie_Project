@@ -222,6 +222,8 @@ const OfferForMyProperties = () => {
       isScreeningDisabled ||
       isApproveApplication ||
       item?.landlord_finalize === 0;
+
+    const isLeftButtonDisable = item?.landlord_approve === -1;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
@@ -229,9 +231,9 @@ const OfferForMyProperties = () => {
             <View
               style={{
                 justifyContent: 'center',
-                width: 170,
+                width: 100,
                 marginLeft: 4,
-                backgroundColor: _COLORS.Kodie_GreenColor,
+                backgroundColor: _COLORS.Kodie_redColor,
                 paddingVertical: 3,
                 // borderRadius: 8,
                 borderBottomLeftRadius: 8,
@@ -247,7 +249,7 @@ const OfferForMyProperties = () => {
                   alignSelf: 'center',
                   marginBottom: 2,
                 }}>
-                {'Landlord rejected the application'}
+                {'Rejected'}
               </Text>
             </View>
           ) : null}
@@ -430,18 +432,33 @@ const OfferForMyProperties = () => {
                   ? 'Final approve'
                   : 'Approve application'
               }
-              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              leftButtonbackgroundColor={
+                isLeftButtonDisable
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonborderColor={
+                isLeftButtonDisable
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              LeftButtonTextColor={
+                isLeftButtonDisable
+                  ? _COLORS.Kodie_ExtraLightGrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
               onPressLeftButton={() => {
-                handleAcceptingLandlord({
-                  propertyId: item?.property_id,
-                  bid_id: item?.bid_id,
-                  tenant_id: item?.tenant_id,
-                  landlord_id: item?.landlord_id,
-                  actionType: 'REJECT',
-                });
+                if (!isLeftButtonDisable) {
+                  handleAcceptingLandlord({
+                    propertyId: item?.property_id,
+                    bid_id: item?.bid_id,
+                    tenant_id: item?.tenant_id,
+                    landlord_id: item?.landlord_id,
+                    actionType: 'REJECT',
+                  });
+                }
               }}
+              LeftButtonDisabled={isLeftButtonDisable}
               RightButtonbackgroundColor={
                 isRightButtonDisabled
                   ? _COLORS.Kodie_LightGrayColor
