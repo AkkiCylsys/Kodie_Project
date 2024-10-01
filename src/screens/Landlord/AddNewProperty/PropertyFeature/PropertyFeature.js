@@ -69,12 +69,7 @@ export default PropertyFeature = props => {
 
   useEffect(() => {
     additional_features();
-    propertyid > 0 ||
-    (Array.isArray(addPropertySecondStepData) &&
-      addPropertySecondStepData.length > 0) ||
-    typeof addPropertySecondStepData === 'number'
-      ? DetailsData()
-      : null;
+    propertyid ? DetailsData() : null;
     try {
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
       for (const feature of keyFeaturesArray) {
@@ -96,10 +91,11 @@ export default PropertyFeature = props => {
   }, [keyFeaturesString]);
   const DetailsData = async () => {
     const detailData = {
-      property_id:
-        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-          ? addPropertySecondStepData
-          : propertyid,
+      // property_id:
+      //   addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+      //     ? addPropertySecondStepData
+      //     : propertyid,
+      property_id: propertyid,
     };
     const url = Config.BASE_URL;
     const property_Detailss = url + 'get_property_details';
@@ -107,6 +103,7 @@ export default PropertyFeature = props => {
     try {
       const response = await axios.post(property_Detailss, detailData);
       if (response?.data?.success === true) {
+        console.log('response in property feture..', response);
         setIsLoading(false);
         setProperty_Details(response?.data?.property_details[0]);
         const featureValues =

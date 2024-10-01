@@ -2670,7 +2670,7 @@ const RentalOffer = props => {
         onPressLeftButton={() => {
           _goBack(props);
           props?.navigation?.navigate('Properties', {
-            tab3: 'tab3',
+            // tab3: 'tab3',
           });
         }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
