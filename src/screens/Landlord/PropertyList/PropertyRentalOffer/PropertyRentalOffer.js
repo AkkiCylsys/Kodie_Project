@@ -135,7 +135,7 @@ const PropertyRentalOffer = props => {
   useFocusEffect(
     React.useCallback(() => {
       handleGetCurrectOffer();
-    }, [accoutId,isFocus]),
+    }, [accoutId, isFocus]),
   );
 
   const searchCurrentOffer = query => {
@@ -415,7 +415,9 @@ const PropertyRentalOffer = props => {
                   name="dot-single"
                   color={iconColor}
                   size={24}
-                  style={{alignSelf: 'center'}}
+                  style={{
+                    alignSelf: 'center',
+                  }}
                 />
                 <Text
                   style={[
@@ -446,7 +448,7 @@ const PropertyRentalOffer = props => {
                   />
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
-                      ?.Bedrooms || 'N/A'}
+                      ?.Bedrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
@@ -458,7 +460,7 @@ const PropertyRentalOffer = props => {
                   />
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
-                      ?.Bathrooms || 'N/A'}
+                      ?.Bathrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
@@ -469,7 +471,7 @@ const PropertyRentalOffer = props => {
                     style={PropertyRentalOfferStyle.bedIconView}
                   />
                   <Text style={PropertyRentalOfferStyle.bedcont}>
-                    {parkingSpaceValue}
+                    {parkingSpaceValue || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
@@ -481,7 +483,7 @@ const PropertyRentalOffer = props => {
                   />
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
-                      ?.Garages || 'N/A'}{' '}
+                      ?.Garages || '0'}{' '}
                     m²
                   </Text>
                 </View>
@@ -496,120 +498,6 @@ const PropertyRentalOffer = props => {
               </View>
             </View>
           )}
-
-          {/* <View style={PropertyRentalOfferStyle.rowButtonView}>
-            <RowButtons
-              LeftButtonText={'Withdraw'}
-              leftButtonbackgroundColor={
-                isDisabled
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                isDisabled
-                  ? _COLORS.Kodie_ExtraLightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              LeftButtonborderColor={
-                isDisabled
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressLeftButton={() => {
-                if (!isDisabled) {
-                  handlePressLeftButton(item.property_id, item.bid_id);
-                }
-              }}
-              RightButtonText={
-                acceptLandlord === 0 && finalLandlordApprove === 0
-                  ? 'Pay Now' // Show 'Pay Now' if acceptLandlord is 0 and final_landlord_approve is 0
-                  : acceptLandlord === 0
-                  ? 'Accept offer' // Show 'Accept offer' if only acceptLandlord is 0
-                  : 'Edit offer'
-              }
-              RightButtonbackgroundColor={
-                isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonTextColor={
-                isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_ExtraLightGrayColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonborderColor={
-                isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressRightButton={() => {
-                if (!isDisabled || !isAcceptOfferDis) {
-                  handlePressRightButton(item);
-                }
-              }}
-              RightButtonDisabled={isDisabled || isAcceptOfferDis}
-            />
-          </View> */}
-
-          {/* <View style={PropertyRentalOfferStyle.rowButtonView}>
-            <RowButtons
-              LeftButtonText={'Withdraw'}
-              leftButtonbackgroundColor={
-                isDisabled
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                isDisabled
-                  ? _COLORS.Kodie_ExtraLightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              LeftButtonborderColor={
-                isDisabled
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressLeftButton={() => {
-                if (!isDisabled) {
-                  handlePressLeftButton(item.property_id, item.bid_id);
-                }
-              }}
-              RightButtonText={
-                showPayNowButton
-                  ? 'Pay Now' // Show 'Pay Now' if conditions are met
-                  : acceptLandlord === 0
-                  ? 'Accept offer' // Show 'Accept offer' if only acceptLandlord is 0
-                  : 'Edit offer' // Default to 'Edit offer'
-              }
-              RightButtonbackgroundColor={
-                showPayNowButton
-                  ? _COLORS.Kodie_BlackColor // Button is active when showPayNowButton is true
-                  : isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonTextColor={
-                showPayNowButton
-                  ? _COLORS.Kodie_WhiteColor // Button text is white when active
-                  : isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_ExtraLightGrayColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonborderColor={
-                showPayNowButton
-                  ? _COLORS.Kodie_BlackColor
-                  : isDisabled || isAcceptOfferDis
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressRightButton={() => {
-                if (!showPayNowButton || (!isDisabled && !isAcceptOfferDis)) {
-                  handlePressRightButton(item);
-                }
-              }}
-              RightButtonDisabled={isRightButtonDisabled} // Keep button enabled if showPayNowButton is true
-            />
-          </View> */}
 
           <View style={PropertyRentalOfferStyle.rowButtonView}>
             <RowButtons
@@ -665,7 +553,7 @@ const PropertyRentalOffer = props => {
               onPressRightButton={() => {
                 if (showPayNowButton) {
                   // Show an alert when Pay Now button is pressed
-                  Alert.alert("Pay now",'You can pay now');
+                  Alert.alert('Pay now', 'You can pay now');
                 } else if (!isRightButtonDisabled) {
                   // Handle other cases like 'Accept offer' or 'Edit offer'
                   handlePressRightButton(item);

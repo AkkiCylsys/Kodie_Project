@@ -413,6 +413,9 @@ const RentalOffer = props => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
+                if (childQuestion.tqm_Question_type === 'Search') {
+                  dropdownQuestions.push(childQuestion.tqm_Question_code);
+                }
 
                 if (childQuestion.tqm_Question_type === 'Yes_no') {
                   setButtonState(
@@ -1230,10 +1233,22 @@ const RentalOffer = props => {
     setModalVisible(!isModalVisible);
   };
 
+  // const toggleItem = itemChildren => {
+  //   setExpandedItem(prevState =>
+  //     prevState === itemChildren ? null : itemChildren,
+  //   );
+  // };
+
+  const [openedItems, setOpenedItems] = useState([]);
   const toggleItem = itemChildren => {
-    setExpandedItem(prevState =>
-      prevState === itemChildren ? null : itemChildren,
-    );
+    if (openedItems.includes(itemChildren)) {
+      // If already in the list, collapse it but don't remove it from the opened items
+      setExpandedItem(expandedItem === itemChildren ? null : itemChildren);
+    } else {
+      // Expand the item and add it to the opened items list
+      setOpenedItems([...openedItems, itemChildren]);
+      setExpandedItem(itemChildren);
+    }
   };
 
   const onClose = () => {
@@ -1437,6 +1452,8 @@ const RentalOffer = props => {
   };
 
   const QuesHeadingRender = ({item}) => {
+    const isExpanded = expandedItem === item?.children;
+    const isOpened = openedItems.includes(item?.children);
     return (
       <View style={{marginTop: 5}}>
         <TouchableOpacity
@@ -1444,7 +1461,15 @@ const RentalOffer = props => {
           onPress={() => {
             toggleItem(item?.children);
           }}>
-          <Text style={RentalOfferStyle.propery_det}>
+          <Text
+            style={[
+              RentalOfferStyle.propery_det,
+              {
+                color: isOpened
+                  ? _COLORS.Kodie_GreenColor
+                  : _COLORS.Kodie_BlackColor,
+              },
+            ]}>
             {item?.tqm_Question_description}
           </Text>
           <TouchableOpacity
@@ -1656,9 +1681,21 @@ const RentalOffer = props => {
         });
       });
 
+      if (!referenceIds[33]) {
+        referenceIds[33] = [];
+      }
       // For employee references (ID 33)
+      // employeeReferencesItem.forEach(employeeReference => {
+      //   // Push only once, either existing or new data
+      //   referenceIds[33].push({
+      //     fullName:
+      //       employeeReference.fullName ||
+      //       employeeReference.employeeReferenceFullName,
+      //     email:
+      //       employeeReference.email || employeeReference.employeeReferenceEmail,
+      //   });
+      // });
       employeeReferencesItem.forEach(employeeReference => {
-        // Push only once, either existing or new data
         referenceIds[33].push({
           fullName:
             employeeReference.fullName ||
@@ -1920,7 +1957,7 @@ const RentalOffer = props => {
               // Updated to use trim
               isValid = false; // Mark as invalid
               tempErrors[child.tqm_Question_code] =
-                child.tqm_validate_msg || 'This field is required'; // Set error message
+                child.tqm_validate_msg || 'This field is required.'; // Set error message
             } else {
               // Clear the error if the input is valid
               delete tempErrors[child.tqm_Question_code];
@@ -1936,7 +1973,7 @@ const RentalOffer = props => {
         if (!parentValue || parentValue === '') {
           // Updated to use trim
           isValid = false; // Mark as invalid
-          tempErrors[question.tqm_Question_code] = 'This field is required'; // Set error message
+          tempErrors[question.tqm_Question_code] = 'This field is required.'; // Set error message
         } else {
           // Clear the error if the input is valid
           delete tempErrors[question.tqm_Question_code];
@@ -1985,7 +2022,7 @@ const RentalOffer = props => {
           <View key={index}>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+              placeholder={`${question.tqm_Question_placeholder}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
 
@@ -2024,7 +2061,7 @@ const RentalOffer = props => {
           <View>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+              placeholder={`${question.tqm_Question_placeholder}`}
               // onChangeText={text =>
               //   handleInputChange(question.tqm_Question_code, text, index)
               // }
@@ -2630,7 +2667,13 @@ const RentalOffer = props => {
   return (
     <SafeAreaView style={RentalOfferStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => {
+          // _goBack(props);
+          props?.navigation?.pop()
+          // props?.navigation?.navigate('Properties', {
+          //   openTab3: "openTab3",
+          // });
+        }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />
       {IsMap ? (

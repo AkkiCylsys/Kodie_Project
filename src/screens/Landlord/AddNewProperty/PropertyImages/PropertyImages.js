@@ -25,6 +25,7 @@ import axios from 'axios';
 import ImagePicker from 'react-native-image-crop-picker';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import Video from 'react-native-video';
+import { useFocusEffect } from '@react-navigation/native';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const images = [
@@ -44,9 +45,16 @@ export default PropertyImages = props => {
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [serverimagePath, setImagePaths] = useState([]);
-  useEffect(() => {
-    property_id > 0 ? DetailsData() : null;
-  }, []);
+  // useEffect(() => {
+  //   property_id > 0 ? DetailsData() : null;
+  // }, []);
+
+
+  useFocusEffect(
+    React.useCallback(()=>{
+      property_id > 0 ? DetailsData() : null;
+    },[property_id])
+  )
   const DetailsData = () => {
     const detailData = {
       property_id: property_id,
@@ -159,7 +167,8 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
           editMode: editMode,
         });
-        // setMultiImageName([])
+        setMultiImageName([])
+        setSelectedVideos([])
       } else {
         console.error('Save Account Details error:', response?.data?.error);
         alert('Oops something went wrong! Please try again later.');
@@ -373,7 +382,8 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
         });
         console.log('Save Account Details', response?.data);
-        // setMultiImageName([])
+        setMultiImageName([])
+        setSelectedVideos([])
       } else {
         console.log('Save Account Details error:', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');

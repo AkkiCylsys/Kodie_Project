@@ -292,7 +292,7 @@ const JobReviewDetails = props => {
                 images={imageFileData?.image_file_path}
                 sliderBoxHeight={200}
                 onCurrentImagePressed={index =>
-                  console.warn(`image ${index} pressed`)
+                  console.log(`image ${index} pressed`)
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}

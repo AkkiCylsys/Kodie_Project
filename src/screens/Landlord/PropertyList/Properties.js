@@ -21,7 +21,9 @@ import PropertyRentalOffer from './PropertyRentalOffer/PropertyRentalOffer';
 
 const Properties = props => {
   const tab3 = props?.route?.params?.tab3;
+  const openTab3 = props?.route?.params?.openTab3;
   console.log('tab3...', tab3);
+  // console.log('openTab3...', openTab3);
   const acceptLanlordPassed = props?.route?.params?.acceptLanlordPassed;
   console.log('acceptLanlordPassed...', acceptLanlordPassed);
   const routesLength = useNavigationState(state => state.routes.length);
@@ -32,26 +34,16 @@ const Properties = props => {
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
   const isFocus = useIsFocused();
-  // useEffect(() => {
-  //   if (isFocus) {
-  //     setActiveTab(
-  //       tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed'
-  //         ? 'Tab3'
-  //         : 'Tab1',
-  //     );
-  //   }
-  // }, [tab3]);
 
   // Handle focus event to check tab selection
   useFocusEffect(
     React.useCallback(() => {
-      if (tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed') {
+      if (tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed')  {
         setActiveTab('Tab3');
-      } else {
-        setActiveTab('Tab1');
       }
-    }, [tab3, acceptLanlordPassed])
+    }, [tab3, acceptLanlordPassed, openTab3]),
   );
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
