@@ -1957,7 +1957,7 @@ const RentalOffer = props => {
               // Updated to use trim
               isValid = false; // Mark as invalid
               tempErrors[child.tqm_Question_code] =
-                child.tqm_validate_msg || 'This field is required'; // Set error message
+                child.tqm_validate_msg || 'This field is required.'; // Set error message
             } else {
               // Clear the error if the input is valid
               delete tempErrors[child.tqm_Question_code];
@@ -1973,7 +1973,7 @@ const RentalOffer = props => {
         if (!parentValue || parentValue === '') {
           // Updated to use trim
           isValid = false; // Mark as invalid
-          tempErrors[question.tqm_Question_code] = 'This field is required'; // Set error message
+          tempErrors[question.tqm_Question_code] = 'This field is required.'; // Set error message
         } else {
           // Clear the error if the input is valid
           delete tempErrors[question.tqm_Question_code];
@@ -2022,7 +2022,7 @@ const RentalOffer = props => {
           <View key={index}>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+              placeholder={`${question.tqm_Question_placeholder}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
 
@@ -2061,7 +2061,7 @@ const RentalOffer = props => {
           <View>
             <TextInput
               style={RentalOfferStyle.input}
-              placeholder={`Enter your ${question.tqm_Question_placeholder}`}
+              placeholder={`${question.tqm_Question_placeholder}`}
               // onChangeText={text =>
               //   handleInputChange(question.tqm_Question_code, text, index)
               // }
