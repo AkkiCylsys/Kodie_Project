@@ -10,7 +10,7 @@ import {
 } from './AuthenticationApiAction';
 import { Config } from '../../../Config';
 
-const url = Config.BASE_URL;
+const url = Config?.BASE_URL;
 
 export const loginApiActionCreator = data => async dispatch => {
   dispatch(fetchLoginData());
@@ -43,11 +43,27 @@ export const loginApiActionCreator = data => async dispatch => {
   }
 };
 
+
+export const googleLoginApi = async(data) => {
+alert(`${url}saveSocialDetails`)
+  try {
+    const res = await axios.post(`${url}saveSocialDetails`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+      return res;
+    
+  } catch (error) {
+    console.error('Login API Error:', error);
+    return error
+  }
+};
+
 export const signupAccountApiActionCreator = data => async dispatch => {
   dispatch(fetchRegistrationData());
   try {
-    const res = await axios.post(
-      'https://kodietestapi.cylsys.com/api/v1/signup_step_one',
+    const res = await axios.post(`${url}signup_step_one`,
       // 'https://kodieapis.cylsys.com/api/v1/signup_step_one',
       data,
       {
@@ -56,6 +72,7 @@ export const signupAccountApiActionCreator = data => async dispatch => {
         },
       },
     );
+    alert(res?.data?.status)
     if (res?.data?.status === true) {
       console.log(res.data,"fetchRegistrationSuccess");
       dispatch(fetchRegistrationSuccess(res?.data));

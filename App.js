@@ -63,8 +63,11 @@ const Section = ({children, title}): Node => {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  //Settings.initializeSDK();
   useEffect(() => {
     //SplashScreen.hide()
+
     LogBox.ignoreAllLogs(true);
     // isConnected()
     //   .then(() => console.log("has internet connection"))

@@ -142,8 +142,12 @@ const SignUpSteps = props => {
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
   let password = props?.route?.params?.password;
+  let _social_userInfo = props?.route?.params?._socialuserInfo;
+  
   console.log('email...', email);
   console.log('user_key...', user_key);
+  console.log('password...', password);
+  console.log('_social_userInfo...', _social_userInfo);
   console.log('countryCode...', country_Code_Get);
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -308,6 +312,10 @@ const SignUpSteps = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
+    alert(JSON.stringify(_social_userInfo))
+    setFirstName(_social_userInfo?.user?.givenName)
+    setLastName(_social_userInfo?.user?.familyName)
+
   }, []);
 
   const goBack = () => {
@@ -369,6 +377,7 @@ const SignUpSteps = props => {
 
         <Text style={AccountStyle.edittext}>Profile photo</Text>
         <View style={[AccountStyle.profilviewmain, {flex: 1}]}>
+
           <TouchableOpacity
             style={AccountStyle.ProfileView}
             onPress={() => {
@@ -379,7 +388,12 @@ const SignUpSteps = props => {
                 source={{uri: ImageName.path || ImageName}}
                 style={[AccountStyle.logo, {borderRadius: 130 / 2}]}
               />
-            ) : (
+            ) :_social_userInfo?.user?.photo?(             
+            <Image
+              source={{uri: _social_userInfo?.user?.photo}}
+              style={[AccountStyle.logo, {borderRadius: 130 / 2}]}
+            />)
+            : (
               <View style={AccountStyle.profilelogo}>
                 <FontAwesome
                   size={60}
@@ -402,6 +416,7 @@ const SignUpSteps = props => {
               />
             </View>
           </TouchableOpacity>
+
         </View>
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>

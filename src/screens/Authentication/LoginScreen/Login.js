@@ -19,7 +19,10 @@ import {
 import {
   GoogleSignin,
   statusCodes,
+  
 } from '@react-native-google-signin/google-signin';
+import { encryptPassword, signup } from '../../../services/Authentication/Authentication';
+import { LoginManager } from 'react-native-fbsdk-next'
 import { logos } from '../../../Themes/CommonVectors/Images';
 import { LoginStyles } from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -43,7 +46,7 @@ import { Config } from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
-import { loginApiActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import { loginApiActionCreator,googleLoginApi } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
@@ -91,6 +94,16 @@ export default Login = props => {
       const userInfo = await GoogleSignin.signIn();
       console.log('userInfo....', userInfo);
       setGoogleSignIn(userInfo);
+      //alert(userInfo?.idToken)
+      console.log(userInfo?.user?.email)
+      console.log(userInfo?.user?.name)
+      if(userInfo?.user?.email !=null || userInfo?.user?.email != '' ||userInfo?.user?.email !=undefined)
+      {
+        _googleLoginApi(userInfo)
+        //props.navigation.navigate('SignUpSteps');
+      }
+      
+     // props.navigation.navigate('SignUpSteps');
     } catch (error) {
       console.log('Error during signIn:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -106,6 +119,43 @@ export default Login = props => {
       }
     }
   };
+  const _googleLoginApi=async(_userInfo)=>{
+    try {
+      setIsLoading(true)
+    let googleSignInPayload={
+      email: _userInfo?.user?.email,
+      unique_social_id: _userInfo?.user?.id,
+      social_type: "Google",
+      is_social_login: 1
+    }
+
+    let _res = await  googleLoginApi(googleSignInPayload)
+    console.log("-+_+_+_+_______+++")
+    console.log(JSON.stringify(_res))
+    if(_res?.data?.success==true)
+    {
+      //props.navigation.navigate('SignUpSteps');
+      const encStr = await encryptPassword(_userInfo?.user?.id, secretKey);
+      console.log('encryptedpass', encStr);
+      setIsLoading(false)
+      props.navigation.navigate('SignUpSteps', {
+        email: _userInfo?.user?.email,
+        user_key: _res?.data?.User_Key,
+        _socialuserInfo: _userInfo,
+        password: encStr, //?
+      });
+    }
+    else{
+      setIsLoading(false)
+      alert(_res?.data?.message)
+    }
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+    }
+    //alert(_userInfo?.user?.email)
+    
+  }
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
@@ -717,9 +767,24 @@ export default Login = props => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() =>
+              {
+                LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+                  function (result) {
+                  if (result.isCancelled) {
+                  alert("Login Cancelled " + JSON.stringify(result))
+                  } else {
+                  alert("Login success with  permisssions: " + result.grantedPermissions.toString());
+                  alert("Login Success " + result.toString());
+                  }
+                  },
+                  function (error) {
+                  alert("Login failed with error: " + error);
+                  }
+                  )
+              }
                 //  props.navigation.navigate("PointofInterest")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
-               Alert.alert('Login with Facebook', 'Coming soon')
+              // Alert.alert('Login with Facebook', 'Coming soon')
                 // onFacebookButtonPress()
               }
               leftImage={IMAGES.FacebookIcon}
@@ -802,6 +867,7 @@ export default Login = props => {
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
+               // keyboardType='default'
                   // maxLength={30}
                   autoCapitalize={'none'}
                   editable={isLoading?false:true}
