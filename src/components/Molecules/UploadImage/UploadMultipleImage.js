@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {
   View,
-  Text,
-  Image,
+  Text,PermissionsAndroid,
+  Image,Linking,Platform,
   FlatList,
   TouchableOpacity,
   Alert,
@@ -49,7 +49,11 @@ const UploadMultipleImage = props => {
   const handleClosePopup = () => {
     props.onClose();
   };
-
+  const openAppSettings = () => {
+    if (Platform.OS === 'android') {
+      Linking.openSettings();
+    }
+  };
   const handleImageSelection = images => {
     if (multipleImage.length + images.length <= 4) {
       setMultipleImage([...multipleImage, ...images]);
@@ -67,41 +71,65 @@ const UploadMultipleImage = props => {
       <>
         <TouchableOpacity
           style={UploadImageStyle.content_View}
-          onPress={() => {
-            if (item.id === '1') {
-              ImagePicker.openCamera({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // console.log("image....", image);
-                  setImage(image);
-                  setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
-                  props?.multipleImage(Array.isArray(image) ? image : [image]);
-                  console.log('ImagePath..', multipleImage);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
+          onPress={async() => {
+            try {
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                  title: 'Camera Permission',
+                  message:
+                    'This app needs camera access to take photos.',
+                  buttonNeutral: 'Ask Me Later',
+                  buttonNegative: 'Cancel',
+                  buttonPositive: 'OK',
+                },
+              );
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                if (item.id === '1') {
+                  ImagePicker.openCamera({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                    multiple: true,
+                  })
+                    .then(image => {
+                      // console.log("image....", image);
+                      setImage(image);
+                      setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+                      props?.multipleImage(Array.isArray(image) ? image : [image]);
+                      console.log('ImagePath..', multipleImage);
+                    })
+                    .catch(err => {
+                      console.log('err...', err);
+                    });
+                }
+                if (item.id === '2') {
+                  ImagePicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                    multiple: true,
+                  })
+                    .then(image => {
+                      handleImageSelection(image);
+                    })
+                    .catch(err => {
+                      console.log('err...', err);
+                    });
+                }
+              } else {
+                Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Open Settings', onPress: openAppSettings },
+                ]);
+              }
+            } catch (err) {
+              console.warn(err);
             }
-            if (item.id === '2') {
-              ImagePicker.openPicker({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  handleImageSelection(image);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
+
+            
           }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer} onPress={() => {
