@@ -282,7 +282,7 @@ const ViewRentalDetails = props => {
             ViewRentalDetailsStyle.propertyHeading,
             {marginTop: 5, marginHorizontal: 28},
           ]}>
-          {`${rentalAmount || '0'}`}
+          {`$${rentalAmount || '0'}`}
         </Text>
         <DividerIcon
           borderBottomWidth={3}

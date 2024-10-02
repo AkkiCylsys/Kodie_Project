@@ -105,7 +105,9 @@ const ViewApplicationSummary = props => {
     setApplicationSumReasonOfReject(text);
     const onlySpacesRegex = /^\s*$/;
     if (applicationSumReasonOfReject == '') {
-      setApplicationSumReasonOfRejectError('Please enter reason for rejection.');
+      setApplicationSumReasonOfRejectError(
+        'Please enter reason for rejection.',
+      );
     } else if (onlySpacesRegex.test(text)) {
       setApplicationSumReasonOfRejectError(
         'Reason for rejection cannot be empty or contain only spaces.',
@@ -120,7 +122,9 @@ const ViewApplicationSummary = props => {
     if (occupantReasonOfReject == '') {
       setOccupantReasonOfRejectError('Please enter reason for rejection.');
     } else if (onlySpacesRegex.test(text)) {
-      setOccupantReasonOfRejectError('Reason for rejection cannot be empty or contain only spaces.');
+      setOccupantReasonOfRejectError(
+        'Reason for rejection cannot be empty or contain only spaces.',
+      );
     } else {
       setOccupantReasonOfRejectError('');
     }
@@ -130,9 +134,10 @@ const ViewApplicationSummary = props => {
     const onlySpacesRegex = /^\s*$/;
     if (referenceReasonOfReject == '') {
       setReferenceReasonOfRejectError('Please enter reason for rejection.');
-    }
-    else if(onlySpacesRegex.test(text)){
-      setReferenceReasonOfRejectError('Reason for rejection cannot be empty or contain only spaces.')
+    } else if (onlySpacesRegex.test(text)) {
+      setReferenceReasonOfRejectError(
+        'Reason for rejection cannot be empty or contain only spaces.',
+      );
     } else {
       setReferenceReasonOfRejectError('');
     }
@@ -668,10 +673,21 @@ const ViewApplicationSummary = props => {
                 data={filteredData} // Use the filtered data
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => (
+                  // <RowTexts
+                  //   leftText={item?.tqm_Question_view}
+                  //   rightText={
+                  //     item?.tqm_Question_type === 'Dropdown'
+                  //       ? item?.tqm_Question_value_data || '-'
+                  //       : item?.tqm_Question_value || '-'
+                  //   }
+                  // />
                   <RowTexts
                     leftText={item?.tqm_Question_view}
                     rightText={
-                      item?.tqm_Question_type === 'Dropdown'
+                      item?.tqm_Question_view === 'Budget' &&
+                      item?.tqm_Question_value
+                        ? `$${item?.tqm_Question_value}`
+                        : item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_value || '-'
                     }
@@ -1164,7 +1180,7 @@ const ViewApplicationSummary = props => {
           />
         </View>
       )}
-      {/* {isLoading ? <CommonLoader /> : null} */}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

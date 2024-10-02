@@ -54,6 +54,7 @@ const PropertyViewApplication = props => {
   const [acceptBiddingData, setAcceptBiddingData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
 
+  console.log("loginData in view ..",loginData);
   useEffect(() => {
     handlePropertyViewApplication();
     handleQuestionDetailsForTenantQues();
@@ -85,7 +86,7 @@ const PropertyViewApplication = props => {
   const handleQuestionDetailsForTenantQues = async () => {
     setIsLoading(true);
     const TenantQuestPayload = {
-      p_account_id: loginData?.Login_details?.user_account_id,
+      p_account_id: tenant_id,
       p_property_id: propertyId,
       // p_property_id: 1934,
     };

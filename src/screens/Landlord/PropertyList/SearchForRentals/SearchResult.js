@@ -28,6 +28,7 @@ import BottomModalSearchRental from '../../../../components/Molecules/BottomModa
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
 export default SearchResult = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userAccountId = loginData?.Login_details?.user_account_id;
@@ -52,10 +53,21 @@ export default SearchResult = props => {
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
 
+  console.log("AllCountsData...",AllCountsData);
   console.log('searchRentalResponse...', searchRentalResponse);
+
   useEffect(() => {
     additional_key_features();
   }, []);
+
+  const parkingGarageSpaces = AllCountsData.find(item => item.hasOwnProperty("Parking / garage spaces"))["Parking / garage spaces"];
+
+  // Find the object with "On-street parking"
+  const onStreetParking = AllCountsData.find(item => item.hasOwnProperty("On-street parking"))["On-street parking"];
+  
+  console.log("Parking / garage spaces:", parkingGarageSpaces);
+  console.log("On-street parking:", onStreetParking);
+
 
   const handleFavouriteItem = async propertyId => {
     setIsLoading(true);
@@ -248,7 +260,7 @@ export default SearchResult = props => {
           </View>
           <View style={SearchResultCss.availableBtn}>
             <Text style={SearchResultCss.availabletext}>
-              {'AVAILABLE: 1 OCT'}
+              {`AVAILABLE: ${moment(item?.property_avaliable).format('DD-MMM-YYYY')}`}
             </Text>
           </View>
 
@@ -341,12 +353,12 @@ export default SearchResult = props => {
                 : propertyType === 27
                 ? 'Farm'
                 : ''
-            }; $${searchInputData?.input_minRange} to $${
-              searchInputData?.input_maxRange
-            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
+            }; $${searchInputData?.input_minRange||""} to $${
+              searchInputData?.input_maxRange ||""
+            }; ${AllCountsData[0]?.Bedrooms ||""} Beds; ${
               AllCountsData[1]?.Bathrooms
-            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
-              AllCountsData[3]?.StreetParking
+            } Baths; ${parkingGarageSpaces || ""} parking space; ${
+              parkingGarageSpaces ||""
             } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'

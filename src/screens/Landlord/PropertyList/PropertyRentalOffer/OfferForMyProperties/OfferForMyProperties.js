@@ -223,7 +223,7 @@ const OfferForMyProperties = () => {
       isApproveApplication ||
       item?.landlord_finalize === 0;
 
-    const isLeftButtonDisable = item?.landlord_approve === -1;
+    const isLeftButtonDisable = item?.landlord_approve === -1 || item?.landlord_finalize === 0;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
