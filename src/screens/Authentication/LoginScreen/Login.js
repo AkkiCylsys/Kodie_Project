@@ -132,6 +132,7 @@ export default Login = props => {
     let _res = await  googleLoginApi(googleSignInPayload)
     console.log("-+_+_+_+_______+++")
     console.log(JSON.stringify(_res))
+ 
     if(_res?.data?.success==true)
     {
       //props.navigation.navigate('SignUpSteps');
