@@ -219,6 +219,7 @@ export const RentalOfferStyle = StyleSheet.create({
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 12,
+    backgroundColor:_COLORS?.Kodie_WhiteColor
   },
   jobD_: {height: 50},
   locationView: {flexDirection: 'row'},
@@ -380,7 +381,7 @@ export const RentalOfferStyle = StyleSheet.create({
   mainfeaturesview: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 20,
+    marginTop: 20,
   },
   key_feature_Text_view: {
     // flex: 1,

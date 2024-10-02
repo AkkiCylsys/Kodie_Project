@@ -14,61 +14,75 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const data = [
-  {
-    id: '1',
-    Data: 'View property details',
-    Icon: (
-      <MaterialIcons
-        name="preview"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-        style={{alignSelf: 'center'}}
-      />
-    ),
-  },
-  {
-    id: '2',
-    Data: 'Make offer',
-    Icon: (
-      <MaterialCommunityIcons
-        name="file-download-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '3',
-    Data: 'Create notice/reminder',
-    Icon: (
-      <Ionicons
-        name="mail-unread-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '4',
-    Data: 'Message owner',
-    Icon: (
-      <Ionicons
-        name="chatbubbles-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
+import {useSelector} from 'react-redux';
+
 const BottomModalSearchRental = props => {
+  const {propertyId, rentalAmount, bibId, landlordId,searchRentalData} = props;
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userAccountId = loginData?.Login_details?.user_account_id;
+  console.log('userAccountId...', userAccountId);
+  console.log('landlordId...', landlordId);
   const navigation = useNavigation();
-  // const propertyId = props.propertyId;
-  // const rentalAmount = props.rentalAmount;
-  // const bibId = props.bibId;
-  const {propertyId, rentalAmount, bibId} = props;
   console.log('propertyId.....', propertyId);
   console.log('bibId.....', bibId);
+
+  const data = [
+    {
+      id: '1',
+      Data: 'View property details',
+      Icon: (
+        <MaterialIcons
+          name="preview"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          style={{alignSelf: 'center'}}
+        />
+      ),
+    },
+
+    {
+      id: '2',
+      Data: 'Make offer',
+      Icon: (
+        <MaterialCommunityIcons
+          name="file-download-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+    {
+      id: '3',
+      Data: 'Create notice/reminder',
+      Icon: (
+        <Ionicons
+          name="mail-unread-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+    {
+      id: '4',
+      Data: 'Message owner',
+      Icon: (
+        <Ionicons
+          name="chatbubbles-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+  ];
+
+  const filteredData = data.filter(item => {
+    // Hide "Make offer" if userAccountId is the same as landlordId
+    if (item.id === '2' && userAccountId === landlordId) {
+      return false; // Exclude "Make offer"
+    }
+    return true; // Include other items
+  });
+
   const handleClose = () => {
     props.onClose();
   };
@@ -81,6 +95,7 @@ const BottomModalSearchRental = props => {
             navigation.navigate('ViewRentalDetails', {
               propertyId: propertyId,
               rentalAmount: rentalAmount,
+              searchRentalData:searchRentalData
             });
             handleClose();
           }
@@ -88,16 +103,15 @@ const BottomModalSearchRental = props => {
             navigation.navigate('RentalOffer', {
               propertyId: propertyId,
               bibId: bibId,
-              propertyDetails:props?.propertyDetails
+              propertyDetails: props?.propertyDetails,
             });
             handleClose();
           }
           if (item?.id == '4') {
-            navigation.navigate('Chat', { 
-              data: props?.propertyDetails, 
+            navigation.navigate('Chat', {
+              data: props?.propertyDetails,
               userid: props?.propertyDetails.landlord_id,
-              chatname:'chatname'
-              
+              chatname: 'chatname',
             });
 
             handleClose();
@@ -111,7 +125,8 @@ const BottomModalSearchRental = props => {
   return (
     <View style={BottomModalSearchRentalStyle.mainConatiner}>
       <FlatList
-        data={data}
+        // data={data}
+        data={filteredData}
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}

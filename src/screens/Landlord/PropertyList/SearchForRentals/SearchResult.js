@@ -42,6 +42,8 @@ export default SearchResult = props => {
   const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
+  const [landlordId, setLandlordId] = useState([]);
+  const [allSearchResult, setAllSearchResult] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
     keyFeatureMapping[detail.paf_key] = detail.features_name;
@@ -52,22 +54,25 @@ export default SearchResult = props => {
   const searchInputData = props?.route?.params?.searchInputData;
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
-
-  console.log("AllCountsData...",AllCountsData);
+console.log("propertyType..",propertyType);
+  console.log('AllCountsData...', AllCountsData);
   console.log('searchRentalResponse...', searchRentalResponse);
 
   useEffect(() => {
     additional_key_features();
   }, []);
 
-  const parkingGarageSpaces = AllCountsData.find(item => item.hasOwnProperty("Parking / garage spaces"))["Parking / garage spaces"];
+  const parkingGarageSpaces = AllCountsData.find(item =>
+    item.hasOwnProperty('Parking / garage spaces'),
+  )['Parking / garage spaces'];
 
   // Find the object with "On-street parking"
-  const onStreetParking = AllCountsData.find(item => item.hasOwnProperty("On-street parking"))["On-street parking"];
-  
-  console.log("Parking / garage spaces:", parkingGarageSpaces);
-  console.log("On-street parking:", onStreetParking);
+  const onStreetParking = AllCountsData.find(item =>
+    item.hasOwnProperty('On-street parking'),
+  )['On-street parking'];
 
+  console.log('Parking / garage spaces:', parkingGarageSpaces);
+  console.log('On-street parking:', onStreetParking);
 
   const handleFavouriteItem = async propertyId => {
     setIsLoading(true);
@@ -236,6 +241,8 @@ export default SearchResult = props => {
                   setRentalAmount(item?.rental_amount);
                   setBidId(item?.bid_id);
                   setPropertyDetailsItem(item);
+                  setLandlordId(item?.landlord_id);
+                  setAllSearchResult(item);
                 }}>
                 <Entypo
                   color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -260,7 +267,9 @@ export default SearchResult = props => {
           </View>
           <View style={SearchResultCss.availableBtn}>
             <Text style={SearchResultCss.availabletext}>
-              {`AVAILABLE: ${moment(item?.property_avaliable).format('DD-MMM-YYYY')}`}
+              {`AVAILABLE: ${moment(item?.property_avaliable).format(
+                'DD-MMM-YYYY',
+              )}`}
             </Text>
           </View>
 
@@ -353,12 +362,12 @@ export default SearchResult = props => {
                 : propertyType === 27
                 ? 'Farm'
                 : ''
-            }; $${searchInputData?.input_minRange||""} to $${
-              searchInputData?.input_maxRange ||""
-            }; ${AllCountsData[0]?.Bedrooms ||""} Beds; ${
+            }$${searchInputData?.input_minRange || ''} to $${
+              searchInputData?.input_maxRange || ''
+            }; ${AllCountsData[0]?.Bedrooms || ''} Beds; ${
               AllCountsData[1]?.Bathrooms
-            } Baths; ${parkingGarageSpaces || ""} parking space; ${
-              parkingGarageSpaces ||""
+            } Baths; ${parkingGarageSpaces || ''} parking space; ${
+              parkingGarageSpaces || ''
             } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
@@ -425,9 +434,11 @@ export default SearchResult = props => {
         <BottomModalSearchRental
           onClose={onClose}
           propertyId={propertyId}
+          landlordId={landlordId}
           rentalAmount={rentalAmount}
           bibId={bibId}
           propertyDetails={propertyDetailsItem}
+          searchRentalData={allSearchResult}
         />
       </RBSheet>
       {/* </ScrollView> */}

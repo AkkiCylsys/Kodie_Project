@@ -204,7 +204,7 @@ export const SearchResultCss = StyleSheet.create({
     borderRadius: 15,
     // flex: 1,
     backgroundColor: _COLORS.Kodie_LightOrange,
-    padding: 8,
+    paddingVertical: 8,
     marginTop: 10,
   },
   bedcont: {
