@@ -1178,7 +1178,7 @@ const RentalOffer = props => {
   const renderFormSection = section => {
     return (
       <View>
-        <View style={[RentalOfferStyle.mainfeaturesview,{marginBottom:15}]}>
+        <View style={[RentalOfferStyle.mainfeaturesview, {marginBottom: 15}]}>
           <View style={RentalOfferStyle.key_feature_Text_view}>
             <Text
               style={[
@@ -2007,7 +2007,6 @@ const RentalOffer = props => {
     setErrors(tempErrors); // Update error messages state
     return isValid; // Return form validity
   };
-
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       // case 'Input':
@@ -2622,7 +2621,7 @@ const RentalOffer = props => {
               onFocus={() => handleDropdown(question.tqm_Question_code)}
               renderItem={renderDataItem}
               renderSelectedItem={(item, unSelect) => (
-                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                <TouchableOpacity onPress={() => unSelect && unSelect(item?.lookup_key)}>
                   <View style={RentalOfferStyle.selectedStyle}>
                     <Text style={RentalOfferStyle.textSelectedStyle}>
                       {item.lookup_description}
@@ -2854,7 +2853,9 @@ const RentalOffer = props => {
                 RentalOfferStyle.propertyHeading,
                 {fontFamily: FONTFAMILY.K_Bold},
               ]}>
-              {propertyDetails?.city}
+              {propertyDetails?.city
+                ? propertyDetails?.city
+                : propertyDetails?.state}
             </Text>
             <View style={[RentalOfferStyle.locationView, {marginTop: 6}]}>
               <Ionicons
@@ -3039,45 +3040,48 @@ const RentalOffer = props => {
               biddingDetailsMessage={biddingDetailsMessage}
             />
           </RBSheet>
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderColor: _COLORS.Kodie_LightGrayColor,
+              borderTopColor: _COLORS.Kodie_LightGrayColor,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 6}, // Move shadow upwards
+              shadowOpacity: 0.3, // Slightly reduce opacity
+              shadowRadius: 6, // Add blur to the shadow
+              elevation: 1, // Increase elevation for Android
+              // marginTop: 10, // Add space above the view so shadow has room
+              marginBottom: 10,
+            }}
+          />
+          <View style={RentalOfferStyle.submitApplicationbtn}>
+            <RowButtons
+              leftButtonHeight={50}
+              RightButtonHeight={50}
+              LeftButtonText="Cancel"
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setSubmitApplicationBtnId(0);
+                props.navigation.pop();
+              }}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              RightButtonText={
+                edit_offer == 'edit_offer' ? 'Edit offer' : 'Submit'
+              }
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setSubmitApplicationBtnId(1);
+                // alert(selectPetFriendlyBtnId)
+                handleSubmit();
+              }}
+            />
+          </View>
         </ScrollView>
       )}
-      <View
-        style={{
-          borderTopWidth: 1,
-          borderColor: _COLORS.Kodie_LightGrayColor,
-          borderTopColor: _COLORS.Kodie_LightGrayColor,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 6}, // Move shadow upwards
-          shadowOpacity: 0.3, // Slightly reduce opacity
-          shadowRadius: 6, // Add blur to the shadow
-          elevation: 1, // Increase elevation for Android
-          // marginTop: 10, // Add space above the view so shadow has room
-          marginBottom: 10,
-        }}
-      />
-      <View style={RentalOfferStyle.submitApplicationbtn}>
-        <RowButtons
-          leftButtonHeight={50}
-          RightButtonHeight={50}
-          LeftButtonText="Cancel"
-          onPressLeftButton={() => {
-            setSubmitApplicationBtn(false);
-            setSubmitApplicationBtnId(0);
-            props.navigation.pop();
-          }}
-          leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-          LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-          RightButtonText={edit_offer == 'edit_offer' ? 'Edit offer' : 'Submit'}
-          RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-          RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-          onPressRightButton={() => {
-            setSubmitApplicationBtn(true);
-            setSubmitApplicationBtnId(1);
-            // alert(selectPetFriendlyBtnId)
-            handleSubmit();
-          }}
-        />
-      </View>
+
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

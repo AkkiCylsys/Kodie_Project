@@ -47,6 +47,7 @@ export const _COLORS = {
   Kodie_LightGrayLineColor: '#DBDBDB',
   Kodie_skyBlue: '#00D1FF',
   Kodie_lightseskyBule: '#D9F8FF',
+  Kodie_deviderIconColor: '#CDCDCD',
 
   Kodie_ExtraLightGrayColor: '#A1A1A1',
   Kodie_minLiteGrayColor: '#EFF2F2',

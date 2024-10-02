@@ -6,8 +6,8 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   },
   rowButtonView: {
     // marginHorizontal: 16,
-    marginTop:10,
-    marginBottom:12
+    marginTop: 10,
+    marginBottom: 12,
   },
   subContainer: {
     flex: 1,
@@ -42,7 +42,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     marginLeft: 3,
     alignSelf: 'center',
-    marginHorizontal:7
+    marginHorizontal: 7,
   },
   daysViewStl: {
     borderWidth: 1,
@@ -67,7 +67,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   imageStyle: {
     flex: 0.5,
     height: 80,
-    width: 80,
+    width: 85,
     borderRadius: 10,
     alignSelf: 'center',
     borderWidth: 1,
@@ -95,16 +95,16 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     marginLeft: '10%',
     paddingBottom: 3,
     // width:130,
-    paddingHorizontal:6,
-    alignItems:"flex-end",
-    borderWidth:1
+    paddingHorizontal: 6,
+    alignItems: 'flex-end',
+    borderWidth: 1,
   },
   buttonText: {
-    fontSize: 10,
+    fontSize: 9,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
-    marginRight:5
+    marginRight: 5,
   },
   bedCountView: {
     flexDirection: 'row',
@@ -118,11 +118,31 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     alignSelf: 'center',
   },
+  // locationView: {
+  //   flexDirection: 'row',
+  //   marginTop: 5,
+  //   // marginLeft: 10,
+  //   marginRight:15
+  // },
   locationView: {
     flexDirection: 'row',
+    // alignItems: 'center',
+    marginVertical: 5, // Adjust for spacing as needed
+  },
+  circleIconView: {
+    width: 30, // Set the width of the circle
+    height: 30, // Set the height of the circle
+    borderRadius: 15, // Half of the width/height to make it a perfect circle
+    alignItems: 'center', // Center icon horizontally
+    justifyContent: 'center', // Center icon vertically
+    borderWidth: 0.2,
+    borderColor: _COLORS?.Kodie_ExtraminLiteGrayColor,
+  },
+  bedCountView: {
+    flexDirection: 'row',
     marginTop: 5,
-    // marginLeft: 10,
-    marginRight:15
+    // marginLeft: 23,
+    alignItems: 'center', // Center items vertically
   },
   bedcont: {
     fontSize: 14,
@@ -130,6 +150,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
     marginLeft: 5,
+    marginRight:20
   },
   listpriceText: {
     fontSize: 14,

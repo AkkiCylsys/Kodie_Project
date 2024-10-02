@@ -54,10 +54,10 @@ export default SearchResult = props => {
   const searchInputData = props?.route?.params?.searchInputData;
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
-console.log("propertyType..",propertyType);
+  console.log('propertyType..', propertyType);
   console.log('AllCountsData...', AllCountsData);
   console.log('searchRentalResponse...', searchRentalResponse);
-
+  console.log('searchInputData..', searchInputData);
   useEffect(() => {
     additional_key_features();
   }, []);
@@ -138,6 +138,11 @@ console.log("propertyType..",propertyType);
       });
   };
   const propertyData2_render = ({item, index}) => {
+    const available = item?.property_avaliable ?item?.property_avaliable : ""; // Fallback to default date if not available
+    const availableDate = moment(available); // Convert to moment object
+    const currentDate = moment();
+     // Determine if the available date is in the past or present
+  const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
     console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
     return (
@@ -207,7 +212,7 @@ console.log("propertyType..",propertyType);
                 {item?.property_type || ''}
               </Text>
               <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
-                {`$ ${item?.rental_amount || '0'}`}
+                {`$${item?.rental_amount || '0'}`}
               </Text>
             </View>
             <View style={SearchResultCss.shareIcon}>
@@ -265,22 +270,50 @@ console.log("propertyType..",propertyType);
               {item?.location || ''}
             </Text>
           </View>
-          <View style={SearchResultCss.availableBtn}>
+          {/* <View style={SearchResultCss.availableBtn}>
             <Text style={SearchResultCss.availabletext}>
               {`AVAILABLE: ${moment(item?.property_avaliable).format(
                 'DD-MMM-YYYY',
               )}`}
             </Text>
+          </View> */}
+          <View
+            style={[
+              SearchResultCss.availableBtn,
+              {
+                backgroundColor: isAvailableNow
+                  ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
+                  : _COLORS.Kodie_LightOrange, // Use the color for future date
+                borderColor: isAvailableNow
+                  ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                  : _COLORS.Kodie_LightOrange,
+              },
+            ]}>
+            <Text
+              style={[
+                SearchResultCss.availabletext,
+                {
+                  color: isAvailableNow
+                    ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_DarkOrange, // Text color for future date
+                },
+              ]}>
+              {isAvailableNow
+                ? 'AVAILABLE: NOW'
+                : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
+            </Text>
           </View>
 
           <View style={SearchResultCss.bedCountView}>
             <View style={SearchResultCss.locationView}>
-              <Ionicons
-                color={_COLORS.Kodie_GreenColor}
-                name="bed-outline"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="bed-outline"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
@@ -289,12 +322,14 @@ console.log("propertyType..",propertyType);
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <MaterialCommunityIcons
-                color={_COLORS.Kodie_GreenColor}
-                name="shower-head"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="shower-head"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj =>
@@ -304,12 +339,14 @@ console.log("propertyType..",propertyType);
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <Ionicons
-                color={_COLORS.Kodie_GreenColor}
-                name="car"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="car"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
@@ -318,13 +355,15 @@ console.log("propertyType..",propertyType);
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <MaterialCommunityIcons
-                color={_COLORS.Kodie_GreenColor}
-                name="floor-plan"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
-              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m2</Text>
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view for icon */}
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="floor-plan"
+                  size={16}
+                />
+              </View>
+              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m²</Text>
             </View>
           </View>
 
@@ -349,20 +388,20 @@ console.log("propertyType..",propertyType);
           </Text>
           <Text style={SearchResultCss.LeftTextRentText}>
             {`${
-              propertyType === 22
+              propertyType === '22'
                 ? 'House'
-                : propertyType === 23
+                : propertyType === '23'
                 ? 'Cottage'
-                : propertyType === 24
+                : propertyType === '24'
                 ? 'Apartment/Flat'
-                : propertyType === 25
+                : propertyType === '25'
                 ? 'Townhouse'
-                : propertyType === 26
+                : propertyType === '26'
                 ? 'Land/Vacant Plot'
-                : propertyType === 27
+                : propertyType === '27'
                 ? 'Farm'
                 : ''
-            }$${searchInputData?.input_minRange || ''} to $${
+            } $${searchInputData?.input_minRange || ''} to $${
               searchInputData?.input_maxRange || ''
             }; ${AllCountsData[0]?.Bedrooms || ''} Beds; ${
               AllCountsData[1]?.Bathrooms

@@ -370,11 +370,13 @@ const PropertyRentalOffer = props => {
             </View>
 
             {item.image_path && item.image_path.length > 0 ? (
-              <Image
-                source={{uri: item.image_path[0]}}
-                style={PropertyRentalOfferStyle.imageStyle}
-                resizeMode="cover"
-              />
+              <View style={{}}>
+                <Image
+                  source={{uri: item.image_path[0]}}
+                  style={[PropertyRentalOfferStyle.imageStyle,{width:90,height:90}]}
+                  resizeMode="cover"
+                />
+              </View>
             ) : (
               <View
                 style={[
@@ -445,47 +447,51 @@ const PropertyRentalOffer = props => {
             <View style={PropertyRentalOfferStyle.expandedView}>
               <View style={PropertyRentalOfferStyle.bedCountView}>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <Ionicons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="bed-outline"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <Ionicons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="bed-outline"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
                       ?.Bedrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <MaterialCommunityIcons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="shower-head"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <MaterialCommunityIcons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="shower-head"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
                       ?.Bathrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <Ionicons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="car"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <Ionicons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="car"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {parkingSpaceValue || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <MaterialCommunityIcons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="floor-plan"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <MaterialCommunityIcons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="floor-plan"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
                       ?.Garages || '0'}{' '}
@@ -587,7 +593,7 @@ const PropertyRentalOffer = props => {
         Text_Color={_COLORS.Kodie_BlackColor}
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
-        height={40}
+        height={45}
         onPress={() => {}}
         disabled={isLoading ? true : false}
       />
@@ -613,7 +619,7 @@ const PropertyRentalOffer = props => {
           }
           LeftButtonborderColor={
             !selectedButton
-              ? _COLORS.Kodie_GrayColor
+              ? _COLORS.Kodie_GreenColor
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressLeftButton={() => {
@@ -632,7 +638,7 @@ const PropertyRentalOffer = props => {
           }
           RightButtonborderColor={
             selectedButton
-              ? _COLORS.Kodie_GrayColor
+              ? _COLORS.Kodie_GreenColor
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressRightButton={() => {

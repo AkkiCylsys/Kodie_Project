@@ -300,7 +300,7 @@ const OfferForMyProperties = () => {
                     {item?.property_type}
                   </Text>
                   <Text style={OfferForMyPropertiesStyle.cityText}>
-                    {item?.city}
+                    {item?.city ?item?.city : item?.state}
                   </Text>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>

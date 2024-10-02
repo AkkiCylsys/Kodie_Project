@@ -103,5 +103,17 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
     right: 5,
     zIndex: 1,
   },
-
+  readMore: {
+    color: _COLORS.Kodie_GreenColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  textStyle: {
+    fontSize: 12,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    textAlign: 'center',
+    lineHeight: 18,  // Optional: improves readability
+    marginHorizontal: 10,  // Optional: provides padding from the edges
+  },
 });
