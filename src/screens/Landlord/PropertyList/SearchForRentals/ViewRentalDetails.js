@@ -28,6 +28,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import ReadMore from '@fawazahmed/react-native-read-more';
+import moment from 'moment';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
@@ -69,65 +70,70 @@ const ViewRentalDetails = props => {
     }
   }, [additionalKeyFeaturesString, propertyId]);
   const iconMapping = {
-    Pool: { component: MaterialIcons, name: 'pool' },
-    Garage: { component: MaterialCommunityIcons, name: 'garage' },
-    Balcony: { component: MaterialCommunityIcons, name: 'balcony' },
-    'Outdoor area': { component: MaterialCommunityIcons, name: 'table-chair' },
-    Ensuite: { component: MaterialCommunityIcons, name: 'shower' },
-    Dishwasher: { component: MaterialCommunityIcons, name: 'dishwasher' },
-    Study: { component: MaterialCommunityIcons, name: 'bookshelf' },
-    'Built-in wardrobes': { component: MaterialCommunityIcons, name: 'wardrobe' },
-    'Air conditioning': { component: MaterialCommunityIcons, name: 'air-conditioner' },
-    'Solar panels': { component: MaterialCommunityIcons, name: 'solar-panel' },
-    Heating: { component: MaterialCommunityIcons, name: 'fireplace' },
-    'High energy efficiency': { component: SimpleLineIcons, name: 'energy' },
-    Bedrooms: { component: MaterialCommunityIcons, name: 'bed-double-outline' },
-    Bathrooms: { component: MaterialCommunityIcons, name: 'shower-head' },
-    'Parking / garage spaces': { component: Ionicons, name: 'car-outline' },
-    'On-street parking': { component: Ionicons, name: 'car-sport-outline' },
-    Default: { component: MaterialCommunityIcons, name: 'garage' },
+    Pool: {component: MaterialIcons, name: 'pool'},
+    Garage: {component: MaterialCommunityIcons, name: 'garage'},
+    Balcony: {component: MaterialCommunityIcons, name: 'balcony'},
+    'Outdoor area': {component: MaterialCommunityIcons, name: 'table-chair'},
+    Ensuite: {component: MaterialCommunityIcons, name: 'shower'},
+    Dishwasher: {component: MaterialCommunityIcons, name: 'dishwasher'},
+    Study: {component: MaterialCommunityIcons, name: 'bookshelf'},
+    'Built-in wardrobes': {component: MaterialCommunityIcons, name: 'wardrobe'},
+    'Air conditioning': {
+      component: MaterialCommunityIcons,
+      name: 'air-conditioner',
+    },
+    'Solar panels': {component: MaterialCommunityIcons, name: 'solar-panel'},
+    Heating: {component: MaterialCommunityIcons, name: 'fireplace'},
+    'High energy efficiency': {component: SimpleLineIcons, name: 'energy'},
+    Bedrooms: {component: MaterialCommunityIcons, name: 'bed-double-outline'},
+    Bathrooms: {component: MaterialCommunityIcons, name: 'shower-head'},
+    'Parking / garage spaces': {component: Ionicons, name: 'car-outline'},
+    'On-street parking': {component: Ionicons, name: 'car-sport-outline'},
+    Default: {component: MaterialCommunityIcons, name: 'garage'},
   };
-  const Detail_rander = ({ item }) => {
+  const Detail_rander = ({item}) => {
     const itemKey = Object.keys(item)[0];
     const itemValue = Object.values(item)[0];
-    const IconComponent = iconMapping[itemKey]?.component || iconMapping.Default.component;
+    const IconComponent =
+      iconMapping[itemKey]?.component || iconMapping.Default.component;
     const iconName = iconMapping[itemKey]?.name || iconMapping.Default.name;
 
     return (
       <View style={ViewRentalDetailsStyle.DetailsView}>
         <View style={ViewRentalDetailsStyle.ViewIconStyle}>
-
           <IconComponent
             name={iconName}
             size={22}
             color={_COLORS.Kodie_GreenColor}
-            style={{alignSelf:'center'}}
+            style={{alignSelf: 'center'}}
           />
         </View>
 
-        <Text style={[ViewRentalDetailsStyle.details_text, { flexShrink: 1 }]}>
+        <Text style={[ViewRentalDetailsStyle.details_text, {flexShrink: 1}]}>
           {`${itemKey}: ${itemValue}`}
         </Text>
       </View>
     );
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     const IconComponent = iconMapping[item]?.component;
     const iconName = iconMapping[item]?.name;
 
     return (
       <View style={ViewRentalDetailsStyle.DetailsView}>
-         <View style={ViewRentalDetailsStyle.ViewIconStyle}>
-        {IconComponent && (
-          <IconComponent
-            name={iconName}
-            size={22}
-            color={_COLORS.Kodie_GreenColor}
-            style={{alignSelf:'center'}}
-          />
-        )}
+        <View style={ViewRentalDetailsStyle.ViewIconStyle}>
+          {IconComponent && (
+            <IconComponent
+              name={iconName}
+              size={22}
+              color={_COLORS.Kodie_GreenColor}
+              style={{alignSelf: 'center'}}
+            />
+          )}
         </View>
-        <Text style={[ViewRentalDetailsStyle.details_text, { flexShrink: 1 }]}>{item}</Text>
+        <Text style={[ViewRentalDetailsStyle.details_text, {flexShrink: 1}]}>
+          {item}
+        </Text>
       </View>
     );
   };
@@ -140,30 +146,33 @@ const ViewRentalDetails = props => {
       const url = `${Config.BASE_URL}get_property_details`;
       console.log('url:', url);
       setIsLoading(true);
-  
+
       const response = await axios.post(url, detailData);
       setIsLoading(false);
-  
+
       console.log('response_get_property_details:', response?.data);
       if (response?.data?.success) {
         const propertyDetails = response?.data?.property_details?.[0];
         setProperty_Details(propertyDetails);
         console.log('type of property:', propertyDetails);
-  
+
         // Fetch and process key features
         if (propertyDetails?.key_features) {
           try {
-            const parsedData = JSON.parse(propertyDetails.key_features.replace(/\\/g, ''));
+            const parsedData = JSON.parse(
+              propertyDetails.key_features.replace(/\\/g, ''),
+            );
             setDetail(parsedData);
             console.log('parsedData:', parsedData);
           } catch (parseError) {
             console.error('Error parsing key features:', parseError);
           }
         }
-  
-        const additionalKeyFeatures = propertyDetails?.additional_key_features?.[0];
+
+        const additionalKeyFeatures =
+          propertyDetails?.additional_key_features?.[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
-  
+
         const additionalFeatures_id = propertyDetails?.additional_features;
         if (additionalFeatures_id) {
           const is_additionalFeaturesid = additionalFeatures_id.split(',');
@@ -182,7 +191,14 @@ const ViewRentalDetails = props => {
       // alert('An error occurred while fetching the property details. Please try again.');
     }
   };
-  
+
+  const available = property_Detail?.available; // Fallback to default date if not available
+  const availableDate = moment(available); // Convert to moment object
+  const currentDate = moment(); // Get current date
+
+  // Determine if the available date is in the past or present
+  const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
+
   return (
     <SafeAreaView style={ViewRentalDetailsStyle.mainContainer}>
       <TopHeader
@@ -238,9 +254,35 @@ const ViewRentalDetails = props => {
             </Text>
           </View>
           <View style={ViewRentalDetailsStyle.shareIcon}>
-            <View style={ViewRentalDetailsStyle.availableBtn}>
+            {/* <View style={ViewRentalDetailsStyle.availableBtn}>
               <Text style={ViewRentalDetailsStyle.availabletext}>
-                {'AVAILABLE: NOW'}
+              {`AVAILABLE: ${moment(property_Detail?.available).format('DD-MMM-YYYY')}`}
+              </Text>
+            </View> */}
+            <View
+              style={[
+                ViewRentalDetailsStyle.availableBtn,
+                {
+                  backgroundColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange, // Use the color for future date
+                  borderColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange,
+                },
+              ]}>
+              <Text
+                style={[
+                  ViewRentalDetailsStyle.availabletext,
+                  {
+                    color: isAvailableNow
+                      ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
+                      : _COLORS.Kodie_DarkOrange, // Text color for future date
+                  },
+                ]}>
+                {isAvailableNow
+                  ? 'AVAILABLE: NOW'
+                  : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
               </Text>
             </View>
             <TouchableOpacity>
@@ -282,7 +324,7 @@ const ViewRentalDetails = props => {
             ViewRentalDetailsStyle.propertyHeading,
             {marginTop: 5, marginHorizontal: 28},
           ]}>
-          {`${rentalAmount || '0'}`}
+          {`$${rentalAmount || '0'}`}
         </Text>
         <DividerIcon
           borderBottomWidth={3}
@@ -302,7 +344,7 @@ const ViewRentalDetails = props => {
             borderBottomWidth={3}
             color={_COLORS.Kodie_LiteWhiteColor}
           />
-          
+
           <Text
             style={[
               ViewRentalDetailsStyle.propery_det,
@@ -310,18 +352,18 @@ const ViewRentalDetails = props => {
             ]}>
             {'Key features'}
           </Text>
-          <View style={{marginHorizontal:'10%'}}>
-              <FlatList
-                data={Detail}
-                scrollEnabled
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ flexGrow: 1 }}
-                numColumns={numColumns}
-                keyExtractor={item => item?.id}
-                renderItem={Detail_rander}
-              />
-            </View>
-          <DividerIcon/>
+          <View style={{marginHorizontal: '10%'}}>
+            <FlatList
+              data={Detail}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{flexGrow: 1}}
+              numColumns={numColumns}
+              keyExtractor={item => item?.id}
+              renderItem={Detail_rander}
+            />
+          </View>
+          <DividerIcon />
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <Text
               style={[
@@ -331,16 +373,15 @@ const ViewRentalDetails = props => {
               {'Additional key features'}
             </Text>
           )}
-           <View style={{marginHorizontal:'10%'}}>
-              <FlatList
-                data={additionalKeyFeatures}
-                numColumns={numColumns}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                contentContainerStyle={{ flexGrow: 1 }}
-
-              />
-            </View>
+          <View style={{marginHorizontal: '10%'}}>
+            <FlatList
+              data={additionalKeyFeatures}
+              numColumns={numColumns}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={{flexGrow: 1}}
+            />
+          </View>
           <DividerIcon
             borderBottomWidth={3}
             color={_COLORS.Kodie_LiteWhiteColor}
@@ -735,7 +776,7 @@ const ViewRentalDetails = props => {
                 onPressLeftButton={() => {
                   setSubmitApplicationBtn(false);
                   setSubmitApplicationBtnId(0);
-                  Alert.alert('Coming soon')
+                  Alert.alert('Coming soon');
                   // alert(selectPetFriendlyBtnId)
                 }}
                 RightButtonText={'Message owner'}
@@ -757,11 +798,11 @@ const ViewRentalDetails = props => {
                 onPressRightButton={() => {
                   setSubmitApplicationBtn(true);
                   setSubmitApplicationBtnId(1);
-                  props.navigation.navigate('Chat', { 
-                    data: searchRentalData, 
+                  props.navigation.navigate('Chat', {
+                    data: searchRentalData,
                     userid: searchRentalData.landlord_id,
-                    chatname:'chatname'
-                   });
+                    chatname: 'chatname',
+                  });
                   // alert(selectPetFriendlyBtnId)
                 }}
               />

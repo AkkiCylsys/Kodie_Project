@@ -99,10 +99,11 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     borderRadius: 15,
     // flex: 1,
     backgroundColor: _COLORS.Kodie_minDarkGreenColor,
-    padding: 8,
+    paddingVertical: 5,
+    paddingHorizontal:6
   },
   availabletext: {
-    fontSize: 10,
+    fontSize: 8,
     color: _COLORS.Kodie_GreenColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',

@@ -3,6 +3,7 @@ import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 export const ViewApplicationSummaryStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    marginBottom:200
     // marginHorizontal: 16,
   },
   applicationSumDet: {

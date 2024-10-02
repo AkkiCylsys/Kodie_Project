@@ -241,7 +241,7 @@ const FavProperties = () => {
                 size={16}
                 style={FavPropertyStyle.bedIconView}
               />
-              <Text style={FavPropertyStyle.bedcont}>{item?.floor_size}m2</Text>
+              <Text style={FavPropertyStyle.bedcont}>{item?.floor_size ||"0"}m2</Text>
             </View>
           </View>
         </View>

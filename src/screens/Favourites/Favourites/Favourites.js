@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View} from 'react-native';
+import {View, Alert, SafeAreaView} from 'react-native';
 import {FavouritesStyle} from './FavouritesStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
@@ -18,17 +18,23 @@ const Favourites = props => {
       case 'Tab1':
         return <FavProperties />;
       case 'Tab2':
-        return <FavContractors />;
+        return (
+          // <FavContractors />
+          Alert.alert('Favourite contractors', 'Coming soon')
+        );
 
       case 'Tab3':
-        return <FavJobs />;
+        return (
+          // <FavJobs />
+          Alert.alert('Favourite Jobs', 'Coming soon')
+        );
 
       default:
         return <FavProperties />;
     }
   };
   return (
-    <View style={FavouritesStyle?.mainContainer}>
+    <SafeAreaView style={FavouritesStyle?.mainContainer}>
       <TopHeader
         MiddleText={'Favourite properties'}
         onPressLeftButton={() => _goBack(props)}
@@ -82,7 +88,7 @@ const Favourites = props => {
         marginTop={1}
       />
       {checkTabs()}
-    </View>
+    </SafeAreaView>
   );
 };
 
