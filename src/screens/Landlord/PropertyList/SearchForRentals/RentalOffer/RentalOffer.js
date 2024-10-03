@@ -23,7 +23,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
@@ -41,6 +41,8 @@ import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/Searc
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
+import {PropertyList2Css} from '../PropertyList2Css';
+import MultiSelect from 'react-native-multiple-select';
 
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
@@ -134,6 +136,7 @@ const RentalOffer = props => {
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   const [biddingDetailsMessage, setBiddingDetailsMessage] = useState('');
   const [budgetValue, setBudgetValue] = useState('');
+  const [selectedtpetItem, setSelectedtpetItem] = useState([]);
   const isFocus = useIsFocused();
   // location....
   const ConfirmAddress = () => {
@@ -155,10 +158,19 @@ const RentalOffer = props => {
     Geocoder.from(latitude, longitude)
       .then(json => {
         console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
         // currentLocation ? setLocation(json.results[0].formatted_address) : null;
         const formatedAddress = json.results[0].formatted_address;
-        setCurrentLocation(formatedAddress);
+        const formattedAddressWithoutSpace = formatedAddress.replace(
+          /(\d+)\s+/g,
+          '$1',
+        );
+        console.log(
+          'current address...',
+          formatedAddress.replace(/(\d+)\s+/g, '$1'),
+        );
+
+        // setCurrentLocation(formatedAddress);
+        setCurrentLocation(formattedAddressWithoutSpace);
         // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
@@ -416,6 +428,11 @@ const RentalOffer = props => {
                 }
                 if (childQuestion.tqm_Question_type === 'Search') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
+                  console.log(
+                    'search in dropdwon ..',
+                    childQuestion.tqm_Question_value,
+                  );
+                  setSelectedtpetItem(childQuestion.tqm_Question_value);
                 }
 
                 if (childQuestion.tqm_Question_type === 'Yes_no') {
@@ -1178,7 +1195,7 @@ const RentalOffer = props => {
   const renderFormSection = section => {
     return (
       <View>
-        <View style={[RentalOfferStyle.mainfeaturesview,{marginBottom:15}]}>
+        <View style={[RentalOfferStyle.mainfeaturesview, {marginBottom: 15}]}>
           <View style={RentalOfferStyle.key_feature_Text_view}>
             <Text
               style={[
@@ -2007,7 +2024,6 @@ const RentalOffer = props => {
     setErrors(tempErrors); // Update error messages state
     return isValid; // Return form validity
   };
-
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       // case 'Input':
@@ -2603,7 +2619,7 @@ const RentalOffer = props => {
       case 'Search':
         return (
           <View key={index}>
-            <MultiSelect
+            {/* <MultiSelect
               style={RentalOfferStyle.dropdown}
               placeholderStyle={RentalOfferStyle.placeholderStyle}
               selectedTextStyle={RentalOfferStyle.selectedTextStyle}
@@ -2635,6 +2651,83 @@ const RentalOffer = props => {
                   </View>
                 </TouchableOpacity>
               )}
+            /> */}
+            <MultiSelect
+              hideDropdown
+              items={dropdownData[question.tqm_Question_code] || []}
+              uniqueKey="lookup_key"
+              noItemsText="No pets are available on the list"
+              onSelectedItemsChange={items => {
+                console.log('Selected items:', items);
+                handleInputChange(question.tqm_Question_code, items);
+              }}
+              // selectedItems={
+              //   Array.isArray(inputValues[question.tqm_Question_code]) &&
+              //   inputValues[question.tqm_Question_code].length > 0
+              //     ? inputValues[question.tqm_Question_code]
+              //     : selectedtpetItem
+              //     ? JSON.parse(selectedtpetItem)
+              //     : []
+              // }
+              selectedItems={
+                Array.isArray(inputValues[question.tqm_Question_code]) &&
+                inputValues[question.tqm_Question_code].length > 0
+                  ? inputValues[question.tqm_Question_code]
+                  : selectedtpetItem
+                  ? (() => {
+                      try {
+                        return JSON.parse(selectedtpetItem);
+                      } catch (error) {
+                        console.error('JSON Parse error:', error);
+                        return []; // Return an empty array in case of an error
+                      }
+                    })() // Immediately Invoked Function Expression (IIFE)
+                  : []
+              }
+              selectText="Select pets"
+              searchInputPlaceholderText="Search Items..."
+              onChangeInput={item => {
+                console.warn('Search input changed:', item);
+              }}
+              onToggleList={() => handleDropdown(question.tqm_Question_code)}
+              tagBorderColor={_COLORS.Kodie_BlackColor}
+              selectedItemTextColor={_COLORS.Kodie_GreenColor}
+              selectedItemIconColor={_COLORS.Kodie_GreenColor}
+              itemTextColor="#000"
+              displayKey="lookup_description"
+              searchInputStyle={PropertyList2Css.searchInput}
+              styleListContainer={PropertyList2Css.listContainer}
+              styleRowList={PropertyList2Css.rowList}
+              tagContainerStyle={PropertyList2Css.tagContainer}
+              tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+              styleTextTag={PropertyList2Css.textTag}
+              styleTextDropdown={[
+                PropertyList2Css.textDropdown,
+                {
+                  paddingHorizontal:
+                    inputValues[question.tqm_Question_code] &&
+                    inputValues[question.tqm_Question_code].length > 0
+                      ? 10
+                      : 5,
+                },
+              ]}
+              styleDropdownMenu={[
+                PropertyList2Css.dropdownMenu,
+                {
+                  paddingHorizontal:
+                    inputValues[question.tqm_Question_code] &&
+                    inputValues[question.tqm_Question_code].length > 0
+                      ? 10
+                      : 5,
+                },
+              ]}
+              submitButtonColor={_COLORS.Kodie_GreenColor}
+              submitButtonText={
+                inputValues[question.tqm_Question_code] &&
+                inputValues[question.tqm_Question_code].length > 0
+                  ? 'Done'
+                  : 'Cancel'
+              }
             />
           </View>
         );
@@ -2854,7 +2947,9 @@ const RentalOffer = props => {
                 RentalOfferStyle.propertyHeading,
                 {fontFamily: FONTFAMILY.K_Bold},
               ]}>
-              {propertyDetails?.city}
+              {propertyDetails?.city
+                ? propertyDetails?.city
+                : propertyDetails?.state}
             </Text>
             <View style={[RentalOfferStyle.locationView, {marginTop: 6}]}>
               <Ionicons
@@ -3039,45 +3134,48 @@ const RentalOffer = props => {
               biddingDetailsMessage={biddingDetailsMessage}
             />
           </RBSheet>
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderColor: _COLORS.Kodie_LightGrayColor,
+              borderTopColor: _COLORS.Kodie_LightGrayColor,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 6}, // Move shadow upwards
+              shadowOpacity: 0.3, // Slightly reduce opacity
+              shadowRadius: 6, // Add blur to the shadow
+              elevation: 1, // Increase elevation for Android
+              // marginTop: 10, // Add space above the view so shadow has room
+              marginBottom: 10,
+            }}
+          />
+          <View style={RentalOfferStyle.submitApplicationbtn}>
+            <RowButtons
+              leftButtonHeight={50}
+              RightButtonHeight={50}
+              LeftButtonText="Cancel"
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setSubmitApplicationBtnId(0);
+                props.navigation.pop();
+              }}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+              RightButtonText={
+                edit_offer == 'edit_offer' ? 'Edit offer' : 'Submit'
+              }
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setSubmitApplicationBtnId(1);
+                // alert(selectPetFriendlyBtnId)
+                handleSubmit();
+              }}
+            />
+          </View>
         </ScrollView>
       )}
-      <View
-        style={{
-          borderTopWidth: 1,
-          borderColor: _COLORS.Kodie_LightGrayColor,
-          borderTopColor: _COLORS.Kodie_LightGrayColor,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 6}, // Move shadow upwards
-          shadowOpacity: 0.3, // Slightly reduce opacity
-          shadowRadius: 6, // Add blur to the shadow
-          elevation: 1, // Increase elevation for Android
-          // marginTop: 10, // Add space above the view so shadow has room
-          marginBottom: 10,
-        }}
-      />
-      <View style={RentalOfferStyle.submitApplicationbtn}>
-        <RowButtons
-          leftButtonHeight={50}
-          RightButtonHeight={50}
-          LeftButtonText="Cancel"
-          onPressLeftButton={() => {
-            setSubmitApplicationBtn(false);
-            setSubmitApplicationBtnId(0);
-            props.navigation.pop();
-          }}
-          leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-          LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-          RightButtonText={edit_offer == 'edit_offer' ? 'Edit offer' : 'Submit'}
-          RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-          RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-          onPressRightButton={() => {
-            setSubmitApplicationBtn(true);
-            setSubmitApplicationBtnId(1);
-            // alert(selectPetFriendlyBtnId)
-            handleSubmit();
-          }}
-        />
-      </View>
+
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

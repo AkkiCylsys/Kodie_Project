@@ -30,6 +30,8 @@ import {SignupLookupDetails} from '../../../../../APIs/AllApi';
 import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 import ViewApplicationSummary from '../ViewApplicationSummary/ViewApplicationSummary';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
+import ReadMore from '@fawazahmed/react-native-read-more';
+
 const PropertyViewApplication = props => {
   const {
     propertyId,
@@ -54,7 +56,7 @@ const PropertyViewApplication = props => {
   const [acceptBiddingData, setAcceptBiddingData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
 
-  console.log("loginData in view ..",loginData);
+  console.log('loginData in view ..', loginData);
   useEffect(() => {
     handlePropertyViewApplication();
     handleQuestionDetailsForTenantQues();
@@ -154,13 +156,17 @@ const PropertyViewApplication = props => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <UserDetails tenantAccountDetails={tenantAccountDetails} />
-        <DividerIcon />
+        <DividerIcon
+          borderBottomWidth={2}
+          marginTop={25}
+          borderColor={_COLORS?.Kodie_deviderIconColor}
+        />
         <View style={PropertyViewApplicationStyle.ApartmentMainView}>
           <Text style={PropertyViewApplicationStyle.apartmentText}>
             {tenantDetails?.property_type}
           </Text>
           <Text style={PropertyViewApplicationStyle.cityText}>
-            {tenantDetails?.city}
+            {tenantDetails?.city ? tenantDetails?.city : tenantDetails?.state}
           </Text>
           <View style={PropertyViewApplicationStyle.flat_MainView}>
             <MaterialCommunityIcons
@@ -174,7 +180,11 @@ const PropertyViewApplication = props => {
             </Text>
           </View>
         </View>
-        <DividerIcon />
+        <DividerIcon
+          borderBottomWidth={2}
+          marginTop={25}
+          borderColor={_COLORS?.Kodie_deviderIconColor}
+        />
         {/* <View style={PropertyViewApplicationStyle.summaryView}>
           <Text style={PropertyViewApplicationStyle.cityText}>
             {'Offer summary'}
@@ -198,11 +208,14 @@ const PropertyViewApplication = props => {
         </View> */}
         <Text
           style={PropertyViewApplicationStyle.summaryText}
-          numberOfLines={2}
+          numberOfLines={3}
           ellipsizeMode="tail">
           {tenantAccountDetails?.UAD_BIO}
         </Text>
-        <DividerIcon />
+        <DividerIcon
+          borderBottomWidth={2}
+          borderColor={_COLORS?.Kodie_deviderIconColor}
+        />
         {/* <View style={PropertyViewApplicationStyle.summaryView}>
           <Text style={PropertyViewApplicationStyle.cityText}>
             {'Pre-rental questionnaire'}

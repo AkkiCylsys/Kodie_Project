@@ -208,16 +208,37 @@ export const SearchResultCss = StyleSheet.create({
     paddingVertical: 8,
     marginTop: 10,
   },
+  circleIconView: {
+    width: 30,  // Set the width of the circle
+    height: 30, // Set the height of the circle
+    borderRadius: 15,  // Half of the width/height to make it a perfect circle
+    alignItems: 'center', // Center icon horizontally
+    justifyContent: 'center', // Center icon vertically
+    borderWidth:0.2,
+    borderColor:_COLORS?.Kodie_ExtraminLiteGrayColor
+
+  },
+  bedCountView:{
+    flexDirection: 'row',
+    marginTop: 5,
+    marginLeft: 23,
+    alignItems: 'center', // Center items vertically
+  },
   bedcont: {
+    // fontSize: 14,
+    // color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    // fontFamily: FONTFAMILY.K_Regular,
+    // alignSelf: 'center',
+    // marginLeft: 5,
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: 10, // Increased margin for spacing between icon and text
   },
   bedCountView: {
     flexDirection: 'row',
-    marginHorizontal: 8,
+    marginLeft: 2,
     marginTop: 5,
     marginBottom: 5,
   },
