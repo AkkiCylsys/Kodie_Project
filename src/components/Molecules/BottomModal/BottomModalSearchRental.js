@@ -17,9 +17,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useSelector} from 'react-redux';
 
 const BottomModalSearchRental = props => {
-  const {propertyId, rentalAmount, bibId, landlordId,searchRentalData} = props;
+  const {propertyId, rentalAmount, bibId, landlordId, searchRentalData} = props;
   const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData...in make off..', loginData);
   const userAccountId = loginData?.Login_details?.user_account_id;
+  const hasLandlordRoleId = loginData?.Account_details[0]?.user_role_id;
+  console.log('hasLandlordRoleId..', hasLandlordRoleId);
   console.log('userAccountId...', userAccountId);
   console.log('landlordId...', landlordId);
   const navigation = useNavigation();
@@ -77,7 +80,10 @@ const BottomModalSearchRental = props => {
 
   const filteredData = data.filter(item => {
     // Hide "Make offer" if userAccountId is the same as landlordId
-    if (item.id === '2' && userAccountId === landlordId) {
+    if (
+      (item.id === '2' && hasLandlordRoleId === '3') ||
+      userAccountId === landlordId
+    ) {
       return false; // Exclude "Make offer"
     }
     return true; // Include other items
@@ -95,7 +101,7 @@ const BottomModalSearchRental = props => {
             navigation.navigate('ViewRentalDetails', {
               propertyId: propertyId,
               rentalAmount: rentalAmount,
-              searchRentalData:searchRentalData
+              searchRentalData: searchRentalData,
             });
             handleClose();
           }

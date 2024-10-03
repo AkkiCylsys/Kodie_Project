@@ -23,7 +23,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     paddingHorizontal: 20,
-    marginTop: 20
+    marginTop: 24
     // padding: 20,
     // marginBottom: 20,
   },
@@ -41,6 +41,7 @@ export const FirstPropertyStyle = StyleSheet.create({
 
   inputContainer: {
     marginBottom: 15,
+    marginTop:10
   },
   featureText: {
     marginTop: 20
@@ -123,7 +124,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   flor_input_field: {
     borderWidth: 0.5,
     borderRadius: 6,
-    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     color: '#333',
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: 'center',
@@ -132,7 +133,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 36,
   },
   key_feature_Text: {
-    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: _COLORS.Kodie_GrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
@@ -189,7 +190,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: 'white',
   },
   addition_featureText: {
-    marginTop: 10,
+    marginTop: 15,
   },
   questionmark: {
     alignSelf: 'center',

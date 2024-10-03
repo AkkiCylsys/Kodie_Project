@@ -132,7 +132,7 @@ export default PropertyReview = props => {
       <Text style={DetailsStyle.itemName}>{item.name}</Text>
       <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
       
-    <DividerIcon marginTop={5}/>
+    {/* <DividerIcon /> */}
     </View>
     </>
   );
@@ -140,21 +140,17 @@ export default PropertyReview = props => {
   const renderCategory = ({ item }) => (
     <View style={DetailsStyle.categoryContainer}>
       <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
-      <DividerIcon marginTop={5}/>
-      <FlatList
-        data={item.items}
-        renderItem={renderpointItem}
-        keyExtractor={(item, index) => index.toString()}
-        ListFooterComponent={<TouchableOpacity onPress={()=>{
-          alert(JSON.stringify(item.items.length))
-          if(item.items.length >2){
-
-          }else{
-            alert(JSON.stringify("No more data found!"))
-          }
-        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
-      />
-     
+      <DividerIcon marginTop={5} />
+      
+      {item.items.length > 0 ? (
+        <FlatList
+          data={item.items}
+          renderItem={renderpointItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text style={DetailsStyle.itemName}>----</Text> // Display hyphen if no items
+      )}
     </View>
   );
   const buildLink = async (id) => {

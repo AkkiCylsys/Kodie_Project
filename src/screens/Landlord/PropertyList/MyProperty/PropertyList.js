@@ -27,6 +27,8 @@ import {Config} from '../../../../Config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {head} from 'lodash';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const HorizontalData = [
   'All',
   'Recent',
@@ -326,7 +328,8 @@ const PropertyList = props => {
                     marginRight: '65%',
                     marginLeft: '6.6%',
                     backgroundColor: _COLORS.Kodie_GreenColor,
-                    paddingVertical: 5,
+                    // paddingVertical: 2,
+                    paddingBottom: 4,
                     borderBottomEndRadius: 8,
                     borderBottomStartRadius: 8,
                   }}>
@@ -369,8 +372,10 @@ const PropertyList = props => {
                 </View>
               ) : (
                 <>
-                  <View key={index} style={[PropertyListCSS.flatListContainer]}>
-                    <View style={[PropertyListCSS.flat_MainView]}>
+                  <View key={index} style={[PropertyListCSS.flatListContainer,]}>
+                    <View style={[PropertyListCSS.flat_MainView,
+                      {marginBottom:12}
+                    ]}>
                       <View style={PropertyListCSS.flexContainer}>
                         <Text style={PropertyListCSS.apartmentText}>
                           {item.property_type}
@@ -386,6 +391,7 @@ const PropertyList = props => {
                             name={'map-marker'}
                             size={12}
                             color={_COLORS.Kodie_GreenColor}
+                            style={{marginTop:6}}
                           />
                           <Text
                             style={PropertyListCSS.locationText}
@@ -396,24 +402,38 @@ const PropertyList = props => {
                         </View>
                       </View>
                       {item.image_path && item.image_path.length > 0 ? (
-                        <View>
+                        <View style={{flex: 1}}>
                           <Image
                             source={{uri: item?.image_path[0]}}
                             style={[
                               PropertyListCSS.imageStyle,
+                          
                             ]}
                             resizeMode="cover"
                           />
                         </View>
                       ) : (
+                        // <View
+                        //   style={[
+                        //     PropertyListCSS.imageStyle,
+                        //     {justifyContent: 'center'},
+                        //   ]}>
+                        //   <Text style={PropertyListCSS.Img_found}>
+                        //     {'Image not found'}
+                        //   </Text>
+                        // </View>
                         <View
                           style={[
-                            PropertyListCSS.imageStyle,
-                            {justifyContent: 'center'},
+                            {flex:1}
                           ]}>
-                          <Text style={PropertyListCSS.Img_found}>
-                            {'Image not found'}
-                          </Text>
+                          <Ionicons
+                            name="images-outline"
+                            size={90}
+                            color={_COLORS.Kodie_GrayColor}
+                            style={[PropertyListCSS.imageStyle,{
+                              borderWidth:0
+                            }]}
+                          />
                         </View>
                       )}
 
@@ -800,18 +820,18 @@ const PropertyList = props => {
         {hasLandlordRole ? (
           <View style={PropertyListCSS.Container}>
             <CustomSingleButton
-              _ButtonText={'+ Add New Property'}
+              _ButtonText={'+ Add new property'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               text_Size={14}
               backgroundColor={_COLORS.Kodie_BlackColor}
-              height={40}
+              height={45}
               marginTop={3}
               onPress={props.propertyDetail}
               disabled={isLoading ? true : false}
             />
           </View>
         ) : null}
-        {!hasLandlordRole? null : (
+        {!hasLandlordRole ? null : (
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
