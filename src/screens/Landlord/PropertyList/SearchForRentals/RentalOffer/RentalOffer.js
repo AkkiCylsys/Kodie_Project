@@ -2659,16 +2659,30 @@ const RentalOffer = props => {
               noItemsText="No pets are available on the list"
               onSelectedItemsChange={items => {
                 console.log('Selected items:', items);
-                handleInputChange(question.tqm_Question_code, items); 
+                handleInputChange(question.tqm_Question_code, items);
               }}
-             
+              // selectedItems={
+              //   Array.isArray(inputValues[question.tqm_Question_code]) &&
+              //   inputValues[question.tqm_Question_code].length > 0
+              //     ? inputValues[question.tqm_Question_code]
+              //     : selectedtpetItem
+              //     ? JSON.parse(selectedtpetItem)
+              //     : []
+              // }
               selectedItems={
                 Array.isArray(inputValues[question.tqm_Question_code]) &&
                 inputValues[question.tqm_Question_code].length > 0
-                  ? inputValues[question.tqm_Question_code] 
-                  : selectedtpetItem 
-                  ? JSON.parse(selectedtpetItem)
-                  : [] 
+                  ? inputValues[question.tqm_Question_code]
+                  : selectedtpetItem
+                  ? (() => {
+                      try {
+                        return JSON.parse(selectedtpetItem);
+                      } catch (error) {
+                        console.error('JSON Parse error:', error);
+                        return []; // Return an empty array in case of an error
+                      }
+                    })() // Immediately Invoked Function Expression (IIFE)
+                  : []
               }
               selectText="Select pets"
               searchInputPlaceholderText="Search Items..."
