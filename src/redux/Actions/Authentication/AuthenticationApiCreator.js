@@ -43,6 +43,49 @@ export const loginApiActionCreator = data => async dispatch => {
   }
 };
 
+export const googlesocial_loginApi = data => async dispatch => {
+  dispatch(fetchLoginData());
+  try {
+    const res = await axios.post(`${url}social_login`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res?.data?.success === 'true') {
+ 
+        dispatch(fetchLoginSuccess(res?.data));
+        return res;
+      }
+     else {
+      dispatch(fetchLoginError(res.data));
+      return res;
+    }
+  } catch (error) {
+    console.error('Login Scial API Error:', error);
+    dispatch(fetchLoginError(error?.response?.data ?? error.message));
+    return error?.response?.status;
+  }
+};
+
+
+
+export const googleLoginApi = async(data) => {
+
+  try {
+    const res = await axios.post(`${url}saveSocialDetails`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+      return res;
+    
+  } catch (error) {
+    console.error('Login API Error:', error);
+    return error
+  }
+};
+
 export const signupAccountApiActionCreator = data => async dispatch => {
   dispatch(fetchRegistrationData());
   try {

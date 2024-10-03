@@ -34,16 +34,16 @@ import {
   _COLORS,
   FONTFAMILY,
 } from './../../../Themes/index';
-import { useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Config } from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
-import { loginApiActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import { loginApiActionCreator, googleLoginApi, googlesocial_loginApi } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
@@ -91,21 +91,123 @@ export default Login = props => {
       const userInfo = await GoogleSignin.signIn();
       console.log('userInfo....', userInfo);
       setGoogleSignIn(userInfo);
+      //alert(userInfo?.idToken)
+      console.log(userInfo?.user?.email)
+      console.log(userInfo?.user?.name)
+      if (userInfo?.user?.email != null || userInfo?.user?.email != '' || userInfo?.user?.email != undefined) {
+        _googleLoginApi(userInfo)
+        //props.navigation.navigate('SignUpSteps');
+      }
+
+      // props.navigation.navigate('SignUpSteps');
     } catch (error) {
       console.log('Error during signIn:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('SIGN_IN_CANCELLED');
+        alert('SIGN_IN_CANCELLED')
       } else if (error.code === statusCodes.IN_PROGRESS) {
         console.log('IN_PROGRESS');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.log('PLAY_SERVICES_NOT_AVAILABLE');
+        alert('PLAY_SERVICES_NOT_AVAILABLE')
       } else {
+        alert(error.message)
         console.log('Error occurred:', error.message);
         console.log('Error stack trace:', error.stack);
         console.log('Full error object:', error);
       }
     }
   };
+  const _googleLoginApi = async (_userInfo) => {
+    try {
+      setIsLoading(true)
+      let googleSignUPPayload = {
+        email: _userInfo?.user?.email,
+        unique_social_id: _userInfo?.user?.id,
+        social_type: "Google",
+        is_social_login: 1,
+        token: _userInfo?.idToken,
+        device_id: deviceId,
+        device_os_type: deviceType,
+        fcm_token: Fcm_token,
+      }
+
+      let _res = await googleLoginApi(googleSignUPPayload)
+      console.log("-+_+_+_+_______+++")
+      console.log(JSON.stringify(_res))
+
+      if (_res?.data?.success == true) {
+
+        //props.navigation.navigate('SignUpSteps');
+        if (_res?.data?.code == 3) {
+
+          const encStr = await encryptPassword(_userInfo?.user?.id, secretKey);
+          console.log('encryptedpass', encStr);
+          setIsLoading(false)
+          props.navigation.navigate('SignUpSteps', {
+            email: _userInfo?.user?.email,
+            user_key: _res?.data?.User_Key,
+            _socialuserInfo: _userInfo,
+            password: encStr, //?
+          });
+        }
+        else if (_res?.data?.code == 6) {
+          const encStr = await encryptPassword(_userInfo?.user?.id, secretKey);
+          console.log('encryptedpass', encStr);
+          setIsLoading(false)
+          props.navigation.navigate('SignUpSteps', {
+            email: _userInfo?.user?.email,
+            user_key: _res?.data?.User_Key,
+            _socialuserInfo: _userInfo,
+            password: encStr, //?
+          });
+        }
+        else if (_res?.data?.code == 10) {
+          setIsLoading(true)
+          try {
+            let googleSignInPayload = {
+
+              email: _userInfo?.user?.email,
+              unique_social_id: _userInfo?.user?.id,
+              social_type: "Google",
+              token: _userInfo?.idToken,
+              device_id: deviceId,
+              device_os_type: deviceType,
+              fcm_token: Fcm_token,
+            }
+  
+            let _socialloginres = await dispatch(googlesocial_loginApi(googleSignInPayload))
+            if (_socialloginres?.data?.success === 'true') {
+              props.navigation.navigate('DrawerNavigatorLeftMenu');
+              setIsLoading(false)
+            }
+          } catch (error) {
+            setIsLoading(false)
+            alert(error)
+            
+          }
+
+          
+        }
+        else {
+          setIsLoading(false)
+          //  alert(_res?.data?.code)
+        }
+
+      }
+      else {
+        
+        setIsLoading(false)
+        alert(_res?.data?.message)
+      }
+    } catch (error) {
+     
+      setIsLoading(false)
+      console.log(error)
+    }
+    //alert(_userInfo?.user?.email)
+
+  }
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
@@ -223,9 +325,9 @@ export default Login = props => {
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
     const emailPattern =
-    /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-  // Trim the email to remove spaces from the start or end
-  return emailPattern.test(resetEmail.trim());
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    // Trim the email to remove spaces from the start or end
+    return emailPattern.test(resetEmail.trim());
   };
 
   //... inner reset password email variable define here
@@ -287,7 +389,7 @@ export default Login = props => {
   //... inner reset password rejex variable define here
   const validateEmail = email => {
     const emailPattern =
-    /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email.trim());
   };
 
@@ -440,8 +542,8 @@ export default Login = props => {
     axios
       .post(verification_code_url, {
         email: trimmedEmail,
-        device_id:deviceId,
-        device_os_type:deviceType
+        device_id: deviceId,
+        device_os_type: deviceType
       })
       .then(response => {
         console.log('API Response send otp:', response?.data);
@@ -471,7 +573,7 @@ export default Login = props => {
       .catch(error => {
         if (error?.response || error?.response?.status === 400) {
           // alert('Failed to send OTP via email. Please try again later.');
-          alert( error?.response?.data.message)
+          alert(error?.response?.data.message)
         } else {
         }
         console.error('sendotp error:', error);
@@ -494,8 +596,8 @@ export default Login = props => {
       .post(verify_Otp_url, {
         email: trimmedEmail,
         otp: verificationcode,
-        device_id:deviceId,
-        device_os_type:deviceType
+        device_id: deviceId,
+        device_os_type: deviceType
       })
       .then(response => {
         console.log('API Response verify otp:', response?.data);
@@ -566,7 +668,7 @@ export default Login = props => {
       const url = Config.BASE_URL;
       const create_password_url = url + 'forgetpassword';
       console.log('Request URL:', create_password_url);
-    const trimmedEmail = resetEmail.trim();
+      const trimmedEmail = resetEmail.trim();
 
       setIsLoading(true);
       const response = await axios.post(create_password_url, {
@@ -574,7 +676,7 @@ export default Login = props => {
         password: encryptedPassword,
       });
       if (response?.data?.success === true) {
-        
+
         if (
           response?.data?.code == 21
         ) {
@@ -637,9 +739,9 @@ export default Login = props => {
                 // keyboardType={'default'}
                 textContentType='oneTimeCode'
               />
-            {emailError ? (
-              <Text style={LoginStyles.error_text}>{emailError}</Text>
-            ) : null}
+              {emailError ? (
+                <Text style={LoginStyles.error_text}>{emailError}</Text>
+              ) : null}
             </View>
             <View style={[LoginStyles.inputContainer,]}>
               <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
@@ -681,11 +783,11 @@ export default Login = props => {
                   />
                 </TouchableOpacity>
               </View>
-            {passwordError ? (
-              <Text style={LoginStyles.error_text}>{passwordError}</Text>
-            ) : null}
+              {passwordError ? (
+                <Text style={LoginStyles.error_text}>{passwordError}</Text>
+              ) : null}
             </View>
-            <View style={{ flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
                   openSheetWithHeight(550)
@@ -735,10 +837,24 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() =>
+              onPress={() => {
+                LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+                  function (result) {
+                    if (result.isCancelled) {
+                      alert("Login Cancelled " + JSON.stringify(result))
+                    } else {
+                      alert("Login success with  permisssions: " + result.grantedPermissions.toString());
+                      alert("Login Success " + result.toString());
+                    }
+                  },
+                  function (error) {
+                    alert("Login failed with error: " + error);
+                  }
+                )
+              }
                 //  props.navigation.navigate("PointofInterest")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
-               Alert.alert('Login with Facebook', 'Coming soon')
+                // Alert.alert('Login with Facebook', 'Coming soon')
                 // onFacebookButtonPress()
               }
               leftImage={IMAGES.FacebookIcon}
@@ -824,11 +940,11 @@ export default Login = props => {
                   // maxLength={30}
                   textContentType='oneTimeCode'
                   autoCapitalize={'none'}
-                  editable={isLoading?false:true}
+                  editable={isLoading ? false : true}
                 />
-              {resetEmailError ? (
-                <Text style={LoginStyles.error_text}>{resetEmailError}</Text>
-              ) : null}
+                {resetEmailError ? (
+                  <Text style={LoginStyles.error_text}>{resetEmailError}</Text>
+                ) : null}
               </View>
             </>
           )}
@@ -836,7 +952,7 @@ export default Login = props => {
           {/* ------ Reset passowrd 1 section start code  here ........... */}
           {isClick === 1 && (
             <>
-              <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
+              <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
                   style={[
@@ -853,7 +969,7 @@ export default Login = props => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={{ flex: 1}}>
+                <View style={{ flex: 1 }}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -901,7 +1017,7 @@ export default Login = props => {
             return [false]; // Stop the timer
                       }}>
                       {({ remainingTime }) => (
-                        <Text style={{ color: _COLORS.Kodie_WhiteColor,fontSize:14,fontFamily:FONTFAMILY.K_Bold}}>
+                        <Text style={{ color: _COLORS.Kodie_WhiteColor, fontSize: 14, fontFamily: FONTFAMILY.K_Bold }}>
                           {remainingTime}s
                         </Text>
                       )}
@@ -933,7 +1049,7 @@ export default Login = props => {
               contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled">
-              <View style={[LoginStyles.inputContainer,{marginBottom:25}]}>
+              <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}>
                   New password

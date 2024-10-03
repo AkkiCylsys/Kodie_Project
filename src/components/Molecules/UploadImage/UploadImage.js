@@ -1,5 +1,5 @@
 import React, { useState, } from "react";
-import { View,Alert, Text,PermissionsAndroid,Linking,Platform, Image, FlatList, TouchableOpacity } from "react-native";
+import { View, Alert, Text, PermissionsAndroid, Linking, Platform, Image, FlatList, TouchableOpacity } from "react-native";
 import { IMAGES, _COLORS } from "../../../Themes";
 import { UploadImageStyle } from "./UploadImageStyle";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -18,7 +18,7 @@ const data = [
         size={20}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={'contain'}
-        style={{alignSelf: 'center'}}
+        style={{ alignSelf: 'center' }}
       />
     ),
   },
@@ -32,7 +32,7 @@ const data = [
         size={20}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={'contain'}
-        style={{alignSelf: 'center'}}
+        style={{ alignSelf: 'center' }}
       />
     ),
   },
@@ -42,42 +42,36 @@ const data = [
   //   Img: IMAGES.Upload,
   // },
 ];
- 
- 
+
+
 const UploadImageData = (props) => {
   const [imageName, setImageName] = useState("");
   const [image, setImage] = useState({});
- 
- 
+
+
   const openAppSettings = () => {
     if (Platform.OS === 'android') {
       Linking.openSettings();
     }
   };
- 
- 
+
+
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
           style={UploadImageStyle.content_View}
           // onPress={Platform.OS == 'ios' ? handleImageSelection({item}) : handleAndroidPermission({item})}
-         onPress={async()=>
-          {
-            if(Platform.OS === 'ios'){
-              try {
-                // Request camera permission
+          onPress={async () => {
+            if (Platform.OS === 'ios') {
+              if (index == 0) {
                 const cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
-                const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-          
                 if (
                   cameraPermission === 'denied' ||
-                  cameraPermission === 'blocked' ||
-                  photoPermission === 'denied' ||
-                  photoPermission === 'blocked'
+                  cameraPermission === 'blocked'
                 ) {
                   Alert.alert(
-                    'Permission Required',
+                    'Camera Permission Required',
                     'We need access to your camera and photo library. Please enable it in the app settings.',
                     [
                       { text: 'Cancel', style: 'cancel' },
@@ -86,10 +80,7 @@ const UploadImageData = (props) => {
                   );
                   return; // Exit if permission is not granted
                 }
-          
-                // Proceed based on item.id
-                if (item.id === '1') {
-                  // Open camera
+                else {
                   const image = await ImagePicker.openCamera({
                     width: 300,
                     height: 400,
@@ -100,8 +91,26 @@ const UploadImageData = (props) => {
                   setImageName(image?.path);
                   props?.ImageName(image);
                   console.log('Image from camera:', image);
-                } else if (item.id === '2') {
-                  // Open gallery
+                }
+              }
+              else {
+                // for index==2
+                const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+                if (
+                  photoPermission === 'denied' ||
+                  photoPermission === 'blocked'
+                ) {
+                  Alert.alert(
+                    'Gallery Permission Required',
+                    'This app needs access to your gallery to select photos. Please enable it in the app settings.',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Open Settings', onPress: openSettings },
+                    ]
+                  );
+                  return; // Exit if permission is not granted
+                }
+                else {
                   const image = await ImagePicker.openPicker({
                     width: 300,
                     height: 400,
@@ -113,13 +122,13 @@ const UploadImageData = (props) => {
                   props?.ImageName(image);
                   console.log('Image from gallery:', image);
                 }
-              } catch (err) {
-                console.error('Error selecting image:', err);
-                // Alert.alert('Error', 'Failed to select image. Please try again.');
               }
-            }else{
-//alert(index)
-              if (index ==0) {
+            }
+
+            else {
+              //for android
+              //alert(index)
+              if (index == 0) {
                 const granted = await PermissionsAndroid.request(
                   PermissionsAndroid.PERMISSIONS.CAMERA,
                   {
@@ -132,25 +141,25 @@ const UploadImageData = (props) => {
                   },
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    ImagePicker.openCamera({
-                      width: 300,
-                      height: 400,
-                      cropping: true,
-                      compressImageQuality: 0.5,
+                  ImagePicker.openCamera({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                  })
+                    .then((image) => {
+                      // console.log('image....', image);
+                      setImage(image);
+                      setImageName(image?.path);
+                      // props?.ImageName(image?.path)
+                      props?.ImageName(image);
+
+                      console.log("ImagePath..", imageName);
                     })
-                      .then((image) => {
-                        // console.log('image....', image);
-                        setImage(image);
-                        setImageName(image?.path);
-                        // props?.ImageName(image?.path)
-                        props?.ImageName(image);
-              
-                        console.log("ImagePath..", imageName);
-                      })
-                      .catch((err) => {
-                        console.log("err...", err);
-                      });
- 
+                    .catch((err) => {
+                      console.log("err...", err);
+                    });
+
                 } else {
                   Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
                     { text: 'Cancel', style: 'cancel' },
@@ -158,7 +167,7 @@ const UploadImageData = (props) => {
                   ]);
                 }
               }
-              else{
+              else {
                 const granted = await PermissionsAndroid.request(
                   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
                   {
@@ -170,26 +179,26 @@ const UploadImageData = (props) => {
                   },
                 );
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
- 
-                    // Navigate to Choose photo from library when Contact Us is clicked.......
-                    ImagePicker.openPicker({
-                      width: 300,
-                      height: 400,
-                      cropping: true,
-                      compressImageQuality: 0.5,
-                      // multiple: true,
+
+                  // Navigate to Choose photo from library when Contact Us is clicked.......
+                  ImagePicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                    // multiple: true,
+                  })
+                    .then((image) => {
+                      // console.log(image);
+                      setImage(image);
+                      setImageName(JSON.stringify(image?.path));
+                      props?.ImageName(image);
+                      console.log("ImagePath..", imageName);
                     })
-                      .then((image) => {
-                        // console.log(image);
-                        setImage(image);
-                        setImageName(JSON.stringify(image?.path));
-                        props?.ImageName(image);
-                        console.log("ImagePath..", imageName);
-                      })
-                      .catch((err) => {
-                        console.log("err...", err);
-                      });
-                  
+                    .catch((err) => {
+                      console.log("err...", err);
+                    });
+
                 } else {
                   Alert.alert('Gallery permission denied. Open settings to enable gallery access.', '', [
                     { text: 'Cancel', style: 'cancel' },
@@ -197,13 +206,13 @@ const UploadImageData = (props) => {
                   ]);
                 }
               }
- 
+
               //for android
-              
+
             }
-           
+
           }
-         }
+          }
         >
           <View style={UploadImageStyle.IconView}>{item.Img}</View>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
@@ -211,7 +220,7 @@ const UploadImageData = (props) => {
       </>
     );
   };
- 
+
   return (
     <View style={UploadImageStyle.mainContainer}>
       {/* <View style={UploadImageStyle.upload_View}>
@@ -227,7 +236,7 @@ const UploadImageData = (props) => {
           />
         </TouchableOpacity>
       </View> */}
- 
+
       <FlatList
         data={data}
         scrollEnabled
@@ -239,5 +248,5 @@ const UploadImageData = (props) => {
     </View>
   );
 };
- 
+
 export default UploadImageData;
