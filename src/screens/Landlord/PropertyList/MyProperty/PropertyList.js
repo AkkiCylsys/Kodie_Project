@@ -401,7 +401,6 @@ const PropertyList = props => {
                             source={{uri: item?.image_path[0]}}
                             style={[
                               PropertyListCSS.imageStyle,
-                              {height: 90, width: 90},
                             ]}
                             resizeMode="cover"
                           />
