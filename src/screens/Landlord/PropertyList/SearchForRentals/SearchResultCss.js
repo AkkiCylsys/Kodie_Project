@@ -191,14 +191,15 @@ export const SearchResultCss = StyleSheet.create({
     marginLeft: 23,
   },
   availabletext: {
-    fontSize: 10,
+    fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',
   },
   availableBtn: {
+    flex:0.5,
     marginHorizontal: 25,
-    marginRight: Platform.OS == 'ios' ? 270 : 230,
+    // marginRight: Platform.OS == 'ios' ? 270 : 230,
     // borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,

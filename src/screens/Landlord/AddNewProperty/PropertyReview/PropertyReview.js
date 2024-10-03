@@ -676,7 +676,7 @@ export default PropertyReview = props => {
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
+                {/* <View style={DetailsStyle.p_rowTextView}>
                   <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Kitchen'}
                   </Text>
@@ -727,7 +727,7 @@ export default PropertyReview = props => {
                     {'0'}
                   </Text>
                 </View>
-                <DividerIcon marginTop={8} />
+                <DividerIcon marginTop={8} /> */}
               </>
             ) : null}
             <View>
@@ -787,58 +787,7 @@ export default PropertyReview = props => {
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Garden'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Pool'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Outdoor Patio'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Other'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
+               
               </>
             ) : null}
             <View >

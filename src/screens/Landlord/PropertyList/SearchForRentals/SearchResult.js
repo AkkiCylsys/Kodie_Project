@@ -265,14 +265,17 @@ console.log("propertyType..",propertyType);
               {item?.location || ''}
             </Text>
           </View>
-          <View style={SearchResultCss.availableBtn}>
+          <View style={{flex:1,flexDirection:'row',alignItems:'center'
+          }}>
+          <View style={[SearchResultCss.availableBtn,]}>
             <Text style={SearchResultCss.availabletext}>
               {`AVAILABLE: ${moment(item?.property_avaliable).format(
                 'DD-MMM-YYYY',
               )}`}
             </Text>
+            <View style={{flex:1}}/>
           </View>
-
+          </View>
           <View style={SearchResultCss.bedCountView}>
             <View style={SearchResultCss.locationView}>
               <Ionicons

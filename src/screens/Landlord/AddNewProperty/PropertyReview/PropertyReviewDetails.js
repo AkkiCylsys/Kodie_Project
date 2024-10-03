@@ -77,7 +77,7 @@ export default PropertyReviewDetails = props => {
     Geolocation.getCurrentPosition(
       position => {
         const { latitude, longitude } = position.coords;
-        console.log(latitude,longitude);
+        console.log(latitude,longitude,"latitude,longitude");
         fetchPointsOfInterest(latitude,longitude);
         // fetchPointsOfInterest("27.149994", "79.499901");
       },
@@ -93,7 +93,7 @@ export default PropertyReviewDetails = props => {
       );
 
       const poiData = categorizeData(response.data.results);
-      console.log(JSON.stringify(poiData))
+      console.log(JSON.stringify(poiData),'kjdfdfd')
       setData(poiData);
     } catch (error) {
       console.error('Error fetching POIs:', error);
@@ -522,7 +522,7 @@ export default PropertyReviewDetails = props => {
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
+                    {/* <View style={DetailsStyle.p_rowTextView}>
                       <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                         {'Kitchen'}
                       </Text>
@@ -573,7 +573,7 @@ export default PropertyReviewDetails = props => {
                         {'0'}
                       </Text>
                     </View>
-                    <DividerIcon marginTop={8} />
+                    <DividerIcon marginTop={8} /> */}
                   </>
                 ) : null}
                 <View >
@@ -632,58 +632,7 @@ export default PropertyReviewDetails = props => {
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Garden'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Pool'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Outdoor Patio'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Other'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
+                   
                   </>
                 ) : null}
                 <View >

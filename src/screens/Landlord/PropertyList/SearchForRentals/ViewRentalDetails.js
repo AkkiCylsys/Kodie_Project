@@ -29,6 +29,8 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import ReadMore from '@fawazahmed/react-native-read-more';
 import moment from 'moment';
+import Geolocation from '@react-native-community/geolocation';
+import { DetailsStyle } from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
@@ -41,6 +43,8 @@ const ViewRentalDetails = props => {
   const [Detail, setDetail] = useState([]);
   const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
     useState([]);
+  const [data, setData] = useState([]);
+
   const [addtionalFeaturesID, setAddtionalFeaturesID] = useState('');
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
@@ -51,7 +55,91 @@ const ViewRentalDetails = props => {
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
   const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
   const [favRental, setFavRental] = useState(false);
+  const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        console.log(latitude,longitude);
+        fetchPointsOfInterest(latitude,longitude);
+        // fetchPointsOfInterest("27.149994", "79.499901");
 
+      },
+      error => console.error(error),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }, []);
+
+  const fetchPointsOfInterest = async (lat, lng) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+      );
+
+      const poiData = categorizeData(response.data.results);
+      console.log(JSON.stringify(poiData))
+      setData(poiData);
+    } catch (error) {
+      console.error('Error fetching POIs:', error);
+    }
+  };
+
+  const categorizeData = (places) => {
+    const categories = {
+      'Schools & Education': [],
+      'Food & Entertainment': [],
+      'Health': [],
+      'Transport': []
+    };
+
+    places.forEach(place => {
+      const { name, vicinity } = place;
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
+      if (place.types.includes('school') || place.types.includes('university')) {
+        categories['Schools & Education'].push({ name, distance });
+      } else if (place.types.includes('restaurant') || place.types.includes('food')) {
+        categories['Food & Entertainment'].push({ name, distance });
+      } else if (place.types.includes('hospital') || place.types.includes('health')) {
+        categories['Health'].push({ name, distance });
+      } else if (place.types.includes('bus_station') || place.types.includes('train_station')) {
+        categories['Transport'].push({ name, distance });
+      }
+    });
+
+    return Object.entries(categories).map(([category, items]) => ({ category, items }));
+  };
+
+  const renderpointItem = ({ item }) => (
+    <>
+    <View style={DetailsStyle.itemContainer}>
+      <Text style={DetailsStyle.itemName}>{item.name}</Text>
+      <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
+      
+    <DividerIcon marginTop={5}/>
+    </View>
+    </>
+  );
+
+  const renderCategory = ({ item }) => (
+    <View style={DetailsStyle.categoryContainer}>
+      <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
+      <DividerIcon marginTop={5}/>
+      <FlatList
+        data={item.items}
+        renderItem={renderpointItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={<TouchableOpacity onPress={()=>{
+          alert(JSON.stringify(item.items.length))
+          if(item.items.length >2){
+
+          }else{
+            alert(JSON.stringify("No more data found!"))
+          }
+        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
+      />
+     
+    </View>
+  );
   const images = [
     BANNERS.wallImage,
     BANNERS.BannerFirst,
@@ -137,6 +225,11 @@ const ViewRentalDetails = props => {
       </View>
     );
   };
+  const parkingSpaceValueObj = Detail.find(item => "Parking / garage spaces" in item);
+  const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking / garage spaces"] : null;
+  const OnStreetParkingObj = Detail.find(item => "On-street parking" in item);
+  const OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
+
   // Api intrigation...
   const fetchData = async () => {
     try {
@@ -169,16 +262,14 @@ const ViewRentalDetails = props => {
           }
         }
 
-        const additionalKeyFeatures =
-          propertyDetails?.additional_key_features?.[0];
-        setAdditionalKeyFeaturesString(additionalKeyFeatures);
-
-        const additionalFeatures_id = propertyDetails?.additional_features;
-        if (additionalFeatures_id) {
-          const is_additionalFeaturesid = additionalFeatures_id.split(',');
-          setAddtionalFeaturesID(is_additionalFeaturesid);
-          console.log('additionalFeaturesid:', is_additionalFeaturesid);
-        }
+        const additionalFeatures_id =
+        response?.data?.property_details[0].additional_features_id;
+      console.log('additionalFeaturesid....', additionalFeatures_id);
+      const additionalFeaturesIds = additionalFeatures_id
+      .split(',')
+      .map(value => value.trim()); // ['1', '1', '1', '0']
+      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+      setAddtionalFeaturesID(additionalFeaturesIds);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // Uncomment if you want to display an alert to the user
@@ -446,7 +537,7 @@ const ViewRentalDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {'NA'}
+                    {propertyId}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -472,7 +563,7 @@ const ViewRentalDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {property_Detail?.floor_size}
+                    {`${property_Detail?.floor_size || ''} m²`}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -485,7 +576,7 @@ const ViewRentalDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {addtionalFeaturesID[0]}
+                    {addtionalFeaturesID[3] == 1 ? 'Yes' : 'No'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -498,7 +589,7 @@ const ViewRentalDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {addtionalFeaturesID[1] ? 'No' : 'Yes'}
+                     {addtionalFeaturesID[0] == 1 ? 'Yes' : 'No'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -567,7 +658,7 @@ const ViewRentalDetails = props => {
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
+              {/* <View style={ViewRentalDetailsStyle.p_rowTextView}>
                 <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                   {'Kitchen'}
                 </Text>
@@ -618,7 +709,7 @@ const ViewRentalDetails = props => {
                   {'0'}
                 </Text>
               </View>
-              <DividerIcon marginTop={8} />
+              <DividerIcon marginTop={8} /> */}
             </>
           ) : null}
           <View style={ViewRentalDetailsStyle.subContainer}>
@@ -660,7 +751,7 @@ const ViewRentalDetails = props => {
                     LABEL_STYLES.commontext,
                     {fontFamily: FONTFAMILY.K_Medium},
                   ]}>
-                  {Detail[0]?.Bedrooms}
+                  {parkingSpaceValue}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
@@ -673,62 +764,11 @@ const ViewRentalDetails = props => {
                     LABEL_STYLES.commontext,
                     {fontFamily: FONTFAMILY.K_Medium},
                   ]}>
-                  {'0'}
+                  {OnStreetParkingValue}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Garden'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Pool'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Outdoor Patio'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Other'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
+            
             </>
           ) : null}
           <View style={ViewRentalDetailsStyle.subContainer}>
@@ -755,6 +795,17 @@ const ViewRentalDetails = props => {
               </TouchableOpacity>
             </TouchableOpacity>
             <DividerIcon marginTop={8} />
+            {
+                  pointOfInterest?
+                  
+                  <View style={DetailsStyle.container}>
+                    <FlatList
+        data={data}
+        renderItem={renderCategory}
+        keyExtractor={(item, index) => index.toString()}
+      /></View>
+                :null
+                }
             <View style={ViewRentalDetailsStyle.submitApplicationbtn}>
               <RowButtons
                 LeftButtonText={'Submit application'}
