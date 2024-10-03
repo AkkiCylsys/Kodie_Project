@@ -637,7 +637,7 @@ const SignUpSteps = props => {
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
-            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack();
           }}
         />
         <View style={SignUpStepStyle.container}>

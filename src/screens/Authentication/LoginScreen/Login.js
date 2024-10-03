@@ -68,9 +68,9 @@ export default Login = props => {
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const [isTimeron, setIsTimeron] = useState(true);
+  const [isTimeron, setIsTimeron] = useState(false);
   const deviceId = DeviceInfo.getDeviceId();
-  const deviceType = DeviceInfo.getDeviceType();
+  // const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
   const [googleSignIn, setGoogleSignIn] = useState([]);
   // Login with google here ......
@@ -255,10 +255,14 @@ export default Login = props => {
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === '') {
       setNewPasswordError('Please enter a new password!');
+    }else if (newpassword.length < 8) {
+      setNewPasswordError('Oh no. The password must be at least 8 characters long!');
     } else if (confirmPassword.trim() === '') {
       setConfirmPasswordError('Please enter the confirmation password!');
-    } else if (newpassword !== confirmPassword) {
+    }  else if (newpassword !== confirmPassword) {
       setConfirmPasswordError('Password do not match!');
+    }else if (confirmPassword.length < 8) {
+      setConfirmPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setConfirmPasswordError('');
       create_password();
@@ -318,12 +322,16 @@ export default Login = props => {
       setConfirmPasswordError('Please enter a confirmation password!');
     } else if (newpassword !== text) {
       setConfirmPasswordError('Password do not match!');
+    }else if (text.length < 8) {
+      setConfirmPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setConfirmPasswordError(''); // Clear the error message
     }
   };
 
   //... inner reset password submit button variable define here
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  console.log(deviceId,deviceType,'login');
   const handleSubmit = async () => {
     const encryptedPassword = await encryptPassword(newpassword, secretKey);
     const trimmedEmail = email.trim();
@@ -439,14 +447,20 @@ export default Login = props => {
         console.log('API Response send otp:', response?.data);
         // if (response?.data?.status === true)
         if (response?.data?.code === 22) {
+          if (isClick === 1) {
           alert(
-            response?.data?.message || 'The otp has been sent to your email.',
-          );
+            'OTP resent successfully.',
+             );
+            }else{
+              alert(
+                'OTP sent successfully.',
+                 );
+            }
+          
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
             setVerificationcode('');
-            setIsTimeron(true);
           } else {
             setIsClick(isClick + 1);
           }
@@ -488,14 +502,17 @@ export default Login = props => {
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           setIsClick(isClick + 1);
+       
         } else if (verificationcode.length < 6) {
           setVerificationcodeError(
             'Verification code must be at least 6 digits!',
-          );
+          )
+    
         } else {
           setVerificationcodeError(
             'The Verification Code You’ve Entered is Incorrect. Please Try Again!',
           );
+         
         }
       })
       .catch(error => {
@@ -861,7 +878,17 @@ export default Login = props => {
                 </View>
                 <View style={LoginStyles.codeMargin} />
 
-                <TouchableOpacity onPress={send_verification_code} style={LoginStyles.getButtonView}>
+                <TouchableOpacity 
+                onPress={()=>{
+                  if (!isTimeron) {
+                    setIsTimeron(true);
+                  send_verification_code();
+                  }
+                }} 
+                style={LoginStyles.getButtonView}
+              disabled={isTimeron} // Disable the button when the timer is active
+
+                >
                   {isTimeron ? (
                     <CountdownCircleTimer
                       isPlaying
@@ -870,7 +897,8 @@ export default Login = props => {
                       size={45}
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
-                        setIsTimeron(false);
+                        setIsTimeron(false); // Reset timer state
+            return [false]; // Stop the timer
                       }}>
                       {({ remainingTime }) => (
                         <Text style={{ color: _COLORS.Kodie_WhiteColor,fontSize:14,fontFamily:FONTFAMILY.K_Bold}}>
@@ -879,7 +907,13 @@ export default Login = props => {
                       )}
                     </CountdownCircleTimer>
                   ) : (
-                    <TouchableOpacity onPress={send_verification_code}>
+                    <TouchableOpacity onPress={()=>{
+                      if (!isTimeron) {
+                        setIsTimeron(true);
+                      send_verification_code();
+                      }
+                    }}
+                    disabled={isTimeron}>
                       <Text style={LoginStyles.getButton}>{'Resend'}</Text>
                     </TouchableOpacity>
                   )}
