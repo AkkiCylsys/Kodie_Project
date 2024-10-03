@@ -453,6 +453,7 @@ import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import DividerIcon from '../../../Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../ActiveLoader/ActiveLoader';
 import axios from 'axios';
+import { Config } from '../../../../Config';
 
 const hapticFeedbackOptions = {
   enableVibrateFallback: true,

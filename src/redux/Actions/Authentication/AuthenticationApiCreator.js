@@ -46,8 +46,8 @@ export const loginApiActionCreator = data => async dispatch => {
 export const signupAccountApiActionCreator = data => async dispatch => {
   dispatch(fetchRegistrationData());
   try {
-    const res = await axios.post(
-      'https://kodietestapi.cylsys.com/api/v1/signup_step_one',
+    const res = await axios.post(`${url}signup_step_one`,
+      // 'https://kodietestapi.cylsys.com/api/v1/signup_step_one',
       // 'https://kodieapis.cylsys.com/api/v1/signup_step_one',
       data,
       {

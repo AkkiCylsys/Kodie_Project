@@ -114,7 +114,7 @@ export const LoginStyles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: Platform.OS== 'android'?35:  20,
+    marginTop: Platform.OS== 'android'?35:  28,
     // marginBottom: Platform.OS == 'android' ? 28 : 20,
     marginLeft: 8,
   },

@@ -52,6 +52,7 @@ const MarketplacePropertyListing = props => {
 
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
   const isvisible = useIsFocused();
+  const [expandedItemId, setExpandedItemId] = useState(null);
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -121,10 +122,10 @@ const MarketplacePropertyListing = props => {
     axios
       .post(PropertyListing_url, PropertyListing_id)
       .then(response => {
-        // console.log(
-        //   'Property Market Details Retrieve Successfully:',
-        //   JSON.stringify(response?.data),
-        // );
+        console.log(
+          'Property Market Details Retrieve Successfully:',
+          JSON.stringify(response?.data),
+        );
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
           setIsLoading(false);
@@ -173,7 +174,7 @@ const MarketplacePropertyListing = props => {
     }
   }, [isvisible]);
   const propertyData1_render = ({item}) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     return (
       <View>
         {item.result ? null : (
@@ -292,9 +293,16 @@ const MarketplacePropertyListing = props => {
               iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
               onPress={() => {
                 if (isExpanded) {
-                  setExpandedItems(expandedItems.filter(id => id !== item.id));
+                  setExpandedItems(
+                    expandedItems.filter(
+                      property_id => property_id !== item.property_id,
+                    ),
+                  );
                 } else {
-                  setExpandedItems([...expandedItems, item.id]);
+                  setExpandedItems([
+                    ...expandedItems,
+                    item.property_id,
+                  ]);
                 }
               }}
             />
