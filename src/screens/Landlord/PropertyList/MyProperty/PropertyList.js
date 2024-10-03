@@ -384,7 +384,7 @@ const PropertyList = props => {
                           style={LABEL_STYLES.commontext}
                           ellipsizeMode="tail"
                           numberOfLines={0}>
-                          {item.City ? item.City : item.state}
+                          {item.City ? item?.City : item?.state}
                         </Text>
                         <View style={PropertyListCSS.flat_MainView}>
                           <MaterialCommunityIcons
@@ -413,15 +413,6 @@ const PropertyList = props => {
                           />
                         </View>
                       ) : (
-                        // <View
-                        //   style={[
-                        //     PropertyListCSS.imageStyle,
-                        //     {justifyContent: 'center'},
-                        //   ]}>
-                        //   <Text style={PropertyListCSS.Img_found}>
-                        //     {'Image not found'}
-                        //   </Text>
-                        // </View>
                         <View
                           style={[
                             {flex:1}

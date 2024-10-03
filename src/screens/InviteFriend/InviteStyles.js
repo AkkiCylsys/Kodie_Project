@@ -98,7 +98,7 @@ export const InviteStyles = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     // alignSelf: "center",
-    marginTop:5
+    // marginTop:5
   },
   ArrowIcon: {
     width: "18%",

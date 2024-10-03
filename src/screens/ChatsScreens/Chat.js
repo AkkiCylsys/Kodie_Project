@@ -32,7 +32,8 @@ const Chat = props => {
   const route = useRoute();
   const [pendingMessage, setPendingMessage] = useState(null);
   const userData = route.params.data;
-  console.log(route.params.data, 'datadatadatadatadata');
+  const chatname = route.params.chatname
+  console.log(route.params.data, chatname,'datadatadatadatadata');
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
@@ -653,7 +654,7 @@ const clearChat = async () => {
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={
-          route.params.chatname ? `${userData.UAD_FIRST_NAME} ${userData.UAD_LAST_NAME}` : `${userData.name}`
+          chatname ? `${userData.account_details[0].UAD_FIRST_NAME} ${userData.account_details[0].UAD_LAST_NAME}` : `${userData.name}`
         }
         onPressLeftButton={() => _goBack(props)}
         ManurightIcon
