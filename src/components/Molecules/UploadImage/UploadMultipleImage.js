@@ -73,58 +73,156 @@ const UploadMultipleImage = props => {
           style={UploadImageStyle.content_View}
           onPress={async() => {
             try {
-              const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-                {
-                  title: 'Camera Permission',
-                  message:
-                    'This app needs camera access to take photos.',
-                  buttonNeutral: 'Ask Me Later',
-                  buttonNegative: 'Cancel',
-                  buttonPositive: 'OK',
-                },
-              );
-              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                if (item.id === '1') {
-                  ImagePicker.openCamera({
-                    width: 300,
-                    height: 400,
-                    cropping: true,
-                    compressImageQuality: 0.5,
-                    multiple: true,
-                  })
-                    .then(image => {
-                      // console.log("image....", image);
-                      setImage(image);
-                      setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
-                      props?.multipleImage(Array.isArray(image) ? image : [image]);
-                      console.log('ImagePath..', multipleImage);
+              if (Platform.OS === 'ios') {
+                if (index == 0) {
+                  const cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
+                  if (
+                    cameraPermission === 'denied' ||
+                    cameraPermission === 'blocked'
+                  ) {
+                    Alert.alert(
+                      'Camera Permission Required',
+                      'We need access to your camera and photo library. Please enable it in the app settings.',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: openSettings },
+                      ]
+                    );
+                    return; // Exit if permission is not granted
+                  }
+                  else {
+                    ImagePicker.openCamera({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
                     })
-                    .catch(err => {
-                      console.log('err...', err);
-                    });
+                      .then(image => {
+                        // console.log("image....", image);
+                        setImage(image);
+                        setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+                        props?.multipleImage(Array.isArray(image) ? image : [image]);
+                        console.log('ImagePath..', multipleImage);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });
+                  }
                 }
-                if (item.id === '2') {
-                  ImagePicker.openPicker({
-                    width: 300,
-                    height: 400,
-                    cropping: true,
-                    compressImageQuality: 0.5,
-                    multiple: true,
-                  })
-                    .then(image => {
-                      handleImageSelection(image);
+                else {
+                  // for index==2
+                  const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+                  if (
+                    photoPermission === 'denied' ||
+                    photoPermission === 'blocked'
+                  ) {
+                    Alert.alert(
+                      'Gallery Permission Required',
+                      'This app needs access to your gallery to select photos. Please enable it in the app settings.',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: openSettings },
+                      ]
+                    );
+                    return; // Exit if permission is not granted
+                  }
+                  else {
+                    ImagePicker.openPicker({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
                     })
-                    .catch(err => {
-                      console.log('err...', err);
-                    });
+                      .then(image => {
+                        handleImageSelection(image);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });    
+                       }
                 }
-              } else {
-                Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
-                  { text: 'Cancel', style: 'cancel' },
-                  { text: 'Open Settings', onPress: openAppSettings },
-                ]);
               }
+  
+              else {
+                //for android
+                //alert(index)
+                if (index == 0) {
+                  const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                      title: 'Camera Permission',
+                      message:
+                        'This app needs camera access to take photos.',
+                      buttonNeutral: 'Ask Me Later',
+                      buttonNegative: 'Cancel',
+                      buttonPositive: 'OK',
+                    },
+                  );
+                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    ImagePicker.openCamera({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
+                    })
+                      .then(image => {
+                        // console.log("image....", image);
+                        setImage(image);
+                        setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+                        props?.multipleImage(Array.isArray(image) ? image : [image]);
+                        console.log('ImagePath..', multipleImage);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });
+  
+                  } else {
+                    Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Open Settings', onPress: openAppSettings },
+                    ]);
+                  }
+                }
+                else {
+                  const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    {
+                      title: 'Gallery Access Permission',
+                      message: 'This app needs access to your gallery to select photos.',
+                      buttonNeutral: 'Ask Me Later',
+                      buttonNegative: 'Cancel',
+                      buttonPositive: 'OK',
+                    },
+                  );
+                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  
+                    // Navigate to Choose photo from library when Contact Us is clicked.......
+                    ImagePicker.openPicker({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
+                    })
+                      .then(image => {
+                        handleImageSelection(image);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });
+  
+                  } else {
+                    Alert.alert('Gallery permission denied. Open settings to enable gallery access.', '', [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Open Settings', onPress: openAppSettings },
+                    ]);
+                  }
+                }
+              }
+              //old code
             } catch (err) {
               console.warn(err);
             }
@@ -132,42 +230,44 @@ const UploadMultipleImage = props => {
             
           }}>
           {console.log(typeof item.Img, item.Img)}
-          <TouchableOpacity style={UploadImageStyle.Bottomcontainer} onPress={() => {
-            if (item.id === '1') {
-              ImagePicker.openCamera({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // console.log("image....", image);
-                  setImage(image);
-                  setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
-                  props?.multipleImage(Array.isArray(image) ? image : [image]);
-                  console.log('ImagePath..', multipleImage);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
-            if (item.id === '2') {
-              ImagePicker.openPicker({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  handleImageSelection(image);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
-          }}>
+          <TouchableOpacity style={UploadImageStyle.Bottomcontainer} 
+          // onPress={() => {
+          //   if (item.id === '1') {
+          //     ImagePicker.openCamera({
+          //       width: 300,
+          //       height: 400,
+          //       cropping: true,
+          //       compressImageQuality: 0.5,
+          //       multiple: true,
+          //     })
+          //       .then(image => {
+          //         // console.log("image....", image);
+          //         setImage(image);
+          //         setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+          //         props?.multipleImage(Array.isArray(image) ? image : [image]);
+          //         console.log('ImagePath..', multipleImage);
+          //       })
+          //       .catch(err => {
+          //         console.log('err...', err);
+          //       });
+          //   }
+          //   if (item.id === '2') {
+          //     ImagePicker.openPicker({
+          //       width: 300,
+          //       height: 400,
+          //       cropping: true,
+          //       compressImageQuality: 0.5,
+          //       multiple: true,
+          //     })
+          //       .then(image => {
+          //         handleImageSelection(image);
+          //       })
+          //       .catch(err => {
+          //         console.log('err...', err);
+          //       });
+          //   }
+          // }}
+          >
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
