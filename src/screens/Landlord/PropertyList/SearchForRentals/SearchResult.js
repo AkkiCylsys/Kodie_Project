@@ -272,11 +272,24 @@ export default SearchResult = props => {
           </View>
           <View style={{flex:1,flexDirection:'row',alignItems:'center'
           }}>
-          <View style={[SearchResultCss.availableBtn,]}>
-            <Text style={SearchResultCss.availabletext}>
-              {`AVAILABLE: ${moment(item?.property_avaliable).format(
-                'DD-MMM-YYYY',
-              )}`}
+          <View style={[SearchResultCss.availableBtn,
+            {
+              backgroundColor: isAvailableNow
+                ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
+                : _COLORS.Kodie_LightOrange, // Use the color for future date
+              borderColor: isAvailableNow
+                ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                : _COLORS.Kodie_LightOrange,
+            },
+          ]}>
+            <Text style={[SearchResultCss.availabletext,{
+                  color: isAvailableNow
+                    ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_DarkOrange, // Text color for future date
+                },]}>
+             {isAvailableNow
+                ? 'AVAILABLE: NOW'
+                : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
             </Text>
             <View style={{flex:1}}/>
           </View>
