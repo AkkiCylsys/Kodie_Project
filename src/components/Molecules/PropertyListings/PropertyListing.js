@@ -25,6 +25,7 @@ import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const PropertyListing = props => {
   const refRBSheet = useRef(null);
   const refRBSheet1 = useRef(null);
@@ -107,6 +108,7 @@ const PropertyListing = props => {
     }
   };
   const propertyData1_render = ({item}) => {
+    console.log('vacant list ...', item);
     const isExpanded = expandedItems.includes(item.property_id);
     return (
       <>
@@ -128,7 +130,10 @@ const PropertyListing = props => {
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
                   />
-                  <Text style={PropertyListingCss.locationText}>
+                  <Text
+                    style={PropertyListingCss.locationText}
+                    ellipsizeMode="tail"
+                    numberOfLines={2}>
                     {item.location}
                   </Text>
                 </View>
@@ -140,14 +145,33 @@ const PropertyListing = props => {
                   resizeMode="cover"
                 />
               ) : (
+                // <View
+                //   style={[
+                //     PropertyListingCss.imageStyle,
+                //     {justifyContent: 'center'},
+                //   ]}>
+                //   <Text style={PropertyListingCss.Img_found}>
+                //     {'Image not found'}
+                //   </Text>
+                // </View>
                 <View
                   style={[
                     PropertyListingCss.imageStyle,
                     {justifyContent: 'center'},
                   ]}>
-                  <Text style={PropertyListingCss.Img_found}>
-                    {'Image not found'}
-                  </Text>
+                  <View style={[{flex: 1}]}>
+                    <Ionicons
+                      name="images-outline"
+                      size={90}
+                      color={_COLORS.Kodie_GrayColor}
+                      style={[
+                        PropertyListingCss.imageStyle,
+                        {
+                          borderWidth: 0,
+                        },
+                      ]}
+                    />
+                  </View>
                 </View>
               )}
 
@@ -210,21 +234,23 @@ const PropertyListing = props => {
                 </TouchableOpacity>
               </View>
             </View>
-            <DividerIcon
-              IsShowIcon
-              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-              onPress={() => {
-                if (isExpanded) {
-                  setExpandedItems(
-                    expandedItems.filter(
-                      property_id => property_id !== item.property_id,
-                    ),
-                  );
-                } else {
-                  setExpandedItems([...expandedItems, item.property_id]);
-                }
-              }}
-            />
+            <View style={{marginTop: 20}}>
+              <DividerIcon
+                IsShowIcon
+                iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+                onPress={() => {
+                  if (isExpanded) {
+                    setExpandedItems(
+                      expandedItems.filter(
+                        property_id => property_id !== item.property_id,
+                      ),
+                    );
+                  } else {
+                    setExpandedItems([...expandedItems, item.property_id]);
+                  }
+                }}
+              />
+            </View>
           </View>
         )}
         {isExpanded && (
@@ -248,7 +274,6 @@ const PropertyListing = props => {
           </View>
         )}
         <DividerIcon />
-      
       </>
     );
   };
@@ -259,53 +284,53 @@ const PropertyListing = props => {
         renderItem={propertyData1_render}
         keyExtractor={item => item.property_id}
       />
-       <RBSheet
-          ref={refRBSheet1}
-          height={180}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: PropertyListingCss.bottomModal_container,
+      <RBSheet
+        ref={refRBSheet1}
+        height={180}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: PropertyListingCss.bottomModal_container,
+        }}>
+        <InviteTenantModal onClose={Closemodal} />
+      </RBSheet>
+      <RBSheet
+        ref={refRBSheet}
+        height={330}
+        closeOnPressMask={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: PropertyListingCss.bottomModal_container,
+        }}>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'flex-end',
+            alignSelf: 'flex-end',
+          }}
+          onPress={() => {
+            refRBSheet.current.close();
           }}>
-          <InviteTenantModal onClose={Closemodal} />
-        </RBSheet>
-        <RBSheet
-          ref={refRBSheet}
-          height={330}
-          closeOnPressMask={true}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: PropertyListingCss.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-            }}
-            onPress={() => {
-              refRBSheet.current.close();
-            }}>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          <VacantModal
-            propertyId={propId}
-            onDeleteData={FinalDeleteProperty}
-            Address={Address}
-            onClose={() => {
-              refRBSheet.current.close();
-            }}
-          />
-        </RBSheet>
+          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        </TouchableOpacity>
+        <VacantModal
+          propertyId={propId}
+          onDeleteData={FinalDeleteProperty}
+          Address={Address}
+          onClose={() => {
+            refRBSheet.current.close();
+          }}
+        />
+      </RBSheet>
     </>
   );
 };

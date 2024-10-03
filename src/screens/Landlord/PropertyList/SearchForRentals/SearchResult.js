@@ -56,7 +56,7 @@ export default SearchResult = props => {
   const AllCountsData = props?.route?.params?.AllCountsData;
   console.log('propertyType..', propertyType);
   console.log('AllCountsData...', AllCountsData);
-  console.log('searchRentalResponse...', searchRentalResponse);
+  console.log('searchRentalResponse...', JSON.stringify(searchRentalResponse));
   console.log('searchInputData..', searchInputData);
   useEffect(() => {
     additional_key_features();
@@ -138,11 +138,11 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
-    const available = item?.property_avaliable ?item?.property_avaliable : ""; // Fallback to default date if not available
+    const available = item?.property_avaliable ? item?.property_avaliable : ''; // Fallback to default date if not available
     const availableDate = moment(available); // Convert to moment object
     const currentDate = moment();
-     // Determine if the available date is in the past or present
-  const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
+    // Determine if the available date is in the past or present
+    const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
     console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
     return (
@@ -270,29 +270,34 @@ export default SearchResult = props => {
               {item?.location || ''}
             </Text>
           </View>
-          <View style={{flex:1,flexDirection:'row',alignItems:'center'
-          }}>
-          <View style={[SearchResultCss.availableBtn,
-            {
-              backgroundColor: isAvailableNow
-                ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
-                : _COLORS.Kodie_LightOrange, // Use the color for future date
-              borderColor: isAvailableNow
-                ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
-                : _COLORS.Kodie_LightOrange,
-            },
-          ]}>
-            <Text style={[SearchResultCss.availabletext,{
-                  color: isAvailableNow
-                    ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
-                    : _COLORS.Kodie_DarkOrange, // Text color for future date
-                },]}>
-             {isAvailableNow
-                ? 'AVAILABLE: NOW'
-                : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
-            </Text>
-            <View style={{flex:1}}/>
-          </View>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={[
+                SearchResultCss.availableBtn,
+                {
+                  backgroundColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange, // Use the color for future date
+                  borderColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange,
+                },
+              ]}>
+              <Text
+                style={[
+                  SearchResultCss.availabletext,
+                  {
+                    color: isAvailableNow
+                      ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
+                      : _COLORS.Kodie_DarkOrange, // Text color for future date
+                  },
+                ]}>
+                {isAvailableNow
+                  ? 'AVAILABLE: NOW'
+                  : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
+              </Text>
+              <View style={{flex: 1}} />
+            </View>
           </View>
           <View style={SearchResultCss.bedCountView}>
             <View style={SearchResultCss.locationView}>

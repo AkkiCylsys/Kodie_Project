@@ -12,23 +12,20 @@ import {useNavigation} from '@react-navigation/native';
 import {BottomModalSearchRentalStyle} from './BottomModalSearchRentalStyle';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 
 const BottomModalSearchRental = props => {
   const {propertyId, rentalAmount, bibId, landlordId, searchRentalData} = props;
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData...in make off..', loginData);
+
+  // Retrieve user data from Redux state
   const userAccountId = loginData?.Login_details?.user_account_id;
   const hasLandlordRoleId = loginData?.Account_details[0]?.user_role_id;
-  console.log('hasLandlordRoleId..', hasLandlordRoleId);
-  console.log('userAccountId...', userAccountId);
-  console.log('landlordId...', landlordId);
-  const navigation = useNavigation();
-  console.log('propertyId.....', propertyId);
-  console.log('bibId.....', bibId);
 
+  const navigation = useNavigation();
+
+  // Data for the modal options
   const data = [
     {
       id: '1',
@@ -42,7 +39,6 @@ const BottomModalSearchRental = props => {
         />
       ),
     },
-
     {
       id: '2',
       Data: 'Make offer',
@@ -78,21 +74,25 @@ const BottomModalSearchRental = props => {
     },
   ];
 
+  // Filter logic for excluding "Make offer"
   const filteredData = data.filter(item => {
-    // Hide "Make offer" if userAccountId is the same as landlordId
-    if (
-      (item.id === '2' && hasLandlordRoleId === '3') ||
-      userAccountId === landlordId
-    ) {
-      return false; // Exclude "Make offer"
+    // Check if the current item is "Make offer" (id = '2')
+    if (item.id === '2') {
+      // Hide "Make offer" for landlords (roleId 3) or if the user is the landlord of the property
+      if (hasLandlordRoleId === '3' || userAccountId === landlordId) {
+        return false; // Exclude "Make offer"
+      }
     }
     return true; // Include other items
   });
 
+  // Handle modal close
   const handleClose = () => {
     props.onClose();
   };
-  const bottomModalrender = ({item}) => {
+
+  // Rendering each modal option
+  const bottomModalRender = ({item}) => {
     return (
       <TouchableOpacity
         style={BottomModalSearchRentalStyle.container}
@@ -113,13 +113,16 @@ const BottomModalSearchRental = props => {
             });
             handleClose();
           }
+          if (item?.id == '3') {
+            navigation.navigate('AddNotices');
+          }
+
           if (item?.id == '4') {
             navigation.navigate('Chat', {
               data: props?.propertyDetails,
               userid: props?.propertyDetails.landlord_id,
               chatname: 'chatname',
             });
-
             handleClose();
           }
         }}>
@@ -128,16 +131,15 @@ const BottomModalSearchRental = props => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={BottomModalSearchRentalStyle.mainConatiner}>
       <FlatList
-        // data={data}
         data={filteredData}
         scrollEnabled
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{}}
         keyExtractor={item => item?.id}
-        renderItem={bottomModalrender}
+        renderItem={bottomModalRender}
       />
     </View>
   );

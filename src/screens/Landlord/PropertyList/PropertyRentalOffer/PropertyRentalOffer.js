@@ -34,6 +34,7 @@ import {
 } from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import {matrixTransform} from 'react-native-svg/lib/typescript/elements/Shape';
 const PropertyRentalOffer = props => {
   const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
@@ -358,11 +359,11 @@ const PropertyRentalOffer = props => {
                   name={'map-marker'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
-                  style={{alignSelf: 'center', marginTop: 4}}
+                  style={{marginTop: 5}}
                 />
                 <Text
                   style={PropertyRentalOfferStyle.locationText}
-                  numberOfLines={1}
+                  numberOfLines={2}
                   ellipsizeMode="tail">
                   {item?.location}
                 </Text>
@@ -373,7 +374,10 @@ const PropertyRentalOffer = props => {
               <View style={{}}>
                 <Image
                   source={{uri: item.image_path[0]}}
-                  style={[PropertyRentalOfferStyle.imageStyle,{width:90,height:90}]}
+                  style={[
+                    PropertyRentalOfferStyle.imageStyle,
+                    {width: 90, height: 90},
+                  ]}
                   resizeMode="cover"
                 />
               </View>
@@ -436,12 +440,13 @@ const PropertyRentalOffer = props => {
               </View>
             </View>
           </View>
-
-          <DividerIcon
-            IsShowIcon
-            iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-            onPress={() => handleExpandToggle(item.property_id)}
-          />
+          <View style={{marginTop: 10}}>
+            <DividerIcon
+              IsShowIcon
+              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+              onPress={() => handleExpandToggle(item.property_id)}
+            />
+          </View>
 
           {isExpanded && (
             <View style={PropertyRentalOfferStyle.expandedView}>

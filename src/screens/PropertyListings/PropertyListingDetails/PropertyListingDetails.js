@@ -356,7 +356,7 @@ const PropertyListingDetail = props => {
             />
             {lease_end_valueError ? (
               <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>
-                {'Please select a Rental lease term!'}
+                {'Please select an option.'}
               </Text>
             ) : null}
             <InputField

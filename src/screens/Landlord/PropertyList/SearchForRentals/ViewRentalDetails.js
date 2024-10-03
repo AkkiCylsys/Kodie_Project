@@ -31,14 +31,20 @@ import ReadMore from '@fawazahmed/react-native-read-more';
 import moment from 'moment';
 import Geolocation from '@react-native-community/geolocation';
 import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
+import {useSelector} from 'react-redux';
+import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
   const rentalAmount = props?.route?.params?.rentalAmount;
   const searchRentalData = props?.route?.params?.searchRentalData;
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const userAccountId = loginData?.Login_details?.user_account_id;
+  const userId = loginData?.Login_details?.user_id;
   console.log('propertyId in view...', propertyId);
   console.log('searchRentalData in view...', searchRentalData);
   const [isLoading, setIsLoading] = useState([]);
+  const [likedItems, setLikedItems] = useState({});
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
   const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
@@ -69,6 +75,37 @@ const ViewRentalDetails = props => {
     );
   }, []);
 
+  const handleFavouriteItem = async propertyId => {
+    setIsLoading(true);
+    const favourtiesPayload = {
+      user_id: userId,
+      uad_key: userAccountId,
+      favorite_type: 'property',
+      favorite_ref_id: propertyId,
+      is_active: likedItems[propertyId] ? 0 : 1,
+      created_by: userAccountId.toString(),
+    };
+    console.log('favourtiesPayload..', favourtiesPayload);
+    try {
+      const response = await FavouriteServices(favourtiesPayload);
+      console.log('response in FavouriteServices', response);
+      if (response?.success === true) {
+        alert(response?.message);
+      }
+    } catch (error) {
+      console.error('Error fetchingFavouriteServices', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleLike = propertyId => {
+    setLikedItems(prevState => ({
+      ...prevState,
+      [propertyId]: !prevState[propertyId],
+    }));
+    handleFavouriteItem(propertyId);
+  };
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
@@ -401,17 +438,18 @@ const ViewRentalDetails = props => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setFavRental(!favRental);
+                // setFavRental(!favRental);
+                toggleLike(propertyId);
               }}>
               <AntDesign
                 color={
-                  favRental
+                  likedItems[propertyId]
                     ? _COLORS.Kodie_GreenColor
                     : _COLORS.Kodie_ExtraminLiteGrayColor
                 }
-                name={favRental ? 'heart' : 'hearto'}
+                name={likedItems[propertyId] ? 'heart' : 'hearto'}
                 size={25}
-                style={{marginLeft: 20}}
+                style={{marginHorizontal: 20}}
               />
             </TouchableOpacity>
           </View>

@@ -52,6 +52,7 @@ export default PropertyReview = props => {
   const propertyListing = props?.route?.params?.propertyListing;
   console.log('propertyListing..', propertyListing);
   const propertyid = props?.route?.params?.propertyid;
+  console.log("listing...",propertyid,property_id);
   const [data, setData] = useState([]);
   const propertyView = props?.route?.params?.propertyView;
   const editMode = props?.route?.params?.editMode;
@@ -547,7 +548,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
-                      {property_id}
+                      {propertyid}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

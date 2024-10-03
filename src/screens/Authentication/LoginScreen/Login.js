@@ -837,26 +837,26 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() => {
-                LoginManager.logInWithPermissions(["public_profile", "email"]).then(
-                  function (result) {
-                    if (result.isCancelled) {
-                      alert("Login Cancelled " + JSON.stringify(result))
-                    } else {
-                      alert("Login success with  permisssions: " + result.grantedPermissions.toString());
-                      alert("Login Success " + result.toString());
-                    }
-                  },
-                  function (error) {
-                    alert("Login failed with error: " + error);
-                  }
-                )
-              }
-                //  props.navigation.navigate("PointofInterest")
-                // props.navigation.navigate("DrawerNavigatorLeftMenu")
-                // Alert.alert('Login with Facebook', 'Coming soon')
-                // onFacebookButtonPress()
-              }
+              // onPress={() => {
+              //   LoginManager.logInWithPermissions(["public_profile", "email"]).then(
+              //     function (result) {
+              //       if (result.isCancelled) {
+              //         alert("Login Cancelled " + JSON.stringify(result))
+              //       } else {
+              //         alert("Login success with  permisssions: " + result.grantedPermissions.toString());
+              //         alert("Login Success " + result.toString());
+              //       }
+              //     },
+              //     function (error) {
+              //       alert("Login failed with error: " + error);
+              //     }
+              //   )
+              // }
+              //   //  props.navigation.navigate("PointofInterest")
+              //   // props.navigation.navigate("DrawerNavigatorLeftMenu")
+              //   // Alert.alert('Login with Facebook', 'Coming soon')
+              //   // onFacebookButtonPress()
+              // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={'Connect with Facebook'}
