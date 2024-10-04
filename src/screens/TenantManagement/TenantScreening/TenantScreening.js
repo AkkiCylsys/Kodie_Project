@@ -14,6 +14,7 @@ import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { _goBack } from '../../../services/CommonServices';
 
 const TenantScreening = props => {
   const navigation = useNavigation();
@@ -89,8 +90,8 @@ const TenantScreening = props => {
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
       case 'Tab2':
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
-      case 'Tab3':
-        return <ProspectsTenant TenantAllDetails={dataToPass} />;
+      // case 'Tab3':
+      //   return <ProspectsTenant TenantAllDetails={dataToPass} />;
       default:
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
     }
@@ -99,7 +100,11 @@ const TenantScreening = props => {
   return (
     <SafeAreaView style={TenantScreeningStyle.Container}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() =>{
+          _goBack(props)
+          // props.navigation.navigate('Dashboard')
+        } 
+      }
         MiddleText={'Tenants'}
       />
       <CustomTabNavigator
@@ -107,8 +112,8 @@ const TenantScreening = props => {
         setActiveTab={setActiveTab}
         Tab1={'Current'}
         Tab2={'Previous'}
-        Tab3={'Prospects'}
-        TAB3
+        // Tab3={'Prospects'}
+        // TAB3
         onPressTab1={() => setActiveTab('Tab1')}
         onPressTab2={() => setActiveTab('Tab2')}
         onPressTab3={() => setActiveTab('Tab3')}

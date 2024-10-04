@@ -16,9 +16,10 @@ import {useSelector} from 'react-redux';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ManagingProspectsTenants from './ManagingProspectsTenants/ManagingProspectsTenants';
 import ManagingPreviousTenant from './ManagingPreviousTenant/ManagingPreviousTenant';
+import { _goBack } from '../../../services/CommonServices';
 
 const ManagingTenantsScreen = props => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const isFocus = useIsFocused();
   const [activeTab, setActiveTab] = useState('Tab1');
@@ -34,15 +35,15 @@ const ManagingTenantsScreen = props => {
   }, [activeTab, isFocus]);
 
   const handleTenantScreening = async () => {
-    
     setIsLoading(true);
     setTenantAllDetails([]);
-    
-    const filterType = activeTab === 'Tab1' 
-                        ? 'Current' 
-                        : activeTab === 'Tab2' 
-                        ? 'Previous' 
-                        : 'Prospects';
+
+    const filterType =
+      activeTab === 'Tab1'
+        ? 'Current'
+        : activeTab === 'Tab2'
+        ? 'Previous'
+        : 'Prospects';
 
     const TenantAllDetailsData = {
       filter: filterType,
@@ -89,8 +90,8 @@ const ManagingTenantsScreen = props => {
         return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       case 'Tab2':
         return <ManagingPreviousTenant TenantAllDetails={dataToPass} />;
-      case 'Tab3':
-        return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
+      // case 'Tab3':
+      //   return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       default:
         return <CurrentTenant TenantAllDetails={dataToPass} />;
     }
@@ -99,7 +100,10 @@ const ManagingTenantsScreen = props => {
   return (
     <SafeAreaView style={ManagingTenantsScreenStyle.Container}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() => {
+          _goBack(props)
+          // props.navigation.navigate('Dashboard');
+        }}
         MiddleText={'Tenants'}
       />
       <CustomTabNavigator
@@ -110,8 +114,8 @@ const ManagingTenantsScreen = props => {
         Tab3={'Prospects'}
         onPressTab1={() => setActiveTab('Tab1')}
         onPressTab2={() => setActiveTab('Tab2')}
-        onPressTab3={() => setActiveTab('Tab3')}
-        TAB3
+        // onPressTab3={() => setActiveTab('Tab3')}
+        // TAB3
         colorTab1={
           activeTab === 'Tab1'
             ? _COLORS.Kodie_BlackColor
