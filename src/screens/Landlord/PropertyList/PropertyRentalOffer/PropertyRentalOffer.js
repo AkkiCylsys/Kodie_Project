@@ -39,8 +39,8 @@ const PropertyRentalOffer = props => {
   const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  const userRole = '3';
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  // const userRole = '3,2';
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
@@ -607,10 +607,6 @@ const PropertyRentalOffer = props => {
     if (!hasLandlordRole) {
       return renderSingleButton('My rental applications');
     }
-    if (userRole === '3') {
-      return renderSingleButton('Offers for my properties');
-    }
-
     if (hasLandlordRole) {
       return (
         <RowButtons

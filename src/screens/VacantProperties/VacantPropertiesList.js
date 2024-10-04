@@ -1,23 +1,33 @@
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { VacantPropertiesListStyle } from './VacantPropertiesListStyle';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {VacantPropertiesListStyle} from './VacantPropertiesListStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
-import { _goBack } from '../../services/CommonServices';
+import {_goBack} from '../../services/CommonServices';
 import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
 import {_COLORS, IMAGES} from '../../Themes';
 import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
 import PropertyListing from '../../components/Molecules/PropertyListings/PropertyListing';
-import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import { Config } from '../../Config';
+import {Config} from '../../Config';
+import {useSelector} from 'react-redux';
 
 const VacantPropertiesList = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+
   const [isLoading, setIsLoading] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('desc');
   const [vacantData, setVacantData] = useState([]);
 
+  const accountId = loginData?.Login_details?.user_account_id;
   useEffect(() => {
     get_Vacant_Details();
   }, []);
@@ -52,9 +62,13 @@ const VacantPropertiesList = props => {
       const url = Config.BASE_URL;
       const Vacant_Details_url = url + 'get_vacant_property_list';
       setIsLoading(true);
-      const response = await axios.get(Vacant_Details_url);
+      const data = {
+        account_id: accountId,
+      };
+      const response = await axios.post(Vacant_Details_url, data);
       if (response?.data?.success === true) {
         const data = response?.data?.property_details || [];
+        // console.log('vacant DataList..', data);
         setVacantData(data);
         setFilteredUsers(data); // Initialize filteredUsers with fetched data
       } else {
@@ -70,7 +84,7 @@ const VacantPropertiesList = props => {
   const toggleSortOrder = () => {
     const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newOrder);
-    
+
     swipeVacantList();
   };
 
@@ -90,7 +104,9 @@ const VacantPropertiesList = props => {
             searchData={searchVacantProperty}
             SortedData={toggleSortOrder}
             upArrow={sortOrder === 'asc' ? 'long-arrow-up' : 'long-arrow-down'}
-            downArrow={sortOrder === 'asc' ? 'long-arrow-down' : 'long-arrow-up'}
+            downArrow={
+              sortOrder === 'asc' ? 'long-arrow-down' : 'long-arrow-up'
+            }
             placeholder={'Search Properties'}
           />
         </View>

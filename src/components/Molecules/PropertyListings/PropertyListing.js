@@ -108,8 +108,31 @@ const PropertyListing = props => {
     }
   };
   const propertyData1_render = ({item}) => {
-    console.log('vacant list ...', item);
     const isExpanded = expandedItems.includes(item.property_id);
+
+    const calculateDaysPast = dateString => {
+      const currentDate = new Date(); // Current date
+
+      const givenDate = new Date(dateString);
+
+      const currentDateOnly = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+      );
+      const givenDateOnly = new Date(
+        givenDate.getFullYear(),
+        givenDate.getMonth(),
+        givenDate.getDate(),
+      );
+
+      const timeDifference = currentDateOnly - givenDateOnly;
+
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      return daysDifference;
+    };
+    const daysPast = calculateDaysPast(item?.created_date);
     return (
       <>
         {item.result ? null : (
@@ -259,7 +282,9 @@ const PropertyListing = props => {
               <Text style={PropertyListingCss.commonMidtext}>
                 Number of days listed:
               </Text>
-              <Text style={PropertyListingCss.commonDay}>{'0'}</Text>
+              <Text style={PropertyListingCss.commonDay}>{`${
+                daysPast || "0"
+              } Days`}</Text>
             </View>
 
             <View style={[PropertyListingCss.rentView]}>
@@ -268,7 +293,9 @@ const PropertyListing = props => {
               </Text>
 
               <View style={PropertyListingCss.commonRentview}>
-                <Text style={PropertyListingCss.commonRent}>{'0'}</Text>
+                <Text style={PropertyListingCss.commonRent}>{`$${
+                  item?.list_price || '0'
+                }`}</Text>
               </View>
             </View>
           </View>
