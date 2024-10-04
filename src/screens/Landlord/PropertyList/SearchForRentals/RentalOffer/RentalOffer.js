@@ -833,8 +833,8 @@ const RentalOffer = props => {
             marginTop={0}
             onPress={() => {
               Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
+                'Remove',
+                'Are you sure you want to remove these details?',
                 [
                   {
                     text: 'Cancel',
@@ -882,8 +882,8 @@ const RentalOffer = props => {
             marginTop={0}
             onPress={() => {
               Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
+                'Remove',
+                'Are you sure you want to remove these details?',
                 [
                   {
                     text: 'Cancel',
@@ -926,8 +926,8 @@ const RentalOffer = props => {
             marginTop={0}
             onPress={() => {
               Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
+                'Remove',
+                'Are you sure you want to remove these details?',
                 [
                   {
                     text: 'Cancel',
@@ -970,8 +970,8 @@ const RentalOffer = props => {
             marginTop={0}
             onPress={() => {
               Alert.alert(
-                'Remove person?',
-                'This person will be permanently removed from the application.',
+                'Remove',
+                'Are you sure you want to remove these details?',
                 [
                   {
                     text: 'Cancel',
@@ -2095,34 +2095,74 @@ const RentalOffer = props => {
 
       case 'Number':
         return (
-          <View>
-            <TextInput
-              style={RentalOfferStyle.input}
-              placeholder={`${question.tqm_Question_placeholder}`}
-              // onChangeText={text =>
-              //   handleInputChange(question.tqm_Question_code, text, index)
-              // }
-              placeholderTextColor={_COLORS?.Kodie_GrayColor}
-              onChangeText={text => {
-                handleInputChange(question.tqm_Question_code, text, index);
+          // <View>
+          //   <TextInput
+          //     style={RentalOfferStyle.input}
+          //     placeholder={`${question.tqm_Question_placeholder}`}
+          //     // onChangeText={text =>
+          //     //   handleInputChange(question.tqm_Question_code, text, index)
+          //     // }
+          //     placeholderTextColor={_COLORS?.Kodie_GrayColor}
+          //     onChangeText={text => {
+          //       handleInputChange(question.tqm_Question_code, text, index);
 
-                // Clear the error message when user starts typing
-                if (errors[question.tqm_Question_code]) {
-                  setErrors(prevErrors => ({
-                    ...prevErrors,
-                    [question.tqm_Question_code]: undefined, // Clear the error for this specific field
-                  }));
-                }
-              }}
-              value={inputValues[question.tqm_Question_code] || ''}
-              keyboardType="number-pad"
-            />
-            {errors[question.tqm_Question_code] && (
-              <Text style={RentalOfferStyle?.errorText}>
-                {errors[question.tqm_Question_code]}
-              </Text>
-            )}
-          </View>
+          //       // Clear the error message when user starts typing
+          //       if (errors[question.tqm_Question_code]) {
+          //         setErrors(prevErrors => ({
+          //           ...prevErrors,
+          //           [question.tqm_Question_code]: undefined, // Clear the error for this specific field
+          //         }));
+          //       }
+          //     }}
+          //     value={inputValues[question.tqm_Question_code] || ''}
+          //     keyboardType="number-pad"
+          //   />
+          //   {errors[question.tqm_Question_code] && (
+          //     <Text style={RentalOfferStyle?.errorText}>
+          //       {errors[question.tqm_Question_code]}
+          //     </Text>
+          //   )}
+          // </View>
+          <View style={RentalOfferStyle.inputWrapper}>
+          {/* TextInput without Dollar sign in placeholder */}
+          <TextInput
+            style={RentalOfferStyle.input}
+            placeholder={`${question.tqm_Question_placeholder}`} // Show only placeholder initially
+            placeholderTextColor={_COLORS?.Kodie_GrayColor}
+            onChangeText={text => {
+              // Ensure only numeric input and handle changes
+              const numericValue = text.replace(/[^0-9]/g, '');
+              handleInputChange(
+                question.tqm_Question_code,
+                numericValue,
+                index,
+              );
+        
+              // Clear the error message when the user starts typing
+              if (errors[question.tqm_Question_code]) {
+                setErrors(prevErrors => ({
+                  ...prevErrors,
+                  [question.tqm_Question_code]: undefined, // Clear error for this field
+                }));
+              }
+            }}
+            // Show the dollar sign only when there's input
+            value={
+              inputValues[question.tqm_Question_code]
+                ? `$${inputValues[question.tqm_Question_code]}`
+                : '' // Display nothing initially
+            }
+            keyboardType="number-pad"
+          />
+        
+          {/* Error message */}
+          {errors[question.tqm_Question_code] && (
+            <Text style={RentalOfferStyle?.errorText}>
+              {errors[question.tqm_Question_code]}
+            </Text>
+          )}
+        </View>
+        
         );
       // case 'Date':
       //   return (

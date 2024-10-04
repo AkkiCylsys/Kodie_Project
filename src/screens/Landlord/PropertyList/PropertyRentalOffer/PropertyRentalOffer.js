@@ -497,7 +497,7 @@ const PropertyRentalOffer = props => {
                       size={20} // Adjust size as needed
                     />
                   </View>
-                  <Text style={PropertyRentalOfferStyle.bedcont}>
+                  <Text style={[PropertyRentalOfferStyle.bedcont,{flex:1}]}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
                       ?.Garages || '0'}{' '}
                     m²

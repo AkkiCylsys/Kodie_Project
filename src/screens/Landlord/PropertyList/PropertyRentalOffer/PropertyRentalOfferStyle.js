@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import { floor } from 'react-native-reanimated';
 export const PropertyRentalOfferStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -106,11 +107,11 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     alignSelf: 'center',
     marginRight: 5,
   },
-  bedCountView: {
-    flexDirection: 'row',
-    marginTop: 5,
-    marginBottom: 5,
-  },
+  // bedCountView: {
+  //   flexDirection: 'row',
+  //   marginTop: 5,
+  //   marginBottom: 5,
+  // },
   bedIconView: {
     borderWidth: 1,
     padding: 5,
@@ -139,6 +140,7 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_ExtraminLiteGrayColor,
   },
   bedCountView: {
+    flex:1,
     flexDirection: 'row',
     marginTop: 5,
     // marginLeft: 23,
