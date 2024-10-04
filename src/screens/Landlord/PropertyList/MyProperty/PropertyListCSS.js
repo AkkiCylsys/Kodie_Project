@@ -53,7 +53,7 @@ export const PropertyListCSS = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
-    marginVertical: 15,
+    marginVertical: 10,
   },
   flexContainer: {flex: 1},
   apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
@@ -65,9 +65,9 @@ export const PropertyListCSS = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   imageStyle: {
-    flex: 0.5,
-    height: 65,
-    width: 65,
+    // flex: 0.5,
+    height: 90,
+    width: 90,
     borderRadius: 10,
     alignSelf: 'center',
     borderWidth: 1,
@@ -80,17 +80,18 @@ export const PropertyListCSS = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonView: {
-    // flex: 0.7,
+    flex: 0.4,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    alignSelf:'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingVertical: 5,
-    marginLeft: '30%',
-    paddingBottom: 3,
+    // paddingVertical: 5,
+    // marginLeft: '30%',
+    // paddingBottom: 3,
   },
   roundButton: {
     height: 6,
@@ -104,6 +105,8 @@ export const PropertyListCSS = StyleSheet.create({
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
     marginBottom: 5,
+    flex:1,
+    alignSelf:'center',textAlign:'center'
   },
   flatListContainer: {marginHorizontal: 30},
   expandedContent: {
@@ -185,7 +188,7 @@ export const PropertyListCSS = StyleSheet.create({
     // padding: 12,
     justifyContent: 'center',
     alignItems: 'center',
-  //  paddingHorizontal:'5%',
+    //  paddingHorizontal:'5%',
     height: '100%',
     marginBottom: 10,
   },
@@ -194,8 +197,8 @@ export const PropertyListCSS = StyleSheet.create({
     padding: 12,
   },
   moreButton: {
-    backgroundColor: _COLORS.Kodie_GrayColor, 
-   padding: 18,// Blue color for the "More" button
+    backgroundColor: _COLORS.Kodie_GrayColor,
+    padding: 18, // Blue color for the "More" button
   },
   actionText: {
     color: 'white',

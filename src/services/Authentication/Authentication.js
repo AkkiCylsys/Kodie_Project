@@ -21,7 +21,7 @@ export const encryptPassword = (password) => {
 export const signup = (data) => {
   const base_url = Config.BASE_URL;
   const url = `${base_url}register`;
-
+console.log(url);
   return new Promise((resolve, reject) => {
     axios.post(url, data)
       .then(response => {

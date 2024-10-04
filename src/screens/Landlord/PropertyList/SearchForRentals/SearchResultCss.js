@@ -191,32 +191,54 @@ export const SearchResultCss = StyleSheet.create({
     marginLeft: 23,
   },
   availabletext: {
-    fontSize: 10,
+    fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',
   },
   availableBtn: {
+    flex:0.5,
     marginHorizontal: 25,
-    marginRight: Platform.OS == 'ios' ? 270 : 230,
+    // marginRight: Platform.OS == 'ios' ? 270 : 230,
     // borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
     // flex: 1,
     backgroundColor: _COLORS.Kodie_LightOrange,
-    padding: 8,
+    paddingVertical: 8,
     marginTop: 10,
   },
+  circleIconView: {
+    width: 30,  // Set the width of the circle
+    height: 30, // Set the height of the circle
+    borderRadius: 15,  // Half of the width/height to make it a perfect circle
+    alignItems: 'center', // Center icon horizontally
+    justifyContent: 'center', // Center icon vertically
+    borderWidth:0.2,
+    borderColor:_COLORS?.Kodie_ExtraminLiteGrayColor
+
+  },
+  bedCountView:{
+    flexDirection: 'row',
+    marginTop: 5,
+    marginLeft: 23,
+    alignItems: 'center', // Center items vertically
+  },
   bedcont: {
+    // fontSize: 14,
+    // color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    // fontFamily: FONTFAMILY.K_Regular,
+    // alignSelf: 'center',
+    // marginLeft: 5,
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: 10, // Increased margin for spacing between icon and text
   },
   bedCountView: {
     flexDirection: 'row',
-    marginHorizontal: 8,
+    marginLeft: 2,
     marginTop: 5,
     marginBottom: 5,
   },

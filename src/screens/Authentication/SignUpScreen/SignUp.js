@@ -37,8 +37,8 @@ const SignUp = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [googleSignIn, setGoogleSignIn] = useState([]);
   const deviceId = DeviceInfo.getDeviceId();
-  const deviceType = DeviceInfo.getDeviceType();
-  console.log(deviceId,deviceType);
+  // const deviceType = DeviceInfo.getDeviceType();
+  console.log(deviceId,deviceType,'signup');
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -142,78 +142,6 @@ const SignUp = (props) => {
     }
   };
 
-  const Signuphandle = async () => {
-    // const url = "https://e3.cylsys.com/api/v1/register";
-    // const url = 'https://kodieapis.cylsys.com/api/v1/register';
-    const url = 'https://kodietestapi.cylsys.com/api/v1/register';
-    const signupUrl = url;
-    console.log('Request URL:', signupUrl);
-    setIsLoading(true);
-
-    try {
-      // Encrypt the password
-      const encStr = await encryptPassword(password, secretKey);
-      console.log('encryptedpass', encStr);
-
-      const SignUpData = {
-        email: email,
-        password: encStr,
-        is_term_condition: term,
-        is_privacy_policy: privacy,
-        fcm_token: Fcm_token,
-      };
-
-      const response = await axios.post(signupUrl, SignUpData);
-
-      setSignupResponse(response?.data);
-      console.log('SignUp response', response?.data);
-      // alert(JSON.stringify(response?.data));
-      if (response?.data?.code === 3) {
-        Alert.alert('Success', response?.data?.message);
-        props.navigation.navigate('SignUpVerification', {
-          email: email,
-          password: encStr,
-          is_term_condition: term,
-          is_privacy_policy: privacy,
-          user_key: response?.data?.User_Key,
-        });
-      } else if (response?.data?.code === 1) {
-        Alert.alert('Success', response?.data?.message);
-        setEmail('');
-        setPassword('');
-        setTerm(false);
-        setPrivacy(false);
-        setIsLoading(false);
-        props.navigation.navigate('SignUpVerification', {
-          email: email,
-          password: encStr,
-          is_term_condition: term,
-          is_privacy_policy: privacy,
-          user_key: response?.data?.User_Key,
-        });
-      } else if (response?.data?.code === 2) {
-        Alert.alert('Success', response?.data?.message);
-        props.navigation.navigate('LoginScreen');
-      } else {
-        Alert.alert('Success', response?.data?.message);
-      }
-    } catch (error) {
-      if (error?.response || error?.response?.status === 400) {
-        Alert.alert(
-          'Warning!',
-          'Failed to send OTP via email. Please try again later!',
-        );
-      } else if (error?.response || error?.response?.status === 401) {
-        Alert.alert('Warning!', 'Your password is wrong!');
-      } else {
-        // alert('An error occurred. Please try again later.');
-      }
-      console.error('Signup error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   //....... handle signup button validation here
   const handleSubmit = async () => {
     if (email.trim() === '') {
@@ -224,6 +152,8 @@ const SignUp = (props) => {
       );
     } else if (password.trim() === '') {
       setPasswordError('Password is required!');
+    }else if (password.length < 8) {
+      setPasswordError('Oh no. The password must be at least 8 characters long!');
     } else if (!term && !privacy) {
       alert(
         'Please read and accept both Terms & Conditions and Privacy Policy!',
@@ -236,7 +166,7 @@ const SignUp = (props) => {
       handleSignup();
     }
   };
-
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   const handleSignup = async () => {
     setIsLoading(true);
     const trimmedEmail = email.trim();
@@ -276,6 +206,10 @@ console.log(SignUpData);
           user_key: response?.User_Key,
         });
       } else if (response?.code === 2) {
+        Alert.alert('Success', response?.message);
+        props.navigation.navigate('LoginScreen');
+      }
+      else if (response?.code === 0) {
         Alert.alert('Success', response?.message);
         props.navigation.navigate('LoginScreen');
       } else {

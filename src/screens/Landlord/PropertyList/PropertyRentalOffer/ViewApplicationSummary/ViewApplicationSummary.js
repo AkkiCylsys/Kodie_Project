@@ -105,7 +105,9 @@ const ViewApplicationSummary = props => {
     setApplicationSumReasonOfReject(text);
     const onlySpacesRegex = /^\s*$/;
     if (applicationSumReasonOfReject == '') {
-      setApplicationSumReasonOfRejectError('Please enter reason for rejection.');
+      setApplicationSumReasonOfRejectError(
+        'Please enter reason for rejection.',
+      );
     } else if (onlySpacesRegex.test(text)) {
       setApplicationSumReasonOfRejectError(
         'Reason for rejection cannot be empty or contain only spaces.',
@@ -120,7 +122,9 @@ const ViewApplicationSummary = props => {
     if (occupantReasonOfReject == '') {
       setOccupantReasonOfRejectError('Please enter reason for rejection.');
     } else if (onlySpacesRegex.test(text)) {
-      setOccupantReasonOfRejectError('Reason for rejection cannot be empty or contain only spaces.');
+      setOccupantReasonOfRejectError(
+        'Reason for rejection cannot be empty or contain only spaces.',
+      );
     } else {
       setOccupantReasonOfRejectError('');
     }
@@ -130,9 +134,10 @@ const ViewApplicationSummary = props => {
     const onlySpacesRegex = /^\s*$/;
     if (referenceReasonOfReject == '') {
       setReferenceReasonOfRejectError('Please enter reason for rejection.');
-    }
-    else if(onlySpacesRegex.test(text)){
-      setReferenceReasonOfRejectError('Reason for rejection cannot be empty or contain only spaces.')
+    } else if (onlySpacesRegex.test(text)) {
+      setReferenceReasonOfRejectError(
+        'Reason for rejection cannot be empty or contain only spaces.',
+      );
     } else {
       setReferenceReasonOfRejectError('');
     }
@@ -209,6 +214,7 @@ const ViewApplicationSummary = props => {
     tenantQuestDetails[1]?.children?.filter(
       item => item.tqm_Question_view !== null,
     ) || [];
+  console.log('EmploymentfilteredData..', EmploymentfilteredData);
   const rentalHistoryfilteredData =
     tenantQuestDetails[2]?.children?.filter(
       item => item.tqm_Question_view !== null,
@@ -670,9 +676,19 @@ const ViewApplicationSummary = props => {
                 renderItem={({item}) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
+                    leftTextStyle={{
+                      color: _COLORS?.Kodie_MediumGrayColor,
+                    }}
                     rightText={
-                      item?.tqm_Question_type === 'Dropdown'
+                      item?.tqm_Question_view === 'Budget' &&
+                      item?.tqm_Question_value
+                        ? `$${item?.tqm_Question_value}`
+                        : item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
+                        : item?.tqm_Question_type === 'Date'
+                        ? moment(item?.tqm_Question_value).format(
+                            'DD MMMM YYYY',
+                          ) || '-'
                         : item?.tqm_Question_value || '-'
                     }
                   />
@@ -690,9 +706,16 @@ const ViewApplicationSummary = props => {
                 renderItem={({item}) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
+                    leftTextStyle={{
+                      color: _COLORS?.Kodie_MediumGrayColor,
+                    }}
                     rightText={
                       item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
+                        : item?.tqm_Question_type === 'Date'
+                        ? moment(item?.tqm_Question_value).format(
+                            'DD MMMM YYYY',
+                          ) || '-'
                         : item?.tqm_Question_value || '-'
                     }
                   />
@@ -710,6 +733,9 @@ const ViewApplicationSummary = props => {
                 renderItem={({item}) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
+                    leftTextStyle={{
+                      color: _COLORS?.Kodie_MediumGrayColor,
+                    }}
                     rightText={
                       item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
@@ -734,9 +760,15 @@ const ViewApplicationSummary = props => {
                 renderItem={({item}) => (
                   <RowTexts
                     leftText={item?.tqm_Question_view}
+                    leftTextStyle={{
+                      color: _COLORS?.Kodie_MediumGrayColor,
+                    }}
                     rightText={
                       item?.tqm_Question_code === 'PETS_THEY'
-                        ? item?.tqm_Question_value_data || '-'
+                        ? item?.tqm_Question_value_data
+                            ?.split(',')
+                            .map(pet => pet.trim()) // Trim spaces
+                            .join(', ') || '-' // Join with comma and space
                         : item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_value === '1'
@@ -875,7 +907,7 @@ const ViewApplicationSummary = props => {
                 <Text
                   style={[
                     ViewApplicationSummaryStyle.applicationSumDet,
-                    {marginTop: 5},
+                    {marginTop: 5,fontFamily:FONTFAMILY?.K_Bold},
                   ]}>
                   {'Leaseholders'}
                 </Text>
@@ -1124,8 +1156,10 @@ const ViewApplicationSummary = props => {
           </TouchableOpacity>
         </View>
       </View> */}
-
-      <DividerIcon borderBottomWidth={2} />
+      <DividerIcon
+        borderBottomWidth={2}
+        borderColor={_COLORS?.Kodie_deviderIconColor}
+      />
       {offerForMyPropData?.landlord_approve == 1 &&
       offerForMyPropData?.screening_one == 555 &&
       offerForMyPropData?.screening_two == 555 &&
@@ -1144,8 +1178,8 @@ const ViewApplicationSummary = props => {
       ) : (
         <View style={{marginBottom: 20, marginHorizontal: 16}}>
           <RowButtons
-            leftButtonHeight={44}
-            RightButtonHeight={44}
+            leftButtonHeight={58}
+            RightButtonHeight={58}
             LeftButtonText={'Back'}
             RightButtonText={accpetingLandlordId == null ? 'Done' : 'Edit'}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}

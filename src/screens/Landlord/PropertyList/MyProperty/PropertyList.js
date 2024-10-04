@@ -27,6 +27,8 @@ import {Config} from '../../../../Config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import {head} from 'lodash';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const HorizontalData = [
   'All',
   'Recent',
@@ -39,8 +41,13 @@ const HorizontalData = [
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  console.log(loginData,"loginData");
-  // const userRole = '4';
+  console.log(loginData, 'loginData');
+  // const userRole = '3,2';
+  const roleArray = userRole ? userRole.split(',') : [];
+
+  const hasTenantRole = roleArray.includes('2');
+  const hasLandlordRole = roleArray.includes('3');
+  const hasContractor = roleArray.includes('4');
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -69,12 +76,12 @@ const PropertyList = props => {
     setIsDeleteData_Clicked(false);
     getPropertyDetailsByFilter(selectedFilter);
   };
- 
-const closeSwipeable = (index) => {
-  if (swipeableRef.current[index] && swipeableRef.current[index].close) {
-    swipeableRef.current[index].close(); // Close the swipeable at the given index
-  }
-};
+
+  const closeSwipeable = index => {
+    if (swipeableRef.current[index] && swipeableRef.current[index].close) {
+      swipeableRef.current[index].close(); // Close the swipeable at the given index
+    }
+  };
   // search propertyList....
   const searchPropertyList = query => {
     setSearchQuery(query);
@@ -106,7 +113,6 @@ const closeSwipeable = (index) => {
           // Remove the item from the list
           getPropertyDetailsByFilter(selectedFilter);
           swipeableRef.current[id]?.close();
-
         } else {
           swipeableRef.current[id]?.close();
 
@@ -149,7 +155,7 @@ const closeSwipeable = (index) => {
     }
   };
 
-  const renderRightActions = (id, isArchived, location,index) => {
+  const renderRightActions = (id, isArchived, location, index) => {
     if (isArchived) return null;
     return (
       <View style={PropertyListCSS.actionsContainer}>
@@ -253,7 +259,12 @@ const closeSwipeable = (index) => {
         <Text
           style={[
             PropertyListCSS.item_style,
-            {color: selectedFilter === item ?   _COLORS?.Kodie_WhiteColor: _COLORS?.Kodie_VeryLightGrayColor},
+            {
+              color:
+                selectedFilter === item
+                  ? _COLORS?.Kodie_WhiteColor
+                  : _COLORS?.Kodie_VeryLightGrayColor,
+            },
           ]}>
           {item}
         </Text>
@@ -262,7 +273,7 @@ const closeSwipeable = (index) => {
             name={'check'}
             size={18}
             color={_COLORS.Kodie_WhiteColor}
-            style={{marginLeft:6}}
+            style={{marginLeft: 6}}
           />
         ) : null}
       </TouchableOpacity>
@@ -273,7 +284,7 @@ const closeSwipeable = (index) => {
     const isExpanded = expandedItems.includes(item.property_id);
     return (
       <Swipeable
-        ref={ref => swipeableRef.current[index] = ref}
+        ref={ref => (swipeableRef.current[index] = ref)}
         overshootRight={false}
         friction={2}
         onSwipeableWillOpen={() => {
@@ -281,7 +292,7 @@ const closeSwipeable = (index) => {
           if (openSwipeableIndex !== null && openSwipeableIndex !== index) {
             closeSwipeable(openSwipeableIndex);
           }
-  
+
           // Set the new swipeable as open
           setOpenSwipeableIndex(index);
         }}
@@ -292,7 +303,7 @@ const closeSwipeable = (index) => {
           }
         }}
         renderRightActions={() =>
-          renderRightActions(item.property_id, isArchived, item.location,index)
+          renderRightActions(item.property_id, isArchived, item.location, index)
         }>
         <TouchableOpacity
           style={[
@@ -308,32 +319,31 @@ const closeSwipeable = (index) => {
               propertyid: item?.property_id,
             });
           }}>
-         
-
           {item.result ? null : (
             <>
-             {item?.auto_list == 0 ? null : (
-            <View
-              style={{
-                justifyContent: 'center',
-                marginRight: '65%',
-                marginLeft: '6.6%',
-                backgroundColor: _COLORS.Kodie_GreenColor,
-                paddingVertical: 5,
-                borderBottomEndRadius: 8,
-                borderBottomStartRadius: 8,
-              }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 14,
-                  fontFamily: FONTFAMILY.K_SemiBold,
-                  color: _COLORS.Kodie_WhiteColor,
-                }}>
-                {'Current listing'}
-              </Text>
-            </View>
-          )}
+              {item?.auto_list == 0 ? null : (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    marginRight: '65%',
+                    marginLeft: '6.6%',
+                    backgroundColor: _COLORS.Kodie_GreenColor,
+                    // paddingVertical: 2,
+                    paddingBottom: 4,
+                    borderBottomEndRadius: 8,
+                    borderBottomStartRadius: 8,
+                  }}>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 14,
+                      fontFamily: FONTFAMILY.K_SemiBold,
+                      color: _COLORS.Kodie_WhiteColor,
+                    }}>
+                    {'Current listing'}
+                  </Text>
+                </View>
+              )}
               {item.isArchived ? (
                 <View
                   style={[
@@ -363,7 +373,11 @@ const closeSwipeable = (index) => {
               ) : (
                 <>
                   <View key={index} style={[PropertyListCSS.flatListContainer]}>
-                    <View style={[PropertyListCSS.flat_MainView]}>
+                    <View
+                      style={[
+                        PropertyListCSS.flat_MainView,
+                        {marginBottom: 12},
+                      ]}>
                       <View style={PropertyListCSS.flexContainer}>
                         <Text style={PropertyListCSS.apartmentText}>
                           {item.property_type}
@@ -372,34 +386,48 @@ const closeSwipeable = (index) => {
                           style={LABEL_STYLES.commontext}
                           ellipsizeMode="tail"
                           numberOfLines={0}>
-                          {item.City ? item.City : item.state}
+                          {item?.City === null ||
+                          item?.City === 'null' ||
+                          item?.City === ''
+                            ? item?.state || ' '
+                            : item?.City || ' '}
                         </Text>
                         <View style={PropertyListCSS.flat_MainView}>
                           <MaterialCommunityIcons
                             name={'map-marker'}
                             size={12}
                             color={_COLORS.Kodie_GreenColor}
+                            style={{marginTop: 6}}
                           />
-                          <Text style={PropertyListCSS.locationText}>
+                          <Text
+                            style={PropertyListCSS.locationText}
+                            ellipsizeMode="tail"
+                            numberOfLines={2}>
                             {item.location}
                           </Text>
                         </View>
                       </View>
                       {item.image_path && item.image_path.length > 0 ? (
-                        <Image
-                          source={{uri: item?.image_path[0]}}
-                          style={PropertyListCSS.imageStyle}
-                          resizeMode="cover"
-                        />
+                        <View style={{flex: 1}}>
+                          <Image
+                            source={{uri: item?.image_path[0]}}
+                            style={[PropertyListCSS.imageStyle]}
+                            resizeMode="cover"
+                          />
+                        </View>
                       ) : (
-                        <View
-                          style={[
-                            PropertyListCSS.imageStyle,
-                            {justifyContent: 'center'},
-                          ]}>
-                          <Text style={PropertyListCSS.Img_found}>
-                            {'Image not found'}
-                          </Text>
+                        <View style={[{flex: 1}]}>
+                          <Ionicons
+                            name="images-outline"
+                            size={90}
+                            color={_COLORS.Kodie_GrayColor}
+                            style={[
+                              PropertyListCSS.imageStyle,
+                              {
+                                borderWidth: 0,
+                              },
+                            ]}
+                          />
                         </View>
                       )}
 
@@ -678,18 +706,18 @@ const closeSwipeable = (index) => {
   };
 
   const renderRowButtons = () => {
-    const roleArray = userRole ? userRole.split(',') : [];
+    // const roleArray = userRole ? userRole.split(',') : [];
 
-    const hasTenantRole = roleArray.includes('2');
-    const hasLandlordRole = roleArray.includes('3');
-
+    // const hasTenantRole = roleArray.includes('2');
+    // const hasLandlordRole = roleArray.includes('3');
+    // const hasContractor = roleArray.includes('4');
     const renderSingleButton = buttonText => (
       <CustomSingleButton
         _ButtonText={buttonText}
         Text_Color={_COLORS.Kodie_BlackColor}
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
-        height={40}
+        height={45}
         onPress={() => {}}
         disabled={true}
       />
@@ -705,16 +733,14 @@ const closeSwipeable = (index) => {
       return (
         <RowButtons
           LeftButtonText={'Properties I own'}
-          leftButtonHeight={40}
+          // leftButtonHeight={40}
           leftButtonbackgroundColor={
             activeScreen
               ? _COLORS.Kodie_WhiteColor
               : _COLORS.Kodie_lightGreenColor
           }
           LeftButtonborderColor={
-            activeScreen
-              ? _COLORS.Kodie_GrayColor
-              : _COLORS.Kodie_lightGreenColor
+            activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_GreenColor
           }
           RightButtonText={'Properties I rent'}
           RightButtonbackgroundColor={
@@ -723,9 +749,7 @@ const closeSwipeable = (index) => {
               : _COLORS.Kodie_WhiteColor
           }
           RightButtonborderColor={
-            activeScreen
-              ? _COLORS.Kodie_lightGreenColor
-              : _COLORS.Kodie_GrayColor
+            activeScreen ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
           }
           LeftButtonTextColor={
             activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
@@ -733,7 +757,7 @@ const closeSwipeable = (index) => {
           RightButtonTextColor={
             activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
           }
-          RightButtonHeight={40}
+          // RightButtonHeight={40}
           onPressLeftButton={() => setActiveScreen(false)}
           onPressRightButton={() => {
             setActiveScreen(true);
@@ -766,14 +790,14 @@ const closeSwipeable = (index) => {
           ]}>
           {renderRowButtons()}
         </View>
-        {userRole == '4' || userRole == '2'? null : (
+        {userRole == '4' || userRole == '2' ? null : (
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
             // marginTop={1}
           />
         )}
-        {userRole == '4' || userRole == '2' ? null : (
+        {/* {userRole == '4' || userRole == '2' ? null : (
           <View style={PropertyListCSS.Container}>
             <CustomSingleButton
               _ButtonText={'+ Add New Property'}
@@ -786,8 +810,22 @@ const closeSwipeable = (index) => {
               disabled={isLoading ? true : false}
             />
           </View>
-        )}
-        {userRole == '4' ? null : (
+        )} */}
+        {hasLandlordRole ? (
+          <View style={PropertyListCSS.Container}>
+            <CustomSingleButton
+              _ButtonText={'+ Add new property'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              text_Size={14}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              height={45}
+              marginTop={3}
+              onPress={props.propertyDetail}
+              disabled={isLoading ? true : false}
+            />
+          </View>
+        ) : null}
+        {!hasLandlordRole ? null : (
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
@@ -796,7 +834,7 @@ const closeSwipeable = (index) => {
         )}
         <View style={{marginTop: userRole == '4' ? 15 : 0}}>
           <SearchBar
-          placeholder={'Search properties'}
+            placeholder={'Search properties'}
             filterImage={IMAGES.filter}
             frontSearchIcon
             marginTop={3}

@@ -16,7 +16,7 @@ const ApplicationSubmitModal = props => {
   const onClose = () => {
     props.onClose();
   };
-  const{biddingDetailsMessage}=props
+  const {biddingDetailsMessage} = props;
   return (
     <View style={ApplicationSubmitModalStyle.mainConatainer}>
       {/* <ScrollView> */}
@@ -34,18 +34,17 @@ const ApplicationSubmitModal = props => {
               fontFamily: FONTFAMILY.K_Regular,
               fontSize: 14,
               color: _COLORS.Kodie_LightGrayColor,
-              marginTop:10,
-              textAlign:"center"
+              marginTop: 10,
+              textAlign: 'center',
             },
           ]}>
-          {
-            biddingDetailsMessage ||'Congratulations! You have successfully submitted your rental application. The property owner will contact you soon.'
-          }
+          {biddingDetailsMessage ||
+            'Congratulations! You have successfully submitted your rental application. The property owner will contact you soon.'}
         </Text>
         <View
           style={{
             alignSelf: 'center',
-            marginVertical:10
+            marginVertical: 10,
           }}>
           <Feather
             name="check-circle"
@@ -69,11 +68,16 @@ const ApplicationSubmitModal = props => {
           style={{
             marginBottom: 30,
           }}
-          onPress={onClose}>
+          onPress={() => {
+            navigation.navigate('Properties', {
+              tab3: 'tab3',
+            });
+            onClose();
+          }}>
           <Text
             style={[
               ApplicationSubmitModalStyle.ApplicationText,
-              {fontFamily: FONTFAMILY.K_SemiBold,fontSize:16,marginTop:10},
+              {fontFamily: FONTFAMILY.K_SemiBold, fontSize: 16, marginTop: 10},
             ]}>
             {'Return'}
           </Text>

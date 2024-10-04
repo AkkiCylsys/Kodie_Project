@@ -52,6 +52,7 @@ export default PropertyReview = props => {
   const propertyListing = props?.route?.params?.propertyListing;
   console.log('propertyListing..', propertyListing);
   const propertyid = props?.route?.params?.propertyid;
+  console.log("listing...",propertyid,property_id);
   const [data, setData] = useState([]);
   const propertyView = props?.route?.params?.propertyView;
   const editMode = props?.route?.params?.editMode;
@@ -132,7 +133,7 @@ export default PropertyReview = props => {
       <Text style={DetailsStyle.itemName}>{item.name}</Text>
       <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
       
-    <DividerIcon marginTop={5}/>
+    {/* <DividerIcon /> */}
     </View>
     </>
   );
@@ -140,21 +141,17 @@ export default PropertyReview = props => {
   const renderCategory = ({ item }) => (
     <View style={DetailsStyle.categoryContainer}>
       <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
-      <DividerIcon marginTop={5}/>
-      <FlatList
-        data={item.items}
-        renderItem={renderpointItem}
-        keyExtractor={(item, index) => index.toString()}
-        ListFooterComponent={<TouchableOpacity onPress={()=>{
-          alert(JSON.stringify(item.items.length))
-          if(item.items.length >2){
-
-          }else{
-            alert(JSON.stringify("No more data found!"))
-          }
-        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
-      />
-     
+      <DividerIcon marginTop={5} />
+      
+      {item.items.length > 0 ? (
+        <FlatList
+          data={item.items}
+          renderItem={renderpointItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text style={DetailsStyle.itemName}>----</Text> // Display hyphen if no items
+      )}
     </View>
   );
   const buildLink = async (id) => {
@@ -551,7 +548,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         { fontFamily: FONTFAMILY.K_Medium },
                       ]}>
-                      {property_id}
+                      {propertyid}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -676,7 +673,7 @@ export default PropertyReview = props => {
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
+                {/* <View style={DetailsStyle.p_rowTextView}>
                   <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Kitchen'}
                   </Text>
@@ -727,7 +724,7 @@ export default PropertyReview = props => {
                     {'0'}
                   </Text>
                 </View>
-                <DividerIcon marginTop={8} />
+                <DividerIcon marginTop={8} /> */}
               </>
             ) : null}
             <View>
@@ -787,58 +784,7 @@ export default PropertyReview = props => {
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Garden'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Pool'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Outdoor Patio'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Other'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
+               
               </>
             ) : null}
             <View >
@@ -1086,7 +1032,7 @@ export default PropertyReview = props => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setLike(!like);
                 }}>
@@ -1099,7 +1045,7 @@ export default PropertyReview = props => {
                   }
                   size={24}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>

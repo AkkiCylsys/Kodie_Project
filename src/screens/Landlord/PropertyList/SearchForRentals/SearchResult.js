@@ -28,6 +28,7 @@ import BottomModalSearchRental from '../../../../components/Molecules/BottomModa
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 import {useSelector} from 'react-redux';
+import moment from 'moment';
 export default SearchResult = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userAccountId = loginData?.Login_details?.user_account_id;
@@ -41,6 +42,8 @@ export default SearchResult = props => {
   const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
+  const [landlordId, setLandlordId] = useState([]);
+  const [allSearchResult, setAllSearchResult] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
     keyFeatureMapping[detail.paf_key] = detail.features_name;
@@ -51,11 +54,25 @@ export default SearchResult = props => {
   const searchInputData = props?.route?.params?.searchInputData;
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
-
-  console.log('searchRentalResponse...', searchRentalResponse);
+  console.log('propertyType..', propertyType);
+  console.log('AllCountsData...', AllCountsData);
+  console.log('searchRentalResponse...', JSON.stringify(searchRentalResponse));
+  console.log('searchInputData..', searchInputData);
   useEffect(() => {
     additional_key_features();
   }, []);
+
+  const parkingGarageSpaces = AllCountsData.find(item =>
+    item.hasOwnProperty('Parking / garage spaces'),
+  )['Parking / garage spaces'];
+
+  // Find the object with "On-street parking"
+  const onStreetParking = AllCountsData.find(item =>
+    item.hasOwnProperty('On-street parking'),
+  )['On-street parking'];
+
+  console.log('Parking / garage spaces:', parkingGarageSpaces);
+  console.log('On-street parking:', onStreetParking);
 
   const handleFavouriteItem = async propertyId => {
     setIsLoading(true);
@@ -121,6 +138,11 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
+    const available = item?.property_avaliable ? item?.property_avaliable : ''; // Fallback to default date if not available
+    const availableDate = moment(available); // Convert to moment object
+    const currentDate = moment();
+    // Determine if the available date is in the past or present
+    const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
     console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
     return (
@@ -190,7 +212,7 @@ export default SearchResult = props => {
                 {item?.property_type || ''}
               </Text>
               <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
-                {`$ ${item?.rental_amount || '0'}`}
+                {`$${item?.rental_amount || '0'}`}
               </Text>
             </View>
             <View style={SearchResultCss.shareIcon}>
@@ -224,6 +246,8 @@ export default SearchResult = props => {
                   setRentalAmount(item?.rental_amount);
                   setBidId(item?.bid_id);
                   setPropertyDetailsItem(item);
+                  setLandlordId(item?.landlord_id);
+                  setAllSearchResult(item);
                 }}>
                 <Entypo
                   color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -246,20 +270,45 @@ export default SearchResult = props => {
               {item?.location || ''}
             </Text>
           </View>
-          <View style={SearchResultCss.availableBtn}>
-            <Text style={SearchResultCss.availabletext}>
-              {'AVAILABLE: 1 OCT'}
-            </Text>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={[
+                SearchResultCss.availableBtn,
+                {
+                  backgroundColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange, // Use the color for future date
+                  borderColor: isAvailableNow
+                    ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                    : _COLORS.Kodie_LightOrange,
+                },
+              ]}>
+              <Text
+                style={[
+                  SearchResultCss.availabletext,
+                  {
+                    color: isAvailableNow
+                      ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
+                      : _COLORS.Kodie_DarkOrange, // Text color for future date
+                  },
+                ]}>
+                {isAvailableNow
+                  ? 'AVAILABLE: NOW'
+                  : `AVAILABLE: ${availableDate.format('DD-MMM-YYYY')}`}
+              </Text>
+              <View style={{flex: 1}} />
+            </View>
           </View>
-
           <View style={SearchResultCss.bedCountView}>
             <View style={SearchResultCss.locationView}>
-              <Ionicons
-                color={_COLORS.Kodie_GreenColor}
-                name="bed-outline"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="bed-outline"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
@@ -268,12 +317,14 @@ export default SearchResult = props => {
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <MaterialCommunityIcons
-                color={_COLORS.Kodie_GreenColor}
-                name="shower-head"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="shower-head"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj =>
@@ -283,12 +334,14 @@ export default SearchResult = props => {
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <Ionicons
-                color={_COLORS.Kodie_GreenColor}
-                name="car"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view to hold the icon */}
+                <Ionicons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="car"
+                  size={16}
+                />
+              </View>
               <Text style={SearchResultCss.bedcont}>
                 {
                   keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
@@ -297,13 +350,15 @@ export default SearchResult = props => {
               </Text>
             </View>
             <View style={SearchResultCss.locationView}>
-              <MaterialCommunityIcons
-                color={_COLORS.Kodie_GreenColor}
-                name="floor-plan"
-                size={16}
-                style={SearchResultCss.bedIconView}
-              />
-              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m2</Text>
+              <View style={SearchResultCss.circleIconView}>
+                {/* Circle view for icon */}
+                <MaterialCommunityIcons
+                  color={_COLORS.Kodie_GreenColor}
+                  name="floor-plan"
+                  size={16}
+                />
+              </View>
+              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m²</Text>
             </View>
           </View>
 
@@ -328,25 +383,25 @@ export default SearchResult = props => {
           </Text>
           <Text style={SearchResultCss.LeftTextRentText}>
             {`${
-              propertyType === 22
+              propertyType === '22'
                 ? 'House'
-                : propertyType === 23
+                : propertyType === '23'
                 ? 'Cottage'
-                : propertyType === 24
+                : propertyType === '24'
                 ? 'Apartment/Flat'
-                : propertyType === 25
+                : propertyType === '25'
                 ? 'Townhouse'
-                : propertyType === 26
+                : propertyType === '26'
                 ? 'Land/Vacant Plot'
-                : propertyType === 27
+                : propertyType === '27'
                 ? 'Farm'
                 : ''
-            }; $${searchInputData?.input_minRange} to $${
-              searchInputData?.input_maxRange
-            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
+            } $${searchInputData?.input_minRange || ''} to $${
+              searchInputData?.input_maxRange || ''
+            }; ${AllCountsData[0]?.Bedrooms || ''} Beds; ${
               AllCountsData[1]?.Bathrooms
-            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
-              AllCountsData[3]?.StreetParking
+            } Baths; ${parkingGarageSpaces || ''} parking space; ${
+              parkingGarageSpaces || ''
             } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
@@ -413,9 +468,11 @@ export default SearchResult = props => {
         <BottomModalSearchRental
           onClose={onClose}
           propertyId={propertyId}
+          landlordId={landlordId}
           rentalAmount={rentalAmount}
           bibId={bibId}
           propertyDetails={propertyDetailsItem}
+          searchRentalData={allSearchResult}
         />
       </RBSheet>
       {/* </ScrollView> */}

@@ -13,6 +13,7 @@ import {StripeProvider} from '@stripe/stripe-react-native';
 import {_COLORS} from '../../Themes';
 import {_goBack} from '../../services/CommonServices';
 import axios from 'axios';
+import { Config } from '../../Config';
 const SubscriptionScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
@@ -52,7 +53,9 @@ const SubscriptionScreen = props => {
 
   const getClientSecret = () => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/payment_intent';
-    const url = 'https://kodietestapi.cylsys.com/api/v1/payment_intent';
+    // const url = 'https://kodietestapi.cylsys.com/api/v1/payment_intent';
+    const baseUrl = Config?.BASE_URL
+    const url = `${baseUrl}payment_intent`
     console.log('Request URL:', url);
     setIsLoading(true);
     const client_data = {
@@ -117,7 +120,9 @@ const SubscriptionScreen = props => {
   };
   const subscribeCustomer = () => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/create_subscription';
-    const url = 'https://kodietestapi.cylsys.com/api/v1/create_subscription';
+    // const url = 'https://kodietestapi.cylsys.com/api/v1/create_subscription';
+    const baseUrl = Config?.BASE_URL
+    const url = `${baseUrl}create_subscription`
     console.log('Request URL:', url);
     setIsLoading(true);
     console.log('customer id inside..', customerID);

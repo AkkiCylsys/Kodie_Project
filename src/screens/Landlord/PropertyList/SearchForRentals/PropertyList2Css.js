@@ -236,14 +236,12 @@ export const PropertyList2Css = StyleSheet.create({
     marginTop: 10,
   },
   additionalFeatureView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection:'row',
+    justifyContent:'center',
   },
 
   featureItem: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
+flex:1
   },
   textInputStyle: {
     flex: 1,
@@ -256,7 +254,7 @@ export const PropertyList2Css = StyleSheet.create({
     width: 103,
   },
   btn_main_view: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },

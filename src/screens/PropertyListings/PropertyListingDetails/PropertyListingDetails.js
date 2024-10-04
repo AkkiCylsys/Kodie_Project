@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,54 +9,60 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-} from "react-native";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { _COLORS } from "../../../Themes";
-import { DetailsStyle } from "../../Landlord/AddNewProperty/PropertyReview/Details/DetailsStyles";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { LABEL_STYLES, LabelStyles } from "../../../Themes/CommonStyles/CommonStyles";
-import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
-import { SignupLookupDetails } from "../../../APIs/AllApi";
-import SectionToggle from "../../../components/Molecules/SectionToggle/SectionToggle";
-import DropdownField from "../../../components/Molecules/DropdownField/DropdownField";
-import InputField from "../../../components/Molecules/InputField/InputField";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import ToggleButton from "../../../components/Molecules/ToggleButton/ToggleButton";
-import { Divider } from "react-native-paper";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import { AddBidDetails, insertMarketDetails } from "../../../services/PropertyListing/ListingServices";
-import { useSelector } from "react-redux";
-import { Config } from "../../../Config";
-import axios from "axios";
+} from 'react-native';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {_COLORS} from '../../../Themes';
+import {DetailsStyle} from '../../Landlord/AddNewProperty/PropertyReview/Details/DetailsStyles';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {
+  LABEL_STYLES,
+  LabelStyles,
+} from '../../../Themes/CommonStyles/CommonStyles';
+import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
+import {SignupLookupDetails} from '../../../APIs/AllApi';
+import SectionToggle from '../../../components/Molecules/SectionToggle/SectionToggle';
+import DropdownField from '../../../components/Molecules/DropdownField/DropdownField';
+import InputField from '../../../components/Molecules/InputField/InputField';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import ToggleButton from '../../../components/Molecules/ToggleButton/ToggleButton';
+import {Divider} from 'react-native-paper';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import {
+  AddBidDetails,
+  insertMarketDetails,
+} from '../../../services/PropertyListing/ListingServices';
+import {useSelector} from 'react-redux';
+import {Config} from '../../../Config';
+import axios from 'axios';
 
-const PropertyListingDetail = (props) => {
+const PropertyListingDetail = props => {
   const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(true);
   const [preferencesVisible, setPreferencesVisible] = useState(false);
-  const [propertyDescription, setPropertyDescription] = useState("");
+  const [propertyDescription, setPropertyDescription] = useState('');
   const [isCalendarModalVisible, setCalendarModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
   const [leaseEndData, setLeaseEndData] = useState([]);
-  const [leaseEndValue, setLeaseEndValue] = useState("");
+  const [leaseEndValue, setLeaseEndValue] = useState('');
   const [leaseTermData, setLeaseTermData] = useState([]);
-  const [leaseTermValue, setLeaseTermValue] = useState("");
+  const [leaseTermValue, setLeaseTermValue] = useState('');
   const [selectedButtonSmokingId, setSelectedButtonSmokingId] = useState(0);
   const [selectedButtonPetId, setSelectedButtonPetId] = useState(0);
-  const [selectedButtonconsideredId, setSelectedButtonconsideredId] = useState(0);
-  const [maxOccupantsError, setMaxOccupantsError] = useState("");
-  const [listPriceError, setListPriceError] = useState("");
-  const [Occupant, setOccupant] = useState("");
-  const [ListPrice, setListPrice] = useState("");
-  const [Otherpreference, setOtherpreference] = useState("");
-  const [isLoading,setIsLoading] = useState(false)
+  const [selectedButtonconsideredId, setSelectedButtonconsideredId] =
+    useState(0);
+  const [maxOccupantsError, setMaxOccupantsError] = useState('');
+  const [listPriceError, setListPriceError] = useState('');
+  const [Occupant, setOccupant] = useState('');
+  const [ListPrice, setListPrice] = useState('');
+  const [Otherpreference, setOtherpreference] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedDateError, setSelectedDateError] = useState('');
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
-
 
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData);
   const propertyid = props?.route?.params?.propertyid;
-  console.log("propertyid", propertyid);
+  console.log('propertyid', propertyid);
 
   useEffect(() => {
     fetchLeaseOptions();
@@ -66,38 +72,38 @@ const PropertyListingDetail = (props) => {
   const fetchLeaseOptions = async () => {
     try {
       const res = await SignupLookupDetails({
-        P_PARENT_CODE: "RENT_PAID",
-        P_TYPE: "OPTION",
+        P_PARENT_CODE: 'RENT_PAID',
+        P_TYPE: 'OPTION',
       });
       setLeaseEndData(res?.lookup_details || []);
     } catch (error) {
-      console.error("Error fetching lease end options:", error);
+      console.error('Error fetching lease end options:', error);
     }
   };
 
   const fetchLeaseTermOptions = async () => {
     try {
       const res = await SignupLookupDetails({
-        P_PARENT_CODE: "RLT",
-        P_TYPE: "OPTION",
+        P_PARENT_CODE: 'RLT',
+        P_TYPE: 'OPTION',
       });
       setLeaseTermData(res?.lookup_details || []);
     } catch (error) {
-      console.error("Error fetching lease term options:", error);
+      console.error('Error fetching lease term options:', error);
     }
   };
 
-  const toggleVisibility = (setter) => setter((prev) => !prev);
+  const toggleVisibility = setter => setter(prev => !prev);
 
-  const handleDateSelection = (day) => {
+  const handleDateSelection = day => {
     setSelectedDate(day.dateString);
   };
-  const handleMaxOccupantsChange = (text) => {
+  const handleMaxOccupantsChange = text => {
     setOccupant(text);
     if (text.trim() === '') {
-      setMaxOccupantsError("Maximum number of occupants is required.");
+      setMaxOccupantsError('Maximum number of occupants is required.');
     } else {
-      setMaxOccupantsError("");
+      setMaxOccupantsError('');
     }
   };
   const handleRequestDate = text => {
@@ -108,12 +114,12 @@ const PropertyListingDetail = (props) => {
       setSelectedDateError('');
     }
   };
-  const handleListPriceChange = (text) => {
+  const handleListPriceChange = text => {
     setListPrice(text);
     if (text.trim() === '') {
-      setListPriceError("List price is required.");
+      setListPriceError('List price is required.');
     } else {
-      setListPriceError("");
+      setListPriceError('');
     }
   };
   const renderDropdownItem = (item, selectedItemKey) => (
@@ -126,8 +132,7 @@ const PropertyListingDetail = (props) => {
               ? _COLORS.Kodie_MidLightGreenColor
               : _COLORS.Kodie_WhiteColor,
         },
-      ]}
-    >
+      ]}>
       {item.lookup_key === selectedItemKey ? (
         <AntDesign
           color={_COLORS.Kodie_GreenColor}
@@ -144,70 +149,66 @@ const PropertyListingDetail = (props) => {
       <Text style={DetailsStyle.textItem}>{item.lookup_description}</Text>
     </View>
   );
-  const prereference = `${selectedButtonSmokingId}, ${selectedButtonPetId}, ${selectedButtonconsideredId}`
+  const prereference = `${selectedButtonSmokingId}, ${selectedButtonPetId}, ${selectedButtonconsideredId}`;
   const validateInputs = () => {
     let isValid = true;
     if (selectedDate.trim() === '') {
       setSelectedDateError('Select date is required!');
       isValid = false;
-    }
-    else if (leaseTermValue == '') {
+    } else if (leaseTermValue == '') {
       setlLease_end_valueError(true);
       isValid = false;
-
-    }else 
-    if (Occupant.trim() === '') {
-      setMaxOccupantsError("Maximum number of occupants is required.");
+    } else if (Occupant.trim() === '') {
+      setMaxOccupantsError('Maximum number of occupants is required.');
       isValid = false;
-    } 
-    else if (ListPrice.trim() === '') {
-      setListPriceError("List price is required.");
+    } else if (ListPrice.trim() === '') {
+      setListPriceError('List price is required.');
       isValid = false;
     } else {
-      setMaxOccupantsError("")
-      setListPriceError("");
+      setMaxOccupantsError('');
+      setListPriceError('');
     }
     if (isValid) {
       handleInsertList();
       handle_addlease_Bid();
-     }
-  }
+    }
+  };
   const handle_addlease_Bid = async () => {
     setIsLoading(true);
     const Bid_Data = {
       user_id: loginData?.Login_details?.user_id,
       account_id: loginData?.Login_details?.user_account_id,
       property_id: propertyid,
-      commencement_date: "2024-09-19 18:05:12",
+      commencement_date: '2024-09-19 18:05:12',
       duration: 314,
-      list_price:ListPrice,
-      auto_threshold:"1000",
+      list_price: ListPrice,
+      auto_threshold: '1000',
       notif_type: 1,
       bid_open_reminder: 0,
       bid_open_day: 86,
       bid_open_before: 0,
-      bid_close_reminder: "0",
+      bid_close_reminder: '0',
       bid_close_day: 116,
       bid_close_before: '0',
       new_bid: 0,
-      new_bid_days: "358",
-      new_bid_before: "0",
+      new_bid_days: '358',
+      new_bid_before: '0',
     };
     console.log(Bid_Data);
     try {
       const response = await AddBidDetails(Bid_Data);
-      console.log(response,"bidresponse");
-      setIsLoading(false)
+      console.log(response, 'bidresponse');
+      setIsLoading(false);
     } catch (error) {
-      console.log(error,'fkdd');
+      console.log(error, 'fkdd');
       // Alert.alert('Error', 'Failed to insert market details.');
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   const handleInsertList = async () => {
-    console.log("dsdsadfgds");
-    setIsLoading(true)
+    console.log('dsdsadfgds');
+    setIsLoading(true);
     const data = {
       user_key: loginData?.Login_details?.user_id,
       account_id: loginData?.Login_details?.user_account_id,
@@ -221,11 +222,11 @@ const PropertyListingDetail = (props) => {
       prereference: prereference,
       other: Otherpreference,
     };
-console.log(data);
+    console.log(data);
     try {
       const response = await insertMarketDetails(data);
       Alert.alert('Success', 'Market details have been inserted successfully.');
-      props.navigation.navigate("Properties");
+      props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');
       setOccupant('');
@@ -234,41 +235,55 @@ console.log(data);
       setOtherpreference('');
       setPropertyDescription('');
       console.log(response);
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Failed to insert market details.');
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
-  const allPropertyFilled = propertyDescription && selectedDate && leaseTermValue && Occupant && ListPrice &&leaseEndValue;
-  const allPreferencesFilled = selectedButtonSmokingId && selectedButtonPetId && selectedButtonconsideredId && Otherpreference;
+  const allPropertyFilled =
+    propertyDescription &&
+    selectedDate &&
+    leaseTermValue &&
+    Occupant &&
+    ListPrice &&
+    leaseEndValue;
+  const allPreferencesFilled =
+    selectedButtonSmokingId &&
+    selectedButtonPetId &&
+    selectedButtonconsideredId &&
+    Otherpreference;
   return (
     <SafeAreaView style={DetailsStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate("Properties")}
-        MiddleText="Property Listing Details"
+        onPressLeftButton={() => props.navigation.navigate('Properties')}
+        MiddleText="Property listing details"
       />
 
       <View style={DetailsStyle.headingView}>
-        <Text style={LabelStyles.largeTextBold}>Property Listing Details</Text>
+        <Text style={LabelStyles.largeTextBold}>Property listing details</Text>
       </View>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={DetailsStyle.subContainer}>
           {/* Property Details Section */}
           <SectionToggle
-          titleStyle={{color:allPropertyFilled?_COLORS?.Kodie_GreenColor: _COLORS?.Kodie_BlackColor}}
+            titleStyle={{
+              color: allPropertyFilled
+                ? _COLORS?.Kodie_GreenColor
+                : _COLORS?.Kodie_BlackColor,
+            }}
             title="Other property details"
             isVisible={propertyDetailsVisible}
-            onPress={() => toggleVisibility(setPropertyDetailsVisible)}
-          >
-            <Text style={[LABEL_STYLES.commontext, { marginBottom: 12 }]}>Pitch your property</Text>
+            onPress={() => toggleVisibility(setPropertyDetailsVisible)}>
+            <Text style={[LABEL_STYLES.commontext, {marginBottom: 12}]}>
+              Pitch your property
+            </Text>
             <TextInput
-              style={[DetailsStyle.input, { height: 100 }]}
+              style={[DetailsStyle.input, {height: 100}]}
               placeholder="Enter a sales description of your property"
               value={propertyDescription}
               onChangeText={setPropertyDescription}
@@ -279,21 +294,21 @@ console.log(data);
             />
 
             <View style={DetailsStyle.section}>
-              <Text style={[LABEL_STYLES.commontext, { marginBottom: 12 }]}>
+              <Text style={[LABEL_STYLES.commontext, {marginBottom: 12}]}>
                 Property available from
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
-
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <CalendarModal
                 current={selectedDate}
-                SelectDate={selectedDate || "Select Date"}
+                SelectDate={selectedDate || 'Select Date'}
                 _textInputStyle={{
                   color: selectedDate
                     ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderStyle={{
-                  marginTop: 0, height: 48 ,
+                  marginTop: 0,
+                  height: 48,
                   borderColor: selectedDateError
                     ? _COLORS?.Kodie_redColor
                     : _COLORS?.Kodie_GrayColor,
@@ -316,10 +331,10 @@ console.log(data);
                 _ApplyButton={() => setCalendarModalVisible(false)}
               />
               {selectedDateError ? (
-            <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>
-              {selectedDateError}
-            </Text>
-          ) : null}
+                <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>
+                  {selectedDateError}
+                </Text>
+              ) : null}
             </View>
 
             <DropdownField
@@ -328,20 +343,22 @@ console.log(data);
               placeholder="Select length of lease"
               data={leaseTermData}
               value={leaseTermValue}
-              dropdownStyle={ { borderColor: lease_end_valueError
-                ? _COLORS?.Kodie_redColor
-                : _COLORS?.Kodie_GrayColor,}}
-              onChange={(item) => {setLeaseTermValue(item.lookup_key);
-                setlLease_end_valueError(false);
-
+              dropdownStyle={{
+                borderColor: lease_end_valueError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
               }}
-              renderItem={(item) => renderDropdownItem(item, leaseTermValue)}
+              onChange={item => {
+                setLeaseTermValue(item.lookup_key);
+                setlLease_end_valueError(false);
+              }}
+              renderItem={item => renderDropdownItem(item, leaseTermValue)}
             />
-           { lease_end_valueError ? (
-            <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>
-              {'Please select a Rental lease term!'}
-            </Text>
-          ) : null}
+            {lease_end_valueError ? (
+              <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>
+                {'Please select an option.'}
+              </Text>
+            ) : null}
             <InputField
               label="Maximum number of occupants"
               placeholder="Enter the maximum number of tenants"
@@ -349,12 +366,16 @@ console.log(data);
               Starpoint={'*'}
               onChangeText={handleMaxOccupantsChange}
               keyboardType="number-pad"
-              inputStyle={{borderColor: maxOccupantsError
-                ? _COLORS?.Kodie_redColor
-                : _COLORS?.Kodie_GrayColor}}
+              inputStyle={{
+                borderColor: maxOccupantsError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
+              }}
             />
             {maxOccupantsError ? (
-              <Text style={{ color: 'red', marginLeft: 5,marginTop:5 }}>{maxOccupantsError}</Text>
+              <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>
+                {maxOccupantsError}
+              </Text>
             ) : null}
 
             <InputField
@@ -364,12 +385,16 @@ console.log(data);
               Starpoint={'*'}
               onChangeText={handleListPriceChange}
               keyboardType="number-pad"
-              inputStyle={{borderColor: listPriceError
-                ? _COLORS?.Kodie_redColor
-                : _COLORS?.Kodie_GrayColor}}
+              inputStyle={{
+                borderColor: listPriceError
+                  ? _COLORS?.Kodie_redColor
+                  : _COLORS?.Kodie_GrayColor,
+              }}
             />
             {listPriceError ? (
-              <Text style={{ color: 'red',marginLeft: 5,marginTop:5 }}>{listPriceError}</Text>
+              <Text style={{color: 'red', marginLeft: 5, marginTop: 5}}>
+                {listPriceError}
+              </Text>
             ) : null}
 
             <DropdownField
@@ -377,22 +402,24 @@ console.log(data);
               placeholder="Select rental lease term"
               data={leaseEndData}
               value={leaseEndValue}
-              onChange={(item) => setLeaseEndValue(item.lookup_key)}
-              renderItem={(item) => renderDropdownItem(item, leaseEndValue)}
+              onChange={item => setLeaseEndValue(item.lookup_key)}
+              renderItem={item => renderDropdownItem(item, leaseEndValue)}
             />
-            <DividerIcon />
+              <DividerIcon />
           </SectionToggle>
 
           {/* Preferences Section */}
           <SectionToggle
-          titleStyle={{color:allPreferencesFilled?_COLORS?.Kodie_GreenColor: _COLORS?.Kodie_BlackColor}}
-
+            titleStyle={{
+              color: allPreferencesFilled
+                ? _COLORS?.Kodie_GreenColor
+                : _COLORS?.Kodie_BlackColor,
+            }}
             title="Preferences"
             isVisible={preferencesVisible}
-            onPress={() => toggleVisibility(setPreferencesVisible)}
-          >
+            onPress={() => toggleVisibility(setPreferencesVisible)}>
             <View style={[DetailsStyle.addition_featureView]}>
-              <View style={{ flex: 1 }}>
+              <View style={{flex: 1}}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Smoking allowed?'}
                 </Text>
@@ -407,11 +434,9 @@ console.log(data);
                   secondTabLabel="No"
                 />
               </View>
-              <View style={{ margin: 11 }} />
-              <View style={{ flex: 1 }}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Pets allowed?'}
-                </Text>
+              <View style={{margin: 11}} />
+              <View style={{flex: 1}}>
+                <Text style={LABEL_STYLES.commontext}>{'Pets allowed?'}</Text>
                 <ToggleButton
                   tabValue={selectedButtonPetId}
                   setTabValue={setSelectedButtonPetId}
@@ -423,10 +448,9 @@ console.log(data);
                   secondTabLabel="No"
                 />
               </View>
-
             </View>
             <View style={[DetailsStyle.addition_featureView]}>
-              <View style={{ flex: 1 }}>
+              <View style={{flex: 1}}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Short term rental considered?'}
                 </Text>
@@ -442,7 +466,6 @@ console.log(data);
                   width={'48%'}
                 />
               </View>
-
             </View>
             <InputField
               label="Other"
@@ -450,14 +473,14 @@ console.log(data);
               value={Otherpreference}
               onChangeText={setOtherpreference}
             />
-            <View style={{ marginBottom: '10%' }} />
+            <View style={{marginBottom: '10%'}} />
           </SectionToggle>
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <View style={[DetailsStyle.headingView, { marginTop: 0 }]}>
+      <View style={[DetailsStyle.headingView, {marginTop: 0}]}>
         <CustomSingleButton
-          _ButtonText={"List now"}
+          _ButtonText={'List now'}
           Text_Color={_COLORS.Kodie_WhiteColor}
           text_Size={18}
           marginBottom={12}

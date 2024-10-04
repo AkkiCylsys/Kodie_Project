@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  FlatList,
   ScrollView,
   KeyboardAvoidingView,
   Platform
 } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { BedroomCss } from '../../../screens/Inspection/PropertyInspection/Inspection/Bedroom/BedroomCss';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -143,7 +143,11 @@ const clearState =()=>{
 }
 const handleImageSelect = (images) => {
   console.log(images, "cabinate image");
-  setSelectedImages(images);
+  
+  // Combine the new images with the already selected images
+  const updatedImages = [...selectedImages, ...images];
+
+  setSelectedImages(updatedImages);
   setImageError(false); // Clear the error when an image is selected
   refRBSheet.current.close();
 };
@@ -200,10 +204,10 @@ const handleImageSelect = (images) => {
     <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
-        style={{ flex: 1 }}
+        // style={{ flex: 1 }}
       >
     <ScrollView 
-    showsHorizontalScrollIndicator={false} 
+    nestedScrollEnabled={true}
     contentContainerStyle={{marginBottom:80}} 
     >
       <View style={BedroomCss.secondModal}>
@@ -281,14 +285,19 @@ const handleImageSelect = (images) => {
           {'Upload clear images of the item'}
         </Text>
         
-        {selectedImages.length > 0 ? 
-        <ScrollView style={{}}>
+         {selectedImages.length > 0 ? 
         <FlatList
         data={selectedImages}
         keyExtractor={(item, index) => index.toString()}
         horizontal={true}
         nestedScrollEnabled={true}
-        showsHorizontalScrollIndicator={true} // Set to true to visualize if it's scrolling
+        contentContainerStyle={{
+          height: 100, // Set a fixed height for the scrollable area
+          padding: 10,
+          marginRight:40
+          // width:500
+        }}
+        showsHorizontalScrollIndicator={false} // Set to true to visualize if it's scrolling
           renderItem={({ item }) => (
             
             <Image
@@ -297,8 +306,7 @@ const handleImageSelect = (images) => {
             />
         )}
         />
-        </ScrollView>
-        :null}
+       :null}
         <UploadImageBoxes
           Box_Text={'Add Photo'}
           circlestyle={BedroomCss.circleStyle}

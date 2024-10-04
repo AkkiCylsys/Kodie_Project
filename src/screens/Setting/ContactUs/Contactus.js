@@ -80,7 +80,7 @@ const Contactus = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1,  backgroundColor:_COLORS?.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Contact us'}
@@ -90,7 +90,7 @@ const Contactus = props => {
         <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
         </Text>
         <TextInput
-          style={[ContactusStyle.input, {height: 119}]}
+          style={[ContactusStyle.input, {height: 119,}]}
           value={aboutHelp}
           onChangeText={text => {
             handleAbouthelp(text);

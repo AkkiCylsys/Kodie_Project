@@ -41,7 +41,9 @@ export default SignUpVerification = props => {
   });
 
   const deviceId = DeviceInfo.getDeviceId();
-  const deviceType = DeviceInfo.getDeviceType();
+  // const deviceType = DeviceInfo.getDeviceType();
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  console.log(deviceId,deviceType,'Signup_verification');
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
@@ -192,7 +194,7 @@ export default SignUpVerification = props => {
           ) : null}
           <Text
             style={[
-              LABEL_STYLES.commonMidtext,
+              LABEL_STYLES._texinputLabel,
               SignUpVerificationStyle.textcode,
             ]}>
             {'It may take a few minutes to receive your code. '}

@@ -34,12 +34,13 @@ import {
 } from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import {matrixTransform} from 'react-native-svg/lib/typescript/elements/Shape';
 const PropertyRentalOffer = props => {
   const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '4';
+  // const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  const userRole = '3';
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
@@ -134,8 +135,13 @@ const PropertyRentalOffer = props => {
 
   useFocusEffect(
     React.useCallback(() => {
-      handleGetCurrectOffer();
-    }, [accoutId, isFocus]),
+      {
+        isFocus || accoutId || selectedButton;
+      }
+      {
+        handleGetCurrectOffer();
+      }
+    }, [accoutId, isFocus, selectedButton]),
   );
 
   const searchCurrentOffer = query => {
@@ -353,11 +359,11 @@ const PropertyRentalOffer = props => {
                   name={'map-marker'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
-                  style={{alignSelf: 'center', marginTop: 4}}
+                  style={{marginTop: 5}}
                 />
                 <Text
                   style={PropertyRentalOfferStyle.locationText}
-                  numberOfLines={1}
+                  numberOfLines={2}
                   ellipsizeMode="tail">
                   {item?.location}
                 </Text>
@@ -365,11 +371,16 @@ const PropertyRentalOffer = props => {
             </View>
 
             {item.image_path && item.image_path.length > 0 ? (
-              <Image
-                source={{uri: item.image_path[0]}}
-                style={PropertyRentalOfferStyle.imageStyle}
-                resizeMode="cover"
-              />
+              <View style={{}}>
+                <Image
+                  source={{uri: item.image_path[0]}}
+                  style={[
+                    PropertyRentalOfferStyle.imageStyle,
+                    {width: 90, height: 90},
+                  ]}
+                  resizeMode="cover"
+                />
+              </View>
             ) : (
               <View
                 style={[
@@ -429,59 +440,64 @@ const PropertyRentalOffer = props => {
               </View>
             </View>
           </View>
-
-          <DividerIcon
-            IsShowIcon
-            iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-            onPress={() => handleExpandToggle(item.property_id)}
-          />
+          <View style={{marginTop: 10}}>
+            <DividerIcon
+              IsShowIcon
+              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+              onPress={() => handleExpandToggle(item.property_id)}
+            />
+          </View>
 
           {isExpanded && (
             <View style={PropertyRentalOfferStyle.expandedView}>
               <View style={PropertyRentalOfferStyle.bedCountView}>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <Ionicons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="bed-outline"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <Ionicons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="bed-outline"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
                       ?.Bedrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <MaterialCommunityIcons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="shower-head"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <MaterialCommunityIcons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="shower-head"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
                       ?.Bathrooms || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <Ionicons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="car"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <Ionicons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="car"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
                   <Text style={PropertyRentalOfferStyle.bedcont}>
                     {parkingSpaceValue || '0'}
                   </Text>
                 </View>
                 <View style={PropertyRentalOfferStyle.locationView}>
-                  <MaterialCommunityIcons
-                    color={_COLORS.Kodie_GreenColor}
-                    name="floor-plan"
-                    size={20}
-                    style={PropertyRentalOfferStyle.bedIconView}
-                  />
-                  <Text style={PropertyRentalOfferStyle.bedcont}>
+                  <View style={PropertyRentalOfferStyle.circleIconView}>
+                    <MaterialCommunityIcons
+                      color={_COLORS.Kodie_GreenColor}
+                      name="floor-plan"
+                      size={20} // Adjust size as needed
+                    />
+                  </View>
+                  <Text style={[PropertyRentalOfferStyle.bedcont, {flex: 1}]}>
                     {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
                       ?.Garages || '0'}{' '}
                     m²
@@ -582,7 +598,7 @@ const PropertyRentalOffer = props => {
         Text_Color={_COLORS.Kodie_BlackColor}
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
-        height={40}
+        height={45}
         onPress={() => {}}
         disabled={isLoading ? true : false}
       />
@@ -590,6 +606,9 @@ const PropertyRentalOffer = props => {
 
     if (!hasLandlordRole) {
       return renderSingleButton('My rental applications');
+    }
+    if (userRole === '3') {
+      return renderSingleButton('Offers for my properties');
     }
 
     if (hasLandlordRole) {
@@ -608,7 +627,7 @@ const PropertyRentalOffer = props => {
           }
           LeftButtonborderColor={
             !selectedButton
-              ? _COLORS.Kodie_GrayColor
+              ? _COLORS.Kodie_GreenColor
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressLeftButton={() => {
@@ -627,7 +646,7 @@ const PropertyRentalOffer = props => {
           }
           RightButtonborderColor={
             selectedButton
-              ? _COLORS.Kodie_GrayColor
+              ? _COLORS.Kodie_GreenColor
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressRightButton={() => {

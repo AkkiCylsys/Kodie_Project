@@ -50,7 +50,7 @@ export default PropertyFeature = props => {
     [],
   );
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('key_features_id............', additionalfeatureskeyvalue);
+  console.log('key_features_id............', selectedButtonId);
   console.log('propertyid............', propertyid);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(0);
@@ -404,7 +404,7 @@ export default PropertyFeature = props => {
       UPD_FLOOR_SIZE: florSize,
       UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
-      autolist: selectedButtonId,
+      autolist: property_Detail?.auto_list,
       property_id:
         // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
         //   ? addPropertySecondStepData

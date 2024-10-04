@@ -12,67 +12,87 @@ import {useNavigation} from '@react-navigation/native';
 import {BottomModalSearchRentalStyle} from './BottomModalSearchRentalStyle';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const data = [
-  {
-    id: '1',
-    Data: 'View property details',
-    Icon: (
-      <MaterialIcons
-        name="preview"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-        style={{alignSelf: 'center'}}
-      />
-    ),
-  },
-  {
-    id: '2',
-    Data: 'Make offer',
-    Icon: (
-      <MaterialCommunityIcons
-        name="file-download-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '3',
-    Data: 'Create notice/reminder',
-    Icon: (
-      <Ionicons
-        name="mail-unread-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: '4',
-    Data: 'Message owner',
-    Icon: (
-      <Ionicons
-        name="chatbubbles-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
+import {useSelector} from 'react-redux';
+
 const BottomModalSearchRental = props => {
+  const {propertyId, rentalAmount, bibId, landlordId, searchRentalData} = props;
+  const loginData = useSelector(state => state.authenticationReducer.data);
+
+  // Retrieve user data from Redux state
+  const userAccountId = loginData?.Login_details?.user_account_id;
+  const hasLandlordRoleId = loginData?.Account_details[0]?.user_role_id;
+
   const navigation = useNavigation();
-  // const propertyId = props.propertyId;
-  // const rentalAmount = props.rentalAmount;
-  // const bibId = props.bibId;
-  const {propertyId, rentalAmount, bibId} = props;
-  console.log('propertyId.....', propertyId);
-  console.log('bibId.....', bibId);
+
+  // Data for the modal options
+  const data = [
+    {
+      id: '1',
+      Data: 'View property details',
+      Icon: (
+        <MaterialIcons
+          name="preview"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          style={{alignSelf: 'center'}}
+        />
+      ),
+    },
+    {
+      id: '2',
+      Data: 'Make offer',
+      Icon: (
+        <MaterialCommunityIcons
+          name="file-download-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+    {
+      id: '3',
+      Data: 'Create notice/reminder',
+      Icon: (
+        <Ionicons
+          name="mail-unread-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+    {
+      id: '4',
+      Data: 'Message owner',
+      Icon: (
+        <Ionicons
+          name="chatbubbles-outline"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+        />
+      ),
+    },
+  ];
+
+  // Filter logic for excluding "Make offer"
+  const filteredData = data.filter(item => {
+    // Check if the current item is "Make offer" (id = '2')
+    if (item.id === '2') {
+      // Hide "Make offer" for landlords (roleId 3) or if the user is the landlord of the property
+      if (hasLandlordRoleId === '3' || userAccountId === landlordId) {
+        return false; // Exclude "Make offer"
+      }
+    }
+    return true; // Include other items
+  });
+
+  // Handle modal close
   const handleClose = () => {
     props.onClose();
   };
-  const bottomModalrender = ({item}) => {
+
+  // Rendering each modal option
+  const bottomModalRender = ({item}) => {
     return (
       <TouchableOpacity
         style={BottomModalSearchRentalStyle.container}
@@ -81,6 +101,7 @@ const BottomModalSearchRental = props => {
             navigation.navigate('ViewRentalDetails', {
               propertyId: propertyId,
               rentalAmount: rentalAmount,
+              searchRentalData: searchRentalData,
             });
             handleClose();
           }
@@ -88,18 +109,20 @@ const BottomModalSearchRental = props => {
             navigation.navigate('RentalOffer', {
               propertyId: propertyId,
               bibId: bibId,
-              propertyDetails:props?.propertyDetails
+              propertyDetails: props?.propertyDetails,
             });
             handleClose();
           }
-          if (item?.id == '4') {
-            navigation.navigate('Chat', { 
-              data: props?.propertyDetails, 
-              userid: props?.propertyDetails.landlord_id,
-              chatname:'chatname'
-              
-            });
+          if (item?.id == '3') {
+            navigation.navigate('AddNotices');
+          }
 
+          if (item?.id == '4') {
+            navigation.navigate('Chat', {
+              data: props?.propertyDetails,
+              userid: props?.propertyDetails.landlord_id,
+              chatname: 'chatname',
+            });
             handleClose();
           }
         }}>
@@ -108,15 +131,15 @@ const BottomModalSearchRental = props => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={BottomModalSearchRentalStyle.mainConatiner}>
       <FlatList
-        data={data}
+        data={filteredData}
         scrollEnabled
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{}}
         keyExtractor={item => item?.id}
-        renderItem={bottomModalrender}
+        renderItem={bottomModalRender}
       />
     </View>
   );

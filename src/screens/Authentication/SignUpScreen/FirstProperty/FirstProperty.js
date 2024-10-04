@@ -1,5 +1,5 @@
 //ScreenNo:13
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,32 +11,32 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
-import { FirstPropertyStyle } from './FirstPropertyStyle';
+import {FirstPropertyStyle} from './FirstPropertyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
+import {_goBack} from '../../../../services/CommonServices';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { _COLORS, FONTFAMILY } from '../../../../Themes';
-import { LABEL_STYLES, IMAGES } from '../../../../Themes';
-import { Dropdown } from 'react-native-element-dropdown';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import {LABEL_STYLES, IMAGES} from '../../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
-import { BackHandler } from 'react-native';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {BackHandler} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { signupAccountApiActionCreator } from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import {signupAccountApiActionCreator} from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -66,7 +66,7 @@ const firstIndicatorSignUpStepStyle = {
   labelAlign: 'center',
 };
 
-const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
     name: 'feed',
     color: stepStatus === 'finished' ? '#ffffff' : '#ffffff',
@@ -113,10 +113,22 @@ export default FirstProperty = props => {
   let country_code = props?.route?.params?.country_code;
   let company_address = props?.route?.params?.company_address;
   let password = props?.route?.params?.password;
-  console.log("individual",IndividualservicesValue,IndividualWebSide,IndividualselectJobType,Individualp_longitude);
-  console.log("Company",CompanyservicesValue,CompanyWebSide,Companyp_latitude,CompanyservicesValue);
-  console.log("selectedServiceKeysString",selectedServiceKeysString);
-  console.log("user_key",password);
+  console.log(
+    'individual',
+    IndividualservicesValue,
+    IndividualWebSide,
+    IndividualselectJobType,
+    Individualp_longitude,
+  );
+  console.log(
+    'Company',
+    CompanyservicesValue,
+    CompanyWebSide,
+    Companyp_latitude,
+    CompanyservicesValue,
+  );
+  console.log('selectedServiceKeysString', selectedServiceKeysString);
+  console.log('user_key', password);
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyLocation, setPropertyLocation] = useState('');
@@ -215,11 +227,11 @@ export default FirstProperty = props => {
     }, [IsMap, IsSearch]),
   );
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Reception rooms': CountReception },
-    { 'Parking / garage spaces': CountParking },
-    { 'On-street parking': CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Reception rooms': CountReception},
+    {'Parking / garage spaces': CountParking},
+    {'On-street parking': CountParkingStreet},
   ];
   const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
   console.log(PreFriedly);
@@ -301,21 +313,21 @@ export default FirstProperty = props => {
       </View>
     );
   };
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Account'
         : position === 1
-          ? 'About you'
-          : position === 2
-            ? 'First property'
-            : 'circle';
+        ? 'About you'
+        : position === 2
+        ? 'First property'
+        : 'circle';
 
     return (
       <View style={{}}>
@@ -528,7 +540,10 @@ export default FirstProperty = props => {
     formData.append('run_your_business', newData?.run_your_business);
     formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
     formData.append('category_service_offer', newData?.category_service_offer);
-    formData.append('category_service_offer_individual', newData?.category_service_offer_individual);
+    formData.append(
+      'category_service_offer_individual',
+      newData?.category_service_offer_individual,
+    );
     formData.append(
       'category_service_perform',
       newData?.category_service_perform,
@@ -538,11 +553,20 @@ export default FirstProperty = props => {
       newData?.category_service_perform_individual,
     );
     formData.append('company_address', newData?.company_address);
-    formData.append('company_address_individual', newData?.company_address_individual);
+    formData.append(
+      'company_address_individual',
+      newData?.company_address_individual,
+    );
     formData.append('company_longitude', newData?.company_longitude);
-    formData.append('company_longitude_individual', newData?.company_longitude_individual);
+    formData.append(
+      'company_longitude_individual',
+      newData?.company_longitude_individual,
+    );
     formData.append('company_latitude', newData?.company_latitude);
-    formData.append('company_latitude_individual', newData?.company_latitude_individual);
+    formData.append(
+      'company_latitude_individual',
+      newData?.company_latitude_individual,
+    );
     formData.append('website', newData?.website);
     formData.append('p_website_individual', newData?.p_website_individual);
     formData.append('bio', newData?.bio);
@@ -716,7 +740,10 @@ export default FirstProperty = props => {
     formData.append('run_your_business', newData?.run_your_business);
     formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
     formData.append('category_service_offer', newData?.category_service_offer);
-    formData.append('category_service_offer_individual', newData?.category_service_offer_individual);
+    formData.append(
+      'category_service_offer_individual',
+      newData?.category_service_offer_individual,
+    );
     formData.append(
       'category_service_perform',
       newData?.category_service_perform,
@@ -726,11 +753,20 @@ export default FirstProperty = props => {
       newData?.category_service_perform_individual,
     );
     formData.append('company_address', newData?.company_address);
-    formData.append('company_address_individual', newData?.company_address_individual);
+    formData.append(
+      'company_address_individual',
+      newData?.company_address_individual,
+    );
     formData.append('company_longitude', newData?.company_longitude);
-    formData.append('company_longitude_individual', newData?.company_longitude_individual);
+    formData.append(
+      'company_longitude_individual',
+      newData?.company_longitude_individual,
+    );
     formData.append('company_latitude', newData?.company_latitude);
-    formData.append('company_latitude_individual', newData?.company_latitude_individual);
+    formData.append(
+      'company_latitude_individual',
+      newData?.company_latitude_individual,
+    );
     formData.append('website', newData?.website);
     formData.append('p_website_individual', newData?.p_website_individual);
     formData.append('bio', newData?.bio);
@@ -739,7 +775,7 @@ export default FirstProperty = props => {
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
-    if (res.data.success === true) {
+    if (res.data.status === true) {
       setIsLoading(false);
       registerUserfill();
 
@@ -852,9 +888,9 @@ export default FirstProperty = props => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
         <TopHeader
@@ -880,8 +916,7 @@ export default FirstProperty = props => {
                 onRegionChange={onRegionChange}
                 Maplat={latitude}
                 Maplng={longitude}
-              iscancel={()=> setIsMap(false)}
-
+                iscancel={() => setIsMap(false)}
               />
               <View
                 style={{
@@ -912,7 +947,7 @@ export default FirstProperty = props => {
               <TouchableOpacity
                 style={FirstPropertyStyle.BtnContainer}
                 onPress={ConfirmAddress}>
-                <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+                <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
               </TouchableOpacity>
             </View>
           ) : IsSearch ? (
@@ -946,12 +981,20 @@ export default FirstProperty = props => {
                 </View>
                 <View style={FirstPropertyStyle.card}>
                   <View style={FirstPropertyStyle.inputContainer}>
-                    <Text style={LABEL_STYLES._texinputLabel}>Location
-                    <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
+                    <Text style={LABEL_STYLES._texinputLabel}>
+                      Location
+                      <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                    </Text>
                     <View style={FirstPropertyStyle.locationConView}>
-                      <View style={[FirstPropertyStyle.locationContainer,{
-                    borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                  }]}>
+                      <View
+                        style={[
+                          FirstPropertyStyle.locationContainer,
+                          {
+                            borderColor: error
+                              ? _COLORS?.Kodie_redColor
+                              : _COLORS?.Kodie_LightGrayColor,
+                          },
+                        ]}>
                         <TextInput
                           style={FirstPropertyStyle.locationInput}
                           value={propertyLocation}
@@ -969,13 +1012,17 @@ export default FirstProperty = props => {
                         />
                       </View>
                       <TouchableOpacity
-                        style={[FirstPropertyStyle.locationIconView,{
-                          borderColor: error ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                        }]}
+                        style={[
+                          FirstPropertyStyle.locationIconView,
+                          {
+                            borderColor: error
+                              ? _COLORS?.Kodie_redColor
+                              : _COLORS?.Kodie_LightGrayColor,
+                          },
+                        ]}
                         onPress={() => {
                           setIsMap(true);
-                      handleTextInputFocus();
-
+                          handleTextInputFocus();
                         }}>
                         <Octicons
                           name={'location'}
@@ -986,18 +1033,25 @@ export default FirstProperty = props => {
                       </TouchableOpacity>
                     </View>
                     {error ? (
-                  <Text style={FirstPropertyStyle?.Error_Text}>{error}</Text>
-                ) : null}
+                      <Text style={FirstPropertyStyle?.Error_Text}>
+                        {error}
+                      </Text>
+                    ) : null}
                   </View>
-                  <View style={FirstPropertyStyle.inputContainer}>
-                    <Text style={LABEL_STYLES._texinputLabel}>Notes<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text></Text>
+                  <View style={[FirstPropertyStyle.inputContainer]}>
+                    <Text style={LABEL_STYLES._texinputLabel}>
+                      Notes
+                      <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                    </Text>
                     <TextInput
-                    
-                      style={[FirstPropertyStyle.input,{
-                    
-                        borderColor: notesError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                      
-                    }]}
+                      style={[
+                        FirstPropertyStyle.input,
+                        {
+                          borderColor: notesError
+                            ? _COLORS?.Kodie_redColor
+                            : _COLORS?.Kodie_LightGrayColor,
+                        },
+                      ]}
                       value={propertyDesc}
                       onChangeText={handleNote}
                       placeholder="Add any information about your property"
@@ -1005,17 +1059,16 @@ export default FirstProperty = props => {
                       multiline
                       numberOfLines={5}
                       textAlignVertical={'top'}
-                  onBlur={() => handleNote(propertyDesc)}
-
+                      onBlur={() => handleNote(propertyDesc)}
                     />
                     <Text style={FirstPropertyStyle.characterLimit}>
                       {propertyDesc.length}/1000
                     </Text>
                     {notesError ? (
-                  <Text style={FirstPropertyStyle.Error_Text}>
-                    {notesError}
-                  </Text>
-                ) : null}
+                      <Text style={FirstPropertyStyle.Error_Text}>
+                        {notesError}
+                      </Text>
+                    ) : null}
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text style={LABEL_STYLES._texinputLabel}>
@@ -1023,14 +1076,17 @@ export default FirstProperty = props => {
                       <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                     </Text>
                     <Dropdown
-                      style={[FirstPropertyStyle.dropdown,{
-                    
-                        borderColor: propertyError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                      
-                    }]}
+                      style={[
+                        FirstPropertyStyle.dropdown,
+                        {
+                          borderColor: propertyError
+                            ? _COLORS?.Kodie_redColor
+                            : _COLORS?.Kodie_LightGrayColor,
+                        },
+                      ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
+                        {color: _COLORS.Kodie_LightGrayColor},
                       ]}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
@@ -1043,18 +1099,17 @@ export default FirstProperty = props => {
                       value={property_value}
                       onChange={item => {
                         setProperty_value(item.lookup_key);
-                    setPropertyError('');
-
+                        setPropertyError('');
                       }}
                       renderItem={propertyType_render}
                     />
                     {propertyError ? (
-                  <Text style={FirstPropertyStyle.Error_Text}>
-                    {propertyError}
-                  </Text>
-                ) : null}
+                      <Text style={FirstPropertyStyle.Error_Text}>
+                        {propertyError}
+                      </Text>
+                    ) : null}
                   </View>
-                 
+
                   <Text
                     style={[
                       LABEL_STYLES._texinputLabel,
@@ -1113,7 +1168,7 @@ export default FirstProperty = props => {
                             style={FirstPropertyStyle.flor_input_field}
                             value={buildingFlorSize}
                             onChangeText={setBuildingFlorSize}
-                            placeholder="m2"
+                            placeholder="- m2"
                             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                             keyboardType="number-pad"
                           />
@@ -1132,7 +1187,7 @@ export default FirstProperty = props => {
                             style={FirstPropertyStyle.flor_input_field}
                             value={landArea}
                             onChangeText={setLandArea}
-                            placeholder="m2"
+                            placeholder="- m2"
                             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                             keyboardType="number-pad"
                           />
@@ -1149,7 +1204,7 @@ export default FirstProperty = props => {
                         {'Additional features'}
                       </Text>
                       <View style={[FirstPropertyStyle.addition_featureView]}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex: 1}}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Furnished?'}
                           </Text>
@@ -1164,8 +1219,8 @@ export default FirstProperty = props => {
                             secondTabLabel="No"
                           />
                         </View>
-                        <View style={{ margin: 11 }} />
-                        <View style={{ flex: 1 }}>
+                        <View style={{margin: 11}} />
+                        <View style={{flex: 1}}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'External storage?'}
                           </Text>
@@ -1182,7 +1237,7 @@ export default FirstProperty = props => {
                         </View>
                       </View>
                       <View style={FirstPropertyStyle.addition_featureView}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex: 1}}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Garden?'}
                           </Text>
@@ -1197,8 +1252,8 @@ export default FirstProperty = props => {
                             secondTabLabel="No"
                           />
                         </View>
-                        <View style={{ margin: 11 }} />
-                        <View style={{ flex: 1 }}>
+                        <View style={{margin: 11}} />
+                        <View style={{flex: 1}}>
                           <Text style={FirstPropertyStyle.Furnished_Text}>
                             {'Disability access?'}
                           </Text>
@@ -1264,12 +1319,19 @@ export default FirstProperty = props => {
                           fontSize: 14,
                           color: _COLORS.Kodie_WhiteColor,
                           fontFamily: FONTFAMILY.K_Medium,
-                        
                         }}
-                        styleTextDropdown={{ marginLeft: 20 , paddingHorizontal:
-                          additionalfeatureskeyvalue.length > 0 ? 10 : 5,}}
-                        styleDropdownMenu={[FirstPropertyStyle.dropdown,{ paddingHorizontal:
-                          additionalfeatureskeyvalue.length > 0 ? 10 : 5,}]}
+                        styleTextDropdown={{
+                          marginLeft: 20,
+                          paddingHorizontal:
+                            additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                        }}
+                        styleDropdownMenu={[
+                          FirstPropertyStyle.dropdown,
+                          {
+                            paddingHorizontal:
+                              additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                          },
+                        ]}
                         submitButtonColor={_COLORS.Kodie_GreenColor}
                         submitButtonText={
                           additionalfeatureskeyvalue.length > 0
@@ -1280,7 +1342,7 @@ export default FirstProperty = props => {
                     </View>
                   </View>
                 </View>
-                <View style={{ marginHorizontal: 16 }}>
+                <View style={{marginHorizontal: 16}}>
                   <CustomSingleButton
                     disabled={isLoading ? true : false}
                     _ButtonText={'Save'}
@@ -1298,7 +1360,11 @@ export default FirstProperty = props => {
                         setNotesError('Please enter notes!');
                         setPropertyError('');
                         isValid = false;
-                      }   else if (property_value === null || property_value === undefined || property_value <= 0)  {
+                      } else if (
+                        property_value === null ||
+                        property_value === undefined ||
+                        property_value <= 0
+                      ) {
                         setError(''); // Clear previous errors
                         setNotesError('');
                         setPropertyError('Please select a property type!');
@@ -1309,16 +1375,15 @@ export default FirstProperty = props => {
                         setNotesError('');
                         setPropertyError('');
                       }
-                  
+
                       if (isValid) {
                         handleSaveSignup();
                       }
-                      
                     }}
                     marginBottom={20}
                   />
                 </View>
-                <View style={{ marginHorizontal: 16 }}>
+                <View style={{marginHorizontal: 16}}>
                   <CustomSingleButton
                     disabled={isLoading ? true : false}
                     _ButtonText={'Fill these details out later'}
@@ -1329,7 +1394,6 @@ export default FirstProperty = props => {
                       // alert('kk')
                     }}
                     marginBottom={20}
-
                   />
                 </View>
                 <TouchableOpacity

@@ -15,7 +15,7 @@ import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import moment from 'moment/moment';
 import { Config } from '../../../../Config';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import { useSelector } from 'react-redux';
 
@@ -31,15 +31,15 @@ const Schedule = (props) => {
 const TIM_KEY = props?.TIM_KEY;
 const newStatus = props?.newStatus;
 console.log("newStatus",newStatus);
-  useEffect(()=>{
-    if(isFoucus){
-      if (newStatus === 1 || newStatus == null || newStatus === '') {
-        getInspectionDetails();
-      }
-    Area_key();
-    fetchData();
+useFocusEffect(
+  React.useCallback(() => {
+    if (newStatus === 1 || newStatus == null || newStatus === '') {
+      getInspectionDetails(); // Only call when the screen is focused
     }
-  },[isFoucus])
+    Area_key(); // Call whenever screen is focused
+    fetchData(); // Call whenever screen is focused
+  }, [newStatus]) // Dependencies: newStatus can trigger this when it changes
+);
   const fetchData = async () => {
     if (
       loginData?.Login_details?.user_id ||

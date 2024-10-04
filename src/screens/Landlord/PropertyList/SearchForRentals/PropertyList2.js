@@ -90,7 +90,7 @@ const PropertyList2 = props => {
   console.log('country....', country);
   console.log('state....', state);
   console.log('proteryTypeValue....', proteryTypeValue);
-  const propertyArray= proteryTypeValue.join(",");
+  const propertyArray = proteryTypeValue.join(',');
 
   useEffect(() => {
     handle_property_Type();
@@ -109,7 +109,7 @@ const PropertyList2 = props => {
     input_petFrendly: selectPetFriendlyBtnId,
     input_secureDeposit: secureByDepositBtnId,
     input_addtional_keyFeature: additionalfeatureskeyvalue,
-    city: city,
+    city: city ? city : state,
   };
   useFocusEffect(
     React.useCallback(() => {
@@ -202,7 +202,7 @@ const PropertyList2 = props => {
   };
   const onSelectedItemsPropertyChange = selectedItems => {
     setProteryTypeValue(selectedItems);
-                // setProteryTypeValueError(false);
+    // setProteryTypeValueError(false);
   };
 
   // renderItem....
@@ -330,11 +330,11 @@ const PropertyList2 = props => {
   };
 
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Reception rooms': CountReception },
-    { 'Parking / garage spaces': CountParking },
-    { 'On-street parking': CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Reception rooms': CountReception},
+    {'Parking / garage spaces': CountParking},
+    {'On-street parking': CountParkingStreet},
   ];
   console.log('AllCountsData....', AllCountsData);
   const updateCount = (type, operation) => {
@@ -426,7 +426,6 @@ const PropertyList2 = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            
             onRegionChange={onRegionChange}
             // onRegionChangeComplete={onRegionChangeComplete}
             Maplat={latitude}
@@ -521,61 +520,63 @@ const PropertyList2 = props => {
             {locationError ? (
               <Text style={PropertyList2Css.error_text}>{locationError}</Text>
             ) : null}
-            <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>Property Type:</Text>
+            <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
+              Property Type:
+            </Text>
             <MultiSelect
-                hideDropdown
-                items={proteryTypeData}
-                uniqueKey="lookup_key"
-                noItemsText={
-                  'The feature you are searching for is not available on the list'
-                }
-                onSelectedItemsChange={onSelectedItemsPropertyChange}
-                selectedItems={proteryTypeValue}
-                selectText="Select option"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={item => {
-                  console.warn(item);
-                  // setAdditionalFeaturesKeyValue(item)
-                }}
-                tagBorderColor={_COLORS.Kodie_BlackColor}
-                selectedItemTextColor={_COLORS.Kodie_GreenColor}
-                selectedItemIconColor={_COLORS.Kodie_GreenColor}
-                itemTextColor="#000"
-                displayKey="lookup_description"
-                searchInputStyle={PropertyList2Css.searchInput}
-                styleListContainer={PropertyList2Css.listContainer}
-                styleRowList={PropertyList2Css.rowList}
-                tagContainerStyle={PropertyList2Css.tagContainer}
-                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
-                styleTextTag={PropertyList2Css.textTag}
-                styleTextDropdown={[
-                  PropertyList2Css.textDropdown,
-                  {
-                    paddingHorizontal:
-                    proteryTypeValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                styleDropdownMenu={[
-                  PropertyList2Css.dropdownMenu,
-                  {
-                    paddingHorizontal:
-                    proteryTypeValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                submitButtonColor={_COLORS.Kodie_GreenColor}
-                submitButtonText={
-                  proteryTypeValue.length > 0 ? 'Done' : 'Cancel'
-                }
-              />
-           
+              hideDropdown
+              items={proteryTypeData}
+              uniqueKey="lookup_key"
+              noItemsText={
+                'The feature you are searching for is not available on the list'
+              }
+              onSelectedItemsChange={onSelectedItemsPropertyChange}
+              selectedItems={proteryTypeValue}
+              selectText="Select option"
+              searchInputPlaceholderText="Search Items..."
+              onChangeInput={item => {
+                console.warn(item);
+                // setAdditionalFeaturesKeyValue(item)
+              }}
+              tagBorderColor={_COLORS.Kodie_BlackColor}
+              selectedItemTextColor={_COLORS.Kodie_GreenColor}
+              selectedItemIconColor={_COLORS.Kodie_GreenColor}
+              itemTextColor="#000"
+              displayKey="lookup_description"
+              searchInputStyle={PropertyList2Css.searchInput}
+              styleListContainer={PropertyList2Css.listContainer}
+              styleRowList={PropertyList2Css.rowList}
+              tagContainerStyle={PropertyList2Css.tagContainer}
+              tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+              styleTextTag={PropertyList2Css.textTag}
+              styleTextDropdown={[
+                PropertyList2Css.textDropdown,
+                {
+                  paddingHorizontal: proteryTypeValue.length > 0 ? 10 : 5,
+                },
+              ]}
+              styleDropdownMenu={[
+                PropertyList2Css.dropdownMenu,
+                {
+                  paddingHorizontal: proteryTypeValue.length > 0 ? 10 : 5,
+                },
+              ]}
+              submitButtonColor={_COLORS.Kodie_GreenColor}
+              submitButtonText={proteryTypeValue.length > 0 ? 'Done' : 'Cancel'}
+            />
+
             {proteryTypeValueError ? (
               <Text style={PropertyList2Css.error_text}>
                 {'Property type is required!'}
               </Text>
             ) : null}
             <View style={PropertyList2Css.rowView}>
-              <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>Min Price:</Text>
-              <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>Max Price:</Text>
+              <Text style={[LABEL_STYLES.commontext, {marginTop: 15}]}>
+                Min Price:
+              </Text>
+              <Text style={[LABEL_STYLES.commontext, {marginTop: 15}]}>
+                Max Price:
+              </Text>
             </View>
             <RangeSlider
               from={1}
@@ -585,42 +586,44 @@ const PropertyList2 = props => {
               onLowRange={handleminRange}
               onLowrange={2}
             />
-           <View style={PropertyList2Css.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>Key features</Text>
-            <View>
-              <Counter
-                label="Bedrooms"
-                count={CountBedroom}
-                onIncrease={() => updateCount('Bedroom', 'increase')}
-                onDecrease={() => updateCount('Bedroom', 'decrease')}
-              />
-              <Counter
-                label="Bathrooms"
-                count={CountBathroom}
-                onIncrease={() => updateCount('Bathroom', 'increase')}
-                onDecrease={() => updateCount('Bathroom', 'decrease')}
-              />
-              <Counter
-                label="Reception rooms"
-                count={CountReception}
-                onIncrease={() => updateCount('Reception', 'increase')}
-                onDecrease={() => updateCount('Reception', 'decrease')}
-              />
-              <Counter
-                label="Parking / garage spaces"
-                count={CountParking}
-                onIncrease={() => updateCount('Parking', 'increase')}
-                onDecrease={() => updateCount('Parking', 'decrease')}
-              />
-              <Counter
-                label="On-street parking"
-                count={CountParkingStreet}
-                onIncrease={() => updateCount('ParkingStreet', 'increase')}
-                onDecrease={() => updateCount('ParkingStreet', 'decrease')}
-              />
+            <View style={PropertyList2Css.inputContainer}>
+              <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
+                Key features
+              </Text>
+              <View style={{flex: 1}}>
+                <Counter
+                  label="Bedrooms"
+                  count={CountBedroom}
+                  onIncrease={() => updateCount('Bedroom', 'increase')}
+                  onDecrease={() => updateCount('Bedroom', 'decrease')}
+                />
+                <Counter
+                  label="Bathrooms"
+                  count={CountBathroom}
+                  onIncrease={() => updateCount('Bathroom', 'increase')}
+                  onDecrease={() => updateCount('Bathroom', 'decrease')}
+                />
+                <Counter
+                  label="Reception rooms"
+                  count={CountReception}
+                  onIncrease={() => updateCount('Reception', 'increase')}
+                  onDecrease={() => updateCount('Reception', 'decrease')}
+                />
+                <Counter
+                  label="Parking / garage spaces"
+                  count={CountParking}
+                  onIncrease={() => updateCount('Parking', 'increase')}
+                  onDecrease={() => updateCount('Parking', 'decrease')}
+                />
+                <Counter
+                  label="On-street parking"
+                  count={CountParkingStreet}
+                  onIncrease={() => updateCount('ParkingStreet', 'increase')}
+                  onDecrease={() => updateCount('ParkingStreet', 'decrease')}
+                />
+              </View>
             </View>
-                    </View>
-                    <View>
+            <View>
               <View style={PropertyList2Css.key_feature_mainView}>
                 <View style={PropertyList2Css.key_feature_subView}>
                   <Text style={PropertyList2Css.key_feature_Text}>
@@ -660,7 +663,7 @@ const PropertyList2 = props => {
               </View>
             </View>
 
-            <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>
+            <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
               {'Additional features'}
             </Text>
             {/* change request ui  */}
@@ -673,43 +676,36 @@ const PropertyList2 = props => {
                   ]}>
                   {'Furnished?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
-                  <ToggleButton
-                    tabValue={furnished}
-                    setTabValue={setFurnished}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                    width={180}
-                  />
-                </View>
+                <ToggleButton
+                  tabValue={furnished}
+                  setTabValue={setFurnished}
+                  activeColor={_COLORS.Kodie_GreenColor}
+                  inactiveColor={_COLORS.Kodie_WhiteColor}
+                  activeTextColor={_COLORS.Kodie_WhiteColor}
+                  inactiveTextColor={_COLORS.Kodie_BlackColor}
+                  firstTabLabel="Yes"
+                  secondTabLabel="No"
+                />
               </View>
-
+              <View style={{margin: 11}} />
               <View style={PropertyList2Css.featureItem}>
-              <Text
+                <Text
                   style={[
                     PropertyList2Css.inputText,
                     {alignSelf: 'flex-start'},
                   ]}>
                   {'External storage?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
-                  <ToggleButton
-                    tabValue={externalStorage}
-                    setTabValue={setExternalStorage}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                    width={180}
-                  />
-                </View>
-                
+                <ToggleButton
+                  tabValue={externalStorage}
+                  setTabValue={setExternalStorage}
+                  activeColor={_COLORS.Kodie_GreenColor}
+                  inactiveColor={_COLORS.Kodie_WhiteColor}
+                  activeTextColor={_COLORS.Kodie_WhiteColor}
+                  inactiveTextColor={_COLORS.Kodie_BlackColor}
+                  firstTabLabel="Yes"
+                  secondTabLabel="No"
+                />
               </View>
             </View>
 
@@ -722,48 +718,42 @@ const PropertyList2 = props => {
                   ]}>
                   {'Garden?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
-                  <ToggleButton
-                    tabValue={garden}
-                    setTabValue={setGarden}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                    width={180}
-                  />
-                </View>
+                <ToggleButton
+                  tabValue={garden}
+                  setTabValue={setGarden}
+                  activeColor={_COLORS.Kodie_GreenColor}
+                  inactiveColor={_COLORS.Kodie_WhiteColor}
+                  activeTextColor={_COLORS.Kodie_WhiteColor}
+                  inactiveTextColor={_COLORS.Kodie_BlackColor}
+                  firstTabLabel="Yes"
+                  secondTabLabel="No"
+                />
               </View>
-
+              <View style={{margin: 11}} />
               <View style={PropertyList2Css.featureItem}>
-              <Text
+                <Text
                   style={[
                     PropertyList2Css.inputText,
                     {alignSelf: 'flex-start'},
                   ]}>
                   {'Pets allowed?'}
                 </Text>
-                <View style={PropertyList2Css.btn_main_view}>
-                  <ToggleButton
-                    tabValue={petAllowed}
-                    setTabValue={setPetAllowed}
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel="Yes"
-                    secondTabLabel="No"
-                    width={180}
-                  />
-                </View>
+                <ToggleButton
+                  tabValue={petAllowed}
+                  setTabValue={setPetAllowed}
+                  activeColor={_COLORS.Kodie_GreenColor}
+                  inactiveColor={_COLORS.Kodie_WhiteColor}
+                  activeTextColor={_COLORS.Kodie_WhiteColor}
+                  inactiveTextColor={_COLORS.Kodie_BlackColor}
+                  firstTabLabel="Yes"
+                  secondTabLabel="No"
+                />
               </View>
             </View>
 
             {/* ....... */}
 
-            <Text style={[LABEL_STYLES._texinputLabel,{marginTop:15}]}>
+            <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
               {'Additional key features'}
             </Text>
             {/* <MultiSelect
@@ -838,14 +828,16 @@ const PropertyList2 = props => {
                 PropertyList2Css.textDropdown,
                 {
                   paddingHorizontal:
-                  additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                    additionalfeatureskeyvalue.length > 0 ? 10 : 5,
                 },
               ]}
-              styleDropdownMenu={[PropertyList2Css.dropdownMenu,{
-                paddingHorizontal:
-                  additionalfeatureskeyvalue.length > 0 ? 10 : 5,
-                
-              }]}
+              styleDropdownMenu={[
+                PropertyList2Css.dropdownMenu,
+                {
+                  paddingHorizontal:
+                    additionalfeatureskeyvalue.length > 0 ? 10 : 5,
+                },
+              ]}
               submitButtonColor={_COLORS.Kodie_GreenColor}
               submitButtonText={
                 additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'

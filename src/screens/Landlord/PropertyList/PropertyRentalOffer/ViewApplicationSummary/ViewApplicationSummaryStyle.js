@@ -3,7 +3,9 @@ import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 export const ViewApplicationSummaryStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    marginBottom: 200,
     // marginHorizontal: 16,
+    marginTop:15
   },
   applicationSumDet: {
     fontSize: 16,
@@ -14,8 +16,9 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     // marginVertical: 10,
+    // marginTop: 15,
   },
-  rowStyle:{
+  rowStyle: {
     flexDirection: 'row',
   },
   down_Arrow_icon: {
@@ -26,7 +29,7 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   headingText: {
-    fontSize: 14,
+    fontSize: 16,
     color: _COLORS?.Kodie_BlackColor,
     fontFamily: FONTFAMILY?.K_Bold,
     marginVertical: 10,
@@ -41,9 +44,9 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_ExtraLightOrange,
     marginVertical: 10,
     paddingLeft: 10,
-    height:100
+    height: 100,
   },
-  occupantNumberStyle:{
+  occupantNumberStyle: {
     alignSelf: 'center',
     fontSize: 14,
     color: _COLORS?.Kodie_BlackColor,
@@ -65,14 +68,14 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-    width: 160,
+    width: 180,
   },
   occupants_email: {
     flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-    width: 160,
+    width: 180,
   },
   inspections: {
     fontFamily: FONTFAMILY.K_Bold,
@@ -88,15 +91,15 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
   },
   textContainer: {
     // flex:1,
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 10,
     // borderWidth:1
   },
   pdfInfo: {
-    flex:1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding:10,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
   },
   pdfName: {
     flex: 0.5,
@@ -113,27 +116,27 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
   pdfIcon: {
     width: 45,
     height: 45,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   crossIcon: {
     flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-    position: "absolute",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    position: 'absolute',
     top: 20,
     right: 5,
     zIndex: 1,
   },
-  screenReportMainview:{
+  screenReportMainview: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop:40,
-    marginBottom:10
+    marginTop: 40,
+    marginBottom: 10,
   },
   errorText: {
     color: _COLORS.Kodie_redColor,
     fontFamily: FONTFAMILY?.K_Medium,
     fontSize: 14,
-    marginBottom:12
+    marginBottom: 12,
   },
 });

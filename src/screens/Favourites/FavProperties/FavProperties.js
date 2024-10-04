@@ -41,7 +41,7 @@ const FavProperties = () => {
   const [rentalAmount, setRentalAmount] = useState('');
   const [bibId, setBidId] = useState('');
   const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
-
+  const [landlordId, setLandlordId] = useState([]);
   useEffect(() => {
     handleGetFavouriteItem();
   }, []);
@@ -180,6 +180,7 @@ const FavProperties = () => {
                   setRentalAmount(item?.rental_amount);
                   setBidId(item?.bid_id);
                   setPropertyDetailsItem(item);
+                  setLandlordId(item?.landlord_id);
                 }}>
                 <Entypo
                   name="dots-three-horizontal"
@@ -241,7 +242,9 @@ const FavProperties = () => {
                 size={16}
                 style={FavPropertyStyle.bedIconView}
               />
-              <Text style={FavPropertyStyle.bedcont}>{item?.floor_size}m2</Text>
+              <Text style={FavPropertyStyle.bedcont}>
+                {item?.floor_size || '0'}m2
+              </Text>
             </View>
           </View>
         </View>
@@ -276,6 +279,7 @@ const FavProperties = () => {
           rentalAmount={rentalAmount}
           bibId={bibId}
           propertyDetails={propertyDetailsItem}
+          landlordId={landlordId}
         />
       </CustomRBSheet>
     </View>

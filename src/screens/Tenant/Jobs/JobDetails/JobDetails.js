@@ -55,7 +55,7 @@ const Apartment_data = [
 const JobDetails = props => {
   const dispatch = useDispatch();
   const isFocued = useIsFocused();
-  const {JobId, editMode,View_Job_Details,job_id,jobDocTab} = props?.route?.params;
+  const {JobId, editMode,View_Job_Details,job_id,jobDocTab,JOB_ID} = props?.route?.params;
   const SearchJobId = props.route.params.SearchJobId;
   const searchView = props.route.params.searchView;
   console.log('SearchJobId...', SearchJobId, searchView);

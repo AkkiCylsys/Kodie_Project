@@ -223,7 +223,7 @@ const OfferForMyProperties = () => {
       isApproveApplication ||
       item?.landlord_finalize === 0;
 
-    const isLeftButtonDisable = item?.landlord_approve === -1;
+    const isLeftButtonDisable = item?.landlord_approve === -1 || item?.landlord_finalize === 0;
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
@@ -300,7 +300,7 @@ const OfferForMyProperties = () => {
                     {item?.property_type}
                   </Text>
                   <Text style={OfferForMyPropertiesStyle.cityText}>
-                    {item?.city}
+                    {item?.city ?item?.city : item?.state}
                   </Text>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>

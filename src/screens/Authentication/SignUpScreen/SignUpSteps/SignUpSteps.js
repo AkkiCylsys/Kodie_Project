@@ -298,7 +298,7 @@ const SignUpSteps = props => {
         user_key: user_key,
         image: ImageName,
         Bio: bio,
-        country_code: country_Code_Get,
+        country_code: '+61',
         password: password,
       });
     }
@@ -637,7 +637,7 @@ const SignUpSteps = props => {
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
-            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack();
           }}
         />
         <View style={SignUpStepStyle.container}>

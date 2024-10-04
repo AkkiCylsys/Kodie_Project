@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, FlatList, TouchableOpacity,Alert} from 'react-native';
+import {View,Platform,Linking,PermissionsAndroid, Text, Image, FlatList, TouchableOpacity,Alert} from 'react-native';
 import {IMAGES, _COLORS} from '../../../Themes';
 import {UploadImageStyle} from './UploadImageStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -63,100 +63,257 @@ const UploadRightImage = props => {
       );
     }
   };
+  const openAppSettings = () => {
+    if (Platform.OS === 'android') {
+      Linking.openSettings();
+    }
+    else {
+      Linking.openURL('app-settings:');
+    }
+  };
 
   const UploadImageContent = ({item, index}) => {
     return (
       <>
         <TouchableOpacity
           style={UploadImageStyle.content_View}
-          onPress={() => {
-            if (item.id === '1') {
-              ImagePicker.openCamera({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // console.log("image....", image);
-                  setImage(image);
-                  setRightImage(Array.isArray(image) ? image : [image]);
-                  props?.rightImage(Array.isArray(image) ? image : [image]);
-                  console.log('ImagePathleftimage..', rightImage);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
+          onPress={async() => {
+
+            try {
+              if (Platform.OS === 'ios') {
+                if (index == 0) {
+                  const cameraPermission = await request(PERMISSIONS.IOS.CAMERA);
+                  if (
+                    cameraPermission === 'denied' ||
+                    cameraPermission === 'blocked'
+                  ) {
+                    Alert.alert(
+                      'Camera Permission Required',
+                      'We need access to your camera and photo library. Please enable it in the app settings.',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: openAppSettings },
+                      ]
+                    );
+                    return; // Exit if permission is not granted
+                  }
+                  else {
+                    ImagePicker.openCamera({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
+                    })
+                      .then(image => {
+                        // console.log("image....", image);
+                        setImage(image);
+                        setRightImage(Array.isArray(image) ? image : [image]);
+                        props?.rightImage(Array.isArray(image) ? image : [image]);
+                        console.log('ImagePathleftimage..', rightImage);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });
+                  }
+                }
+                else {
+                  // for index==2
+                  const photoPermission = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+                  if (
+                    photoPermission === 'denied' ||
+                    photoPermission === 'blocked'
+                  ) {
+                    Alert.alert(
+                      'Gallery Permission Required',
+                      'This app needs access to your gallery to select photos. Please enable it in the app settings.',
+                      [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Open Settings', onPress: openAppSettings },
+                      ]
+                    );
+                    return; // Exit if permission is not granted
+                  }
+                  else {
+                                     // Navigate to Choose photo from library when Contact Us is clicked.......
+                  ImagePicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                    multiple: true,
+                  })
+                    .then(image => {
+ 
+                      handleRightImageSelection(image);
+                    })
+                    .catch(err => {
+                      console.log('err...', err);
+                    });               
+                       }
+                }
+              }
+  
+              else {
+                //for android
+                //alert(index)
+                if (index == 0) {
+                  const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                      title: 'Camera Permission',
+                      message:
+                        'This app needs camera access to take photos.',
+                      buttonNeutral: 'Ask Me Later',
+                      buttonNegative: 'Cancel',
+                      buttonPositive: 'OK',
+                    },
+                  );
+                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    ImagePicker.openCamera({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                      compressImageQuality: 0.5,
+                      multiple: true,
+                    })
+                      .then(image => {
+                        // console.log("image....", image);
+                        setImage(image);
+                        setRightImage(Array.isArray(image) ? image : [image]);
+                        props?.rightImage(Array.isArray(image) ? image : [image]);
+                        console.log('ImagePathleftimage..', rightImage);
+                      })
+                      .catch(err => {
+                        console.log('err...', err);
+                      });
+  
+                  } else {
+                    Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Open Settings', onPress: openAppSettings },
+                    ]);
+                  }
+                }
+                else {
+                  const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                    {
+                      title: 'Gallery Access Permission',
+                      message: 'This app needs access to your gallery to select photos.',
+                      buttonNeutral: 'Ask Me Later',
+                      buttonNegative: 'Cancel',
+                      buttonPositive: 'OK',
+                    },
+                  );
+                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  
+                    // Navigate to Choose photo from library when Contact Us is clicked.......
+                                     // Navigate to Choose photo from library when Contact Us is clicked.......
+                  ImagePicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                    compressImageQuality: 0.5,
+                    multiple: true,
+                  })
+                    .then(image => {
+ 
+                      handleRightImageSelection(image);
+                    })
+                    .catch(err => {
+                      console.log('err...', err);
+                    });
+  
+                  } else {
+                    Alert.alert('Gallery permission denied. Open settings to enable gallery access.', '', [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Open Settings', onPress: openAppSettings },
+                    ]);
+                  }
+                }
+  
+              }
+
+
+
+
+
+
+//old code
+     
+            } catch (err) {
+              console.warn(err);
             }
-            if (item.id === '2') {
-              // Navigate to Choose photo from library when Contact Us is clicked.......
-              ImagePicker.openPicker({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // if (image.length > 0) {
-                  //   setImage(image);
-                  //   setRightImage(image);
-                  //   props.rightImage(image);
-                  //   console.log("Navigating to RightImage photos with", image);
-                  // }
-                  handleRightImageSelection(image);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
+
+           
           }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}
-          onPress={() => {
-            if (item.id === '1') {
-              ImagePicker.openCamera({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // console.log("image....", image);
-                  setImage(image);
-                  setRightImage(Array.isArray(image) ? image : [image]);
-                  props?.rightImage(Array.isArray(image) ? image : [image]);
-                  console.log('ImagePathleftimage..', rightImage);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
-            if (item.id === '2') {
-              // Navigate to Choose photo from library when Contact Us is clicked.......
-              ImagePicker.openPicker({
-                width: 300,
-                height: 400,
-                cropping: true,
-                compressImageQuality: 0.5,
-                multiple: true,
-              })
-                .then(image => {
-                  // if (image.length > 0) {
-                  //   setImage(image);
-                  //   setRightImage(image);
-                  //   props.rightImage(image);
-                  //   console.log("Navigating to RightImage photos with", image);
-                  // }
-                  handleRightImageSelection(image);
-                })
-                .catch(err => {
-                  console.log('err...', err);
-                });
-            }
-          }}>
+          // onPress={async() => {
+          //   try {
+          //     const granted = await PermissionsAndroid.request(
+          //       PermissionsAndroid.PERMISSIONS.CAMERA,
+          //       {
+          //         title: 'Camera Permission',
+          //         message:
+          //           'This app needs camera access to take photos.',
+          //         buttonNeutral: 'Ask Me Later',
+          //         buttonNegative: 'Cancel',
+          //         buttonPositive: 'OK',
+          //       },
+          //     );
+          //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          //       if (item.id === '1') {
+          //         ImagePicker.openCamera({
+          //           width: 300,
+          //           height: 400,
+          //           cropping: true,
+          //           compressImageQuality: 0.5,
+          //           multiple: true,
+          //         })
+          //           .then(image => {
+          //             // console.log("image....", image);
+          //             setImage(image);
+          //             setRightImage(Array.isArray(image) ? image : [image]);
+          //             props?.rightImage(Array.isArray(image) ? image : [image]);
+          //             console.log('ImagePathleftimage..', rightImage);
+          //           })
+          //           .catch(err => {
+          //             console.log('err...', err);
+          //           });
+          //       }
+          //       if (item.id === '2') {
+          //         // Navigate to Choose photo from library when Contact Us is clicked.......
+          //         ImagePicker.openPicker({
+          //           width: 300,
+          //           height: 400,
+          //           cropping: true,
+          //           compressImageQuality: 0.5,
+          //           multiple: true,
+          //         })
+          //           .then(image => {
+
+          //             handleRightImageSelection(image);
+          //           })
+          //           .catch(err => {
+          //             console.log('err...', err);
+          //           });
+          //       }
+          //     } else {
+          //       Alert.alert('Camera permission denied. Open settings to enable camera access.', '', [
+          //         { text: 'Cancel', style: 'cancel' },
+          //         { text: 'Open Settings', onPress: openAppSettings },
+          //       ]);
+          //     }
+          //   } catch (err) {
+          //     console.warn(err);
+          //   }
+
+
+           
+          // }}
+          >
             {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>

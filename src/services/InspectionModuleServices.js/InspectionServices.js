@@ -149,6 +149,26 @@ export const GetInspectioncabinateDetail = (data) => {
       });
   });
 };
+export const GetInspectionItem = (data) => {
+  const url = `${Config.BASE_URL}inspectionarea`;
+
+  return new Promise((resolve, reject) => {
+    axios.delete(url, data)
+      .then(response => {
+        console.log(response,'dfdfddffd');
+        if (response?.data?.success) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response?.data?.error || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleApiError(error);
+      // alert(errorMessage); // Display error message in an alert
+      reject(errorMessage);
+      });
+  });
+};
 export const GetInspectionAreaDetail = (data) => {
   const url = `${Config.BASE_URL}get_inspection_area`;
 

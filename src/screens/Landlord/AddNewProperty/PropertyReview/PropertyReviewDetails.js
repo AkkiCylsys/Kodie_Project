@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,11 @@ import {
   FlatList,
   SafeAreaView,
 } from 'react-native';
-import { PropertyReviewStyle } from './PropertyReviewStyle';
+import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-import { SliderBox } from 'react-native-image-slider-box';
-import {
-  _COLORS,
-  LABEL_STYLES,
-  FONTFAMILY,
-} from '../../../../Themes';
+import {_goBack} from '../../../../services/CommonServices';
+import {SliderBox} from 'react-native-image-slider-box';
+import {_COLORS, LABEL_STYLES, FONTFAMILY} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Leases from './Leases/Leases';
 import Details from './Details/Details';
@@ -23,7 +19,7 @@ import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
 import Share from 'react-native-share';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -31,11 +27,11 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { DetailsStyle } from './Details/DetailsStyles';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import { BackHandler } from 'react-native';
+import {BackHandler} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 export default PropertyReviewDetails = props => {
   const property_id = props?.route?.params?.property_id;
@@ -63,7 +59,7 @@ export default PropertyReviewDetails = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
   const shareContent = async () => {
     const shareOptions = {
-      message: `Check out this page: https://kodie.com/PropertyReviewDetails/${propertyid}`,  // Include id in the deep link
+      message: `Check out this page: https://kodie.com/PropertyReviewDetails/${propertyid}`, // Include id in the deep link
     };
     try {
       await Share.open(shareOptions);
@@ -76,109 +72,144 @@ export default PropertyReviewDetails = props => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
-        const { latitude, longitude } = position.coords;
-        console.log(latitude,longitude);
-        fetchPointsOfInterest(latitude,longitude);
+        const {latitude, longitude} = position.coords;
+        console.log(latitude, longitude, 'latitude,longitude');
+        fetchPointsOfInterest(latitude, longitude);
         // fetchPointsOfInterest("27.149994", "79.499901");
       },
       error => console.error(error),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   }, []);
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`,
       );
 
       const poiData = categorizeData(response.data.results);
-      console.log(JSON.stringify(poiData))
+      console.log(JSON.stringify(poiData), 'kjdfdfd');
       setData(poiData);
     } catch (error) {
       console.error('Error fetching POIs:', error);
     }
   };
 
-  const categorizeData = (places) => {
+  const categorizeData = places => {
     const categories = {
       'Schools & Education': [],
       'Food & Entertainment': [],
-      'Health': [],
-      'Transport': []
+      Health: [],
+      Transport: [],
     };
 
     places.forEach(place => {
-      const { name, vicinity } = place;
+      const {name, vicinity} = place;
       const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
-      if (place.types.includes('school') || place.types.includes('university')) {
-        categories['Schools & Education'].push({ name, distance });
-      } else if (place.types.includes('restaurant') || place.types.includes('food')) {
-        categories['Food & Entertainment'].push({ name, distance });
-      } else if (place.types.includes('hospital') || place.types.includes('health')) {
-        categories['Health'].push({ name, distance });
-      } else if (place.types.includes('bus_station') || place.types.includes('train_station')) {
-        categories['Transport'].push({ name, distance });
+      if (
+        place.types.includes('school') ||
+        place.types.includes('university')
+      ) {
+        categories['Schools & Education'].push({name, distance});
+      } else if (
+        place.types.includes('restaurant') ||
+        place.types.includes('food')
+      ) {
+        categories['Food & Entertainment'].push({name, distance});
+      } else if (
+        place.types.includes('hospital') ||
+        place.types.includes('health')
+      ) {
+        categories['Health'].push({name, distance});
+      } else if (
+        place.types.includes('bus_station') ||
+        place.types.includes('train_station')
+      ) {
+        categories['Transport'].push({name, distance});
       }
     });
 
-    return Object.entries(categories).map(([category, items]) => ({ category, items }));
+    return Object.entries(categories).map(([category, items]) => ({
+      category,
+      items,
+    }));
   };
 
-  const renderpointItem = ({ item }) => (
+  const renderpointItem = ({item}) => (
     <>
-    <View style={DetailsStyle.itemContainer}>
-      <Text style={DetailsStyle.itemName}>{item.name}</Text>
-      <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
-      
-    <DividerIcon marginTop={5}/>
-    </View>
+      <View style={DetailsStyle.itemContainer}>
+        <Text style={DetailsStyle.itemName}>{item.name}</Text>
+        <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
+
+        {/* <DividerIcon marginTop={5}/> */}
+      </View>
     </>
   );
-
-  const renderCategory = ({ item }) => (
+  const renderCategory = ({item}) => (
     <View style={DetailsStyle.categoryContainer}>
       <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
-      <DividerIcon marginTop={5}/>
-      <FlatList
-        data={item.items}
-        renderItem={renderpointItem}
-        keyExtractor={(item, index) => index.toString()}
-        ListFooterComponent={<TouchableOpacity onPress={()=>{
-          // alert(JSON.stringify(item.items.length))
-          if(item.items.length >2){
+      <DividerIcon marginTop={5} />
 
-          }else{
-            // alert(JSON.stringify("No more data found!"))
-          }
-        }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
-      />
-     
+      {item.items.length > 0 ? (
+        <FlatList
+          data={item.items}
+          renderItem={renderpointItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      ) : (
+        <Text style={DetailsStyle.itemName}>----</Text> // Display hyphen if no items
+      )}
     </View>
   );
+
+  // const renderCategory = ({ item }) => (
+  //   <View style={DetailsStyle.categoryContainer}>
+  //     <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
+  //     <DividerIcon marginTop={5}/>
+  //     <FlatList
+  //       data={item.items}
+  //       renderItem={renderpointItem}
+  //       keyExtractor={(item, index) => index.toString()}
+  //       ListFooterComponent={<TouchableOpacity onPress={()=>{
+  //         // alert(JSON.stringify(item.items.length))
+  //         if(item.items.length >2){
+
+  //         }else{
+  //           // alert(JSON.stringify("No more data found!"))
+  //         }
+  //       }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
+  //     />
+
+  //   </View>
+  // );
   const iconMapping = {
-    Pool: { component: MaterialIcons, name: 'pool' },
-    Garage: { component: MaterialCommunityIcons, name: 'garage' },
-    Balcony: { component: MaterialCommunityIcons, name: 'balcony' },
-    'Outdoor area': { component: MaterialCommunityIcons, name: 'table-chair' },
-    Ensuite: { component: MaterialCommunityIcons, name: 'shower' },
-    Dishwasher: { component: MaterialCommunityIcons, name: 'dishwasher' },
-    Study: { component: MaterialCommunityIcons, name: 'bookshelf' },
-    'Built-in wardrobes': { component: MaterialCommunityIcons, name: 'wardrobe' },
-    'Air conditioning': { component: MaterialCommunityIcons, name: 'air-conditioner' },
-    'Solar panels': { component: MaterialCommunityIcons, name: 'solar-panel' },
-    Heating: { component: MaterialCommunityIcons, name: 'fireplace' },
-    'High energy efficiency': { component: SimpleLineIcons, name: 'energy' },
-    Bedrooms: { component: MaterialCommunityIcons, name: 'bed-double-outline' },
-    Bathrooms: { component: MaterialCommunityIcons, name: 'shower-head' },
-    'Parking / garage spaces': { component: Ionicons, name: 'car-outline' },
-    'On-street parking': { component: Ionicons, name: 'car-sport-outline' },
-    Default: { component: MaterialCommunityIcons, name: 'garage' },
+    Pool: {component: MaterialIcons, name: 'pool'},
+    Garage: {component: MaterialCommunityIcons, name: 'garage'},
+    Balcony: {component: MaterialCommunityIcons, name: 'balcony'},
+    'Outdoor area': {component: MaterialCommunityIcons, name: 'table-chair'},
+    Ensuite: {component: MaterialCommunityIcons, name: 'shower'},
+    Dishwasher: {component: MaterialCommunityIcons, name: 'dishwasher'},
+    Study: {component: MaterialCommunityIcons, name: 'bookshelf'},
+    'Built-in wardrobes': {component: MaterialCommunityIcons, name: 'wardrobe'},
+    'Air conditioning': {
+      component: MaterialCommunityIcons,
+      name: 'air-conditioner',
+    },
+    'Solar panels': {component: MaterialCommunityIcons, name: 'solar-panel'},
+    Heating: {component: MaterialCommunityIcons, name: 'fireplace'},
+    'High energy efficiency': {component: SimpleLineIcons, name: 'energy'},
+    Bedrooms: {component: MaterialCommunityIcons, name: 'bed-double-outline'},
+    Bathrooms: {component: MaterialCommunityIcons, name: 'shower-head'},
+    'Parking / garage spaces': {component: Ionicons, name: 'car-outline'},
+    'On-street parking': {component: Ionicons, name: 'car-sport-outline'},
+    Default: {component: MaterialCommunityIcons, name: 'garage'},
   };
-  const Detail_rander = ({ item }) => {
+  const Detail_rander = ({item}) => {
     const itemKey = Object.keys(item)[0];
     const itemValue = Object.values(item)[0];
-    const IconComponent = iconMapping[itemKey]?.component || iconMapping.Default.component;
+    const IconComponent =
+      iconMapping[itemKey]?.component || iconMapping.Default.component;
     const iconName = iconMapping[itemKey]?.name || iconMapping.Default.name;
 
     return (
@@ -188,16 +219,16 @@ export default PropertyReviewDetails = props => {
             name={iconName}
             size={22}
             color={_COLORS.Kodie_GreenColor}
-            style={{ alignSelf: 'center' }}
+            style={{alignSelf: 'center'}}
           />
         </View>
-        <Text style={[DetailsStyle.details_text, { flexShrink: 1 }]}>
+        <Text style={[DetailsStyle.details_text, {flexShrink: 1}]}>
           {`${itemKey}: ${itemValue}`}
         </Text>
       </View>
     );
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     const IconComponent = iconMapping[item]?.component;
     const iconName = iconMapping[item]?.name;
 
@@ -209,12 +240,11 @@ export default PropertyReviewDetails = props => {
               name={iconName}
               size={22}
               color={_COLORS.Kodie_GreenColor}
-              style={{ alignSelf: 'center' }}
-
+              style={{alignSelf: 'center'}}
             />
           )}
         </View>
-        <Text style={[DetailsStyle.details_text, { flexShrink: 1 }]}>{item}</Text>
+        <Text style={[DetailsStyle.details_text, {flexShrink: 1}]}>{item}</Text>
       </View>
     );
   };
@@ -255,8 +285,8 @@ export default PropertyReviewDetails = props => {
         response?.data?.property_details[0].additional_features_id;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const additionalFeaturesIds = additionalFeatures_id
-      .split(',')
-      .map(value => value.trim()); // ['1', '1', '1', '0']
+        .split(',')
+        .map(value => value.trim()); // ['1', '1', '1', '0']
       console.log('is_additionalFeaturesid....', additionalFeaturesIds);
       setAddtionalFeaturesID(additionalFeaturesIds);
     } catch (error) {
@@ -302,11 +332,16 @@ export default PropertyReviewDetails = props => {
   let OnStreetParkingValue = null;
 
   if (Array.isArray(Detail)) {
-    const parkingSpaceValueObj = Detail.find(item => 'Parking / garage spaces' in item);
-    parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj['Parking / garage spaces'] : null;
-    const OnStreetParkingObj = Detail.find(item => "On-street parking" in item);
-    OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
-
+    const parkingSpaceValueObj = Detail.find(
+      item => 'Parking / garage spaces' in item,
+    );
+    parkingSpaceValue = parkingSpaceValueObj
+      ? parkingSpaceValueObj['Parking / garage spaces']
+      : null;
+    const OnStreetParkingObj = Detail.find(item => 'On-street parking' in item);
+    OnStreetParkingValue = OnStreetParkingObj
+      ? OnStreetParkingObj['On-street parking']
+      : null;
   } else {
     console.error('Detail is not an array:', Detail);
   }
@@ -321,15 +356,15 @@ export default PropertyReviewDetails = props => {
               {property_Detail?.property_description}
             </Text>
             <DividerIcon marginTop={10} />
-            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+            <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
               {'Key features '}
             </Text>
-            <View style={{ marginHorizontal: '10%' }}>
+            <View style={{marginHorizontal: '10%'}}>
               <FlatList
                 data={Detail}
                 scrollEnabled
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{flexGrow: 1}}
                 numColumns={numColumns}
                 keyExtractor={item => item?.id}
                 renderItem={Detail_rander}
@@ -338,15 +373,16 @@ export default PropertyReviewDetails = props => {
             <DividerIcon />
             {property_Detail?.additional_key_features_id === '[]' ? null : (
               <>
-                <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+                <Text
+                  style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
                   {'Additional key features'}
                 </Text>
                 {/* )} */}
-                <View style={{ marginHorizontal: '10%' }}>
+                <View style={{marginHorizontal: '10%'}}>
                   <FlatList
                     data={additionalKeyFeatures}
                     numColumns={numColumns}
-                    contentContainerStyle={{ flexGrow: 1 }}
+                    contentContainerStyle={{flexGrow: 1}}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
                   />
@@ -360,13 +396,14 @@ export default PropertyReviewDetails = props => {
             )}
             {property_Detail?.auto_list == 0 ? null : (
               <>
-                <View >
+                <View>
                   <TouchableOpacity
                     style={DetailsStyle.propety_details_view}
                     onPress={() => {
                       setPropertyDetailsClp(!propertyDetailsClp);
                     }}>
-                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
+                    <Text
+                      style={[DetailsStyle.propery_det, {alignSelf: 'center'}]}>
                       {'Property details'}
                     </Text>
 
@@ -376,11 +413,7 @@ export default PropertyReviewDetails = props => {
                         setPropertyDetailsClp(!propertyDetailsClp);
                       }}>
                       <Fontisto
-                        name={
-                          propertyDetailsClp
-                            ? 'angle-up'
-                            : 'angle-down'
-                        }
+                        name={propertyDetailsClp ? 'angle-up' : 'angle-down'}
                         size={18}
                         color={_COLORS.Kodie_DarkGrayColor}
                       />
@@ -390,78 +423,78 @@ export default PropertyReviewDetails = props => {
                   {propertyDetailsClp ? (
                     <>
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Listing Number'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {propertyid}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Type of Property'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {property_Detail?.property_type}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Floor Size'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {`${property_Detail?.floor_size || ''} m²`}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Pets Allowed'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {addtionalFeaturesID[3] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Furnished'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {addtionalFeaturesID[0] == 1 ? 'Yes' : 'No'}
                         </Text>
                       </View>
                       <DividerIcon marginTop={8} />
                       <View style={DetailsStyle.p_rowTextView}>
-                        <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                        <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                           {'Smoking'}
                         </Text>
                         <Text
                           style={[
                             LABEL_STYLES.commontext,
-                            { fontFamily: FONTFAMILY.K_Medium },
+                            {fontFamily: FONTFAMILY.K_Medium},
                           ]}>
                           {'No'}
                         </Text>
@@ -470,25 +503,25 @@ export default PropertyReviewDetails = props => {
                     </>
                   ) : null}
                 </View>
-                <View >
+                <View>
                   <TouchableOpacity
                     style={DetailsStyle.propety_details_view}
                     onPress={() => {
                       setRoomClp(!roomClp);
                     }}>
-                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>{'Rooms'}</Text>
+                    <Text
+                      style={[DetailsStyle.propery_det, {alignSelf: 'center'}]}>
+                      {'Rooms'}
+                    </Text>
                     <TouchableOpacity
                       style={DetailsStyle.down_Arrow_icon}
                       onPress={() => {
                         setRoomClp(!roomClp);
                       }}>
                       <Fontisto
-                        name={roomClp ? 'angle-up'
-                          : 'angle-down'
-                        }
+                        name={roomClp ? 'angle-up' : 'angle-down'}
                         size={18}
                         color={_COLORS.Kodie_DarkGrayColor}
-
                       />
                     </TouchableOpacity>
                   </TouchableOpacity>
@@ -497,32 +530,32 @@ export default PropertyReviewDetails = props => {
                 {roomClp ? (
                   <>
                     <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                         {'Bedrooms'}
                       </Text>
                       <Text
                         style={[
                           LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
+                          {fontFamily: FONTFAMILY.K_Medium},
                         ]}>
                         {Detail[0]?.Bedrooms}
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
                     <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                         {'Bathrooms'}
                       </Text>
                       <Text
                         style={[
                           LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
+                          {fontFamily: FONTFAMILY.K_Medium},
                         ]}>
                         {Detail[1]?.Bathrooms}
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
+                    {/* <View style={DetailsStyle.p_rowTextView}>
                       <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                         {'Kitchen'}
                       </Text>
@@ -573,16 +606,17 @@ export default PropertyReviewDetails = props => {
                         {'0'}
                       </Text>
                     </View>
-                    <DividerIcon marginTop={8} />
+                    <DividerIcon marginTop={8} /> */}
                   </>
                 ) : null}
-                <View >
+                <View>
                   <TouchableOpacity
                     style={DetailsStyle.propety_details_view}
                     onPress={() => {
                       setExternalfeaturesClp(!externalfeaturesClp);
                     }}>
-                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
+                    <Text
+                      style={[DetailsStyle.propery_det, {alignSelf: 'center'}]}>
                       {'External features'}
                     </Text>
 
@@ -592,11 +626,7 @@ export default PropertyReviewDetails = props => {
                         setExternalfeaturesClp(!externalfeaturesClp);
                       }}>
                       <Fontisto
-                        name={
-                          externalfeaturesClp
-                            ? 'angle-up'
-                            : 'angle-down'
-                        }
+                        name={externalfeaturesClp ? 'angle-up' : 'angle-down'}
                         size={18}
                         color={_COLORS.Kodie_DarkGrayColor}
                       />
@@ -607,92 +637,41 @@ export default PropertyReviewDetails = props => {
                 {externalfeaturesClp ? (
                   <>
                     <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                         {'Car Spaces'}
                       </Text>
                       <Text
                         style={[
                           LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
+                          {fontFamily: FONTFAMILY.K_Medium},
                         ]}>
                         {parkingSpaceValue}
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
                     <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                         {'On-Street Parking Spaces'}
                       </Text>
                       <Text
                         style={[
                           LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
+                          {fontFamily: FONTFAMILY.K_Medium},
                         ]}>
                         {OnStreetParkingValue}
                       </Text>
                     </View>
                     <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Garden'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Pool'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Outdoor Patio'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
-                    <View style={DetailsStyle.p_rowTextView}>
-                      <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                        {'Other'}
-                      </Text>
-                      <Text
-                        style={[
-                          LABEL_STYLES.commontext,
-                          { fontFamily: FONTFAMILY.K_Medium },
-                        ]}>
-                        {'0'}
-                      </Text>
-                    </View>
-                    <DividerIcon marginTop={8} />
                   </>
                 ) : null}
-                <View >
+                <View>
                   <TouchableOpacity
                     style={DetailsStyle.propety_details_view}
                     onPress={() => {
                       setPointOfInterest(!pointOfInterest);
                     }}>
-                    <Text style={[DetailsStyle.propery_det,{alignSelf:'center'}]}>
+                    <Text
+                      style={[DetailsStyle.propery_det, {alignSelf: 'center'}]}>
                       {'Points of interest'}
                     </Text>
                     <TouchableOpacity
@@ -701,28 +680,22 @@ export default PropertyReviewDetails = props => {
                         setPointOfInterest(!pointOfInterest);
                       }}>
                       <Fontisto
-                        name={
-                          pointOfInterest
-                            ? 'angle-up'
-                            : 'angle-down'
-                        }
+                        name={pointOfInterest ? 'angle-up' : 'angle-down'}
                         size={18}
                         color={_COLORS.Kodie_DarkGrayColor}
                       />
                     </TouchableOpacity>
                   </TouchableOpacity>
                   <DividerIcon marginTop={8} />
-                {
-                  pointOfInterest?
-                  
-                  <View style={DetailsStyle.container}>
-                    <FlatList
-        data={data}
-        renderItem={renderCategory}
-        keyExtractor={(item, index) => index.toString()}
-      /></View>
-                :null
-                }
+                  {pointOfInterest ? (
+                    <View style={DetailsStyle.container}>
+                      <FlatList
+                        data={data}
+                        renderItem={renderCategory}
+                        keyExtractor={(item, index) => index.toString()}
+                      />
+                    </View>
+                  ) : null}
                 </View>
               </>
             )}
@@ -735,8 +708,8 @@ export default PropertyReviewDetails = props => {
                     editMode
                       ? 'Save property'
                       : propertyView
-                        ? 'Edit details'
-                        : 'Add property'
+                      ? 'Edit details'
+                      : 'Add property'
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
@@ -775,14 +748,10 @@ export default PropertyReviewDetails = props => {
           </>
         );
       case 'Tab2':
-        return (
-          <Leases property_id={propertyid} />
-        );
+        return <Leases property_id={propertyid} />;
 
       case 'Tab3':
-        return (
-          <Expenses property_id={propertyid} />
-        );
+        return <Expenses property_id={propertyid} />;
       case 'Tab4':
         return (
           <Documents
@@ -808,15 +777,15 @@ export default PropertyReviewDetails = props => {
           backProperty
             ? () => props.navigation.navigate('Properties')
             : propertyVacantListing
-              ? () => props.navigation.navigate('VacantPropertiesList')
-              : goBack
+            ? () => props.navigation.navigate('VacantPropertiesList')
+            : goBack
         }
         MiddleText={
           editMode
             ? 'Edit property'
             : propertyView || propertyVacantListing
-              ? property_Detail?.location
-              : 'Add new property'
+            ? property_Detail?.location
+            : 'Add new property'
         }
       />
       <ScrollView contentContainerStyle={{}}>
@@ -830,10 +799,10 @@ export default PropertyReviewDetails = props => {
         <View
           style={[
             PropertyReviewStyle.slider_view,
-            { marginBottom: '5%', marginTop: propertyView ? 0 : '5%' },
+            {marginBottom: '5%', marginTop: propertyView ? 0 : '5%'},
           ]}>
           {property_Detail.image_path &&
-            property_Detail.image_path.length != 0 ? (
+          property_Detail.image_path.length != 0 ? (
             <SliderBox
               images={property_Detail.image_path}
               sliderBoxHeight={200}
@@ -871,7 +840,7 @@ export default PropertyReviewDetails = props => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setLike(!like);
                 }}>
@@ -884,7 +853,7 @@ export default PropertyReviewDetails = props => {
                   }
                   size={24}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
@@ -896,7 +865,7 @@ export default PropertyReviewDetails = props => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text style={{ flex: 1, color: _COLORS.Kodie_MediumGrayColor }}>
+            <Text style={{flex: 1, color: _COLORS.Kodie_MediumGrayColor}}>
               {property_Detail?.location || ''}
             </Text>
           </View>
@@ -917,22 +886,22 @@ export default PropertyReviewDetails = props => {
               editMode
                 ? null
                 : propertyView || propertyVacantListing
-                  ? 'Leases'
-                  : null
+                ? 'Leases'
+                : null
             }
             Tab3={
               editMode
                 ? null
                 : propertyView || propertyVacantListing
-                  ? 'Expenses'
-                  : null
+                ? 'Expenses'
+                : null
             }
             Tab4={
               editMode
                 ? null
                 : propertyView || propertyVacantListing
-                  ? 'Documents'
-                  : null
+                ? 'Documents'
+                : null
             }
             onPressTab1={() => setActiveTab('Tab1')}
             onPressTab2={() => {

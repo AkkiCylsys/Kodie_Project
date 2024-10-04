@@ -453,6 +453,7 @@ import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import DividerIcon from '../../../Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../ActiveLoader/ActiveLoader';
 import axios from 'axios';
+import { Config } from '../../../../Config';
 
 const hapticFeedbackOptions = {
   enableVibrateFallback: true,
@@ -653,7 +654,9 @@ const JobRequestArchive = () => {
 
   const get_Details = () => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/job/getAlljobs/479';
-    const url = 'https://kodietestapi.cylsys.com/api/v1/job/getAlljobs/479';
+    // const url = 'https://kodietestapi.cylsys.com/api/v1/job/getAlljobs/479';
+    const baseUrl = Config?.BASE_URL
+    const url = `${baseUrl}job/getAlljobs/479`
     const Details_url = url;
     console.log('Request URL:', Details_url);
     setIsLoading(true);
@@ -714,7 +717,9 @@ const JobRequestArchive = () => {
   const archiveJob = async jobId => {
     try {
       // const url = 'https://kodieapis.cylsys.com/api/v1/job/addJobArchieve';
-      const url = 'https://kodietestapi.cylsys.com/api/v1/job/addJobArchieve';
+      // const url = 'https://kodietestapi.cylsys.com/api/v1/job/addJobArchieve';
+      const baseUrl = Config?.BASE_URL
+    const url = `${baseUrl}job/addJobArchieve`
       console.log('Archive api.....', url);
       const response = await axios.post(url, {
         p_job_id: jobId,

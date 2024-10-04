@@ -49,9 +49,11 @@ const MarketplacePropertyListing = props => {
   const [Address, setAddress] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMarketPlace, setFilteredMarketPlace] = useState([]);
+  const [listingCurrentDate, setListingCurrentDate] = useState('');
 
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
   const isvisible = useIsFocused();
+  const [expandedItemId, setExpandedItemId] = useState(null);
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -121,10 +123,10 @@ const MarketplacePropertyListing = props => {
     axios
       .post(PropertyListing_url, PropertyListing_id)
       .then(response => {
-        // console.log(
-        //   'Property Market Details Retrieve Successfully:',
-        //   JSON.stringify(response?.data),
-        // );
+        console.log(
+          'Property Market Details Retrieve Successfully:',
+          JSON.stringify(response?.data),
+        );
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
           setIsLoading(false);
@@ -172,8 +174,33 @@ const MarketplacePropertyListing = props => {
       get_MarketplacePropertyListing();
     }
   }, [isvisible]);
+
   const propertyData1_render = ({item}) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
+    const calculateDaysPast = dateString => {
+      const currentDate = new Date(); // Current date
+
+      const givenDate = new Date(dateString);
+
+      const currentDateOnly = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+      );
+      const givenDateOnly = new Date(
+        givenDate.getFullYear(),
+        givenDate.getMonth(),
+        givenDate.getDate(),
+      );
+
+      const timeDifference = currentDateOnly - givenDateOnly;
+
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      return daysDifference;
+    };
+
+    const daysPast = calculateDaysPast(item?.created_date);
     return (
       <View>
         {item.result ? null : (
@@ -191,8 +218,12 @@ const MarketplacePropertyListing = props => {
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
+                    style={{marginTop: 2}}
                   />
-                  <Text style={MarketplacePropertyListingStyle.locationText}>
+                  <Text
+                    style={MarketplacePropertyListingStyle.locationText}
+                    ellipsizeMode="tail"
+                    numberOfLines={2}>
                     {item.location}
                   </Text>
                 </View>
@@ -209,12 +240,19 @@ const MarketplacePropertyListing = props => {
                     MarketplacePropertyListingStyle.imageStyle,
                     {justifyContent: 'center'},
                   ]}>
-                  <Ionicons
-                    name="images-outline"
-                    size={60}
-                    color={_COLORS.Kodie_GrayColor}
-                    style={{alignSelf: 'center'}}
-                  />
+                  <View style={[{flex: 1}]}>
+                    <Ionicons
+                      name="images-outline"
+                      size={90}
+                      color={_COLORS.Kodie_GrayColor}
+                      style={[
+                        MarketplacePropertyListingStyle.imageStyle,
+                        {
+                          borderWidth: 0,
+                        },
+                      ]}
+                    />
+                  </View>
                 </View>
               )}
               <View style={MarketplacePropertyListingStyle.flexContainer}>
@@ -245,7 +283,7 @@ const MarketplacePropertyListing = props => {
                     />
                   </TouchableOpacity>
                 </View>
-                <View
+                <TouchableOpacity
                   style={[
                     MarketplacePropertyListingStyle.buttonView,
                     {
@@ -255,19 +293,10 @@ const MarketplacePropertyListing = props => {
                         ? _COLORS.Kodie_mostLightGreenColor
                         : _COLORS.Kodie_LightGrayColor,
                     },
-                  ]}>
-                  <View
-                    style={[
-                      MarketplacePropertyListingStyle.roundButton,
-                      {
-                        backgroundColor: item.isRentPanding
-                          ? _COLORS.Kodie_LightGrayColor
-                          : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_LightGrayColor,
-                      },
-                    ]}
-                  />
+                  ]}
+                  onPress={() => {
+                    props?.navigation?.navigate('Invitefriend');
+                  }}>
                   <Text
                     style={[
                       MarketplacePropertyListingStyle.buttonText,
@@ -276,28 +305,31 @@ const MarketplacePropertyListing = props => {
                           ? _COLORS.Kodie_DarkOrange
                           : item.isRentReceived
                           ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_MediumGrayColor,
+                          : _COLORS.Kodie_ExtraminLiteGrayColor,
                       },
-                    ]}
-                    onPress={() => {
-                      props.navigation.navigate('Invitefriend');
-                    }}>
+                    ]}>
                     {'+ Invite Tenant'}
                   </Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
-            <DividerIcon
-              IsShowIcon
-              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-              onPress={() => {
-                if (isExpanded) {
-                  setExpandedItems(expandedItems.filter(id => id !== item.id));
-                } else {
-                  setExpandedItems([...expandedItems, item.id]);
-                }
-              }}
-            />
+            <View style={{marginTop: 20}}>
+              <DividerIcon
+                IsShowIcon
+                iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+                onPress={() => {
+                  if (isExpanded) {
+                    setExpandedItems(
+                      expandedItems.filter(
+                        property_id => property_id !== item.property_id,
+                      ),
+                    );
+                  } else {
+                    setExpandedItems([...expandedItems, item.property_id]);
+                  }
+                }}
+              />
+            </View>
           </View>
         )}
         {isExpanded && (
@@ -307,7 +339,7 @@ const MarketplacePropertyListing = props => {
                 Number of days listed:
               </Text>
               <Text style={MarketplacePropertyListingStyle.commonDay}>
-                {'0'}
+                {`${daysPast} Days`}
               </Text>
             </View>
 
@@ -318,7 +350,7 @@ const MarketplacePropertyListing = props => {
 
               <View style={MarketplacePropertyListingStyle.commonRentview}>
                 <Text style={MarketplacePropertyListingStyle.commonRent}>
-                  {'0'}
+                  {`$${item?.list_price}`}
                 </Text>
               </View>
             </View>
@@ -358,7 +390,7 @@ const MarketplacePropertyListing = props => {
         </View>
       </View>
 
-      <DividerIcon />
+      <DividerIcon borderBottomWidth={2} />
       <FlatList
         data={searchQuery ? filteredMarketPlace : PropertyListing_data}
         renderItem={propertyData1_render}

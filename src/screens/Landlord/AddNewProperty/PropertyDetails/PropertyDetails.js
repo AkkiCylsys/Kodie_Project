@@ -180,7 +180,7 @@ export default PropertyDetails = props => {
       setIsLoading(false);
     }
   };
-  console.log(property_Detail?.key_features, 'property_Detail?.key_features');
+  console.log(property_Detail, 'property_Detail?.key_features');
   const updatePropertyDetails = () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
@@ -196,7 +196,7 @@ export default PropertyDetails = props => {
       UPD_FLOOR_SIZE: property_Detail?.floor_size,
       UPD_LAND_AREA: property_Detail?.land_area,
       additional_key_features: property_Detail?.additional_key_features_id,
-      autolist: 0,
+      autolist: property_Detail?.auto_list,
       property_id: savePropertyId ? savePropertyId : propertyid,
       p_city: city,
       p_state: state,
