@@ -13,6 +13,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { PERMISSIONS, RESULTS, request, check, openSettings } from 'react-native-permissions';
 const data = [
   {
     id: '1',

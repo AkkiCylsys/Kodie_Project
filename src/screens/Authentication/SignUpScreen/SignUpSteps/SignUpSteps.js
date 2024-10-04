@@ -142,6 +142,7 @@ const SignUpSteps = props => {
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
   let password = props?.route?.params?.password;
+  let _social_userInfo = props?.route?.params?._socialuserInfo;
   console.log('email...', email);
   console.log('user_key...', user_key);
   console.log('countryCode...', country_Code_Get);
@@ -308,6 +309,8 @@ const SignUpSteps = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
+    setFirstName(_social_userInfo?.user?.givenName)
+    setLastName(_social_userInfo?.user?.familyName)
   }, []);
 
   const goBack = () => {

@@ -38,6 +38,7 @@ const SignUp = (props) => {
   const [googleSignIn, setGoogleSignIn] = useState([]);
   const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId,deviceType,'signup');
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -49,7 +50,10 @@ const SignUp = (props) => {
       GoogleSignin.configure({
         webClientId:
           '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
-      });
+          iosClientId:
+          '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
+          offlineAccess: false,
+        });
     };
     configureGoogleSignIn();
   }, []);
@@ -166,7 +170,6 @@ const SignUp = (props) => {
       handleSignup();
     }
   };
-  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   const handleSignup = async () => {
     setIsLoading(true);
     const trimmedEmail = email.trim();

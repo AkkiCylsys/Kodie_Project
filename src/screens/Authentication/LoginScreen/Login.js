@@ -81,7 +81,12 @@ export default Login = props => {
       GoogleSignin.configure({
         webClientId:
           '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
-      });
+          iosClientId:
+          '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
+          offlineAccess: false,
+     
+        });
+      
     };
     configureGoogleSignIn();
   }, []);
@@ -181,6 +186,7 @@ export default Login = props => {
               props.navigation.navigate('DrawerNavigatorLeftMenu');
               setIsLoading(false)
             }
+
           } catch (error) {
             setIsLoading(false)
             alert(error)
@@ -188,6 +194,49 @@ export default Login = props => {
           }
 
           
+        }
+        else if(_res?.data?.code == 2){
+          
+          Alert.alert('Account suspension', _res?.data?.message, [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Activate account',
+              onPress: async() => {
+                console.log('activate account');
+                //handleActivateAccount();
+                const url = Config.BASE_URL;
+                const activateAccount = url + 'sendMail';
+                console.log('Request URL:', activateAccount);
+                setIsLoading(true);
+                const activateAccount_Data = {
+                  email: _userInfo?.user?.email,
+                };
+                console.log(activateAccount_Data,'fdf')
+                await axios
+                  .post(activateAccount, activateAccount_Data)
+                  .then(response => {
+                    console.log('API Response activateAccount..', response?.data);
+                    if (response?.data?.success === true) {
+                      alert(response?.data?.message);
+                    } else {
+                      setIsLoading(false);
+                      alert(response?.data?.message);
+                    }
+                  })
+                  .catch(error => {
+                    console.error('API failed activateAccount', error);
+                    setIsLoading(false);
+                  })
+                  .finally(() => {
+                    setIsLoading(false);
+                  });
+              },
+            },
+          ]);
         }
         else {
           setIsLoading(false)
