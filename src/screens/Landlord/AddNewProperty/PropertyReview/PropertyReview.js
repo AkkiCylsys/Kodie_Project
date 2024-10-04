@@ -1032,7 +1032,7 @@ export default PropertyReview = props => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setLike(!like);
                 }}>
@@ -1045,7 +1045,7 @@ export default PropertyReview = props => {
                   }
                   size={24}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>

@@ -49,6 +49,7 @@ const MarketplacePropertyListing = props => {
   const [Address, setAddress] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMarketPlace, setFilteredMarketPlace] = useState([]);
+  const [listingCurrentDate, setListingCurrentDate] = useState('');
 
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
   const isvisible = useIsFocused();
@@ -173,24 +174,33 @@ const MarketplacePropertyListing = props => {
       get_MarketplacePropertyListing();
     }
   }, [isvisible]);
-  const calculateDaysPast = (dateString) => {
-    const currentDate = new Date(); // Current date
-    const givenDate = new Date(dateString); // Date to compare (e.g., "2024-10-01")
-    
-    // Calculate the difference in time (milliseconds)
-    const timeDifference = currentDate - givenDate;
-  
-    // Convert milliseconds to days (1 day = 24 * 60 * 60 * 1000 milliseconds)
-    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  
-    return daysDifference;
-  };
-  
-  const propertyAvailableDate = "2024-10-02";
-  const daysPast = calculateDaysPast(propertyAvailableDate);
-  console.log(`${daysPast} days have passed since ${propertyAvailableDate}`);
+
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
+    const calculateDaysPast = dateString => {
+      const currentDate = new Date(); // Current date
+
+      const givenDate = new Date(dateString);
+
+      const currentDateOnly = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+      );
+      const givenDateOnly = new Date(
+        givenDate.getFullYear(),
+        givenDate.getMonth(),
+        givenDate.getDate(),
+      );
+
+      const timeDifference = currentDateOnly - givenDateOnly;
+
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      return daysDifference;
+    };
+
+    const daysPast = calculateDaysPast(item?.created_date);
     return (
       <View>
         {item.result ? null : (
@@ -303,7 +313,7 @@ const MarketplacePropertyListing = props => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{marginTop:20}}>
+            <View style={{marginTop: 20}}>
               <DividerIcon
                 IsShowIcon
                 iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
@@ -329,7 +339,7 @@ const MarketplacePropertyListing = props => {
                 Number of days listed:
               </Text>
               <Text style={MarketplacePropertyListingStyle.commonDay}>
-                {"0 Days"}
+                {`${daysPast} Days`}
               </Text>
             </View>
 
@@ -380,7 +390,7 @@ const MarketplacePropertyListing = props => {
         </View>
       </View>
 
-      <DividerIcon borderBottomWidth={2}/>
+      <DividerIcon borderBottomWidth={2} />
       <FlatList
         data={searchQuery ? filteredMarketPlace : PropertyListing_data}
         renderItem={propertyData1_render}
