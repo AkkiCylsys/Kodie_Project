@@ -81,7 +81,12 @@ export default Login = props => {
       GoogleSignin.configure({
         webClientId:
           '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
-      });
+          iosClientId:
+          '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
+          offlineAccess: false,
+     
+        });
+      
     };
     configureGoogleSignIn();
   }, []);

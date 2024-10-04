@@ -38,6 +38,7 @@ const SignUp = (props) => {
   const [googleSignIn, setGoogleSignIn] = useState([]);
   const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId,deviceType,'signup');
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -166,7 +167,6 @@ const SignUp = (props) => {
       handleSignup();
     }
   };
-  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   const handleSignup = async () => {
     setIsLoading(true);
     const trimmedEmail = email.trim();
