@@ -56,7 +56,7 @@ const firstIndicatorSignUpStepStyle = {
   labelSize: 14,
   labelAlign: 'center',
 };
-
+ 
 const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
     name: 'feed',
@@ -64,7 +64,7 @@ const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     size: 20,
   };
   iconConfig.name = stepStatus === 'finished' ? 'check' : null;
-
+ 
   return iconConfig;
 };
 const SignUpSteps = props => {
@@ -125,15 +125,15 @@ const SignUpSteps = props => {
         }
         return false;
       };
-
+ 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
+ 
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
     }, [IsMap, IsSearch]),
   );
-
+ 
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log(newImageName, 'ImageNAme');
@@ -183,7 +183,7 @@ const SignUpSteps = props => {
           json.results[0].address_components[7].long_name +
           ', ' +
           json.results[0].address_components[8].long_name;
-
+ 
         var addressComponent2 = json.results[0].address_components[1];
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
@@ -218,7 +218,7 @@ const SignUpSteps = props => {
   // } else {
   //   console.error('Invalid phone number format!');
   // }
-
+ 
   const isValidFirstName = text => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
@@ -234,7 +234,7 @@ const SignUpSteps = props => {
       return true;
     }
   };
-
+ 
   const isValidLastName = text => {
     const trimmedText = text.trim();
     if (trimmedText === '') {
@@ -250,7 +250,7 @@ const SignUpSteps = props => {
       return true;
     }
   };
-
+ 
   const isValidPhoneNumber = text => {
     if (text.trim() === '') {
       setMobileNumberError('Phone number is required!');
@@ -265,13 +265,13 @@ const SignUpSteps = props => {
   };
   
   
-
+ 
   const handleNextBtn = () => {
     const isFirstNameValid = isValidFirstName(firstName);
     if (!isFirstNameValid) {
       return;
     }
-
+ 
     const isLastNameValid = isValidLastName(lastName);
     if (!isLastNameValid) {
       return;
@@ -280,7 +280,7 @@ const SignUpSteps = props => {
     if (!isPhoneNumberValid) {
       return;
     }
-
+ 
     if (isFirstNameValid && isLastNameValid && isPhoneNumberValid) {
       props.navigation.navigate('AboutYou', {
         firstName: firstName,
@@ -303,13 +303,13 @@ const SignUpSteps = props => {
       });
     }
   };
-
+ 
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
   }, []);
-
+ 
   const goBack = () => {
     props.navigation.navigate('LoginScreen');
   };
@@ -328,7 +328,7 @@ const SignUpSteps = props => {
         : position === 2
         ? 'First property'
         : 'circle';
-
+ 
     return (
       <View style={SignUpStepStyle.labelContainer}>
         <Text
@@ -351,7 +351,7 @@ const SignUpSteps = props => {
       </View>
     );
   };
-
+ 
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
@@ -366,7 +366,7 @@ const SignUpSteps = props => {
             {'Introduce yourself to Kodie'}
           </Text>
         </View>
-
+ 
         <Text style={AccountStyle.edittext}>Profile photo</Text>
         <View style={[AccountStyle.profilviewmain, {flex: 1}]}>
           <TouchableOpacity
@@ -392,7 +392,7 @@ const SignUpSteps = props => {
                 />
               </View>
             )}
-
+ 
             <View style={AccountStyle.editlogoview}>
               <Fontisto
                 name="camera"
@@ -565,7 +565,7 @@ const SignUpSteps = props => {
               <Text style={AccountStyle.errorText1}>{mobileNumberError}</Text>
             ) : null}
           </View>
-
+ 
           <View style={AccountStyle.inputContainerbio}>
             <Text style={LABEL_STYLES._texinputLabel}>Bio</Text>
             <TextInput
@@ -580,7 +580,7 @@ const SignUpSteps = props => {
               textAlignVertical={'top'}
             />
           </View>
-
+ 
           <View style={[AccountStyle.inputContainer, {marginTop: 25}]}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
@@ -627,7 +627,7 @@ const SignUpSteps = props => {
       </ScrollView>
     );
   };
-
+ 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
@@ -684,7 +684,7 @@ const SignUpSteps = props => {
               <View style={SignUpStepStyle.stepIndicator}>
                 {renderPageContent()}
               </View>
-
+ 
               <View
                 style={{
                   marginHorizontal: 16,
@@ -761,5 +761,5 @@ const SignUpSteps = props => {
     </SafeAreaView>
   );
 };
-
+ 
 export default SignUpSteps;
