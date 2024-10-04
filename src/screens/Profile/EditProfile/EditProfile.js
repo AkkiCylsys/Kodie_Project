@@ -582,7 +582,7 @@ const EditProfile = props => {
                       ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
-                        value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                        value={`${accountDetails?.UAD_COUNTRY_CODE == "null" || accountDetails?.UAD_COUNTRY_CODE == null ? '+61' : accountDetails?.UAD_COUNTRY_CODE} ${
                           accountDetails?.UAD_PHONE_NO || ''
                         }`}
                         editable={false}

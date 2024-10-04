@@ -298,7 +298,7 @@ const SignUpSteps = props => {
         user_key: user_key,
         image: ImageName,
         Bio: bio,
-        country_code: country_Code_Get,
+        country_code: '+61',
         password: password,
       });
     }
