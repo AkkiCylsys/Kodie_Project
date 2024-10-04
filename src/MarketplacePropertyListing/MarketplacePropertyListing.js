@@ -178,6 +178,9 @@ const MarketplacePropertyListing = props => {
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     const calculateDaysPast = dateString => {
+      if (!dateString) {
+        return 0; // Return 0 or another appropriate value for null
+      }
       const currentDate = new Date(); // Current date
 
       const givenDate = new Date(dateString);

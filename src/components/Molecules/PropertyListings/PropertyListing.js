@@ -111,6 +111,9 @@ const PropertyListing = props => {
     const isExpanded = expandedItems.includes(item.property_id);
 
     const calculateDaysPast = dateString => {
+      if (!dateString) {
+        return 0; // Return 0 or another appropriate value for null
+      }
       const currentDate = new Date(); // Current date
 
       const givenDate = new Date(dateString);
@@ -283,7 +286,7 @@ const PropertyListing = props => {
                 Number of days listed:
               </Text>
               <Text style={PropertyListingCss.commonDay}>{`${
-                daysPast || "0"
+                daysPast || '0'
               } Days`}</Text>
             </View>
 
