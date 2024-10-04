@@ -2178,6 +2178,7 @@ const RentalOffer = props => {
           <>
             <View style={RentalOfferStyle.datePickerView}>
               <CalendarModal
+                current={inputValues[question.tqm_Question_code]}
                 SelectDate={
                   inputValues[question.tqm_Question_code] ||
                   question.tqm_Question_placeholder

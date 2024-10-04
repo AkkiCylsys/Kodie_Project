@@ -33,6 +33,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
 import {useSelector} from 'react-redux';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
+import { MapUrlTile } from 'react-native-maps';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
@@ -449,7 +450,7 @@ const ViewRentalDetails = props => {
                 }
                 name={likedItems[propertyId] ? 'heart' : 'hearto'}
                 size={25}
-                style={{marginHorizontal: 20}}
+                style={{marginLeft:20}}
               />
             </TouchableOpacity>
           </View>

@@ -372,10 +372,12 @@ const PropertyList = props => {
                 </View>
               ) : (
                 <>
-                  <View key={index} style={[PropertyListCSS.flatListContainer,]}>
-                    <View style={[PropertyListCSS.flat_MainView,
-                      {marginBottom:12}
-                    ]}>
+                  <View key={index} style={[PropertyListCSS.flatListContainer]}>
+                    <View
+                      style={[
+                        PropertyListCSS.flat_MainView,
+                        {marginBottom: 12},
+                      ]}>
                       <View style={PropertyListCSS.flexContainer}>
                         <Text style={PropertyListCSS.apartmentText}>
                           {item.property_type}
@@ -384,14 +386,18 @@ const PropertyList = props => {
                           style={LABEL_STYLES.commontext}
                           ellipsizeMode="tail"
                           numberOfLines={0}>
-                          {item.City ? item?.City : item?.state}
+                          {item?.City === null ||
+                          item?.City === 'null' ||
+                          item?.City === ''
+                            ? item?.state || ' '
+                            : item?.City || ' '}
                         </Text>
                         <View style={PropertyListCSS.flat_MainView}>
                           <MaterialCommunityIcons
                             name={'map-marker'}
                             size={12}
                             color={_COLORS.Kodie_GreenColor}
-                            style={{marginTop:6}}
+                            style={{marginTop: 6}}
                           />
                           <Text
                             style={PropertyListCSS.locationText}
@@ -405,25 +411,22 @@ const PropertyList = props => {
                         <View style={{flex: 1}}>
                           <Image
                             source={{uri: item?.image_path[0]}}
-                            style={[
-                              PropertyListCSS.imageStyle,
-                          
-                            ]}
+                            style={[PropertyListCSS.imageStyle]}
                             resizeMode="cover"
                           />
                         </View>
                       ) : (
-                        <View
-                          style={[
-                            {flex:1}
-                          ]}>
+                        <View style={[{flex: 1}]}>
                           <Ionicons
                             name="images-outline"
                             size={90}
                             color={_COLORS.Kodie_GrayColor}
-                            style={[PropertyListCSS.imageStyle,{
-                              borderWidth:0
-                            }]}
+                            style={[
+                              PropertyListCSS.imageStyle,
+                              {
+                                borderWidth: 0,
+                              },
+                            ]}
                           />
                         </View>
                       )}
