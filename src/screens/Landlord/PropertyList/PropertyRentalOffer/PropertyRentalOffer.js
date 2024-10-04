@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -40,7 +40,14 @@ const PropertyRentalOffer = props => {
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3,2';
+  // const userRole = '3';
+
+  const roleArray = userRole ? userRole.split(',') : [];
+
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +61,15 @@ const PropertyRentalOffer = props => {
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
 
   const accoutId = loginData?.Login_details?.user_account_id;
+
+  useLayoutEffect(() => {
+    if (userRole === '3') {
+      setSelectedButton(false);
+    } else {
+      setSelectedButton(true);
+    }
+  }, [userRole]);
+
   const handleExpandToggle = property_id => {
     setExpandedPropertyId(prevId =>
       prevId === property_id ? null : property_id,
@@ -128,10 +144,6 @@ const PropertyRentalOffer = props => {
       setIsLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   handleGetCurrectOffer();
-  // }, [isFocus]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -586,12 +598,6 @@ const PropertyRentalOffer = props => {
   };
 
   const renderRowButtons = () => {
-    const roleArray = userRole ? userRole.split(',') : [];
-
-    const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
-    const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
-    const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
-
     const renderSingleButton = buttonText => (
       <CustomSingleButton
         _ButtonText={buttonText}
@@ -599,14 +605,19 @@ const PropertyRentalOffer = props => {
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
         height={45}
-        onPress={() => {}}
-        disabled={isLoading ? true : false}
+        // onPress={onPressAction} // Call the action passed as a parameter
+        disabled={isLoading}
       />
     );
 
     if (!hasLandlordRole) {
       return renderSingleButton('My rental applications');
     }
+
+    if (userRole === '3') {
+      return renderSingleButton('Offers for my properties');
+    }
+
     if (hasLandlordRole) {
       return (
         <RowButtons
@@ -627,6 +638,7 @@ const PropertyRentalOffer = props => {
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressLeftButton={() => {
+            console.log('Left button pressed: Offers for my properties');
             setSelectedButton(false);
           }}
           RightButtonText={'My rental applications'}
@@ -646,13 +658,14 @@ const PropertyRentalOffer = props => {
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressRightButton={() => {
+            console.log('Right button pressed: My rental applications');
             setSelectedButton(true);
           }}
         />
       );
     }
 
-    return null; // If no matching roles, return null
+    return null;
   };
 
   return (
