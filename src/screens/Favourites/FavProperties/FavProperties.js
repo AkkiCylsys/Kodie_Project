@@ -149,7 +149,7 @@ const FavProperties = () => {
               <Text
                 style={
                   FavPropertyStyle?.Property_rate
-                }>{`$${item?.rental_amount}/wk`}</Text>
+                }>{`$${item?.rental_amount}`}</Text>
             </View>
             <View style={FavPropertyStyle.share_View}>
               <TouchableOpacity onPress={() => {}}>

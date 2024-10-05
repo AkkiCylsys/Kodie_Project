@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   Alert,
+  Platform,
 } from 'react-native';
 import {PropertyRentalOfferStyle} from './PropertyRentalOfferStyle';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
@@ -35,12 +36,20 @@ import {
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {matrixTransform} from 'react-native-svg/lib/typescript/elements/Shape';
+import {fontSize} from '../../../../Themes/FontStyle/FontStyle';
 const PropertyRentalOffer = props => {
   const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3,2';
+  // const userRole = '2';
+
+  const roleArray = userRole ? userRole.split(',') : [];
+
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+
   const navigation = useNavigation();
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +63,19 @@ const PropertyRentalOffer = props => {
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
 
   const accoutId = loginData?.Login_details?.user_account_id;
+
+  useLayoutEffect(() => {
+    if (userRole === '3') {
+      setSelectedButton(false);
+    } else if (userRole === '2') {
+      setSelectedButton(true);
+    } else {
+      setSelectedButton(
+        acceptLanlordPassed == 'acceptLanlordPassed' ? false : true,
+      );
+    }
+  }, [userRole]);
+
   const handleExpandToggle = property_id => {
     setExpandedPropertyId(prevId =>
       prevId === property_id ? null : property_id,
@@ -129,10 +151,6 @@ const PropertyRentalOffer = props => {
     }
   };
 
-  // useEffect(() => {
-  //   handleGetCurrectOffer();
-  // }, [isFocus]);
-
   useFocusEffect(
     React.useCallback(() => {
       {
@@ -186,6 +204,27 @@ const PropertyRentalOffer = props => {
   };
 
   const getButtonBackgroundColor = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return _COLORS.Kodie_lightseskyBule; // Color for completed screening
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return _COLORS.Kodie_mostLightBlueColor;
+    } else if (screeningStatus === 'REJECT') {
+      return _COLORS.Kodie_extralightRedColor; // Color for rejected application
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_backDarkOrange; // Color for rejected application
+    } else if (acceptLandlord === 0) {
+      // Color for accepted application
+      return _COLORS.Kodie_mostLightGreenColor;
+    }
+    return _COLORS.Kodie_backDarkOrange; // Default color for bid submitted
+  };
+  const getBorderColor = (
     isScreenComplet,
     isScreenProgress,
     screeningStatus,
@@ -321,6 +360,13 @@ const PropertyRentalOffer = props => {
       acceptLandlord,
       finalLandlordApprove,
     );
+    const border_color = getBorderColor(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
     const textColor = getButtonTextColor(
       isScreenComplet,
       isScreenProgress,
@@ -420,7 +466,7 @@ const PropertyRentalOffer = props => {
               <View
                 style={[
                   PropertyRentalOfferStyle.buttonView,
-                  {backgroundColor},
+                  {backgroundColor, borderColor: border_color},
                 ]}>
                 <Entypo
                   name="dot-single"
@@ -433,7 +479,10 @@ const PropertyRentalOffer = props => {
                 <Text
                   style={[
                     PropertyRentalOfferStyle.buttonText,
-                    {color: textColor},
+                    {
+                      color: textColor,
+                      fontSize: Platform.OS === 'ios' ? 8 : 9,
+                    },
                   ]}>
                   {buttonText}
                 </Text>
@@ -586,12 +635,6 @@ const PropertyRentalOffer = props => {
   };
 
   const renderRowButtons = () => {
-    const roleArray = userRole ? userRole.split(',') : [];
-
-    const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
-    const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
-    const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
-
     const renderSingleButton = buttonText => (
       <CustomSingleButton
         _ButtonText={buttonText}
@@ -599,14 +642,19 @@ const PropertyRentalOffer = props => {
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
         height={45}
-        onPress={() => {}}
-        disabled={isLoading ? true : false}
+        // onPress={onPressAction} // Call the action passed as a parameter
+        disabled={isLoading}
       />
     );
 
     if (!hasLandlordRole) {
       return renderSingleButton('My rental applications');
     }
+
+    if (userRole === '3') {
+      return renderSingleButton('Offers for my properties');
+    }
+
     if (hasLandlordRole) {
       return (
         <RowButtons
@@ -627,6 +675,7 @@ const PropertyRentalOffer = props => {
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressLeftButton={() => {
+            console.log('Left button pressed: Offers for my properties');
             setSelectedButton(false);
           }}
           RightButtonText={'My rental applications'}
@@ -646,13 +695,14 @@ const PropertyRentalOffer = props => {
               : _COLORS.Kodie_LightWhiteColor
           }
           onPressRightButton={() => {
+            console.log('Right button pressed: My rental applications');
             setSelectedButton(true);
           }}
         />
       );
     }
 
-    return null; // If no matching roles, return null
+    return null;
   };
 
   return (

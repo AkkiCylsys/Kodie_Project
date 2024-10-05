@@ -283,7 +283,7 @@ const PropertyListing = props => {
           <View style={PropertyListingCss.expandedContent}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.commonMidtext}>
-                Number of days listed:
+              Number of days vacant:
               </Text>
               <Text style={PropertyListingCss.commonDay}>{`${
                 daysPast || '0'

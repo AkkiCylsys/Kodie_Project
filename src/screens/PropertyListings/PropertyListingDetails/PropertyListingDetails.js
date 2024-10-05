@@ -114,9 +114,23 @@ const PropertyListingDetail = props => {
       setSelectedDateError('');
     }
   };
+  // const handleListPriceChange = text => {
+  //   setListPrice(text);
+  //   if (text.trim() === '') {
+  //     setListPriceError('List price is required.');
+  //   } else {
+  //     setListPriceError('');
+  //   }
+  // };
   const handleListPriceChange = text => {
-    setListPrice(text);
-    if (text.trim() === '') {
+    // Remove non-numeric characters to keep only the numbers
+    const numericText = text.replace(/[^0-9]/g, '');
+
+    // Set the numeric value without the dollar sign in the state
+    setListPrice(numericText);
+
+    // Validation: if the input is empty, show an error message
+    if (numericText.trim() === '') {
       setListPriceError('List price is required.');
     } else {
       setListPriceError('');
@@ -222,10 +236,10 @@ const PropertyListingDetail = props => {
       prereference: prereference,
       other: Otherpreference,
     };
-    console.log(data);
+    console.log('add market place..', data);
     try {
       const response = await insertMarketDetails(data);
-      Alert.alert('Success', 'Market details have been inserted successfully.');
+      Alert.alert('Success', 'Market details have been save successfully.');
       props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');
@@ -381,7 +395,8 @@ const PropertyListingDetail = props => {
             <InputField
               label="List price"
               placeholder="Enter the rental amount"
-              value={ListPrice}
+              // value={ListPrice}
+              value={ListPrice ? `$${ListPrice}` : ''}
               Starpoint={'*'}
               onChangeText={handleListPriceChange}
               keyboardType="number-pad"
@@ -405,7 +420,7 @@ const PropertyListingDetail = props => {
               onChange={item => setLeaseEndValue(item.lookup_key)}
               renderItem={item => renderDropdownItem(item, leaseEndValue)}
             />
-              <DividerIcon />
+            <DividerIcon />
           </SectionToggle>
 
           {/* Preferences Section */}

@@ -28,12 +28,8 @@ import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJ
 import Modal from 'react-native-modal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {color} from 'react-native-reanimated';
-const HorizontalData = [
-  'All',
-  'Scheduled',
-  'Pending',
-  'Complete - Paid',
-];
+import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+const HorizontalData = ['All', 'Scheduled', 'Pending', 'Complete - Paid'];
 export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -439,7 +435,7 @@ export default Repair = props => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        <View style={{marginHorizontal: 16,marginVertical:15}}>
+        <View style={{marginHorizontal: 16, marginVertical: 15}}>
           {/* <View style={RepairCss.BtnView}>{renderRowButtons()}</View> */}
           <RowButtons
             LeftButtonText={'Jobs I am servicing'}
@@ -535,6 +531,13 @@ export default Repair = props => {
             //  data={JobData}
             data={searchQuery ? filteredRequestpropertyData : JobData}
             renderItem={propertyData_render1}
+            ListEmptyComponent={() => {
+              return (
+                <ListEmptyComponent
+                  EmptyText={"You don't have any job at the moment."}
+                />
+              );
+            }}
           />
         ) : (
           // <ArchiveJob />
@@ -544,6 +547,13 @@ export default Repair = props => {
               searchQuery ? filteredServicingpropertyData : servicingJobData
             }
             renderItem={propertyData_render1}
+            ListEmptyComponent={() => {
+              return (
+                <ListEmptyComponent
+                  EmptyText={"You don't have any job at the moment."}
+                />
+              );
+            }}
           />
         )}
       </ScrollView>

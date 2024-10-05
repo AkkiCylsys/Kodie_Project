@@ -19,6 +19,7 @@ import {Config} from '../../../../../../Config';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {color} from 'react-native-reanimated';
+import { matrixTransform } from 'react-native-svg/lib/typescript/elements/Shape';
 
 const data = [
   {label: '3-month', value: '1'},
@@ -570,7 +571,7 @@ export default AddExpensesDetails = props => {
           </View>
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={LABEL_STYLES.commontext}>{'Repeating expense?'}
+            <Text style={[LABEL_STYLES.commontext,{marginBottom:5}]}>{'Repeating expense?'}
             <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <RowButtons
@@ -662,7 +663,7 @@ export default AddExpensesDetails = props => {
             </Text>
           ) : null}
           <View style={AddExpensesDetailsStyle.additiontext}>
-            <Text style={LABEL_STYLES.commontext}>
+            <Text style={[LABEL_STYLES.commontext,{marginBottom:5,marginTop:10}]}>
               {'Who is responsible for paying for this?'}
             </Text>
             <RowButtons

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
@@ -17,15 +17,15 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { GoogleMapStyle } from './googleMapStyle';
-import { useState } from 'react';
+import {GoogleMapStyle} from './googleMapStyle';
+import {useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
-import { CommonLoader } from '../ActiveLoader/ActiveLoader';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {CommonLoader} from '../ActiveLoader/ActiveLoader';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import RNSettings from 'react-native-settings';
-import { useNavigation } from '@react-navigation/native';
-import { _COLORS } from '../../../Themes';
+import {useNavigation} from '@react-navigation/native';
+import {_COLORS} from '../../../Themes';
 
 const MapScreen = props => {
   const mapRef = useRef(null);
@@ -33,65 +33,108 @@ const MapScreen = props => {
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [mapReady, setMapReady] = useState(false);
+  const [timeoutReached, setTimeoutReached] = useState(false);
   useLayoutEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-    const appStateListener = AppState.addEventListener('change', handleAppStateChange);
+    const appStateListener = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
     return () => {
       appStateListener.remove();
     };
   }, []);
-  const handleAppStateChange = (nextAppState) => {
+
+  useEffect(() => {
+    // Set a timeout for 10 seconds
+    const timeout = setTimeout(() => {
+      if (!mapReady) {
+        setTimeoutReached(true); // Mark timeout as reached if the map is not ready
+        Alert.alert(
+          'Warning',
+          'We’ve detected that your network connection is currently slow. Please check your connection settings or try again later. Thank you for your understanding!',
+          [
+            {
+              text: 'Cancel', // Label for the cancel button
+              onPress: () => console.log('Cancel Pressed'), // You can add any action you want here
+              style: 'cancel', // This makes it look like a cancel button
+            },
+            {
+              text: 'Retry', // The default button label
+              onPress: () => {
+                getLOcation();
+                console.log('OK Pressed');
+              }, // Action for the OK button
+            },
+          ],
+          {cancelable: false}, // Prevents the user from dismissing the alert by tapping outside of it
+        );
+      }
+    }, 8000); // 10 seconds
+
+    // Clean up the timeout when the component unmounts or when the map is ready
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [mapReady]);
+  const handleAppStateChange = nextAppState => {
     if (nextAppState === 'active') {
       console.log('App has come to the foreground!');
-      Platform.OS === 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+      Platform.OS === 'ios'
+        ? CheckIOSMapPermission()
+        : checkpermissionlocation();
     }
   };
 
   const getCenterOffsetForAnchor = (anchorPoint, markerWidth, markerHeight) => {
-    const offsetX = (markerWidth * 0.5) - (markerWidth * anchorPoint.x);
-    const offsetY = (markerHeight * 0.5) - (markerHeight * anchorPoint.y);
+    const offsetX = markerWidth * 0.5 - markerWidth * anchorPoint.x;
+    const offsetY = markerHeight * 0.5 - markerHeight * anchorPoint.y;
 
-    return { x: offsetX, y: offsetY };
-
+    return {x: offsetX, y: offsetY};
   };
   // Usage Example
   const markerWidth = 40; // Marker width in pixels
   const markerHeight = 40; // Marker height in pixels
 
   // Anchor point, where (0.5, 0.5) is the center of the marker
-  const anchorPoint = { x: 0.5, y: 0.5 };
+  const anchorPoint = {x: 0.5, y: 0.5};
 
   // Calculate the center offset
-  const offset = getCenterOffsetForAnchor(anchorPoint, markerWidth, markerHeight);
+  const offset = getCenterOffsetForAnchor(
+    anchorPoint,
+    markerWidth,
+    markerHeight,
+  );
 
-  console.log(`Offset X: ${offset.x}, Offset Y: ${offset.y}`);// useLayoutEffect(() => {
+  console.log(`Offset X: ${offset.x}, Offset Y: ${offset.y}`); // useLayoutEffect(() => {
   //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
   //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
 
   // }, []);
 
   const getLOcation = () => {
+    setIsLoading(true);
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         console.log('you are here.');
-        const { latitude, longitude } = position.coords;
+        const {latitude, longitude} = position.coords;
         console.log('position.coords in map components....', position.coords);
         setLat(latitude);
         setLong(longitude);
         setIsLoading(false);
       },
-      (error) => {
+      error => {
         console.error('Error getting location:', error);
       },
       {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 1000,
-      }
+      },
     );
   };
   const checkpermissionlocation = async () => {
@@ -218,12 +261,20 @@ const MapScreen = props => {
       const statusWhenInUse = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
       const statusAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
 
-      if (statusWhenInUse === RESULTS.GRANTED || statusAlways === RESULTS.GRANTED) {
+      if (
+        statusWhenInUse === RESULTS.GRANTED ||
+        statusAlways === RESULTS.GRANTED
+      ) {
         handlePermissionStatus(RESULTS.GRANTED);
       } else {
-        const resultWhenInUse = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        const resultWhenInUse = await request(
+          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        );
         const resultAlways = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-        if (resultWhenInUse === RESULTS.GRANTED || resultAlways === RESULTS.GRANTED) {
+        if (
+          resultWhenInUse === RESULTS.GRANTED ||
+          resultAlways === RESULTS.GRANTED
+        ) {
           handlePermissionStatus(RESULTS.GRANTED);
         } else {
           handlePermissionStatus(resultWhenInUse);
@@ -234,14 +285,18 @@ const MapScreen = props => {
     }
   };
 
-  const handlePermissionStatus = (status) => {
+  const handlePermissionStatus = status => {
     switch (status) {
       case RESULTS.UNAVAILABLE:
-        console.log('This feature is not available (on this device / in this context)');
+        console.log(
+          'This feature is not available (on this device / in this context)',
+        );
         showLocationAlert();
         break;
       case RESULTS.DENIED:
-        console.log('The permission has not been requested / is denied but requestable');
+        console.log(
+          'The permission has not been requested / is denied but requestable',
+        );
         showLocationAlert();
         break;
       case RESULTS.LIMITED:
@@ -261,7 +316,7 @@ const MapScreen = props => {
     }
   };
   const checkLocationServices = () => {
-    RNSettings.getSetting(RNSettings.LOCATION_SETTING).then((result) => {
+    RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
       if (result === RNSettings.ENABLED) {
         console.log('Location services enabled');
         getLOcation();
@@ -277,15 +332,13 @@ const MapScreen = props => {
       [
         {
           text: 'Cancel',
-          onPress: () =>props.iscancel
-          ? props.iscancel()
-          : navigation.pop(),
+          onPress: () => (props.iscancel ? props.iscancel() : navigation.pop()),
           style: 'cancel',
         },
         {
           text: 'Open Settings',
           onPress: () => {
-            Linking.openURL('app-settings:')
+            Linking.openURL('app-settings:');
             // Linking.openSettings().catch(() => console.warn('Cannot open settings'));
           },
         },
@@ -298,13 +351,13 @@ const MapScreen = props => {
         latitude: parseFloat(lat),
         longitude: parseFloat(long),
         latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
-      }
+        longitudeDelta: 0.0421,
+      };
       if (mapRef.current) {
-        mapRef.current.animateToRegion(newRegion, 1000)
+        mapRef.current.animateToRegion(newRegion, 1000);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -327,16 +380,25 @@ const MapScreen = props => {
             longitudeDelta: 0.02,
           }}
           showsMyLocationButton={true}
-          ref={mapRef}
-        >
-          <View style={{
-            position: 'absolute', 
-            screentop: '50%', 
-            verticallyleft: '50%', 
-            horizontallymarginLeft: -24, 
-            centermarginTop: -48, 
-
-          }}>
+          onMapReady={() => {
+            console.log('Map loaded');
+            setMapReady(true);
+          }}
+          onError={error =>
+            Alert.alert(
+              'Map Error',
+              'Unable to load the map due to a network issue',
+            )
+          }
+          ref={mapRef}>
+          <View
+            style={{
+              position: 'absolute',
+              screentop: '50%',
+              verticallyleft: '50%',
+              horizontallymarginLeft: -24,
+              centermarginTop: -48,
+            }}>
             <Marker
               anchor={anchorPoint}
               centerOffset={offset}
@@ -346,12 +408,11 @@ const MapScreen = props => {
                 longitude: props?.Maplng ? parseFloat(props?.Maplng) : long,
               }}
               onPress={props?.onPress}>
-
               {/* <Icon name="location-pin" size={30} color={'red'} /> */}
-                          
-               <View style={{ width: markerWidth, height: markerHeight, }}>
-        <Text style={{fontSize:30}}>📍</Text>
-      </View>
+
+              <View style={{width: markerWidth, height: markerHeight}}>
+                <Text style={{fontSize: 30}}>📍</Text>
+              </View>
 
               <Callout tooltip onPress={props?.onPressTooltip}>
                 {/* <View style={GoogleMapStyle.tooltipView}>
@@ -360,40 +421,35 @@ const MapScreen = props => {
       </Text>
     </View> */}
               </Callout>
-
             </Marker>
-            </View>
-           
+          </View>
         </MapView>
       )}
-       <TouchableOpacity
-              style={{
-                flex: 1,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingVertical: 3,
-                borderRadius: 10,
-                width: '24%',
-                height: 60,
-                bottom: -15,
-                left: 20,
-                marginBottom: 30,
-                position: 'absolute',
-              }}
-              onPress={() => {
-                focusOnLocation();
-              }}
-            >
-
-              <Ionicons
-                name="location-sharp"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-                style={{justifyContent: 'center',
-                alignItems: 'center',}}
-              />
-            </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          flex: 1,
+          backgroundColor: _COLORS.Kodie_WhiteColor,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingVertical: 3,
+          borderRadius: 10,
+          width: '24%',
+          height: 60,
+          bottom: -15,
+          left: 20,
+          marginBottom: 30,
+          position: 'absolute',
+        }}
+        onPress={() => {
+          focusOnLocation();
+        }}>
+        <Ionicons
+          name="location-sharp"
+          size={30}
+          color={_COLORS.Kodie_lightGreenColor}
+          style={{justifyContent: 'center', alignItems: 'center'}}
+        />
+      </TouchableOpacity>
     </>
   );
 };

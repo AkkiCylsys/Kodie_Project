@@ -102,13 +102,14 @@ const ViewRentalDetails = props => {
     }
   };
 
-  const toggleLike = propertyId => {
-    setLikedItems(prevState => ({
-      ...prevState,
-      [propertyId]: !prevState[propertyId],
-    }));
-    handleFavouriteItem(propertyId);
-  };
+  // will uncomment imn the future..
+  // const toggleLike = propertyId => {
+  //   setLikedItems(prevState => ({
+  //     ...prevState,
+  //     [propertyId]: !prevState[propertyId],
+  //   }));
+  //   handleFavouriteItem(propertyId);
+  // };
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
@@ -439,7 +440,7 @@ const ViewRentalDetails = props => {
                 size={25}
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 // setFavRental(!favRental);
                 toggleLike(propertyId);
@@ -454,7 +455,7 @@ const ViewRentalDetails = props => {
                 size={25}
                 style={{marginLeft:20}}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <View style={ViewRentalDetailsStyle.locationView}>

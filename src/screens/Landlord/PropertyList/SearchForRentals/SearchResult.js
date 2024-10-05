@@ -58,6 +58,34 @@ export default SearchResult = props => {
   console.log('AllCountsData...', AllCountsData);
   console.log('searchRentalResponse...', JSON.stringify(searchRentalResponse));
   console.log('searchInputData..', searchInputData);
+
+  const getPropertyTypeLabel = type => {
+    switch (type) {
+      case '22':
+        return 'House';
+      case '23':
+        return 'Cottage';
+      case '24':
+        return 'Apartment/Flat';
+      case '25':
+        return 'Townhouse';
+      case '26':
+        return 'Land/Vacant Plot';
+      case '27':
+        return 'Farm';
+      default:
+        return '';
+    }
+  };
+
+  const propertyTypeArray = propertyType.split(',');
+
+  // Map over the array to get labels
+  const propertyLabels = propertyTypeArray
+    .map(type => getPropertyTypeLabel(type))
+    .filter(label => label) // Filter out empty labels
+    .join(', '); // Join labels into a single string
+
   useEffect(() => {
     additional_key_features();
   }, []);
@@ -358,7 +386,9 @@ export default SearchResult = props => {
                   size={16}
                 />
               </View>
-              <Text style={SearchResultCss.bedcont}>{item?.floor_size}m²</Text>
+              <Text style={SearchResultCss.bedcont}>
+                {item?.floor_size || '0'}m²
+              </Text>
             </View>
           </View>
 
@@ -381,28 +411,17 @@ export default SearchResult = props => {
           <Text style={SearchResultCss.LeftText}>
             {searchInputData?.city || ''}
           </Text>
-          <Text style={SearchResultCss.LeftTextRentText}>
-            {`${
-              propertyType === '22'
-                ? 'House'
-                : propertyType === '23'
-                ? 'Cottage'
-                : propertyType === '24'
-                ? 'Apartment/Flat'
-                : propertyType === '25'
-                ? 'Townhouse'
-                : propertyType === '26'
-                ? 'Land/Vacant Plot'
-                : propertyType === '27'
-                ? 'Farm'
-                : ''
-            } $${searchInputData?.input_minRange || ''} to $${
-              searchInputData?.input_maxRange || ''
-            }; ${AllCountsData[0]?.Bedrooms || ''} Beds; ${
-              AllCountsData[1]?.Bathrooms
-            } Baths; ${parkingGarageSpaces || ''} parking space; ${
+          <Text
+            style={SearchResultCss.LeftTextRentText}
+            ellipsizeMode="tail"
+            numberOfLines={2}>
+            {`${propertyLabels}; $${
+              searchInputData?.input_minRange || ''
+            } to $${searchInputData?.input_maxRange || ''}; ${
+              AllCountsData[0]?.Bedrooms || ''
+            } Beds; ${AllCountsData[1]?.Bathrooms} Baths; ${
               parkingGarageSpaces || ''
-            } on-street parking; ${
+            } parking space; ${parkingGarageSpaces || ''} on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
                 : 'unfurnished'

@@ -96,7 +96,8 @@ const PropertyModal = props => {
             handleCloseModal();
           }
           if (item.id === '2') {
-            refRBSheet.current.open();
+            // refRBSheet.current.open();
+            Alert.alert("Rental bidding","Coming soon")
           }
           if (item.id === '3') {
             navigation.navigate('PropertyReview', {

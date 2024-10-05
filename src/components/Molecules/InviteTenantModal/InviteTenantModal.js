@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, Image, TouchableOpacity, FlatList,Alert} from 'react-native';
 import {InviteTenantModalStyle} from './InviteTenantModalStyle';
 import {IMAGES} from '../../../Themes';
 import {useNavigation} from '@react-navigation/native';
@@ -68,9 +68,11 @@ export default InviteTenantModal = props => {
           navigation.navigate('Invitefriend');
           handleClosePopup();
         }
-        // if (item.id === "3") {
-        //   refRBSheet.current.open();
-        // }
+        if (item.id === "2") {
+          // refRBSheet.current.open();
+          Alert.alert("Invite Kodie","Coming soon")
+          handleClosePopup();
+        }
       }}>
       <View
         style={{

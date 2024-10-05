@@ -115,6 +115,7 @@ const BottomModalSearchRental = props => {
           }
           if (item?.id == '3') {
             navigation.navigate('AddNotices');
+            handleClose();
           }
 
           if (item?.id == '4') {
