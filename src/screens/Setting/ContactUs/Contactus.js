@@ -31,7 +31,7 @@ const Contactus = props => {
   const handleAbouthelp = text => {
     setAboutHelp(text);
     if (text == '') {
-      setAboutHelpError('Message in required!');
+      setAboutHelpError('Message is required!');
     } else {
       setAboutHelpError('');
     }
@@ -39,7 +39,7 @@ const Contactus = props => {
 
   const handleSubmit = () => {
     if (aboutHelp.trim() == '') {
-      setAboutHelpError('Message in required!');
+      setAboutHelpError('Message is required!');
     } else {
       handleContactus();
     }
