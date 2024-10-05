@@ -221,7 +221,8 @@ const SignUpSteps = props => {
   // }
 
   const isValidFirstName = text => {
-    const trimmedText = text.trim();
+    // const trimmedText = text.trim();
+    const trimmedText = text;
     if (trimmedText === '') {
       setFirstNameError('First name is required!');
       return false;
@@ -237,7 +238,8 @@ const SignUpSteps = props => {
   };
 
   const isValidLastName = text => {
-    const trimmedText = text.trim();
+    // const trimmedText = text.trim();
+    const trimmedText = text;
     if (trimmedText === '') {
       setLastNameError('Last name is required!');
       return false;
