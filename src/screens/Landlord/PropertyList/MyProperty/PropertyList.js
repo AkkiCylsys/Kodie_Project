@@ -141,7 +141,7 @@ const PropertyList = props => {
         property_filter: filter,
         user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
-        limit: filter === 'Recent' ? 5 : 100,
+        limit: filter === 'Recent' ? 5 : 1000,
         order_col: '1',
         order_wise: 'DESC',
       });

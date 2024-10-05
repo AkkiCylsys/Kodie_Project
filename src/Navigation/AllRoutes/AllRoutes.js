@@ -134,6 +134,7 @@ import Partners from '../../screens/Partners/Partners';
 import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
 import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
 // import {withIAPContext} from 'react-native-iap';
+import DraggableLyrics from '../../screens/Drag'
 // import {Subscriptions} from '../../screens/Subscription/Subscription';
 import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
 import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
@@ -1175,6 +1176,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'Favourites'}
           component={Favourites}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'DraggableLyrics'}
+          component={DraggableLyrics}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -70,23 +70,23 @@ const CustomSidebarMenu = props => {
         break;
       case 'Contractors':
         setselectedId('Contractors');
-        // props.navigation.navigate('Managingcontractors');
         Alert.alert('Maintenance Jobs!', 'Coming soon');
         break;
-      case 'Notices':
-        setselectedId('Notices');
-        props.navigation.navigate('Notices');
-        break;
-      case 'Documents':
-        setselectedId('Documents');
-        props.navigation.navigate('EditProfile', {
-          profileDoc: 'profileDoc',
-        });
-
-        break;
-      case 'Reports':
-        setselectedId('Reports');
-        Alert.alert('Reports!', 'Coming soon');
+        case 'Notices':
+          setselectedId('Notices');
+          props.navigation.navigate('Notices');
+          break;
+          case 'Documents':
+            setselectedId('Documents');
+            props.navigation.navigate('EditProfile', {
+              profileDoc: 'profileDoc',
+            });
+            
+            break;
+            case 'Reports':
+              setselectedId('Reports');
+              props.navigation.navigate('DraggableLyrics');
+        // Alert.alert('Reports!', 'Coming soon');
         break;
       case 'Partners':
         setselectedId('Partners');

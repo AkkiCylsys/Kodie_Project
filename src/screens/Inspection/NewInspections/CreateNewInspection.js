@@ -536,7 +536,7 @@ const CreateNewInspection = props => {
     } else if (selectedAddress == '') {
       setShowError(true);
     }else if (checkedItemIds.length === 0) {
-      setValidationMessage('Please select at least one area!.');
+      setValidationMessage('Please select at least one area!');
       
     } else {
       InspectionView
@@ -618,11 +618,11 @@ const CreateNewInspection = props => {
               : 'Create new inspections'
         }
       />
-    <ScrollView>
+
       <KeyboardAvoidingView
         // style={CreateNewInspectionStyle.mainConatainer}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Adjust this value based on your view
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0} // Adjust this value based on your view
   style={{ flex: 1}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -791,7 +791,7 @@ const CreateNewInspection = props => {
             </Text>
           ) : null}
 
-          <View style={{ marginBottom: 15, marginTop: 15 }}>
+          <View style={{ marginTop: 20 }}>
             <Text style={LABEL_STYLES.commontext}>Add attendees</Text>
 
             <TouchableOpacity
@@ -818,6 +818,7 @@ const CreateNewInspection = props => {
             </TouchableOpacity>
             <TouchableOpacity onPress={handleRemove} />
           </View>
+          <View style={{ marginTop: 20 }}>
           <Text style={LABEL_STYLES.commontext}>
             {'Is the place furnished or unfurnished?'}
           </Text>
@@ -865,6 +866,7 @@ const CreateNewInspection = props => {
                 // alert(selectedButtonId)
               }}
             />
+          </View>
           </View>
           <View style={{ marginBottom: 15 }}>
             <Text style={LABEL_STYLES.commontext}>
@@ -940,7 +942,6 @@ const CreateNewInspection = props => {
           />
         </ScrollView>
       </KeyboardAvoidingView>
-      </ScrollView>
       <RBSheet
         ref={refRBSheet}
         height={500}
@@ -981,7 +982,7 @@ const CreateNewInspection = props => {
           },
           container: CreateNewInspectionStyle.bottomModal_container,
         }}>
-        <View style={CreateNewInspectionStyle.Container}>
+        <ScrollView style={CreateNewInspectionStyle.Container}>
           <View style={CreateNewInspectionStyle.ModalContainer}>
             <Text style={CreateNewInspectionStyle.ShareText}>
               {'Add custom area'}
@@ -1022,7 +1023,7 @@ const CreateNewInspection = props => {
           <Text style={CreateNewInspectionStyle.cancelText}>
             {'Would you like to use a standard inspection checklist?'}
           </Text>
-          <View style={{ marginBottom: 15 }}>
+          <View style={{ marginBottom: 15 ,marginTop:5}}>
             <RowButtons
               LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
@@ -1066,7 +1067,7 @@ const CreateNewInspection = props => {
               }
             />
           </View>
-          <View style={{ marginBottom: 15 }}>
+          <View style={{ marginBottom: 15,marginTop:5 }}>
             <Text style={CreateNewInspectionStyle.cancelText}>
               {' Select the area most similar to your custom area:'}
               <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
@@ -1101,7 +1102,7 @@ const CreateNewInspection = props => {
             </Text>
           ) : null}
           </View>
-          <Text style={CreateNewInspectionStyle.cancelText}>
+          <Text style={[CreateNewInspectionStyle.cancelText,{marginBottom:8}]}>
             {'Make this a standard area for future inspections?'}
           </Text>
           <RowButtons
@@ -1159,7 +1160,7 @@ const CreateNewInspection = props => {
               <Text style={CreateNewInspectionStyle.DoneText}>Done</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>

@@ -640,7 +640,7 @@ const SignUpSteps = props => {
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
-            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack();
+            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack(props);
           }}
         />
         <View style={SignUpStepStyle.container}>
@@ -663,6 +663,7 @@ const SignUpSteps = props => {
                 Maplng={p_longitude}
                 openMapandClose={() => openMapandClose()}
                 ConfirmAddress={ConfirmAddress}
+                iscancel={()=>setIsMap(false)}
             />
            
           ) : IsSearch ? (

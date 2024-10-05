@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {NoticesStyle} from './NoticesStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
@@ -30,7 +30,7 @@ import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {Calendar} from 'react-native-calendars'; //calender
 import {debounce} from 'lodash';
 const HorizontalData = [
@@ -167,16 +167,20 @@ const Notices = props => {
     //......
     setSelectedDate(day.dateString);
   };
-  useEffect(() => {
-    getNoticesReminderDetails();
-  }, []);
-  const getNoticesReminderDetails = () => {
+  useFocusEffect(
+    useCallback(() => {
+      getNoticesReminderDetails();
+  
+    }, [])
+  );
+  const getNoticesReminderDetails = (id) => {
+    console.log(id);
     const url = Config.BASE_URL;
     const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
     console.log('Request URL:', getNoticesReminderDetails_url);
     setIsLoading(true);
     const notification_data = {
-      notices_reminder_id: noticeReminderid,
+      notices_reminder_id: id,
     };
     axios
       .post(getNoticesReminderDetails_url, notification_data)
@@ -249,7 +253,7 @@ const Notices = props => {
               {
                 backgroundColor: selectedFilter.includes(item.filterId)
                   ? _COLORS?.Kodie_WhiteColor
-                  : _COLORS?.Kodie_BlackColor,
+                  : _COLORS?.Kodie_VeryLightGrayColor,
               },
             ]}
           />
@@ -259,7 +263,8 @@ const Notices = props => {
           style={[
             NoticesStyle.item_style,
             {
-              color: selectedFilter.includes(item.filterId) ? 'white' : 'black',
+              color: selectedFilter.includes(item.filterId)   ? _COLORS?.Kodie_WhiteColor
+              : _COLORS?.Kodie_VeryLightGrayColor,
             },
           ]}>
           {item.filtername}
@@ -309,6 +314,7 @@ const Notices = props => {
               refRBSheet.current.open();
               setNoticeReminderid(item.id);
               console.log('noticereminderId....', item.id);
+              getNoticesReminderDetails(item.id); 
             }}>
             <Entypo
               name="dots-three-vertical"

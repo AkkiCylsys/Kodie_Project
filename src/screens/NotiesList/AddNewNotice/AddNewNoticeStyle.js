@@ -79,10 +79,10 @@ export const AddNewNoticeStyle = StyleSheet.create({
     // marginHorizontal: 10,
   },
   dateview: {
-    // flex: 1,
+    flex: 1,
     flexDirection: 'row',
     // justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginLeft: 37,
   },
   datetext: {

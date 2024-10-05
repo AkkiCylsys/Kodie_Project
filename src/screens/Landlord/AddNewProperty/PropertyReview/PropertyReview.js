@@ -75,23 +75,25 @@ export default PropertyReview = props => {
   const [GenerateLink, setGenerateLink] = useState("");
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
   useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        console.log(latitude,longitude);
-        fetchPointsOfInterest(latitude,longitude);
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     const { latitude, longitude } = position.coords;
+    //     console.log(latitude,longitude);
+    //     fetchPointsOfInterest(latitude,longitude);
+        fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
+        
         // fetchPointsOfInterest("27.149994", "79.499901");
 
-      },
-      error => console.error(error),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    );
+    //   },
+    //   error => console.error(error),
+    //   { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    // );
   }, []);
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=20000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
       );
 
       const poiData = categorizeData(response.data.results);

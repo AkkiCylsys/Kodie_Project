@@ -4,7 +4,7 @@ import { GoogleMapScreenStyle } from './GoogleMapScreenStyle';
 import MapScreen from '../GoogleMap/googleMap';
 import { IMAGES, _COLORS } from '../../../Themes';
 
-const GoogleMapScreen = ({ Maplat, Maplng, onRegionChange, openMapandClose, ConfirmAddress }) => {
+const GoogleMapScreen = ({ Maplat, Maplng, onRegionChange,iscancel, openMapandClose, ConfirmAddress }) => {
   return (
     <View style={GoogleMapScreenStyle.container}>
       <MapScreen
@@ -12,6 +12,7 @@ const GoogleMapScreen = ({ Maplat, Maplng, onRegionChange, openMapandClose, Conf
         onRegionChange={onRegionChange}
         Maplat={Maplat}
         Maplng={Maplng}
+        iscancel={iscancel}
       />
       <View style={GoogleMapScreenStyle.searchContainer}>
         <TextInput

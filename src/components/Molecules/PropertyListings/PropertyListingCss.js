@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes';
 export const PropertyListingCss = StyleSheet.create({
   flatListContainer: {marginHorizontal: 30},
@@ -65,16 +65,17 @@ export const PropertyListingCss = StyleSheet.create({
   },
   noteIcon: {height: 25, width: 25, marginRight: 8},
   buttonView: {
-    // flex: 0.7,
+    flex: 0.4,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    alignSelf:'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    // paddingVertical: 5,
     marginLeft: 10,
   },
   roundButton: {
@@ -89,6 +90,7 @@ export const PropertyListingCss = StyleSheet.create({
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
+    marginBottom:Platform?.OS == 'android'? 5 :0
   },
   expandedContent: {
     marginHorizontal: 30,

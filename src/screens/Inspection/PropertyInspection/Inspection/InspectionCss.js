@@ -85,6 +85,7 @@ export const InspectionCss = StyleSheet.create({
     padding: 8,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 5,
+    marginTop:6
   },
   ButtonView: {
     flexDirection: 'row',
@@ -107,7 +108,8 @@ export const InspectionCss = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
-    // marginTop:10
+    marginTop:10,
+    marginBottom:8
   },
   SaveView: {
     borderRadius: 5,
@@ -127,7 +129,8 @@ export const InspectionCss = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    // marginBottom: 24,
+    marginBottom: 2,
+    marginTop:4,
     borderRadius: 8,
   },
 

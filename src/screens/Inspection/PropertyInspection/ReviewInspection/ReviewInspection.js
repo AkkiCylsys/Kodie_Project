@@ -85,8 +85,8 @@ const ReviewInspection = (props) => {
   return (
     <SafeAreaView style={ReviewInspectionCss.MainContainer}>
       <View style={ReviewInspectionCss.Container}>
-        <Text style={ReviewInspectionCss.inspections}>{'Review results'}</Text>
-        {isFileVisible && (
+        {/* <Text style={ReviewInspectionCss.inspections}>{'Review results'}</Text> */}
+        {/* {isFileVisible && (
           <View style={ReviewInspectionCss.PdfContainer}>
             <View style={ReviewInspectionCss.Pdfview}>
               <FontAwesome
@@ -113,7 +113,7 @@ const ReviewInspection = (props) => {
             </TouchableOpacity>
           </View>
         )}
-        <DividerIcon />
+        <DividerIcon /> */}
         <Text style={ReviewInspectionCss.inspections}>
           {'Items needing urgent repair'}
         </Text>

@@ -28,7 +28,9 @@ import { _goBack } from '../../services/CommonServices';
 
 const Chats = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [allsearchQuery, setallSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [allfilteredUsers, setallFilteredUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -124,7 +126,10 @@ console.log(property,'property');
       }
   
       const chatUsers = [...relevantUserIds].map(userId => allUsersMap.get(userId));
-  
+      if (!chatUsers) {
+        console.warn(`User with userId ${userId} not found.`);
+        return null; // Skip undefined users
+      }
       const updatedUsers = chatUsers.map(user => {
         const lastMessage = lastMessagesByUser[user.user_key];
         const lastMessageTime = lastMessage ? formatDate(lastMessage.createdAt) : '';
@@ -237,7 +242,17 @@ console.log(property,'property');
   const navigateToGroupChat = (groupId) => {
     navigation.navigate('GroupChat', { groupId });
   };
-
+  const searchchatList = query => {
+    setallSearchQuery(query);
+    const filtered = query
+      ? allUsers.filter(
+          item =>
+            item.name && item.name.toLowerCase().includes(query.toLowerCase()),
+        )
+      : allUsers;
+    console.log('filtered.........', filtered);
+    setallFilteredUsers(filtered);
+  };
   return (
     <SafeAreaView style={ChatsStyle.container}>
       <TopHeader
@@ -375,6 +390,14 @@ console.log(property,'property');
               </TouchableOpacity>
             </View>
             <DividerIcon />
+            <SearchBar
+            filterImage={IMAGES.filter}
+            frontSearchIcon
+            marginTop={3}
+           
+            searchData={searchchatList}
+            // textvalue={allsearchQuery}
+          />
             <TouchableOpacity
             style={ChatsStyle.bottomSheetButton}
             onPress={() => {
@@ -386,7 +409,7 @@ console.log(property,'property');
           </TouchableOpacity>
           <DividerIcon style={{ marginTop: 15 }} />
             <FlatList
-              data={allUsers}
+              data={allsearchQuery? allfilteredUsers: allUsers}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => {
                   navigation.navigate('Chat', { data: item, userid: item.user_key });

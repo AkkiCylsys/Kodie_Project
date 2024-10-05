@@ -6,7 +6,7 @@ export const CreateGroupStyle = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: _COLORS.white,
-    marginHorizontal:16
+    
   },
   title: {
     fontSize: 24,

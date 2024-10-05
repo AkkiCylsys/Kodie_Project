@@ -170,6 +170,7 @@ export const BedroomCss = StyleSheet.create({
     padding: 8,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 5,
+    color:_COLORS?.Kodie_BlackColor
   },
   ButtonView: {
     flexDirection: 'row',

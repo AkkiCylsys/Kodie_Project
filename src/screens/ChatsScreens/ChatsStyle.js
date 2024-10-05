@@ -135,6 +135,7 @@ export const ChatsStyle = StyleSheet.create({
   },
   bottomSheetButton:{
     flexDirection:'row',
-    marginHorizontal:16
+    marginHorizontal:16,
+    marginTop:16
   }
 });

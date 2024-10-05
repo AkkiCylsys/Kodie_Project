@@ -1127,6 +1127,7 @@ console.log(propertyView);
                     borderWidth: 0,
                     marginTop: 0,
                   }}
+                  timetextStyle={{textAlign:'right'}}
                   _TextTimeColor={
                     currentfromTime
                       ? _COLORS.Kodie_BlackColor
@@ -1141,7 +1142,7 @@ console.log(propertyView);
                 />
               </View>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{flex: 1}}>
+                <View style={{flex: 1,justifyContent:'flex-start',alignItems:'flex-start'}}>
                   <CalendarModal
                     current={selectedToDate}
 
@@ -1177,6 +1178,7 @@ console.log(propertyView);
                     _ApplyButton={apply_toggleToDateModal}
                   />
                 </View>
+              
                 <TimePicker
                   selectedTime={
                     currentToTime && currentToTime != ''
@@ -1187,6 +1189,7 @@ console.log(propertyView);
                     borderWidth: 0,
                     marginTop: 0,
                   }}
+                  timetextStyle={{textAlign:'right'}}
                   _TextTimeColor={
                     currentToTime
                       ? _COLORS.Kodie_BlackColor
@@ -1200,11 +1203,12 @@ console.log(propertyView);
                   onChange={() => handleToTime(currentToTime)}
                 />
               </View>
-            </View>
+              </View>
+           
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {selectedDateError ? (
-                <Text style={AddNewNoticeStyle.errorText}>
+                <Text style={[AddNewNoticeStyle.errorText]}>
                   {selectedDateError}
                 </Text>
               ) : null}
@@ -1263,14 +1267,14 @@ console.log(propertyView);
                       style={{alignSelf: 'center', marginHorizontal: 10}}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn}>
+                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={()=>props?.navigation?.navigate('Chats')}>
                     <Ionicons
                       name="chatbubble-ellipses-outline"
                       size={30}
                       color={_COLORS.Kodie_WhiteColor}
                       style={{alignSelf: 'center'}}
                     />
-                    <Text style={AddNewNoticeStyle.ChatText}>{'Chat '}</Text>
+                    <Text style={AddNewNoticeStyle.ChatText}>{'Chat'}</Text>
                   </TouchableOpacity>
                 </View>
               </View>

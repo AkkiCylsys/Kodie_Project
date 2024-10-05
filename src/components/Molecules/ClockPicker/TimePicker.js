@@ -60,6 +60,7 @@ const TimePicker = (props) => {
             {
               color: props._TextTimeColor,
             },
+            props.timetextStyle,
           ]}
         >
           {props.selectedTime}

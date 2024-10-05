@@ -122,7 +122,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 12,
+    marginTop: 15,
     height: 48,
   },
   input: {
@@ -135,7 +135,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     alignSelf: 'center',
   },
   userStyle: {height: 20, width: 20, marginHorizontal: 10},
-  margin: {marginBottom: 15},
+  margin: {marginBottom: 20,marginTop:8},
   DetailsView: {
     flex: 1,
     flexDirection: 'row',
@@ -148,7 +148,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
-    marginLeft: 5,
+    marginLeft: 10,
   },
   NotesInput: {
     height: 100,
@@ -164,7 +164,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 8,
   },
 
@@ -232,6 +232,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     padding: 8,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 5,
+    marginTop:5
   },
   cancelView: { alignSelf: "center" },
   cancelText: {

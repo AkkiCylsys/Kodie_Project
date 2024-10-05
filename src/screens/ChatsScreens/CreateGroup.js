@@ -6,8 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { _COLORS } from '../../Themes';
 import { CreateGroupStyle } from './CreateGroupStyle';
+import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
+import TopHeader from '../../components/Molecules/Header/Header';
+import { _goBack } from '../../services/CommonServices';
 
-const CreateGroup = () => {
+const CreateGroup = (props) => {
   const [groupName, setGroupName] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -70,7 +73,12 @@ console.log(JSON.stringify(newGroup));
 
   return (
     <SafeAreaView style={CreateGroupStyle.container}>
-      <Text style={CreateGroupStyle.title}>Create Group</Text>
+    <TopHeader
+        onPressLeftButton={() => _goBack(props)}
+        MiddleText={'Create Group'}
+      />
+        <View style={{marginHorizontal:16,marginTop:16
+        }}>
       <TextInput
         style={CreateGroupStyle.input}
         placeholder="Enter Group Name"
@@ -102,6 +110,8 @@ console.log(JSON.stringify(newGroup));
       >
         <Text style={CreateGroupStyle.createButtonText}>Create Group</Text>
       </TouchableOpacity>
+    </View>
+
     </SafeAreaView>
   );
 };

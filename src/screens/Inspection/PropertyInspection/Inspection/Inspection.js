@@ -37,6 +37,7 @@ import {useSelector} from 'react-redux';
 import moment from 'moment';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { GetInspectionItem, UpdateInspectionItem } from '../../../../services/InspectionModuleServices.js/InspectionServices';
+import DragList, { DragListRenderItemInfo } from 'react-native-draglist';
 
 const Inspection = props => {
   const navigation = useNavigation();
@@ -74,7 +75,31 @@ const Inspection = props => {
     // Then call navigateToScreen with the same id and items fetched
     navigateToScreen(id, name, TAIM_ITEM_STATUS, items);
   };
-  
+  function keyExtractor(item) {
+    return item?.area_key_id.toString(); // Use userId as the key
+  }
+  // function renderItem(info: DragListRenderItemInfo<{ area_key_id: number; TAM_AREA_NAME: string; }>) {
+  //   const { item, onDragStart, onDragEnd } = info;
+ 
+  //   return (
+  //     <TouchableOpacity
+  //       key={item.area_key_id}
+  //       onPressIn={onDragStart}
+  //       onPressOut={onDragEnd}
+  //       // style={styles.item} // Add styles for better appearance
+  //     >
+  //       <Text style={styles.comment}>{item.TAM_AREA_NAME}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // }
+ 
+  async function onReordered(fromIndex: number, toIndex: number) {
+    const copy = [...AreaKey]; // Don't modify react data in-place
+    const removed = copy.splice(fromIndex, 1);
+    copy.splice(toIndex, 0, removed[0]); // Now insert at the new pos
+    setAreaKey(copy);
+  }
+
   const handleInspectionudateItem = async (id) => {
     setIsLoading(true);
     const data = {
@@ -225,8 +250,8 @@ const Inspection = props => {
         Alert.alert('Success', 'Custom area added successfully');
         refRBSheet1.current.close();
         setEmail('');
-        setSelectedButtonStandardId('');
-        setSelectedButtonFutueId('');
+        setSelectedButtonStandardId(1);
+        setSelectedButtonFutueId(1);
         setCustomeAreaValue('');
         await getInspectionAreas();
       } else {
@@ -378,7 +403,9 @@ const Inspection = props => {
         handleDone();
       }
     }
-  const Inspection_render = ({item,onPressRemove}) => {
+    function Inspection_render(info: DragListRenderItemInfo<{ area_key_id: number; TAM_AREA_NAME: string; }>) {
+      const { item, onDragStart, onDragEnd } = info;
+  // const Inspection_render = ({item,onPressRemove}) => {
     console.log(item.area_key_id);
     let IconComponent;
     let iconName = '';
@@ -429,7 +456,11 @@ const Inspection = props => {
  
     return (
       <>
-        <View style={InspectionCss.mainView} key={item?.area_key_id}>
+        <View
+        
+          style={InspectionCss.mainView} 
+        
+          >
           <View style={InspectionCss.flatListContainer}>
             {!isEditing ? (
               <View style={InspectionCss.ImageStyle}>
@@ -443,7 +474,7 @@ const Inspection = props => {
               </View>
             ) : (
               <TouchableOpacity 
-              onPress={() => onPressRemove(item.area_key_id)}
+              onPress={() => removeItem(item.area_key_id)}
               >
                 <AntDesign
                   name={'minuscircle'}
@@ -473,7 +504,10 @@ const Inspection = props => {
               />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity>
+            <TouchableOpacity  key={item.area_key_id}
+            onPressIn={onDragStart}
+            onPressOut={onDragEnd}
+            >
               <Entypo
                 name={'menu'}
                 size={25}
@@ -529,13 +563,19 @@ const Inspection = props => {
             />
           ) : null}
           
-          <FlatList
+          {/* <FlatList
             data={AreaKey}
             scrollEnabled
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.area_key_id}
             renderItem={renderItem}
-          />
+          /> */}
+          <DragList
+        data={AreaKey}
+        keyExtractor={keyExtractor}
+        onReordered={onReordered}
+        renderItem={Inspection_render}
+      />
         </View>
         <RBSheet
           ref={refRBSheet1}
@@ -551,7 +591,7 @@ const Inspection = props => {
             },
             container: InspectionCss.bottomModal_container,
           }}>
-          <View style={InspectionCss.Container}>
+          <ScrollView style={InspectionCss.Container}>
             <View style={InspectionCss.ModalContainer}>
               <Text style={InspectionCss.ShareText}>{'Add custom area'}</Text>
               <TouchableOpacity onPress={handleCloseModal}>
@@ -724,7 +764,7 @@ const Inspection = props => {
                 <Text style={InspectionCss.DoneText}>Done</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </ScrollView>
         </RBSheet>
         <RBSheet
           ref={refRBSheet2}

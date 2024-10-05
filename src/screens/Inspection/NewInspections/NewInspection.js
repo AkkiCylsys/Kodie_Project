@@ -84,7 +84,7 @@ export default NewInspection = (props) => {
         year: _selectedYear,
         filter: selectedFilter,
       });
-      getInspectionDetails();
+      // getInspectionDetails();
     }
   }, [isFocused, _selectedMonthId, _selectedYear, selectedFilter]);
   const debounce = (func, delay) => {
@@ -155,11 +155,11 @@ export default NewInspection = (props) => {
     }
   };
 
-  const getInspectionDetails = () => {
+  const getInspectionDetails = (id) => {
     setIsLoading(true);
     const url = Config.BASE_URL;
 
-    const apiUrl = url + `get_inspection_details/${Tim_Key}`;
+    const apiUrl = url + `get_inspection_details/${id}`;
 
     axios
       .get(apiUrl)
@@ -220,9 +220,9 @@ export default NewInspection = (props) => {
         TIM_LOCATION_LATITUDE: parseFloat(
           getinspection.v_TIM_LOCATION_LATITUDE,
         ),
-        TIM_ADD_ATTENDENCE: getinspection.v_TIM_ADD_ATTENDENCE,
+        TIM_ADD_ATTENDENCE: getinspection.v_TIM_ADD_ATTENDENCE == null ? "":getinspection.v_TIM_ADD_ATTENDENCE,
         TIM_IS_FURNISHED: getinspection.v_TIM_IS_FURNISHED,
-        TIM_DESCRIPTION: getinspection.v_TIM_DESCRIPTION,
+        TIM_DESCRIPTION: getinspection.v_TIM_DESCRIPTION == null ? "" : getinspection.v_TIM_DESCRIPTION,
         TAM_AREA_KEYS: getinspection.cur_TAM_AREA_KEY,
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
@@ -430,7 +430,7 @@ export default NewInspection = (props) => {
                 name="location-pin"
                 size={18}
                 color={_COLORS.Kodie_GreenColor}
-                style={{ alignSelf: 'center' }}
+                style={{marginTop:6 }}
               />
               <Text style={NewInspectionStyle.location_text}>
                 {item.location}
@@ -440,6 +440,7 @@ export default NewInspection = (props) => {
                 onPress={() => {
                   setTim_key(item?.tim_key);
                   refRBSheet2.current.open();
+                  getInspectionDetails(item?.tim_key)
                 }}>
                 <Entypo
                   name="dots-three-horizontal"

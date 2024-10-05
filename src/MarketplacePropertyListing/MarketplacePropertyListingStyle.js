@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../Themes';
 export const MarketplacePropertyListingStyle = StyleSheet.create({
   flatListContainer: {marginHorizontal: 30},
@@ -82,7 +82,7 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
-    marginBottom: 5,
+    marginBottom: Platform.OS == 'android' ? 5 : 0,
     flex: 1,
     alignSelf: 'center',
     textAlign: 'center',

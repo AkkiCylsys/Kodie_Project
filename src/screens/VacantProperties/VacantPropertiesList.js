@@ -32,31 +32,55 @@ const VacantPropertiesList = props => {
     get_Vacant_Details();
   }, []);
 
-  const swipeVacantList = async () => {
-    const newData = [...vacantData].reverse();
-    if (newData.length > 1) {
-      const firstIndex = 0;
-      const lastIndex = newData.length - 1;
-      [newData[firstIndex], newData[lastIndex]] = [
-        newData[lastIndex],
-        newData[firstIndex],
-      ];
-    }
-    setVacantData(newData);
-    setFilteredUsers(newData);
+  const swipeVacantList = () => {
+    // Reverse the entire list
+    const reversedData = [...vacantData].reverse();
+    
+    // Update the state with the reversed list
+    setVacantData(reversedData);
+    setFilteredUsers(reversedData);
   };
+  
+  const toggleSortOrder = () => {
+    // Toggle the sort order between ascending and descending
+    const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(newOrder);
+  
+    // Reverse the list when toggling
+    swipeVacantList();
+  };
+  
   const searchVacantProperty = query => {
     setSearchQuery(query);
+  
     const filtered = query
-      ? vacantData.filter(
-          item =>
+      ? vacantData.filter(item => {
+          const propertyTypeMatch =
             item.property_type &&
-            item.property_type.toLowerCase().includes(query.toLowerCase()),
-        )
+            item.property_type.toLowerCase().includes(query.toLowerCase());
+  
+          const cityMatch =
+            item.City && item.City.toLowerCase().includes(query.toLowerCase());
+  
+          const stateMatch =
+            item.state && item.state.toLowerCase().includes(query.toLowerCase());
+  
+          const countryMatch =
+            item.country && item.country.toLowerCase().includes(query.toLowerCase());
+  
+          const locationMatch =
+            item.location &&
+            item.location.toLowerCase().includes(query.toLowerCase());
+  
+          // Return true if any of the fields match the query
+          return (
+            propertyTypeMatch || cityMatch || stateMatch || countryMatch || locationMatch
+          );
+        })
       : vacantData;
+  
     setFilteredUsers(filtered);
   };
-
   const get_Vacant_Details = async () => {
     try {
       const url = Config.BASE_URL;
@@ -68,7 +92,7 @@ const VacantPropertiesList = props => {
       const response = await axios.post(Vacant_Details_url, data);
       if (response?.data?.success === true) {
         const data = response?.data?.property_details || [];
-        // console.log('vacant DataList..', data);
+        console.log('vacant DataList..', data);
         setVacantData(data);
         setFilteredUsers(data); // Initialize filteredUsers with fetched data
       } else {
@@ -81,12 +105,7 @@ const VacantPropertiesList = props => {
     }
   };
 
-  const toggleSortOrder = () => {
-    const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortOrder(newOrder);
-
-    swipeVacantList();
-  };
+  
 
   return (
     <SafeAreaView style={VacantPropertiesListStyle.maincontainer}>

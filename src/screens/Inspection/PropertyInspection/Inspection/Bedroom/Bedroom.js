@@ -31,6 +31,8 @@ import AddCustomItems from '../../../../../components/InspectionModul/AddCustomI
 import { useNavigation } from '@react-navigation/native';
 import AddCabinatItems from '../../../../../components/Molecules/AddCabinatItems/AddCabinatItems';
 import { EditInspectionItem, GetInspectionAreas, InspectionAddItem, UpdateInspectionItem, UpdateItemMapping } from '../../../../../services/InspectionModuleServices.js/InspectionServices';
+import DragList, { DragListRenderItemInfo } from 'react-native-draglist';
+
 const Bedroom = props => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +50,15 @@ const Bedroom = props => {
   const PropertyId = props.route.params.PropertyId;
   const getItem = props.route.params.getItems;
   console.log(getItem,'getItem');
-
+  function keyExtractor(item) {
+    return item?.TAIM_ITEM_KEY.toString(); // Use userId as the key
+  }
+  async function onReordered(fromIndex: number, toIndex: number) {
+    const copy = [...editGetItem]; // Don't modify react data in-place
+    const removed = copy.splice(fromIndex, 1);
+    copy.splice(toIndex, 0, removed[0]); // Now insert at the new pos
+    setEditGetItem(copy);
+  }
   useEffect(() => {
     TAIM_ITEM_STATUS === 1 ?
                  null: handleAddItem();
@@ -176,14 +186,15 @@ const Bedroom = props => {
     const updatedItems = editGetItem.filter((item) => item.TAIM_ITEM_KEY !== id);
     setEditGetItem(updatedItems);
   };
-
-  const ListItem = ({ item, onPressRemove }) => {
+  function ListItem(info: DragListRenderItemInfo<{ TAIM_ITEM_KEY: number; TAIM_ITEM_NAME: string; }>) {
+    const { item, onDragStart, onDragEnd } = info;
+  // const ListItem = ({ item, onPressRemove }) => {
     return (
       <View key={item.TAIM_ITEM_KEY}>
         <View style={[BedroomCss.minustextview]} >
           <View style={BedroomCss.crossrendermainview}>
             <TouchableOpacity
-              onPress={() => onPressRemove(item.TAIM_ITEM_KEY)}
+              onPress={() => removeItem(item.TAIM_ITEM_KEY)}
               style={{
                 alignItems: 'center',
               }}>
@@ -204,7 +215,9 @@ const Bedroom = props => {
               {item?.TAIM_ITEM_NAME}
             </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity key={item.TAIM_ITEM_KEY}
+            onPressIn={onDragStart}
+            onPressOut={onDragEnd}>
             <Entypo
               name={'menu'}
               size={25}
@@ -340,14 +353,20 @@ const Bedroom = props => {
           </View>
           <DividerIcon marginTop={5} />
           {isEditing ? (
-            <FlatList
-              data={editGetItem}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              keyExtractor={item => item?.id}
-              renderItem={renderItem}
-            />
+             <DragList
+             data={editGetItem}
+             keyExtractor={keyExtractor}
+             onReordered={onReordered}
+             renderItem={ListItem}
+           />
+            // <FlatList
+            //   data={editGetItem}
+            //   scrollEnabled
+            //   showsVerticalScrollIndicator={false}
+            //   contentContainerStyle={{}}
+            //   keyExtractor={item => item?.id}
+            //   renderItem={renderItem}
+            // />
           ) : (
             <FlatList
               data={getItems}

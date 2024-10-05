@@ -210,6 +210,7 @@ export const DetailsStyle = StyleSheet.create({
     paddingVertical: 5,
   },
   itemName: {
+    flex:1,
     fontSize: 13,
     marginLeft:15
   },

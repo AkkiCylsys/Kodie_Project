@@ -75,7 +75,7 @@ const MarketplacePropertyListing = props => {
                 backgroundColor:
                   selectedFilter === item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_VeryLightGrayColor,
               },
             ]}
           />
@@ -83,7 +83,7 @@ const MarketplacePropertyListing = props => {
         <Text
           style={[
             MarketplacePropertyListingStyle.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            {color: selectedFilter === item ? _COLORS?.Kodie_WhiteColor : _COLORS?.Kodie_VeryLightGrayColor},
           ]}>
           {item}
         </Text>
