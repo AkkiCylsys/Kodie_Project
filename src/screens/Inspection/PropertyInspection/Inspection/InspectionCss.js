@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const InspectionCss = StyleSheet.create({
   MainContainer: {
@@ -50,6 +50,7 @@ export const InspectionCss = StyleSheet.create({
     alignSelf: 'center',
   },
   IconStyle: {
+    marginTop: 5,
     alignSelf: 'center',
     justifyContent: 'center',
   },
