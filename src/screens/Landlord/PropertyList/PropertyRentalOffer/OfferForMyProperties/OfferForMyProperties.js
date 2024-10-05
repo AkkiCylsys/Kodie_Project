@@ -29,6 +29,7 @@ import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
+import {Config} from '../../../../../Config';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -101,7 +102,7 @@ const OfferForMyProperties = () => {
 
     try {
       const response = await offerForMyProperty(offerPropertyData);
-      console.log('response in offerForMyProperty..', response);
+      console.log('response in offerForMyProperty..', JSON.stringify(response));
 
       if (response?.success == true) {
         setOfferPropertyData(response?.data || []);
@@ -223,7 +224,13 @@ const OfferForMyProperties = () => {
       isApproveApplication ||
       item?.landlord_finalize === 0;
 
-    const isLeftButtonDisable = item?.landlord_approve === -1 || item?.landlord_finalize === 0;
+    const isLeftButtonDisable =
+      item?.landlord_approve === -1 ||
+      item?.landlord_finalize === 0 ||
+      (item?.landlord_accepting_id == null &&
+        item?.screening_one == null &&
+        item?.screening_two == null &&
+        item?.screening_three == null);
     return (
       <View key={index}>
         <View style={{flex: 1, marginHorizontal: 20, marginBottom: 10}}>
@@ -300,7 +307,7 @@ const OfferForMyProperties = () => {
                     {item?.property_type}
                   </Text>
                   <Text style={OfferForMyPropertiesStyle.cityText}>
-                    {item?.city ?item?.city : item?.state}
+                    {item?.city ? item?.city : item?.state}
                   </Text>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
@@ -334,7 +341,9 @@ const OfferForMyProperties = () => {
                   <View style={OfferForMyPropertiesStyle.userMainCon}>
                     <View style={OfferForMyPropertiesStyle.userContainer}>
                       {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
-                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 &&
+                      detail.UAD_PROFILE_PHOTO_PATH[0] !==
+                        'https://kodietestapi.cylsys.com/upload/photo/null' ? (
                         <Image
                           source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
                           style={OfferForMyPropertiesStyle.userImg}

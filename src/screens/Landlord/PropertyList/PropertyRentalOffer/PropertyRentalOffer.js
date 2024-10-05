@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   Alert,
+  Platform,
 } from 'react-native';
 import {PropertyRentalOfferStyle} from './PropertyRentalOfferStyle';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
@@ -35,12 +36,13 @@ import {
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {matrixTransform} from 'react-native-svg/lib/typescript/elements/Shape';
+import {fontSize} from '../../../../Themes/FontStyle/FontStyle';
 const PropertyRentalOffer = props => {
   const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3';
+  // const userRole = '3,2';
 
   const roleArray = userRole ? userRole.split(',') : [];
 
@@ -65,8 +67,12 @@ const PropertyRentalOffer = props => {
   useLayoutEffect(() => {
     if (userRole === '3') {
       setSelectedButton(false);
-    } else {
+    } else if (userRole === '2') {
       setSelectedButton(true);
+    } else {
+      setSelectedButton(
+        acceptLanlordPassed == 'acceptLanlordPassed' ? false : true,
+      );
     }
   }, [userRole]);
 
@@ -218,6 +224,27 @@ const PropertyRentalOffer = props => {
     }
     return _COLORS.Kodie_backDarkOrange; // Default color for bid submitted
   };
+  const getBorderColor = (
+    isScreenComplet,
+    isScreenProgress,
+    screeningStatus,
+    acceptLandlord,
+    finalLandlordApprove,
+  ) => {
+    if (isScreenComplet && acceptLandlord === 1) {
+      return _COLORS.Kodie_lightseskyBule; // Color for completed screening
+    } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
+      return _COLORS.Kodie_mostLightBlueColor;
+    } else if (screeningStatus === 'REJECT') {
+      return _COLORS.Kodie_extralightRedColor; // Color for rejected application
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_backDarkOrange; // Color for rejected application
+    } else if (acceptLandlord === 0) {
+      // Color for accepted application
+      return _COLORS.Kodie_mostLightGreenColor;
+    }
+    return _COLORS.Kodie_backDarkOrange; // Default color for bid submitted
+  };
 
   const getButtonTextColor = (
     isScreenComplet,
@@ -333,6 +360,13 @@ const PropertyRentalOffer = props => {
       acceptLandlord,
       finalLandlordApprove,
     );
+    const border_color = getBorderColor(
+      isScreenComplet,
+      isScreenProgress,
+      screeningStatus,
+      acceptLandlord,
+      finalLandlordApprove,
+    );
     const textColor = getButtonTextColor(
       isScreenComplet,
       isScreenProgress,
@@ -432,7 +466,7 @@ const PropertyRentalOffer = props => {
               <View
                 style={[
                   PropertyRentalOfferStyle.buttonView,
-                  {backgroundColor},
+                  {backgroundColor, borderColor: border_color},
                 ]}>
                 <Entypo
                   name="dot-single"
@@ -445,7 +479,10 @@ const PropertyRentalOffer = props => {
                 <Text
                   style={[
                     PropertyRentalOfferStyle.buttonText,
-                    {color: textColor},
+                    {
+                      color: textColor,
+                      fontSize: Platform.OS === 'ios' ? 8 : 9,
+                    },
                   ]}>
                   {buttonText}
                 </Text>

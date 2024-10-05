@@ -104,7 +104,7 @@ export default Login = props => {
       console.log('Error during signIn:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('SIGN_IN_CANCELLED');
-        alert('SIGN_IN_CANCELLED')
+        // alert('SIGN_IN_CANCELLED')
       } else if (error.code === statusCodes.IN_PROGRESS) {
         console.log('IN_PROGRESS');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {

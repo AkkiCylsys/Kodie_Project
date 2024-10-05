@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -10,22 +10,26 @@ import {
   Platform,
   Alert,
   SafeAreaView,
+  Linking,
 } from 'react-native';
-import { BANNERS } from '../../../Themes/CommonVectors/Images';
+import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import BottomTextsButton from '../../../components/Molecules/BottomTextsButton/BottomTextsButton';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import { IMAGES, _COLORS } from '../../../Themes/index';
+import {IMAGES, _COLORS} from '../../../Themes/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { LABEL_STYLES } from '../../../Themes/CommonStyles/CommonStyles';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {LABEL_STYLES} from '../../../Themes/CommonStyles/CommonStyles';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import messaging from '@react-native-firebase/messaging';
-import { encryptPassword, signup } from '../../../services/Authentication/Authentication';
-import {SignUpStyles} from "./SignUpStyle"
+import {
+  encryptPassword,
+  signup,
+} from '../../../services/Authentication/Authentication';
+import {SignUpStyles} from './SignUpStyle';
 import DeviceInfo from 'react-native-device-info';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-const SignUp = (props) => {
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+const SignUp = props => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
@@ -38,9 +42,9 @@ const SignUp = (props) => {
   const [googleSignIn, setGoogleSignIn] = useState([]);
   const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
-  console.log(deviceId,deviceType,'signup');
+  console.log(deviceId, deviceType, 'signup');
   const handleTogglePassword = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
+    setShowPassword(prevShowPassword => !prevShowPassword);
   };
   useEffect(() => {
     requestUserPermission();
@@ -85,19 +89,19 @@ const SignUp = (props) => {
     }
   }
   const handlemessage = async () => {
-    messaging().onNotificationOpenedApp((remoteMessage) => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
         'Notification caused app to open from background state:',
         remoteMessage.notification,
       );
     });
-    messaging().onMessage(async (remoteMessage) => {
+    messaging().onMessage(async remoteMessage => {
       console.log('Message handled in the foreground!', remoteMessage);
     });
 
     messaging()
       .getInitialNotification()
-      .then((remoteMessage) => {
+      .then(remoteMessage => {
         if (remoteMessage) {
           console.log(
             'Notification caused app to open from quit state.',
@@ -112,13 +116,13 @@ const SignUp = (props) => {
     setFcm_token(token);
   };
 
-  const validateSignUpEmail = (email) => {
+  const validateSignUpEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email.trim());
   };
 
-  const handleSignUpEmail = (text) => {
+  const handleSignUpEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
       setEmailError('Email is required!');
@@ -131,12 +135,14 @@ const SignUp = (props) => {
     }
   };
 
-  const handleSignUpPassword = (text) => {
+  const handleSignUpPassword = text => {
     setPassword(text);
     if (text.trim() === '') {
       setPasswordError('Password is required!');
     } else if (text.length < 8) {
-      setPasswordError('Oh no. The password must be at least 8 characters long!');
+      setPasswordError(
+        'Oh no. The password must be at least 8 characters long!',
+      );
     } else {
       setPasswordError('');
     }
@@ -152,8 +158,10 @@ const SignUp = (props) => {
       );
     } else if (password.trim() === '') {
       setPasswordError('Password is required!');
-    }else if (password.length < 8) {
-      setPasswordError('Oh no. The password must be at least 8 characters long!');
+    } else if (password.length < 8) {
+      setPasswordError(
+        'Oh no. The password must be at least 8 characters long!',
+      );
     } else if (!term && !privacy) {
       alert(
         'Please read and accept both Terms & Conditions and Privacy Policy!',
@@ -178,10 +186,10 @@ const SignUp = (props) => {
         is_term_condition: term,
         is_privacy_policy: privacy,
         fcm_token: Fcm_token,
-        device_id:deviceId,
-        device_os_type:deviceType
+        device_id: deviceId,
+        device_os_type: deviceType,
       };
-console.log(SignUpData);
+      console.log(SignUpData);
       const response = await signup(SignUpData);
       if (response?.code === 3) {
         Alert.alert('Success', response?.message);
@@ -208,8 +216,7 @@ console.log(SignUpData);
       } else if (response?.code === 2) {
         Alert.alert('Success', response?.message);
         props.navigation.navigate('LoginScreen');
-      }
-      else if (response?.code === 0) {
+      } else if (response?.code === 0) {
         Alert.alert('Success', response?.message);
         props.navigation.navigate('LoginScreen');
       } else {
@@ -217,7 +224,10 @@ console.log(SignUpData);
       }
     } catch (error) {
       if (error.response?.status === 400) {
-        Alert.alert('Warning!', 'Failed to send OTP via email. Please try again later.');
+        Alert.alert(
+          'Warning!',
+          'Failed to send OTP via email. Please try again later.',
+        );
       } else if (error.response?.status === 401) {
         Alert.alert('Warning!', 'Your Password is Wrong.');
       } else {
@@ -235,7 +245,7 @@ console.log(SignUpData);
         style={SignUpStyles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps="handled">
           <View style={SignUpStyles.logoContainer}>
@@ -256,8 +266,9 @@ console.log(SignUpData);
           {/*.............. signup input field start here ..................*/}
           <View style={SignUpStyles.card}>
             <View style={SignUpStyles.inputContainer}>
-              <Text style={LABEL_STYLES._texinputLabel}>Email address
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              <Text style={LABEL_STYLES._texinputLabel}>
+                Email address
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <TextInput
                 style={[
@@ -273,7 +284,7 @@ console.log(SignUpData);
                 onBlur={() => handleSignUpEmail(email)}
                 placeholder="Enter your email address"
                 placeholderTextColor="#999"
-                textContentType='oneTimeCode'
+                textContentType="oneTimeCode"
               />
               {emailError ? (
                 <Text style={SignUpStyles.error_text}>{emailError}</Text>
@@ -378,7 +389,10 @@ console.log(SignUpData);
 
               <View style={SignUpStyles.termsConView}>
                 <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL('https://kodie.com.au/privacy-policy/');
+                  }}>
                   <Text
                     style={[
                       SignUpStyles.termsText,
@@ -417,7 +431,7 @@ console.log(SignUpData);
                 signIn();
               }}
             />
-            <View style={{marginTop:30}}>
+            <View style={{marginTop: 30}}>
               <CustomSingleButton
                 disabled={isLoading ? true : false}
                 leftImage={IMAGES.FacebookIcon}

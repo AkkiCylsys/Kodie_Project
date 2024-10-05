@@ -239,7 +239,7 @@ const PropertyListingDetail = props => {
     console.log('add market place..', data);
     try {
       const response = await insertMarketDetails(data);
-      Alert.alert('Success', 'Market details have been inserted successfully.');
+      Alert.alert('Success', 'Market details have been save successfully.');
       props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');

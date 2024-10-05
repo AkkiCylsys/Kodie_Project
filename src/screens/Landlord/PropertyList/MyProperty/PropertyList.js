@@ -29,6 +29,7 @@ import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {head} from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 const HorizontalData = [
   'All',
   'Recent',
@@ -551,7 +552,7 @@ const PropertyList = props => {
                       </View>
                     </View>
                   )}
-                  <DividerIcon marginBottom={item?.auto_list == 0 ? 3 : 15} />
+                  <DividerIcon marginBottom={item?.auto_list == 0 ? 15 : 15} />
                 </>
               )}
             </>
@@ -886,6 +887,13 @@ const PropertyList = props => {
               onEndReachedThreshold={0.8}
               renderItem={propertyData1_render}
               keyExtractor={item => item.propertyId}
+              ListEmptyComponent={() => {
+                return (
+                  <ListEmptyComponent
+                    EmptyText={"You don't have any property at the moment."}
+                  />
+                );
+              }}
             />
           </>
         )}

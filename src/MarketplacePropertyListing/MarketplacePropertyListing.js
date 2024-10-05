@@ -26,14 +26,15 @@ import {_goBack} from '../services/CommonServices';
 import {useIsFocused} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ListEmptyComponent from '../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 const HorizontalData = [
   'All',
-  'Recent',
+  // 'Recent',
   'Occupied',
   'Vacant',
   'Rent Pending',
   'Rent Received',
-  'Archive',
+  // 'Archive',
 ];
 const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -75,7 +76,7 @@ const MarketplacePropertyListing = props => {
                 backgroundColor:
                   selectedFilter === item
                     ? _COLORS?.Kodie_WhiteColor
-                    : _COLORS?.Kodie_BlackColor,
+                    : _COLORS?.Kodie_VeryLightGrayColor,
               },
             ]}
           />
@@ -83,7 +84,12 @@ const MarketplacePropertyListing = props => {
         <Text
           style={[
             MarketplacePropertyListingStyle.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            {
+              color:
+                selectedFilter === item
+                  ? _COLORS?.Kodie_WhiteColor
+                  : _COLORS?.Kodie_VeryLightGrayColor,
+            },
           ]}>
           {item}
         </Text>
@@ -174,6 +180,19 @@ const MarketplacePropertyListing = props => {
       get_MarketplacePropertyListing();
     }
   }, [isvisible]);
+
+  const filteredData = searchQuery
+  ? filteredMarketPlace.filter(item =>
+      item.property_type_text?.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  : PropertyListing_data.filter(item => {
+      if (selectedFilter === 'All') return true;
+      if (selectedFilter === 'Occupied') return item.isOccupied;
+      if (selectedFilter === 'Vacant') return item.isVacant;
+      if (selectedFilter === 'Rent Pending') return item.isRentPending;
+      if (selectedFilter === 'Rent Received') return item.isRentReceived;
+      return false;
+    });
 
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
@@ -395,8 +414,16 @@ const MarketplacePropertyListing = props => {
 
       <DividerIcon borderBottomWidth={2} />
       <FlatList
-        data={searchQuery ? filteredMarketPlace : PropertyListing_data}
+        // data={searchQuery ? filteredMarketPlace : PropertyListing_data}
+        data={filteredData}
         renderItem={propertyData1_render}
+        ListEmptyComponent={() => {
+          return (
+            <ListEmptyComponent
+              EmptyText={"You don't have data at the moment."}
+            />
+          );
+        }}
       />
       {isLoading ? <CommonLoader /> : null}
       <RBSheet

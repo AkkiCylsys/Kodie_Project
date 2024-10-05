@@ -372,7 +372,7 @@ const CustomSidebarMenu = props => {
             container: DrawerStyle.bottomModal_container,
           }}>
           <View style={DrawerStyle.popupcantainer}>
-            <Text style={DrawerStyle.popuptext}>Logout from device ?</Text>
+            <Text style={DrawerStyle.popuptext}>Logout from device?</Text>
             <MaterialIcons
               name="close"
               size={24}

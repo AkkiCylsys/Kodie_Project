@@ -1100,6 +1100,7 @@ export default AddLeaseDetails = props => {
               Enter extra information about your lease
             </Text>
           </View>
+          <DividerIcon marginBottom={8}/>
           {showLeaseDetailsData ? (
             <View>
               <View style={AddLeaseDetailsStyle.inputContainer}>

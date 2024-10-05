@@ -202,7 +202,7 @@ const PropertyList2 = props => {
   };
   const onSelectedItemsPropertyChange = selectedItems => {
     setProteryTypeValue(selectedItems);
-    // setProteryTypeValueError(false);
+    setProteryTypeValueError(false);
   };
 
   // renderItem....

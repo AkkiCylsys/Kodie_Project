@@ -46,7 +46,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderWidth: 1,
     height: 35,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 8,
     color: _COLORS.Kodie_BlackColor,
   },
@@ -86,7 +86,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 10,
+    marginTop: 15,
   },
   notification_view: {flexDirection: 'row', justifyContent: 'space-between'},
   notification_text: {
