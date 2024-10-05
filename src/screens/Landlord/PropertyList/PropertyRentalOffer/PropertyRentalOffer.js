@@ -42,7 +42,7 @@ const PropertyRentalOffer = props => {
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3,2';
+  // const userRole = '2';
 
   const roleArray = userRole ? userRole.split(',') : [];
 
