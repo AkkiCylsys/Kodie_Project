@@ -57,7 +57,7 @@ export default SearchResult = props => {
   console.log('propertyType..', propertyType);
   console.log('AllCountsData...', AllCountsData);
   console.log('searchRentalResponse...', JSON.stringify(searchRentalResponse));
-  console.log('searchInputData..', searchInputData);
+  console.log('propertyDetailsItem..', propertyDetailsItem);
 
   const getPropertyTypeLabel = type => {
     switch (type) {

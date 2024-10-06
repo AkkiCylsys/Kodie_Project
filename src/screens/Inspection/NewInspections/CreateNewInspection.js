@@ -481,9 +481,9 @@ const CreateNewInspection = props => {
         TIM_LOCATION: selectedAddress.location,
         TIM_LOCATION_LONGITUDE: parseFloat(selectedAddress.longitude),
         TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
-        TIM_ADD_ATTENDENCE: displaySelectedValues,
-        TIM_IS_FURNISHED: selectedButtonFurnishedId,
-        TIM_DESCRIPTION: Notes,
+        TIM_ADD_ATTENDENCE: displaySelectedValues== null ? '': displaySelectedValues,
+        TIM_IS_FURNISHED: selectedButtonFurnishedId  ,
+        TIM_DESCRIPTION: Notes== null ? '':Notes,
         TAM_AREA_KEYS: checkedItemIds.toString(),
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };

@@ -173,10 +173,13 @@ export const BedroomCss = StyleSheet.create({
     color:_COLORS?.Kodie_BlackColor
   },
   ButtonView: {
+    // flex:1,
     flexDirection: 'row',
     alignSelf: 'flex-end',
     justifyContent: 'flex-end',
-    marginTop:36,
+    // marginTop:26,
+    marginHorizontal:16,
+    marginVertical:25
   },
   cancelView: {alignSelf: 'center'},
   cancelText: {

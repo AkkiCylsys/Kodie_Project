@@ -204,11 +204,11 @@ const handleImageSelect = (images) => {
     <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
-        // style={{ flex: 1 }}
+        style={{ flex: 1 }}
       >
     <ScrollView 
     nestedScrollEnabled={true}
-    contentContainerStyle={{marginBottom:80}} 
+    contentContainerStyle={{marginBottom:80,flexGrow:1}} 
     >
       <View style={BedroomCss.secondModal}>
         <View style={BedroomCss.ModalContainer}>
@@ -334,7 +334,10 @@ const handleImageSelect = (images) => {
           numberOfLines={5}
           textAlignVertical={'top'}
         />
-        <View style={BedroomCss.ButtonView}>
+        
+      </View>
+      </ScrollView>
+      <View style={BedroomCss.ButtonView}>
           <TouchableOpacity style={BedroomCss.cancelView} onPress={props.onCabinateClose}>
             <Text style={[BedroomCss.cancelText]}>Cancel</Text>
           </TouchableOpacity>
@@ -342,8 +345,6 @@ const handleImageSelect = (images) => {
             <Text style={BedroomCss.DoneText}>Done</Text>
           </TouchableOpacity>
         </View>
-      </View>
-      </ScrollView>
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}

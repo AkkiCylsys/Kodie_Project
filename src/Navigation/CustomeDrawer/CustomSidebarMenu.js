@@ -85,8 +85,8 @@ const CustomSidebarMenu = props => {
             break;
             case 'Reports':
               setselectedId('Reports');
-              props.navigation.navigate('DraggableLyrics');
-        // Alert.alert('Reports!', 'Coming soon');
+              // props.navigation.navigate('DraggableLyrics');
+        Alert.alert('Reports!', 'Coming soon');
         break;
       case 'Partners':
         setselectedId('Partners');

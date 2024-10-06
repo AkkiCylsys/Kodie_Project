@@ -244,9 +244,9 @@ export const CreateNewInspectionStyle = StyleSheet.create({
   SaveView: {
     borderRadius: 5,
     backgroundColor: _COLORS.Kodie_BlackColor,
-    marginLeft: 40,
-    paddingHorizontal: 20,
-    paddingVertical: 6,
+    marginLeft: 30,
+    paddingHorizontal: 26,
+    paddingVertical: 12,
   },
   ButtonView: {
     flexDirection: "row",
