@@ -60,6 +60,7 @@ const ChangeContactInput = props => {
           Array.isArray(response?.data?.data) &&
           response?.data?.data?.length > 0
         ) {
+          console.log("contact response...",response?.data?.data[0]);
           setAccountDetails(response?.data?.data[0]);
           setOldnewPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
         } else {
