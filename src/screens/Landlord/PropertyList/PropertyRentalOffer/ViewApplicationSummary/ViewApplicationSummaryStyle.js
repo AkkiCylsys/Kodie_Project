@@ -5,7 +5,7 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     flex: 1,
     marginBottom: 200,
     // marginHorizontal: 16,
-    marginTop:15
+    marginTop: 15,
   },
   applicationSumDet: {
     fontSize: 16,
@@ -138,5 +138,19 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     fontFamily: FONTFAMILY?.K_Medium,
     fontSize: 14,
     marginBottom: 12,
+  },
+  acceptTextView: {
+    backgroundColor: _COLORS?.Kodie_GreenColor,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 5,
+    alignSelf: 'center',
+  },
+  AcceptText: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: _COLORS?.Kodie_WhiteColor,
+    fontFamily: FONTFAMILY?.K_Bold,
+    lineHeight: 22, // Line height set kiya
   },
 });

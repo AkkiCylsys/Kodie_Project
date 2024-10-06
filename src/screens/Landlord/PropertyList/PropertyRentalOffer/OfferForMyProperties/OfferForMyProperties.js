@@ -307,7 +307,9 @@ const OfferForMyProperties = () => {
                     {item?.property_type}
                   </Text>
                   <Text style={OfferForMyPropertiesStyle.cityText}>
-                    {item?.city ? item?.city : item?.state}
+                    {item?.city && item.city !== 'null'
+                      ? item.city
+                      : item?.state || ''}
                   </Text>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
@@ -341,9 +343,7 @@ const OfferForMyProperties = () => {
                   <View style={OfferForMyPropertiesStyle.userMainCon}>
                     <View style={OfferForMyPropertiesStyle.userContainer}>
                       {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
-                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 &&
-                      detail.UAD_PROFILE_PHOTO_PATH[0] !==
-                        'https://kodietestapi.cylsys.com/upload/photo/null' ? (
+                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
                         <Image
                           source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
                           style={OfferForMyPropertiesStyle.userImg}

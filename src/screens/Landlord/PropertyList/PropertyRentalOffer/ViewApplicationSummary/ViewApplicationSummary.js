@@ -30,6 +30,9 @@ import {
 } from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import {back} from 'react-native/Libraries/Animated/Easing';
+import {fontFamily, fontSize} from '../../../../../Themes/FontStyle/FontStyle';
+import {color} from 'react-native-reanimated';
 
 const occupantData = [
   {
@@ -789,31 +792,47 @@ const ViewApplicationSummary = props => {
                 ]}>
                 {'Screening result'}
               </Text>
-              <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
-                {applicationSumAcceptButtonData.length > 0 && (
-                  <ToggleButton
-                    tabValue={applicationSumAcceptButtonId} // This reflects the currently selected value
-                    setTabValue={newValue =>
-                      handleApplicationSumToggle(newValue)
-                    } // Pass the new value here
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel={
-                      applicationSumAcceptButtonData[0].lookup_description
-                    }
-                    secondTabLabel={
-                      applicationSumAcceptButtonData[1].lookup_description
-                    }
-                    width={200}
-                    firstTabValue={applicationSumAcceptButtonData[0].lookup_key} // This is the value for the first tab
-                    secondTabValue={
-                      applicationSumAcceptButtonData[1].lookup_key
-                    } // This is the value for the second tab
-                  />
-                )}
-              </View>
+
+              {(offerForMyPropData?.screening_one == 555 &&
+                offerForMyPropData?.screening_two == 555 &&
+                offerForMyPropData?.screening_three == 555) ||
+              (offerForMyPropData?.landlord_finalize == 0 &&
+                offerForMyPropData?.landlord_approve == 0) ? (
+                <View style={[ViewApplicationSummaryStyle?.acceptTextView]}>
+                  <Text style={ViewApplicationSummaryStyle?.AcceptText}>
+                    {/* {applicationSumAcceptButtonId === 555 ? 'Accept' : 'Reject'} */}
+                    {'Accepted'}
+                  </Text>
+                </View>
+              ) : (
+                <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
+                  {applicationSumAcceptButtonData.length > 0 && (
+                    <ToggleButton
+                      tabValue={applicationSumAcceptButtonId} // This reflects the currently selected value
+                      setTabValue={newValue =>
+                        handleApplicationSumToggle(newValue)
+                      } // Pass the new value here
+                      activeColor={_COLORS.Kodie_GreenColor}
+                      inactiveColor={_COLORS.Kodie_WhiteColor}
+                      activeTextColor={_COLORS.Kodie_WhiteColor}
+                      inactiveTextColor={_COLORS.Kodie_BlackColor}
+                      firstTabLabel={
+                        applicationSumAcceptButtonData[0].lookup_description
+                      }
+                      secondTabLabel={
+                        applicationSumAcceptButtonData[1].lookup_description
+                      }
+                      width={200}
+                      firstTabValue={
+                        applicationSumAcceptButtonData[0].lookup_key
+                      } // This is the value for the first tab
+                      secondTabValue={
+                        applicationSumAcceptButtonData[1].lookup_key
+                      } // This is the value for the second tab
+                    />
+                  )}
+                </View>
+              )}
             </View>
             {applicationSumAcceptButtonId == 556 && (
               <View>
@@ -907,7 +926,7 @@ const ViewApplicationSummary = props => {
                 <Text
                   style={[
                     ViewApplicationSummaryStyle.applicationSumDet,
-                    {marginTop: 5,fontFamily:FONTFAMILY?.K_Bold},
+                    {marginTop: 5, fontFamily: FONTFAMILY?.K_Bold},
                   ]}>
                   {'Leaseholders'}
                 </Text>
@@ -945,25 +964,40 @@ const ViewApplicationSummary = props => {
                     ]}>
                     {'Screening result'}
                   </Text>
-                  <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
-                    {occupantButtonData.length > 0 && (
-                      <ToggleButton
-                        tabValue={occupantButtonId} // This reflects the currently selected value
-                        setTabValue={newValue => handleToggle(newValue)} // Pass the new value here
-                        activeColor={_COLORS.Kodie_GreenColor}
-                        inactiveColor={_COLORS.Kodie_WhiteColor}
-                        activeTextColor={_COLORS.Kodie_WhiteColor}
-                        inactiveTextColor={_COLORS.Kodie_BlackColor}
-                        firstTabLabel={occupantButtonData[0].lookup_description}
-                        secondTabLabel={
-                          occupantButtonData[1].lookup_description
-                        }
-                        width={200}
-                        firstTabValue={occupantButtonData[0].lookup_key} // This is the value for the first tab
-                        secondTabValue={occupantButtonData[1].lookup_key} // This is the value for the second tab
-                      />
-                    )}
-                  </View>
+                  {(offerForMyPropData?.screening_one == 555 &&
+                    offerForMyPropData?.screening_two == 555 &&
+                    offerForMyPropData?.screening_three == 555) ||
+                  (offerForMyPropData?.landlord_finalize == 0 &&
+                    offerForMyPropData?.landlord_approve == 0) ? (
+                    <View style={ViewApplicationSummaryStyle?.acceptTextView}>
+                      <Text style={ViewApplicationSummaryStyle?.AcceptText}>
+                        {/* {occupantButtonId === 555 ? 'Accept' : 'Reject'} */}
+                        {'Accepted'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
+                      {occupantButtonData.length > 0 && (
+                        <ToggleButton
+                          tabValue={occupantButtonId} // This reflects the currently selected value
+                          setTabValue={newValue => handleToggle(newValue)} // Pass the new value here
+                          activeColor={_COLORS.Kodie_GreenColor}
+                          inactiveColor={_COLORS.Kodie_WhiteColor}
+                          activeTextColor={_COLORS.Kodie_WhiteColor}
+                          inactiveTextColor={_COLORS.Kodie_BlackColor}
+                          firstTabLabel={
+                            occupantButtonData[0].lookup_description
+                          }
+                          secondTabLabel={
+                            occupantButtonData[1].lookup_description
+                          }
+                          width={200}
+                          firstTabValue={occupantButtonData[0].lookup_key} // This is the value for the first tab
+                          secondTabValue={occupantButtonData[1].lookup_key} // This is the value for the second tab
+                        />
+                      )}
+                    </View>
+                  )}
                 </View>
               </View>
               {occupantButtonId === 556 && (
@@ -1071,27 +1105,40 @@ const ViewApplicationSummary = props => {
                 ]}>
                 {'Screening result'}
               </Text>
-              <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
-                {referenceAcceptButtonData.length > 0 && (
-                  <ToggleButton
-                    tabValue={referenceAcceptButtonId} // Current selected value
-                    setTabValue={newValue => handleReferencesToggle(newValue)} // Pass new value here
-                    activeColor={_COLORS.Kodie_GreenColor}
-                    inactiveColor={_COLORS.Kodie_WhiteColor}
-                    activeTextColor={_COLORS.Kodie_WhiteColor}
-                    inactiveTextColor={_COLORS.Kodie_BlackColor}
-                    firstTabLabel={
-                      referenceAcceptButtonData[0].lookup_description
-                    }
-                    secondTabLabel={
-                      referenceAcceptButtonData[1].lookup_description
-                    }
-                    width={200}
-                    firstTabValue={referenceAcceptButtonData[0].lookup_key} // First tab key
-                    secondTabValue={referenceAcceptButtonData[1].lookup_key} // Second tab key
-                  />
-                )}
-              </View>
+              {(offerForMyPropData?.screening_one == 555 &&
+                offerForMyPropData?.screening_two == 555 &&
+                offerForMyPropData?.screening_three == 555) ||
+              (offerForMyPropData?.landlord_finalize == 0 &&
+                offerForMyPropData?.landlord_approve == 0) ? (
+                <View style={ViewApplicationSummaryStyle?.acceptTextView}>
+                  <Text style={ViewApplicationSummaryStyle?.AcceptText}>
+                    {/* {referenceAcceptButtonId === 555 ? 'Accept' : 'Reject'} */}
+                    {'Accepted'}
+                  </Text>
+                </View>
+              ) : (
+                <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
+                  {referenceAcceptButtonData.length > 0 && (
+                    <ToggleButton
+                      tabValue={referenceAcceptButtonId} // Current selected value
+                      setTabValue={newValue => handleReferencesToggle(newValue)} // Pass new value here
+                      activeColor={_COLORS.Kodie_GreenColor}
+                      inactiveColor={_COLORS.Kodie_WhiteColor}
+                      activeTextColor={_COLORS.Kodie_WhiteColor}
+                      inactiveTextColor={_COLORS.Kodie_BlackColor}
+                      firstTabLabel={
+                        referenceAcceptButtonData[0].lookup_description
+                      }
+                      secondTabLabel={
+                        referenceAcceptButtonData[1].lookup_description
+                      }
+                      width={200}
+                      firstTabValue={referenceAcceptButtonData[0].lookup_key} // First tab key
+                      secondTabValue={referenceAcceptButtonData[1].lookup_key} // Second tab key
+                    />
+                  )}
+                </View>
+              )}
             </View>
             {referenceAcceptButtonId == 556 && (
               <View>
@@ -1160,10 +1207,11 @@ const ViewApplicationSummary = props => {
         borderBottomWidth={2}
         borderColor={_COLORS?.Kodie_deviderIconColor}
       />
-      {offerForMyPropData?.landlord_approve == 1 &&
-      offerForMyPropData?.screening_one == 555 &&
-      offerForMyPropData?.screening_two == 555 &&
-      offerForMyPropData?.screening_three == 555 ? (
+      {(offerForMyPropData?.screening_one == 555 &&
+        offerForMyPropData?.screening_two == 555 &&
+        offerForMyPropData?.screening_three == 555) ||
+      (offerForMyPropData?.landlord_finalize == 0 &&
+        offerForMyPropData?.landlord_approve == 0) ? (
         <View style={{marginHorizontal: 16}}>
           <CustomSingleButton
             _ButtonText={'Back'}

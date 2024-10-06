@@ -166,7 +166,7 @@ const PropertyViewApplication = props => {
             {tenantDetails?.property_type}
           </Text>
           <Text style={PropertyViewApplicationStyle.cityText}>
-            {tenantDetails?.city ? tenantDetails?.city : tenantDetails?.state}
+            {tenantDetails?.city && tenantDetails?.city !=="null" ? tenantDetails?.city : tenantDetails?.state || ""}
           </Text>
           <View style={PropertyViewApplicationStyle.flat_MainView}>
             <MaterialCommunityIcons
