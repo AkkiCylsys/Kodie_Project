@@ -27,7 +27,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFetchBlob from 'rn-fetch-blob';
-import {useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
@@ -85,14 +89,21 @@ const ProfileDocumentDetails = props => {
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState('');
   const [filePath, setFilePath] = useState('');
+  const isFocus = useIsFocused();
   const closeModal = () => {
     refRBSheet.current.close();
   };
   useEffect(() => {
     handleDocumentsLookup();
-    getUploadedDocumentsByModule();
+    // getUploadedDocumentsByModule();
     // fetchData()
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUploadedDocumentsByModule(); // Fetch documents when the screen is focused
+    }, [moduleName]),
+  );
   // upload Document...
   const selectDoc = async () => {
     try {
@@ -237,9 +248,9 @@ const ProfileDocumentDetails = props => {
         },
       });
       console.log('API Response uploadDocument:', response.data);
-      if (response?.data?.success === true) {
+      if (response?.data?.status === true) {
         alert(response?.data?.message);
-        getUploadedDocumentsByModule();
+        await getUploadedDocumentsByModule();
       } else {
         alert(response?.data?.message);
       }
@@ -304,7 +315,7 @@ const ProfileDocumentDetails = props => {
         console.log('API Response getDocumentsByModule:', response.data);
         if (response?.data?.status == true) {
           setDocumentdataByModulename(response?.data?.data);
-          getUploadedDocumentsByModule();
+          // getUploadedDocumentsByModule();
         }
       })
       .catch(error => {
@@ -591,7 +602,7 @@ const ProfileDocumentDetails = props => {
       </View>
       <View style={ProfileDocumentDetailStyle.card}>
         <FlatList
-          data={documentdataByModulename}
+          data={documentdataByModulename || []}
           scrollEnabled
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{}}

@@ -2124,45 +2124,44 @@ const RentalOffer = props => {
           //   )}
           // </View>
           <View style={RentalOfferStyle.inputWrapper}>
-          {/* TextInput without Dollar sign in placeholder */}
-          <TextInput
-            style={RentalOfferStyle.input}
-            placeholder={`${question.tqm_Question_placeholder}`} // Show only placeholder initially
-            placeholderTextColor={_COLORS?.Kodie_GrayColor}
-            onChangeText={text => {
-              // Ensure only numeric input and handle changes
-              const numericValue = text.replace(/[^0-9]/g, '');
-              handleInputChange(
-                question.tqm_Question_code,
-                numericValue,
-                index,
-              );
-        
-              // Clear the error message when the user starts typing
-              if (errors[question.tqm_Question_code]) {
-                setErrors(prevErrors => ({
-                  ...prevErrors,
-                  [question.tqm_Question_code]: undefined, // Clear error for this field
-                }));
+            {/* TextInput without Dollar sign in placeholder */}
+            <TextInput
+              style={RentalOfferStyle.input}
+              placeholder={`${question.tqm_Question_placeholder}`} // Show only placeholder initially
+              placeholderTextColor={_COLORS?.Kodie_GrayColor}
+              onChangeText={text => {
+                // Ensure only numeric input and handle changes
+                const numericValue = text.replace(/[^0-9]/g, '');
+                handleInputChange(
+                  question.tqm_Question_code,
+                  numericValue,
+                  index,
+                );
+
+                // Clear the error message when the user starts typing
+                if (errors[question.tqm_Question_code]) {
+                  setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [question.tqm_Question_code]: undefined, // Clear error for this field
+                  }));
+                }
+              }}
+              // Show the dollar sign only when there's input
+              value={
+                inputValues[question.tqm_Question_code]
+                  ? `$${inputValues[question.tqm_Question_code]}`
+                  : '' // Display nothing initially
               }
-            }}
-            // Show the dollar sign only when there's input
-            value={
-              inputValues[question.tqm_Question_code]
-                ? `$${inputValues[question.tqm_Question_code]}`
-                : '' // Display nothing initially
-            }
-            keyboardType="number-pad"
-          />
-        
-          {/* Error message */}
-          {errors[question.tqm_Question_code] && (
-            <Text style={RentalOfferStyle?.errorText}>
-              {errors[question.tqm_Question_code]}
-            </Text>
-          )}
-        </View>
-        
+              keyboardType="number-pad"
+            />
+
+            {/* Error message */}
+            {errors[question.tqm_Question_code] && (
+              <Text style={RentalOfferStyle?.errorText}>
+                {errors[question.tqm_Question_code]}
+              </Text>
+            )}
+          </View>
         );
       // case 'Date':
       //   return (
@@ -2833,10 +2832,11 @@ const RentalOffer = props => {
       <TopHeader
         onPressLeftButton={() => {
           // _goBack(props);
-          props?.navigation?.pop();
-          // props?.navigation?.navigate('Properties', {
-          //   openTab3: "openTab3",
-          // });
+          // props?.navigation?.pop();
+          props?.navigation?.navigate('Properties', {
+            // openTab3: "openTab3",
+            tab3: 'tab3',
+          });
         }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />

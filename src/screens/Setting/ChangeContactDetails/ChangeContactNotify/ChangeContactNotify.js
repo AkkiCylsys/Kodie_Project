@@ -25,7 +25,8 @@ const ChangeContactNotify = props => {
   let countryCode = props?.route?.params?.countryCode;
   const newPhoneNumber = PhoneNumber.substring(3);
   console.log('oldPhoneNumber....', oldPhoneNumber);
-  console.log('newPhoneNumber....', newPhoneNumber);
+  // console.log('newPhoneNumber....', newPhoneNumber);
+  console.log('newPhoneNumber....', PhoneNumber);
   console.log('PhoneNumber...', PhoneNumber);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,8 +75,10 @@ const ChangeContactNotify = props => {
       uad_key: loginData?.Login_details?.user_account_id,
       country_code: countryCode,
       old_phone_number: oldPhoneNumber,
-      new_phone_number: newPhoneNumber,
+      // new_phone_number: newPhoneNumber,
+      new_phone_number: PhoneNumber,
     };
+    console.log("dataToSend ....",dataToSend);
     setIsLoading(true);
     axios
       .put(updateContactDetailUrl, dataToSend)

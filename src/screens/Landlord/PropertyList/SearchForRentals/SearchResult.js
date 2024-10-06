@@ -421,10 +421,10 @@ export default SearchResult = props => {
               AllCountsData[0]?.Bedrooms || ''
             } Beds; ${AllCountsData[1]?.Bathrooms} Baths; ${
               parkingGarageSpaces || ''
-            } parking space; ${parkingGarageSpaces || ''} on-street parking; ${
+            } Parking space; ${parkingGarageSpaces || ''} On-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
-                : 'unfurnished'
+                : 'Unfurnished'
             }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${
               searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
             }`}

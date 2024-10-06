@@ -167,13 +167,13 @@ const SignUp = props => {
         'Oh no. The password must be at least 8 characters long!',
       );
     } else if (!term && !privacy) {
-      alert(
+      Alert.alert("Warning",
         'Please read and accept both Terms & Conditions and Privacy Policy!',
       );
     } else if (!term) {
-      alert('Please read and accept Terms & Conditions!');
+      Alert.alert("Warning",'Please read and accept Terms & Conditions!');
     } else if (!privacy) {
-      alert('Please read and accept our Privacy Policy!');
+      Alert.alert("Warning",'Please read and accept our Privacy Policy!');
     } else {
       handleSignup();
     }

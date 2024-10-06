@@ -492,12 +492,12 @@ const ViewApplicationSummary = props => {
     Linking.openURL(mailtoUrl)
       .then(() => {
         // Optionally, show a success message or perform any additional actions
-        Alert.alert('Success', 'Your Gmail client is opened.');
+        // Alert.alert('Success', 'Your Gmail client is opened.');
       })
       .catch(err => {
         // Handle any errors when opening the email client
         console.error('Error opening Gmail client:', err);
-        Alert.alert('Error', 'There was a problem opening the Gmail client.');
+        // Alert.alert('Error', 'There was a problem opening the Gmail client.');
       });
   };
 
