@@ -221,14 +221,12 @@ export default Invitefriend = props => {
   };
   const handleSearch = query => {
     setSearchQuery(query);
-    const filtered = contacts.filter(
-      contact =>
-        contact.displayName &&
-        contact.displayName.toLowerCase().includes(query.toLowerCase()),
+    const filtered = contacts.filter(contact =>
+      (contact.displayName && contact.displayName.toLowerCase().includes(query.toLowerCase())) ||
+      (contact.givenName && contact.givenName.toLowerCase().includes(query.toLowerCase()))
     );
     setFilteredContacts(filtered);
   };
-
   const UserList_renderItem = ({item, index}) => {
     return (
       <>
