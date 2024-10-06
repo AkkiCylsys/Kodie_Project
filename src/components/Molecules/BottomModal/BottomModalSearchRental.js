@@ -16,7 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useSelector} from 'react-redux';
 
 const BottomModalSearchRental = props => {
-  const {propertyId, rentalAmount, bibId, landlordId, searchRentalData} = props;
+  const {propertyId, rentalAmount, bibId, landlordId, searchRentalData,propertyDetailsItem} = props;
   const loginData = useSelector(state => state.authenticationReducer.data);
 
   // Retrieve user data from Redux state

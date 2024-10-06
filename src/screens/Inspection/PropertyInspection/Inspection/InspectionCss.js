@@ -6,6 +6,7 @@ export const InspectionCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Container: {
+    flex:1,
     marginHorizontal: 16,
     marginVertical: 16,
   },
@@ -76,6 +77,7 @@ export const InspectionCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   inputContainer: {
+    flex:1,
     marginVertical: 16,
   },
   errorText: {color: 'red',},
@@ -89,10 +91,12 @@ export const InspectionCss = StyleSheet.create({
     marginTop:6
   },
   ButtonView: {
+    // flex:1,
     flexDirection: 'row',
-    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    marginVertical: 20,
+    marginVertical: 25,
+    marginHorizontal:16
   },
   itemView: {
     flex: 1,
@@ -110,14 +114,14 @@ export const InspectionCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
     marginTop:10,
-    marginBottom:8
+    // marginBottom:8
   },
   SaveView: {
     borderRadius: 5,
     backgroundColor: _COLORS.Kodie_BlackColor,
-    marginLeft: 40,
+    marginLeft: 30,
     paddingHorizontal: 20,
-    paddingVertical: 6,
+    paddingVertical: 12,
   },
   DoneText: {
     alignSelf: 'center',

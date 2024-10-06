@@ -116,7 +116,7 @@ export default Login = props => {
         console.log('PLAY_SERVICES_NOT_AVAILABLE');
         alert('PLAY_SERVICES_NOT_AVAILABLE')
       } else {
-        alert(error.message)
+        // alert(error.message)
         console.log('Error occurred:', error.message);
         console.log('Error stack trace:', error.stack);
         console.log('Full error object:', error);

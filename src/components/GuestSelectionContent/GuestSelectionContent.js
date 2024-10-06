@@ -86,12 +86,13 @@ const GuestSelectionContent = ({
           renderItem={({item}) => (
             <View
               style={{
+                flex:1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginVertical: 8,
               }}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row',flex:1}}>
                 {item.image_paths && item.image_paths.length > 0 ? (
                   <Image
                     source={{uri: item.image_paths[0]}}
@@ -120,6 +121,7 @@ const GuestSelectionContent = ({
                 )}
                 <Text
                   style={{
+                    flex:1,
                     fontSize: 16,
                     color: _COLORS?.Kodie_BlackColor,
                     fontFamily: FONTFAMILY?.K_Bold,
@@ -174,10 +176,10 @@ const GuestSelectionContent = ({
           justifyContent: 'flex-end',
           alignItems: 'center',
           backgroundColor: _COLORS?.Kodie_WhiteColor,
-          padding: 16,
+          paddingVertical: 16,
         }}>
         <TouchableOpacity
-          style={{paddingHorizontal: 20, paddingVertical: 10}}
+          style={{paddingHorizontal: 16, paddingVertical: 10}}
           onPress={handleClosePopup}>
           <Text
             style={{
@@ -190,8 +192,8 @@ const GuestSelectionContent = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            paddingHorizontal: 20,
-            paddingVertical: 10,
+            paddingHorizontal: 25,
+            paddingVertical: 12,
             backgroundColor: _COLORS?.Kodie_BlackColor,
             borderRadius: 4,
           }}
