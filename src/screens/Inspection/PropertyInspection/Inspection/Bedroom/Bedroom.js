@@ -49,7 +49,8 @@ const Bedroom = props => {
   const AreaName = props.route.params.AreaName;
   const PropertyId = props.route.params.PropertyId;
   const getItem = props.route.params.getItems;
-  console.log(getItem,'getItem');
+  const TAIM_ITEM_STATU = props.route.params.TAIM_ITEM_STATUS;
+  console.log(TAIM_ITEM_STATU,'TAIM_ITEM_STATU');
   function keyExtractor(item) {
     return item?.TAIM_ITEM_KEY.toString(); // Use userId as the key
   }
@@ -60,8 +61,8 @@ const Bedroom = props => {
     setEditGetItem(copy);
   }
   useEffect(() => {
-    TAIM_ITEM_STATUS === 1 ?
-                 null: handleAddItem();
+    TAIM_ITEM_STATU === 1 ?
+    handleUpdateItem() : handleAddItem();
     handleInspectionuEditItem()
     // if (isEditing) { handleInspectionuEditItem() }
     // else { handleInspectionudateItem() }
@@ -148,7 +149,7 @@ const Bedroom = props => {
 
   const handleUpdateItem = async () => {
     setIsLoading(true);
-    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItems.map(item => item.TAIM_ITEM_KEY).join(',');
+    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItem;
     console.log("UpdateItem", tamAreaKeys);
     const data = {
       p_TIM_KEY: Team_Key,
@@ -299,6 +300,7 @@ const Bedroom = props => {
                 onPress={() => {
                  
                     setSelectedItem(item);
+                    item?.TIMC_STATUS ? null :
                   refRBSheet2.current.open({ item })
           
                 }}
@@ -332,7 +334,7 @@ const Bedroom = props => {
         EditText
         onPressEdit={() => setIsEditing(!isEditing)}
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
         <View style={BedroomCss.Container}>
           {isEditing ? (
             <CustomSingleButton
@@ -434,7 +436,7 @@ const Bedroom = props => {
             </>
           )}
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
       <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}

@@ -6,14 +6,16 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {BottomModalSearchRentalStyle} from './BottomModalSearchRentalStyle';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
+import { Config } from '../../../Config';
+import axios from 'axios';
 
 const BottomModalSearchRental = props => {
   const {propertyId, rentalAmount, bibId, landlordId, searchRentalData,propertyDetailsItem} = props;
@@ -22,8 +24,39 @@ const BottomModalSearchRental = props => {
   // Retrieve user data from Redux state
   const userAccountId = loginData?.Login_details?.user_account_id;
   const hasLandlordRoleId = loginData?.Account_details[0]?.user_role_id;
+  const [property_Detail, setProperty_Details] = useState([]);
 
   const navigation = useNavigation();
+  useFocusEffect(
+    useCallback(() => {
+      if (propertyId) {
+        fetchData();
+      }
+    }, [propertyId]) // Dependencies
+  );
+  const fetchData = async () => {
+    try {
+      const detailData = {
+        property_id: propertyId,
+      };
+      const url = `${Config.BASE_URL}get_property_details`;
+   
+
+      const response = await axios.post(url, detailData);
+
+      console.log('response_get_property_details:', response?.data);
+      if (response?.data?.success) {
+        const propertyDetails = response?.data?.property_details?.[0];
+        setProperty_Details(propertyDetails);
+        console.log('type of property:', propertyDetails);
+      } else {
+        console.error('propertyDetail_error:', response?.data?.error);
+         }
+    } catch (error) {
+      console.error('Error:', error);
+      // setIsLoading(false);
+      }
+  };
 
   // Data for the modal options
   const data = [
@@ -120,9 +153,9 @@ const BottomModalSearchRental = props => {
 
           if (item?.id == '4') {
             navigation.navigate('Chat', {
-              data: props?.propertyDetails,
-              userid: props?.propertyDetails.landlord_id,
-              chatname: 'chatname',
+              data: property_Detail.landlord_details[0],
+                    userid: property_Detail.landlord_id_property,
+                    chatname: 'chatname',
             });
             handleClose();
           }

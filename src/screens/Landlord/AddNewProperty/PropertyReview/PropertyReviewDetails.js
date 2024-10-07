@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -33,6 +33,7 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import {BackHandler} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import { useFocusEffect } from '@react-navigation/native';
 export default PropertyReviewDetails = props => {
   const property_id = props?.route?.params?.property_id;
   const propertyid = props?.route?.params?.propertyid;
@@ -69,20 +70,26 @@ export default PropertyReviewDetails = props => {
   };
 
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
-  useEffect(() => {
-    // Geolocation.getCurrentPosition(
-    //   position => {
-    //     const {latitude, longitude} = position.coords;
-    //     console.log(latitude, longitude, 'latitude,longitude');
-    // alert(property_Detail?.longitude)
-        fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-        // fetchPointsOfInterest("33.8849","151.2052");
-        // fetchPointsOfInterest("27.149994", "79.499901");
-    //   },
-    //   error => console.error(error),
-    //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    // );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // Geolocation.getCurrentPosition(
+      //   position => {
+      //     const {latitude, longitude} = position.coords;
+      //     console.log(latitude, longitude, 'latitude,longitude');
+      // alert(property_Detail?.longitude)
+          fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
+          // fetchPointsOfInterest("33.8849","151.2052");
+          // fetchPointsOfInterest("27.149994", "79.499901");
+      //   },
+      //   error => console.error(error),
+      //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      // );
+  
+      return () => {
+        // Cleanup if necessary when the screen is unfocused
+      };
+    }, [property_Detail]) // Add necessary dependencies
+  );
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
@@ -777,7 +784,7 @@ export default PropertyReviewDetails = props => {
       <TopHeader
         onPressLeftButton={
           backProperty
-            ? () => props.navigation.navigate('Properties')
+            ? () => props.navigation.navigate('DrawerNavigatorLeftMenu')
             : propertyVacantListing
             ? () => props.navigation.navigate('VacantPropertiesList')
             : goBack
@@ -859,7 +866,7 @@ export default PropertyReviewDetails = props => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail?.state || property_Detail?.city || ''}
+            {property_Detail?.city || property_Detail?.state || ''}
           </Text>
           <View style={PropertyReviewStyle.location_View}>
             <Entypo

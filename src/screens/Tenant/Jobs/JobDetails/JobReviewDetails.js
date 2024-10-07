@@ -263,7 +263,7 @@ const JobReviewDetails = props => {
         // IsNotification
         onPressLeftButton={() =>
           View_Job_Details
-            ? props.navigation.navigate('Jobs', {
+            ? props.navigation.navigate('DrawerNavigatorLeftMenu', {
                 myJob_Type: myJobType,
               })
             : _goBack(props)

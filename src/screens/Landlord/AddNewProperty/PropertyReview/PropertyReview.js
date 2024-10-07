@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -34,6 +34,7 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import Share from 'react-native-share';
 import {
+  useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
 import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
@@ -74,21 +75,26 @@ export default PropertyReview = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
   const [GenerateLink, setGenerateLink] = useState("");
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
-  useEffect(() => {
-    // Geolocation.getCurrentPosition(
-    //   position => {
-    //     const { latitude, longitude } = position.coords;
-    //     console.log(latitude,longitude);
-    //     fetchPointsOfInterest(latitude,longitude);
-        fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-        
-        // fetchPointsOfInterest("27.149994", "79.499901");
-
-    //   },
-    //   error => console.error(error),
-    //   { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    // );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // Geolocation.getCurrentPosition(
+      //   position => {
+      //     const {latitude, longitude} = position.coords;
+      //     console.log(latitude, longitude, 'latitude,longitude');
+      // alert(property_Detail?.longitude)
+          fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
+          // fetchPointsOfInterest("33.8849","151.2052");
+          // fetchPointsOfInterest("27.149994", "79.499901");
+      //   },
+      //   error => console.error(error),
+      //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      // );
+  
+      return () => {
+        // Cleanup if necessary when the screen is unfocused
+      };
+    }, [property_Detail]) // Add necessary dependencies
+  );
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
@@ -1051,7 +1057,7 @@ export default PropertyReview = props => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail?.state || property_Detail?.city || ''}
+            {property_Detail?.city || property_Detail?.state || ''}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo

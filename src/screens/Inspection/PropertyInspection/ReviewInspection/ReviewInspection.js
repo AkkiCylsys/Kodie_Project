@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   FlatList,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -84,7 +85,7 @@ const ReviewInspection = (props) => {
   );
   return (
     <SafeAreaView style={ReviewInspectionCss.MainContainer}>
-      <View style={ReviewInspectionCss.Container}>
+      <ScrollView style={ReviewInspectionCss.Container}>
         {/* <Text style={ReviewInspectionCss.inspections}>{'Review results'}</Text> */}
         {/* {isFileVisible && (
           <View style={ReviewInspectionCss.PdfContainer}>
@@ -231,7 +232,7 @@ const ReviewInspection = (props) => {
             </View>
           </View>
         </RBSheet>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

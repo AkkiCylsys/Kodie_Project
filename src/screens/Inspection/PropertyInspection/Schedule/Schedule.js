@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import {ScheduleCss} from './ScheduleCss';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -136,7 +137,7 @@ useFocusEffect(
     );
   };
   return (
-    <View style={ScheduleCss.MainContainer}>
+    <ScrollView style={ScheduleCss.MainContainer}>
       <View style={ScheduleCss.Container}>
       {(newStatus === 1 || newStatus == null || newStatus === '') &&
         <>
@@ -203,7 +204,7 @@ useFocusEffect(
 </>
         ):null}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 export default Schedule;

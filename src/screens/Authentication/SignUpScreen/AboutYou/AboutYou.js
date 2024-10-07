@@ -98,7 +98,7 @@ export default AboutYou = props => {
   let Bio = props?.route?.params?.Bio;
   let country_code = props?.route?.params?.country_code;
   let password = props?.route?.params?.password;
-  console.log('user_key:', country_code);
+  console.log('user_key:', user_key);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

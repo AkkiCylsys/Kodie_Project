@@ -127,7 +127,7 @@ export default FirstProperty = props => {
     Companyp_latitude,
     CompanyservicesValue,
   );
-  console.log('selectedServiceKeysString', selectedServiceKeysString);
+  console.log('selectedServiceKeysString', user_key);
   console.log('user_key', password);
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);

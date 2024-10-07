@@ -10,9 +10,9 @@ import {
   SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {GiftedChat, Actions, Send, Bubble} from 'react-native-gifted-chat';
-import {useRoute} from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { GiftedChat, Actions, Send, Bubble } from 'react-native-gifted-chat';
+import { useRoute } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import ImagePicker from 'react-native-image-crop-picker';
 import uuid from 'react-native-uuid';
@@ -20,10 +20,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {IMAGES, _COLORS} from '../../Themes';
-import {useSelector} from 'react-redux';
-import {FONTFAMILY} from '../../Themes/FontStyle/FontStyle';
+import { _goBack } from '../../services/CommonServices';
+import { IMAGES, _COLORS } from '../../Themes';
+import { useSelector } from 'react-redux';
+import { FONTFAMILY } from '../../Themes/FontStyle/FontStyle';
 import storage from '@react-native-firebase/storage';
 
 import Geolocation from '@react-native-community/geolocation';
@@ -33,8 +33,10 @@ const Chat = props => {
   const [pendingMessage, setPendingMessage] = useState(null);
   const userData = route.params.data;
   const chatname = route.params.chatname
-  console.log(route.params.data, chatname,'datadatadatadatadata');
+  const userid = route.params.userid
+  console.log(route.params.data, chatname, 'datadatadatadatadata');
   const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log(loginData.Login_details.user_id);
   // console.log('loginResponse.....', loginData);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -62,124 +64,125 @@ const Chat = props => {
     return userId1 > userId2 ? `${userId1}-${userId2}` : `${userId2}-${userId1}`;
   };
 
- useEffect(() => {
-  const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
-  const messageRef = firestore()
-    .collection('chatrooms')
-    .doc(docid)
-    .collection('messages')
-    .orderBy('createdAt', 'desc');
-
-  const unsubscribe = messageRef.onSnapshot(querySnapshot => {
-    if (querySnapshot && !querySnapshot.empty) {
-      const messages = querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        if (data.deletedBy && data.deletedBy[loginData.Login_details.user_id]) {
-          return null; // Skip this message if it is deleted for this user
-        }
-        return {
-          _id: doc.id,
-          text: data.text,
-          createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
-          user: {
-            _id: data.user._id,
-            avatar: data.user.avatar,
-          },
-          image: data.image || null,
-          pending: data.pending || false,
-          sent: data.sent || true,
-          seen: data.seen || false,
-          
-        };
-      }).filter(message => message !== null);
-
-      const newUnreadMessages = messages.filter(
-        message => message.user._id !== loginData.Login_details.user_id && !message.seen
-      );
-
-      setUnreadMessages(newUnreadMessages);
-
-      // Update seen status for all unread messages
-      querySnapshot.docs.forEach(async doc => {
-        const data = doc.data();
-        if (data.user._id !== loginData.Login_details.user_id && !data.seen) {
-          await firestore()
-            .collection('chatrooms')
-            .doc(docid)
-            .collection('messages')
-            .doc(doc.id)
-            .update({ seen: true });
-        }
-      });
-  // Ensure that deleted messages are not included
-  const filteredMessages = messages.filter(message => message._id !== selectedMessage?._id);
-
-      setMessageList(messages);
-    } else {
-      setMessageList([]); // Set empty array if no messages found
-      setUnreadMessages([]);
-    }
-  });
-
-  // Cleanup subscription on unmount
-  return () => unsubscribe();
-}, [loginData, route.params.userid]);
-
-const clearChat = async () => {
-  const chatroomId = createDocId(loginData.Login_details.user_id, route.params.userid);
-
-  try {
-    // Get a reference to the chatroom's messages collection
-    const messagesRef = firestore()
+  useEffect(() => {
+    const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
+    const messageRef = firestore()
       .collection('chatrooms')
-      .doc(chatroomId)
-      .collection('messages');
+      .doc(docid)
+      .collection('messages')
+      .orderBy('createdAt', 'desc');
 
-    // Fetch all messages
-    const querySnapshot = await messagesRef.get();
+    const unsubscribe = messageRef.onSnapshot(querySnapshot => {
+      if (querySnapshot && !querySnapshot.empty) {
+        const messages = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          if (data.deletedBy && data.deletedBy[loginData.Login_details.user_id]) {
+            return null; // Skip this message if it is deleted for this user
+          }
+          return {
+            _id: doc.id,
+            text: data.text,
+            createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
+            user: {
+              _id: data.user._id,
+              avatar: data.user.avatar,
+            },
+            image: data.image || null,
+            pending: data.pending || false,
+            sent: data.sent || true,
+            seen: data.seen || false,
 
-    if (!querySnapshot.empty) {
-      const batch = firestore().batch();
+          };
+        }).filter(message => message !== null);
 
-      querySnapshot.docs.forEach(doc => {
-        // Update each message to mark it as deleted for the current user
-        batch.update(doc.ref, {
-          [`deletedBy.${loginData.Login_details.user_id}`]: true
+        const newUnreadMessages = messages.filter(
+          message => message.user._id !== loginData.Login_details.user_id && !message.seen
+        );
+
+        setUnreadMessages(newUnreadMessages);
+
+        // Update seen status for all unread messages
+        querySnapshot.docs.forEach(async doc => {
+          const data = doc.data();
+          if (data.user._id !== loginData.Login_details.user_id && !data.seen) {
+            await firestore()
+              .collection('chatrooms')
+              .doc(docid)
+              .collection('messages')
+              .doc(doc.id)
+              .update({ seen: true });
+          }
         });
-      });
+        // Ensure that deleted messages are not included
+        const filteredMessages = messages.filter(message => message._id !== selectedMessage?._id);
 
-      // Commit the batch update
-      await batch.commit();
-      console.log('All messages cleared for the user successfully');
-      setClearChatModalVisible(false)
-      // Optionally clear the messages from the UI as well
-      setMessageList([]);
+        setMessageList(messages);
+      } else {
+        setMessageList([]); // Set empty array if no messages found
+        setUnreadMessages([]);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [loginData, route.params.userid]);
+
+  const clearChat = async () => {
+    const chatroomId = createDocId(loginData.Login_details.user_id, route.params.userid);
+
+    try {
+      // Get a reference to the chatroom's messages collection
+      const messagesRef = firestore()
+        .collection('chatrooms')
+        .doc(chatroomId)
+        .collection('messages');
+
+      // Fetch all messages
+      const querySnapshot = await messagesRef.get();
+
+      if (!querySnapshot.empty) {
+        const batch = firestore().batch();
+
+        querySnapshot.docs.forEach(doc => {
+          // Update each message to mark it as deleted for the current user
+          batch.update(doc.ref, {
+            [`deletedBy.${loginData.Login_details.user_id}`]: true
+          });
+        });
+
+        // Commit the batch update
+        await batch.commit();
+        console.log('All messages cleared for the user successfully');
+        setClearChatModalVisible(false)
+        // Optionally clear the messages from the UI as well
+        setMessageList([]);
+      }
+    } catch (error) {
+      console.error('Error clearing chat:', error);
     }
-  } catch (error) {
-    console.error('Error clearing chat:', error);
-  }
-};
+  };
 
-
-  const onSend = async messageArray => {
+  const onSend = async (messageArray) => {
     const msg = messageArray[0];
-    const {text, image} = msg;
+    const { text, image } = msg;
 
+    // Create a message object with default values
     let message = {
       _id: uuid.v4(),
-      text: text || '',
+      text: text || '', // Ensure text is a string
       createdAt: new Date(),
       user: {
-        _id: loginData.Login_details.user_id,
-        avatar: loginData.Login_details.profile_photo_path,
+        _id: loginData.Login_details.user_id || '', // Ensure user_id is a string
+        avatar: loginData.Login_details.profile_photo_path || '', // Ensure avatar is a string
       },
-      image: image || null,
+      image: image || null, // Set to null if image is undefined
       pending: true, // Mark as pending
       sent: false,
-      seen:false, // Mark as not sent yet
+      seen: false, // Mark as not sent yet
     };
 
-    setMessageList(previousMessages =>
+    // Append the message to the message list
+    setMessageList((previousMessages) =>
       GiftedChat.append(previousMessages, message),
     );
 
@@ -196,15 +199,32 @@ const clearChat = async () => {
         });
       }
 
-      // Add message to Firestore
-      await docRef.collection('messages').add({
-        ...message,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        pending: false, // Mark as not pending
-        sent: true, // Mark as sent
-      });
+      try {
+        // Prepare the message data for Firestore
+        const messageData = {
+          _id: message._id, // Include all required fields
+          text: message.text,
+          createdAt: firestore.FieldValue.serverTimestamp(), // Use server timestamp
+          user: {
+            _id: message.user._id,
+            avatar: message.user.avatar,
+          },
+          image: message.image,
+          pending: false, // Mark as sent
+          sent: true,
+        };
+
+        // Log the message data before adding to Firestore
+        console.log('Adding message data to Firestore:', messageData);
+
+        // Add message to Firestore
+        await docRef.collection('messages').add(messageData);
+        console.log('Message added to Firestore:', message);
+      } catch (error) {
+        console.error('Error adding message to Firestore:', error);
+      }
     } catch (error) {
-      console.error('Error adding message to Firestore:', error);
+      console.error('Error accessing Firestore:', error);
     }
   };
 
@@ -286,7 +306,7 @@ const clearChat = async () => {
 
       const downloadURL = await storageRef.getDownloadURL();
       if (result.mime && result.mime.startsWith('image')) {
-        onSend([{image: downloadURL}]);
+        onSend([{ image: downloadURL }]);
       }
     } catch (error) {
       console.log('Error picking image from camera:', error);
@@ -309,19 +329,19 @@ const clearChat = async () => {
               longitude,
             },
           };
-  
+
           const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
-  
+
           // Determine if sending to group or individual chat
-          const chatCollection ='messages';
-          const chatRoomId =  docid;
-  
+          const chatCollection = 'messages';
+          const chatRoomId = docid;
+
           await firestore()
             .collection('chatrooms')
             .doc(chatRoomId)
             .collection(chatCollection)
             .add(locationMessage);
-  
+
           console.log('Location sent successfully');
         },
         error => {
@@ -337,7 +357,7 @@ const clearChat = async () => {
       console.error('Error sending location:', error);
     }
   };
-  
+
   const renderSend = props => {
     return (
       <View
@@ -349,8 +369,8 @@ const clearChat = async () => {
           marginTop: 10,
           justifyContent: 'center',
         }}>
-         {/* Location Icon */}
-         <TouchableOpacity
+        {/* Location Icon */}
+        <TouchableOpacity
           onPress={handleSendLocation}  // Implement sendLocation function to send user's location
           style={{
             alignItems: 'center',
@@ -377,9 +397,9 @@ const clearChat = async () => {
             color={_COLORS.Kodie_ExtraLightGrayColor}
           />
         </TouchableOpacity>
-  
-       
-  
+
+
+
         <Send {...props}>
           <View
             style={{
@@ -399,7 +419,7 @@ const clearChat = async () => {
       </View>
     );
   };
-  
+
 
   const renderBubble = props => {
     const isCurrentUser =
@@ -442,7 +462,7 @@ const clearChat = async () => {
           props.currentMessage.image ? (
             <Image
               source={{ uri: props.currentMessage.image }}
-              style={{ width: 120, height: 120 , borderRadius:10}}
+              style={{ width: 120, height: 120, borderRadius: 10 }}
             />
           ) : null
         }
@@ -478,8 +498,8 @@ const clearChat = async () => {
             color: _COLORS.White,
           },
         }}
-        
-        
+
+
         containerStyle={{
           marginLeft: isCurrentUser ? 50 : 0,
           marginRight: isCurrentUser ? 0 : 50,
@@ -489,39 +509,40 @@ const clearChat = async () => {
           setSelectedMessage(props.currentMessage);
           openDeleteModal();
         }}
-        renderAvatar={renderAvatar(props)}>
+        renderAvatar={renderAvatar(props)}
+      >
         {props.currentMessage?.user?._id !==
           loginData.Login_details.user_id && (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginLeft: isCurrentUser ? 0 : 8,
-            }}>
-            <Image
-              source={IMAGES.userImage}
+            <View
               style={{
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                marginRight: 4,
-              }}
-            />
-            <Text
-              style={{
-                color: _COLORS.Kodie_GreenColor,
-                fontSize: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: isCurrentUser ? 0 : 8,
               }}>
-              {props.currentMessage?.user?.name
-                ? props.currentMessage.user.name
+              <Image
+                source={IMAGES.userImage}
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  marginRight: 4,
+                }}
+              />
+              <Text
+                style={{
+                  color: _COLORS.Kodie_GreenColor,
+                  fontSize: 12,
+                }}>
+                {props.currentMessage?.user?.name
+                  ? props.currentMessage.user.name
                     .split(' ')
                     .map(word => word[0])
                     .join('')
-                : ''}
-            </Text>
-          </View>
-        )}
-        
+                  : ''}
+              </Text>
+            </View>
+          )}
+
       </Bubble>
     );
   };
@@ -529,7 +550,7 @@ const clearChat = async () => {
   const renderAvatar = props => () => {
     return (
       <Image
-        source={{uri: props.currentMessage?.user?.avatar}}
+        source={{ uri: props.currentMessage?.user?.avatar }}
         style={{
           width: 40,
           height: 40,
@@ -541,7 +562,7 @@ const clearChat = async () => {
   };
   const deleteMessage = async () => {
     const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
-  
+
     if (selectedMessage) {
       try {
         const messageRef = firestore()
@@ -549,12 +570,12 @@ const clearChat = async () => {
           .doc(docid)
           .collection('messages')
           .doc(selectedMessage._id);
-  
+
         // Update the document to mark it as deleted for the current user
         await messageRef.update({
           [`deletedBy.${loginData.Login_details.user_id}`]: true
         });
-  
+
         console.log('Message marked as deleted successfully');
         closeDeleteModal();
         setMessageList(prevMessages =>
@@ -565,7 +586,7 @@ const clearChat = async () => {
       }
     }
   };
-  
+
 
   const renderDeleteModal = () => {
     return (
@@ -605,7 +626,7 @@ const clearChat = async () => {
               <Text
                 style={[
                   styles.modalOptionText,
-                  {color: _COLORS.Kodie_BlackColor},
+                  { color: _COLORS.Kodie_BlackColor },
                 ]}>
                 Delete Message
               </Text>
@@ -621,29 +642,29 @@ const clearChat = async () => {
         animationType="fade"
         transparent={true}
         visible={ClearChatModalVisible}
-        onRequestClose={()=>setClearChatModalVisible(false)}>
-        <View style={{marginTop:100,left:250,position:'absolute'}}>
-            <TouchableOpacity
-              onPress={clearChat}
-              style={styles.modalOption}>
-              <Icon
-                name="trash"
-                size={24}
-                color={_COLORS.Kodie_ExtraDarkGreen}
-                style={{
-                  alignItems: 'center',
-                  alignSelf: 'center',
-                }}
-              />
-              <Text
-                style={[
-                  styles.modalOptionText,
-                  {color: _COLORS.Kodie_BlackColor},
-                ]}>
-                Clear all chat
-              </Text>
-            </TouchableOpacity>
-         
+        onRequestClose={() => setClearChatModalVisible(false)}>
+        <View style={{ marginTop: 100, left: 250, position: 'absolute' }}>
+          <TouchableOpacity
+            onPress={clearChat}
+            style={styles.modalOption}>
+            <Icon
+              name="trash"
+              size={24}
+              color={_COLORS.Kodie_ExtraDarkGreen}
+              style={{
+                alignItems: 'center',
+                alignSelf: 'center',
+              }}
+            />
+            <Text
+              style={[
+                styles.modalOptionText,
+                { color: _COLORS.Kodie_BlackColor },
+              ]}>
+              Clear all chat
+            </Text>
+          </TouchableOpacity>
+
         </View>
       </Modal>
     );
@@ -651,17 +672,16 @@ const clearChat = async () => {
 
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
         MiddleText={
           chatname ? `${userData.UAD_FIRST_NAME} ${userData.UAD_LAST_NAME}` : `${userData.name}`
         }
         onPressLeftButton={() => _goBack(props)}
-        ManurightIcon
-        onPressManurightIcon={()=>{
-        setClearChatModalVisible(true);
-        }}
+      // ManurightIcon
+
       />
+
       <GiftedChat
         messages={messageList}
         onSend={onSend}
@@ -684,21 +704,21 @@ const clearChat = async () => {
             paddingHorizontal: 10, // Add padding horizontally
             paddingVertical: 8,
             justifyContent: 'center',
-            alignSelf:'center',
-            marginTop:10
+            alignSelf: 'center',
+            marginTop: 10
           },
         }}
       />
       {renderDeleteModal()}
-      {renderClearChatModal()}
+      {/* {renderClearChatModal()} */}
       <Modal
         animationType="slide"
         transparent={true}
         visible={optionsModalVisible}
         onRequestClose={closeOptionsModal}>
         <View style={styles.modalContainer}>
-          <View style={{flexDirection: 'row', backgroundColor: 'white'}}>
-            <View style={{flex: 1, backgroundColor: 'white'}} />
+          <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }} />
             <TouchableOpacity
               style={styles.modalCloseButton}
               onPress={closeOptionsModal}>
@@ -743,7 +763,7 @@ const clearChat = async () => {
               name="camera"
               size={24}
               color={_COLORS.Kodie_GreenColor}
-              style={{alignItems: 'center', alignSelf: 'center'}}
+              style={{ alignItems: 'center', alignSelf: 'center' }}
             />
             <Text style={styles.modalOptionText}>Take a Photo</Text>
           </TouchableOpacity>

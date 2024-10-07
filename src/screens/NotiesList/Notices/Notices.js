@@ -281,7 +281,8 @@ const Notices = props => {
   };
 
   const noticeRenderData = ({item, index}) => {
-   
+    const lineImageSource = item?.id === 11 || item?.id === 9 || item?.id === 13  ? IMAGES.greenLine : item?.id === 10 ? IMAGES?.blueLine: IMAGES.redLine;
+
     return (
       <View style={NoticesStyle.mainContainer} key={item?.id}>
         <View style={NoticesStyle.dateDayview}>
@@ -291,7 +292,8 @@ const Notices = props => {
         </View>
         <View style={NoticesStyle.middatabindview}>
           <View style={NoticesStyle.bindview}>
-            <Image source={IMAGES.redLine} style={NoticesStyle.lineimg} />
+            
+            <Image source={lineImageSource} style={NoticesStyle.lineimg} />
             <View style={NoticesStyle.headinglineview}>
               <Text style={NoticesStyle.headintext}>{item.type_notice}</Text>
               <View style={NoticesStyle.addressviewbind}>

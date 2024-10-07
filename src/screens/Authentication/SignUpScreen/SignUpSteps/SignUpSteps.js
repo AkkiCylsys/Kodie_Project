@@ -141,6 +141,7 @@ const SignUpSteps = props => {
   };
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
+  console.log(user_key);
   let password = props?.route?.params?.password;
   let _social_userInfo = props?.route?.params?._socialuserInfo;
   console.log('email...', email);

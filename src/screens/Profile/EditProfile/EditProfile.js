@@ -12,6 +12,10 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import uuid from 'react-native-uuid';
 import React, {useState, useRef, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {EditProfileStyle} from './EditProfileStyle';
@@ -145,30 +149,6 @@ const EditProfile = props => {
     }
   };
 
-  const validateFirstName = text => {
-    if (text === '') {
-      setFirstNameError('First name is required');
-      // } else if (!/^[A-Za-z]+$/.test(text)) {
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setFirstNameError('First name should contain only alphabetic characters');
-    } else {
-      setFirstNameError('');
-    }
-    setFirstName(text);
-  };
-
-  // Validation for Last Name
-  const validateLastName = text => {
-    if (text === '') {
-      setLastNameError('Last name is required!');
-      // } else if (!/^[A-Za-z]+$/.test(text)) {
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setLastNameError('Last name should contain only alphabetic characters');
-    } else {
-      setLastNameError('');
-    }
-    setLastName(text);
-  };
 
   const handlevalidUpdation = () => {
     const isFirstNameValid = isValidFirstName(fullName);
@@ -382,6 +362,43 @@ const EditProfile = props => {
   const toggleView = () => {
     setVisible(!visible);
   };
+  const updateUserData = async () => {
+    setIsLoading(true); // Start loading indicator
+    const userId = uuid.v4(); // Generate a unique user ID
+  
+    try {
+      let downloadURL = ''; // Initialize the download URL
+  
+      // Check if an image is provided
+      if (ImageName && ImageName.path) {
+        const storageRef = storage().ref(`user_images/${userId}`); // Create a reference in storage
+        await storageRef.putFile(ImageName.path); // Upload the image
+        downloadURL = await storageRef.getDownloadURL(); // Get the download URL
+      } else {
+        // If no new image is provided, keep the existing image URL
+        const userDoc = await firestore().collection('Users').doc(auth().currentUser.uid).get();
+        downloadURL = userDoc.data().image; // Get the current image URL from Firestore
+      }
+  
+      // Update the user's data in Firestore
+      await firestore()
+        .collection('Users')
+        .doc(auth().currentUser.uid) // Use the current user's UID
+        .update({
+          name: `${fullName} ${lastName}`,
+          email: email,
+          mobile: phoneNumber,
+          user_key: String(loginData?.Login_details?.user_id),
+          image: downloadURL,
+        });
+  
+      console.log('User data updated in AsyncStorage');
+    } catch (error) {
+      console.error('Error updating user:', error); // Log any errors
+    } finally {
+      setIsLoading(false); // Stop loading indicator
+    }
+  };
 
   // Api intrrigation......
   const Updateprofile = async () => {
@@ -431,6 +448,7 @@ const EditProfile = props => {
       console.log('updateprofile....', response.data);
       if (response?.data?.success === true) {
         alert(response?.data?.message);
+        updateUserData()
         // dispatch(fetchLoginSuccess(response?.data?.data?.[0]));
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');

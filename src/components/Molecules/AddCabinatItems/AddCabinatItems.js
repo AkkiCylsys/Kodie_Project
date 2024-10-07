@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -27,6 +27,7 @@ import axios from 'axios';
 import { set } from 'lodash';
 import { CommonLoader } from '../ActiveLoader/ActiveLoader';
 import { fontSize } from '../../../Themes/FontStyle/FontStyle';
+import { useFocusEffect } from '@react-navigation/native';
 
 const data = [
   { label: 'Good', value: '1' },
@@ -51,19 +52,26 @@ const AddCabinatItems = (props) => {
 
 console.log(isCheckId);
   const refRBSheet = useRef();
-useEffect(()=>{
-  handle_Status();
-  getCabinate();
- 
-},[])
+  useFocusEffect(
+    useCallback(() => {
+      handle_Status(); // Call handle_Status when the screen is focused
+      getCabinate();   // Call getCabinate when the screen is focused
+    }, []) // Dependency array can be adjusted if needed
+  );
 useEffect(() => {
   setIsChecked(isCheckId === 1);
 }, [isCheckId]);
 const CreateCabinate = async () => {
+  // Check if images are selected
   if (selectedImages.length === 0) {
     setImageError(true);
-    return;
+    return; // Early exit if no images
+  } if (selectedImages.length > 4) {
+    alert('You can upload a maximum of 4 images.'); // Show an alert for exceeding the limit
+    return; // Exit early if the limit is exceeded
   }
+
+  // Initialize FormData
   const formData = new FormData();
   formData.append('created_by', Created_Id);
   formData.append('TIM_Key', Tim_Key);
@@ -74,36 +82,45 @@ const CreateCabinate = async () => {
   formData.append('upd_key', PropertyId);
   formData.append('uad_key', Created_Id);
   formData.append('TAM_AREA_KEY', AreasKey);
-  selectedImages.forEach((file, index) => {
-    formData.append('imagePaths', {
-      uri: file.path,
-      name: file.filename,
-      type: file.mime,
-    });
+
+  selectedImages.forEach(file => {
+    if (file.path && file.filename && file.mime) {
+      formData.append('imagePaths', {
+        uri: file.path, // Ensure this is the correct format for your server
+        name: file.filename,
+        type: file.mime,
+      });
+    } else {
+      console.warn('Invalid image file:', file); // Log any invalid image file for debugging
+    }
   });
-  console.log('formData', formData);
-  const url = Config.BASE_URL;
-  const CreateCabinate_url = url + 'add_cabinets';
-  setIsLoading(true);
+
+  console.log('formData', formData); // Log FormData for debugging
+
+  const url = Config.BASE_URL + 'add_cabinets'; // Construct the full URL
+  setIsLoading(true); // Show loader
   try {
-    console.log('Request URL:', CreateCabinate_url);
-    const response = await axios.post(CreateCabinate_url, formData, {
+    console.log('Request URL:', url);
+    const response = await axios.post(url, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log('CreateCabinate....', response.data);
-    if (response?.data?.success === true) {
-      alert(response?.data?.message);
-     props?.onCabinateClose()
+
+    console.log('CreateCabinate response:', response.data);
+    if (response?.data?.success) {
+      alert(response.data.message);
+      props?.onCabinateClose(); // Call the close function if success
+    } else {
+      alert(response.data.message || 'Failed to create cabinet'); // Handle non-successful responses
     }
-    clearState();
-    setIsLoading(false);
+    
+    clearState(); // Clear the state after successful request
   } catch (error) {
-    // alert(error);
-    console.log('CreateCabinate_error...', error);
+    console.error('CreateCabinate error:', error.response); // Log error for debugging
+    // alert('An error occurred while creating the cabinet. Please try again.'); // Notify user about the error
   } finally {
-    setIsLoading(false);
+    setIsLoading(false); // Hide loader in all cases
   }
 };
 const getCabinate = async () => {
@@ -199,6 +216,10 @@ const handleImageSelect = (images) => {
       </View>
     );
   };
+  const removeImage = (index) => {
+    const updatedImages = selectedImages.filter((_, i) => i !== index);
+    setSelectedImages(updatedImages);
+  };
   return (
     <>
     <KeyboardAvoidingView
@@ -285,28 +306,35 @@ const handleImageSelect = (images) => {
           {'Upload clear images of the item'}
         </Text>
         
-         {selectedImages.length > 0 ? 
+        {selectedImages.length > 0 && (
         <FlatList
-        data={selectedImages}
-        keyExtractor={(item, index) => index.toString()}
-        horizontal={true}
-        nestedScrollEnabled={true}
-        contentContainerStyle={{
-          height: 100, // Set a fixed height for the scrollable area
-          padding: 10,
-          marginRight:40
-          // width:500
-        }}
-        showsHorizontalScrollIndicator={false} // Set to true to visualize if it's scrolling
-          renderItem={({ item }) => (
-            
-            <Image
-              source={{ uri: CabinateDetail?.imageFileNames?.length > 0 ? item : item.path}}
-              style={{ width: 80, height: 80, marginTop: 10,borderRadius:20,margin:5 }}
-            />
-        )}
+          data={selectedImages}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal={true}
+          nestedScrollEnabled={true}
+          contentContainerStyle={{
+            height: 100, // Set a fixed height for the scrollable area
+            // padding: 10,
+            marginRight: 40,
+          }}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <View style={BedroomCss.imageContainer}>
+              <Image
+                source={{ uri: item.path  }} // Adjust this based on your image URI logic
+                style={BedroomCss.image}
+              />
+              <TouchableOpacity
+                style={BedroomCss.closeIconContainer}
+                onPress={() => removeImage(index)}
+              >
+                <MaterialIcons name="close" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          )}
         />
-       :null}
+      )}
+   
         <UploadImageBoxes
           Box_Text={'Add Photo'}
           circlestyle={BedroomCss.circleStyle}

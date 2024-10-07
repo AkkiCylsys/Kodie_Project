@@ -1267,7 +1267,7 @@ console.log(propertyView);
                       style={{alignSelf: 'center', marginHorizontal: 10}}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={()=>props?.navigation?.navigate('Chats')}>
+                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={()=>props?.navigation?.navigate('Chats',{chats:'chats'})}>
                     <Ionicons
                       name="chatbubble-ellipses-outline"
                       size={30}

@@ -66,26 +66,30 @@ export default PropertyDetails = props => {
   const [notesError, setNotesError] = useState('');
   const [propertyError, setPropertyError] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
+  useEffect(() => {
+    // Avoid updating state if addressComponents are undefined or haven't changed
+    if (!addressComponents) return;
+  
+    // Function to get address component based on type
+    function getAddressComponent(addressComponents, type) {
+      return addressComponents.find(component => component.types.includes(type))?.long_name || '';
+    }
+  
+    // Extract the city, state, and country at once
+    const selected_city = getAddressComponent(addressComponents, 'locality');
+    const selected_state = getAddressComponent(addressComponents, 'administrative_area_level_1');
+    const selected_country = getAddressComponent(addressComponents, 'country');
+  
+    // Only update if values have changed to avoid unnecessary re-renders
+    setCity(selected_city);
+    setState(selected_state);
+    setCountry(selected_country);
+  
+  }, [addressComponents]);
 
-  function getAddressComponent(addressComponents, type) {
-    return addressComponents.find(component => component.types.includes(type));
-  }
-  const selected_city = getAddressComponent(
-    addressComponents,
-    'locality',
-  )?.long_name;
-  const Selected_State = getAddressComponent(
-    addressComponents,
-    'administrative_area_level_1',
-  )?.long_name;
-  const selected_Country = getAddressComponent(
-    addressComponents,
-    'country',
-  )?.long_name;
-
-  console.log(`selected_city: ${selected_city}`);
-  console.log(`Selected_State: ${Selected_State}`);
-  console.log(`selected_Country: ${selected_Country}`);
+  console.log(`selected_city: ${city}`);
+  console.log(`Selected_State: ${state}`);
+  console.log(`selected_Country: ${country}`);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
@@ -510,9 +514,9 @@ export default PropertyDetails = props => {
       autolist: 0,
       UPD_FLOOR_SIZE: 0,
       UPD_LAND_AREA: 0,
-      p_city: selected_city,
-      p_state: Selected_State,
-      p_country: selected_Country,
+      p_city: city,
+      p_state: state,
+      p_country: country,
     };
 
     console.log('Property details data..', addPropertyPayload);
@@ -536,9 +540,9 @@ export default PropertyDetails = props => {
             selectedButtonId: 0,
             latitude: latitude,
             longitude: longitude,
-            city: selected_city,
-            state: Selected_State,
-            country: selected_Country,
+            city: city,
+            state: state,
+            country: country,
             editMode: editMode,
             propertyid: response?.data?.Property_id,
           });

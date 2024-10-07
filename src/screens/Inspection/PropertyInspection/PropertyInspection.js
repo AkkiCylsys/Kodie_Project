@@ -131,7 +131,7 @@ const PropertyInspection = props => {
         onPressLeftButton={() => props.navigation.navigate('NewInspection')}
         MiddleText={property_Detail?.location || ''}
       />
-      <ScrollView>
+      <View>
         <View style={PropertyInspectionCSS.slider_view}>
           {property_Detail.image_path &&
           property_Detail.image_path.length != 0 ? (
@@ -206,7 +206,7 @@ const PropertyInspection = props => {
         />
         <View style={PropertyInspectionCSS.Line} />
         {checkTabs()}
-      </ScrollView>
+      </View>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

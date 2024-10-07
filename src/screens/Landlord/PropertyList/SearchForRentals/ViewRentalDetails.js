@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {ViewRentalDetailsStyle} from './ViewRentalDetailsStyle';
@@ -34,6 +34,7 @@ import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsS
 import {useSelector} from 'react-redux';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 import { MapUrlTile } from 'react-native-maps';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
@@ -63,20 +64,26 @@ const ViewRentalDetails = props => {
   const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
   const [favRental, setFavRental] = useState(false);
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
-  useEffect(() => {
-    // Geolocation.getCurrentPosition(
-    //   position => {
-    //     const {latitude, longitude} = position.coords;
-    //     console.log(latitude, longitude);
-    //     fetchPointsOfInterest(latitude, longitude);
-        fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-
-        // fetchPointsOfInterest("27.149994", "79.499901");
-    //   },
-    //   error => console.error(error),
-    //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    // );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // Geolocation.getCurrentPosition(
+      //   position => {
+      //     const {latitude, longitude} = position.coords;
+      //     console.log(latitude, longitude, 'latitude,longitude');
+      // alert(property_Detail?.longitude)
+          fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
+          // fetchPointsOfInterest("33.8849","151.2052");
+          // fetchPointsOfInterest("27.149994", "79.499901");
+      //   },
+      //   error => console.error(error),
+      //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      // );
+  
+      return () => {
+        // Cleanup if necessary when the screen is unfocused
+      };
+    }, [property_Detail]) // Add necessary dependencies
+  );
 
   const handleFavouriteItem = async propertyId => {
     setIsLoading(true);

@@ -266,4 +266,22 @@ export const BedroomCss = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
+  imageContainer: {
+    position: 'relative', // Make the container relative for positioning the close icon
+    marginRight: 5,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    margin: 5,
+  },
+  closeIconContainer: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    borderRadius: 15, // Make it circular
+    padding: 3,
+  },
 });

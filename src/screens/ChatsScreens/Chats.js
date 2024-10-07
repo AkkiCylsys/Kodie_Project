@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   Button
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -37,13 +37,19 @@ const Chats = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const bottomSheetRef = useRef(null);
 const property= props?.route?.params?.property
+const chats= props?.route?.params?.chats
 console.log(property,'property');
   const isFocus = useIsFocused();
-  useEffect(() => {
-    if (loginData?.Login_details?.email && loginData?.Login_details?.user_id && isFocus) {
-      fetchData();
-    }
-  }, [loginData, searchQuery, isFocus]);
+  useFocusEffect(
+    useCallback(() => {
+      if (loginData?.Login_details?.email && loginData?.Login_details?.user_id) {
+        fetchData();
+      }
+      return () => {
+        console.log('Cleanup on unfocus');
+      };
+    }, [loginData, searchQuery])
+  );
   const formatDate = (timestamp) => {
     const now = new Date();
     let messageDate;
@@ -259,7 +265,7 @@ console.log(property,'property');
         IsNotification={true}
         isprofileImage
         onPressRightImgProfile={() => props.navigation.navigate('LandlordProfile')}
-        onPressLeftButton={() => property? props.navigation.navigate('Properties'):props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() => property? props.navigation.navigate('Properties'):chats ? props.navigation.navigate('AddNotices'):props.navigation.navigate('Dashboard')}
         MiddleText={'Chats'}
       />
       <KeyboardAvoidingView
@@ -396,7 +402,7 @@ console.log(property,'property');
             marginTop={3}
            
             searchData={searchchatList}
-            // textvalue={allsearchQuery}
+            textvalue={allsearchQuery}
           />
             <TouchableOpacity
             style={ChatsStyle.bottomSheetButton}
