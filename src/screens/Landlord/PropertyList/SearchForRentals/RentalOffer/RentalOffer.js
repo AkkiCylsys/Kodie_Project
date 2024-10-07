@@ -48,13 +48,17 @@ const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
   const propertyDetails = props?.route?.params?.propertyDetails;
   const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData...', loginData);
+
   console.log('propertyDetails....', propertyDetails);
   const profile_image = loginData?.Login_details?.profile_photo_path;
   const loginAccountDetails = loginData?.Account_details[0];
   const propertyId = props?.route?.params?.propertyId;
   const bibId = props?.route?.params?.bibId;
-  console.log('propertyId..', propertyId);
-  console.log('bibId in rental..', bibId);
+  // console.log('propertyId..', propertyId);
+  // console.log('bibId in rental..', bibId);
+  // console.log('profile_image...', profile_image);
+  // console.log('loginAccountDetails...', loginAccountDetails);
 
   const [errors, setErrors] = useState({});
   const [allparentsQuestion, setAllparentsQuestion] = useState([]);
@@ -2832,11 +2836,11 @@ const RentalOffer = props => {
       <TopHeader
         onPressLeftButton={() => {
           // _goBack(props);
-          // props?.navigation?.pop();
-          props?.navigation?.navigate('Properties', {
-            // openTab3: "openTab3",
-            tab3: 'tab3',
-          });
+          props?.navigation?.pop();
+          // props?.navigation?.navigate('Properties', {
+          //   // openTab3: "openTab3",
+          //   tab3: 'tab3',
+          // });
         }}
         MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />
@@ -2909,7 +2913,7 @@ const RentalOffer = props => {
               style={{
                 flexDirection: 'row',
               }}>
-              {profile_image ? (
+              {/* {profile_image ? (
                 <Image
                   source={{uri: profile_image}}
                   resizeMode={'cover'}
@@ -2921,7 +2925,23 @@ const RentalOffer = props => {
                   name={'user'}
                   size={70}
                 />
+              )} */}
+
+              {loginAccountDetails?.UAD_PROFILE_PHOTO_PATH &&
+              loginAccountDetails?.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                <Image
+                  source={{uri: loginAccountDetails?.UAD_PROFILE_PHOTO_PATH}}
+                  resizeMode="cover"
+                  style={RentalOfferStyle.userImg}
+                />
+              ) : (
+                <EvilIcons
+                  color={_COLORS.Kodie_GrayColor}
+                  name="user"
+                  size={70}
+                />
               )}
+
               <View style={RentalOfferStyle.userNameView}>
                 <Text style={RentalOfferStyle.username}>
                   {loginAccountDetails?.UAD_FIRST_NAME}

@@ -623,7 +623,7 @@ const PropertyRentalOffer = props => {
               onPressRightButton={() => {
                 if (showPayNowButton) {
                   // Show an alert when Pay Now button is pressed
-                  Alert.alert('Pay now', 'You can pay now');
+                  Alert.alert('Payment', 'The payment feature is currently under development and will be available in Phase 3.');
                 } else if (!isRightButtonDisabled) {
                   // Handle other cases like 'Accept offer' or 'Edit offer'
                   handlePressRightButton(item);

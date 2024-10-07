@@ -302,7 +302,7 @@ const OfferForMyProperties = () => {
             </View>
             <View style={{flex: 1, marginLeft: 20}}>
               <View style={OfferForMyPropertiesStyle.apartmentView}>
-                <View>
+                <View style={{flex:1}}>
                   <Text style={OfferForMyPropertiesStyle.apartmentText}>
                     {item?.property_type}
                   </Text>
@@ -342,10 +342,12 @@ const OfferForMyProperties = () => {
                 <View key={index}>
                   <View style={OfferForMyPropertiesStyle.userMainCon}>
                     <View style={OfferForMyPropertiesStyle.userContainer}>
-                      {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
-                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                      {detail.UAD_PROFILE_PHOTO_PATH &&
+                      (typeof detail.UAD_PROFILE_PHOTO_PATH === 'string' ||
+                        (Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
+                          detail.UAD_PROFILE_PHOTO_PATH.length > 0)) ? (
                         <Image
-                          source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
+                          source={{uri: detail.UAD_PROFILE_PHOTO_PATH}}
                           style={OfferForMyPropertiesStyle.userImg}
                           resizeMode="cover"
                         />
@@ -586,9 +588,7 @@ const OfferForMyProperties = () => {
         keyExtractor={item => item?.property_id}
         renderItem={offerPropertyRender}
         ListEmptyComponent={() => {
-          return (
-            <ListEmptyComponent EmptyText={"You don't have any properties."} />
-          );
+          return <ListEmptyComponent EmptyText={"You don't have any offer."} />;
         }}
       />
       {/* {isLoading ? <CommonLoader /> : null} */}
