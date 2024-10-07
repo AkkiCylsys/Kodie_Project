@@ -71,7 +71,7 @@ export default Repair = props => {
         Text_Color={_COLORS.Kodie_BlackColor}
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
-        height={40}
+        height={45}
         onPress={() => {}}
         disabled={isLoading ? true : false}
       />
@@ -80,7 +80,7 @@ export default Repair = props => {
       return (
         <RowButtons
           LeftButtonText={'Jobs I am servicing'}
-          leftButtonHeight={40}
+          leftButtonHeight={45}
           LeftButtonfontSize={12}
           leftButtonbackgroundColor={
             activeScreen
@@ -109,7 +109,7 @@ export default Repair = props => {
           RightButtonTextColor={
             activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
           }
-          RightButtonHeight={40}
+          RightButtonHeight={45}
           RightButtonfontSize={12}
           onPressLeftButton={() => {
             setActiveScreen(false);
@@ -439,7 +439,7 @@ export default Repair = props => {
           {/* <View style={RepairCss.BtnView}>{renderRowButtons()}</View> */}
           <RowButtons
             LeftButtonText={'Jobs I am servicing'}
-            leftButtonHeight={40}
+            leftButtonHeight={45}
             LeftButtonfontSize={12}
             leftButtonbackgroundColor={
               activeScreen
@@ -468,7 +468,7 @@ export default Repair = props => {
             RightButtonTextColor={
               activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
             }
-            RightButtonHeight={40}
+            RightButtonHeight={45}
             RightButtonfontSize={12}
             onPressLeftButton={() => {
               setActiveScreen(false);
@@ -496,7 +496,7 @@ export default Repair = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               text_Size={14}
               backgroundColor={_COLORS.Kodie_BlackColor}
-              height={44}
+              height={40}
               marginTop={3}
               onPress={activeScreen ? props.onpress : props.servicing_press}
             />
