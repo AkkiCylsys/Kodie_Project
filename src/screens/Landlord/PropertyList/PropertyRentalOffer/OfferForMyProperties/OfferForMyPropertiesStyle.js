@@ -92,6 +92,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   cityText: {
+    flex:1,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,

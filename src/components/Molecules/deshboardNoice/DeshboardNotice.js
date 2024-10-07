@@ -153,7 +153,7 @@ const DeshboardNotice = props => {
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>
             <Text style={DeshBoardNoticeCss.trialText}>
-              Your free trial ends in {profileDay} 30 days.
+              Your free trial ends in {profileDay || "0"} days.
             </Text>
             {props.ShowUpgradeButton ? (
               <TouchableOpacity

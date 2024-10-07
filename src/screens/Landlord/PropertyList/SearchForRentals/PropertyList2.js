@@ -552,17 +552,23 @@ const PropertyList2 = props => {
               styleTextDropdown={[
                 PropertyList2Css.textDropdown,
                 {
-                  paddingHorizontal: proteryTypeValue.length > 0 ? 10 : 5,
+                  paddingHorizontal:
+                    proteryTypeValue && proteryTypeValue.length > 0 ? 10 : 5,
                 },
               ]}
               styleDropdownMenu={[
                 PropertyList2Css.dropdownMenu,
                 {
-                  paddingHorizontal: proteryTypeValue.length > 0 ? 10 : 5,
+                  paddingHorizontal:
+                    proteryTypeValue && proteryTypeValue.length > 0 ? 10 : 5,
                 },
               ]}
               submitButtonColor={_COLORS.Kodie_GreenColor}
-              submitButtonText={proteryTypeValue.length > 0 ? 'Done' : 'Cancel'}
+              submitButtonText={
+                proteryTypeValue && proteryTypeValue.length > 0
+                  ? 'Done'
+                  : 'Cancel'
+              }
             />
 
             {proteryTypeValueError ? (

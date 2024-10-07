@@ -94,18 +94,43 @@ export default PropertyImages = props => {
   };
   // setImagePaths(imagePath);
   // alert(imagePaths);
+  // const openVideoPicker = () => {
+  //   ImagePicker.openPicker({
+  //     mediaType: 'video',
+  //     multiple: true,
+  //   })
+  //     .then(videos => {
+  //       setSelectedVideos([...selectedVideos, ...videos]);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error selecting videos:', error);
+  //     });
+  // };
+
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: true,
+      multiple: true, // Allow multiple selection
     })
       .then(videos => {
-        setSelectedVideos([...selectedVideos, ...videos]);
+        const maxSize = 100 * 1024 * 1024; // 100 MB
+        const validVideos = videos.filter(video => video.size <= maxSize);
+  
+        if (validVideos.length > 0) {
+          setSelectedVideos(prevSelectedVideos => [
+            ...prevSelectedVideos,
+            ...validVideos,
+          ]);
+          console.log('Selected videos:', validVideos);
+        } else {
+          Alert.alert("Warning",'Video size exceeds the limit of 100 MB.');
+        }
       })
       .catch(error => {
         console.error('Error selecting videos:', error);
       });
   };
+  
   const handleSaveUpdateImage = async () => {
     refRBSheet.current.close();
     const formData = new FormData();

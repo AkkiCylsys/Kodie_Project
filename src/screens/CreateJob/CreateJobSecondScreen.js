@@ -234,6 +234,25 @@ const CreateJobSecondScreen = props => {
     updatedVideos.splice(indexToRemove, 1);
     setSelectedVideos(updatedVideos);
   };
+  // const openVideoPicker = () => {
+  //   ImagePicker.openPicker({
+  //     mediaType: 'video',
+  //     multiple: false, // Disable multiple selection
+  //   })
+  //     .then(video => {
+  //       if (video) {
+  //         setSelectedVideos([video]); // Set only one video
+  //         console.log('Video selected:', video);
+  //       } else {
+  //         console.log('No video selected.');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error selecting video:', error);
+  //     });
+  // };
+
+
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
@@ -241,8 +260,14 @@ const CreateJobSecondScreen = props => {
     })
       .then(video => {
         if (video) {
-          setSelectedVideos([video]); // Set only one video
-          console.log('Video selected:', video);
+          // Check if the video size is less than or equal to 100 MB (100 * 1024 * 1024 bytes)
+          const maxSize = 100 * 1024 * 1024; // 100 MB
+          if (video.size <= maxSize) {
+            setSelectedVideos([video]); // Set only one video
+            console.log('Video selected:', video);
+          } else {
+            Alert.alert("Warning",'Video size exceeds the limit of 100 MB.');
+          }
         } else {
           console.log('No video selected.');
         }
@@ -251,7 +276,7 @@ const CreateJobSecondScreen = props => {
         console.error('Error selecting video:', error);
       });
   };
-
+  
   console.log('selectedVideos .....', selectedVideos);
 
 
@@ -616,7 +641,7 @@ const CreateJobSecondScreen = props => {
           ? response?.data?.error
           : 'Unknown error occurred';
         console.error('uploadJobFilesData', errorMessage);
-        alert('There was an error. Please try again.');
+        // alert('There was an error. Please try again.');
       }
     } catch (error) {
       // alert(error.message || 'An error occurred');
