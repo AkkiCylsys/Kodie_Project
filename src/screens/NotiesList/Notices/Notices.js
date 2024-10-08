@@ -33,6 +33,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {Calendar} from 'react-native-calendars'; //calender
 import {debounce} from 'lodash';
+import { log } from 'react-native-reanimated';
 const HorizontalData = [
   {filtername: 'All', filterId: 'All'},
   {filtername: 'General', filterId: '367'},
@@ -281,7 +282,8 @@ const Notices = props => {
   };
 
   const noticeRenderData = ({item, index}) => {
-    const lineImageSource = item?.id === 11 || item?.id === 9 || item?.id === 13  ? IMAGES.greenLine : item?.id === 10 ? IMAGES?.blueLine: IMAGES.redLine;
+    console.log(item?.type_notice_id);
+    const lineImageSource = item?.type_notice_id == "366" || item?.type_notice_id == "367" || item?.type_notice_id == "370"  ? IMAGES.greenLine : item?.type_notice_id == "368" ? IMAGES?.blueLine: IMAGES.redLine;
 
     return (
       <View style={NoticesStyle.mainContainer} key={item?.id}>

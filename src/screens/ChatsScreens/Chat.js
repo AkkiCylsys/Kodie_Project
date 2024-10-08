@@ -165,66 +165,78 @@ const Chat = props => {
   const onSend = async (messageArray) => {
     const msg = messageArray[0];
     const { text, image } = msg;
-
+  
     // Create a message object with default values
-    let message = {
+    const message = {
       _id: uuid.v4(),
       text: text || '', // Ensure text is a string
       createdAt: new Date(),
       user: {
-        _id: loginData.Login_details.user_id || '', // Ensure user_id is a string
-        avatar: loginData.Login_details.profile_photo_path || '', // Ensure avatar is a string
+        _id: loginData?.Login_details?.user_id || '', // Safely access user_id
+        avatar: loginData?.Login_details?.profile_photo_path || '', // Safely access avatar
       },
       image: image || null, // Set to null if image is undefined
-      pending: true, // Mark as pending
-      sent: false,
-      seen: false, // Mark as not sent yet
+      pending: true, // Mark as pending (for UI)
+      sent: false,  // Initially set as not sent
+      seen: false,  // Mark as unseen
     };
-
-    // Append the message to the message list
-    setMessageList((previousMessages) =>
-      GiftedChat.append(previousMessages, message),
-    );
-
-    const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
-
+  
+    // Append the message to the local message list immediately (pending state)
+    setMessageList((previousMessages) => GiftedChat.append(previousMessages, message));
+  
+    const docid = createDocId(loginData?.Login_details?.user_id, route.params.userid);
+  
     try {
       const docRef = firestore().collection('chatrooms').doc(docid);
-
-      // Check if the chatroom exists, create if not
+  
+      // Check if the chatroom exists; if not, create it
       const doc = await docRef.get();
       if (!doc.exists) {
         await docRef.set({
-          // Initial data for the chatroom if it doesn't exist
+          // You can add initial data for the chatroom here if needed
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          lastMessage: message.text,
+          lastMessageAt: firestore.FieldValue.serverTimestamp(),
         });
       }
-
-      try {
-        // Prepare the message data for Firestore
-        const messageData = {
-          _id: message._id, // Include all required fields
-          text: message.text,
-          createdAt: firestore.FieldValue.serverTimestamp(), // Use server timestamp
-          user: {
-            _id: message.user._id,
-            avatar: message.user.avatar,
-          },
-          image: message.image,
-          pending: false, // Mark as sent
-          sent: true,
-        };
-
-        // Log the message data before adding to Firestore
-        console.log('Adding message data to Firestore:', messageData);
-
-        // Add message to Firestore
-        await docRef.collection('messages').add(messageData);
-        console.log('Message added to Firestore:', message);
-      } catch (error) {
-        console.error('Error adding message to Firestore:', error);
-      }
+  
+      // Prepare the message data for Firestore
+      const messageData = {
+        _id: message._id,
+        text: message.text,
+        createdAt: firestore.FieldValue.serverTimestamp(), // Use server timestamp
+        user: {
+          _id: message.user._id,
+          avatar: message.user.avatar,
+        },
+        image: message.image,
+        pending: false, // Set pending to false once added to Firestore
+        sent: true,    // Mark as sent
+        seen: false,   // Unseen by the recipient
+      };
+  
+      console.log('Adding message data to Firestore:', messageData);
+  
+      // Add message to Firestore
+      await docRef.collection('messages').add(messageData);
+  
+      // Update the message list after the Firestore operation completes
+      setMessageList((previousMessages) =>
+        previousMessages.map((m) =>
+          m._id === message._id ? { ...m, pending: false, sent: true } : m
+        )
+      );
+  
+      console.log('Message successfully added to Firestore:', message);
     } catch (error) {
-      console.error('Error accessing Firestore:', error);
+      console.error('Error accessing Firestore or sending message:', error);
+  
+      // Optionally, you can update the message to show an error state or allow a retry
+      setMessageList((previousMessages) =>
+        previousMessages.map((m) =>
+          m._id === message._id ? { ...m, error: true } : m
+        )
+      );
     }
   };
 
