@@ -40,7 +40,9 @@ const SignUp = props => {
   const [Fcm_token, setFcm_token] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [googleSignIn, setGoogleSignIn] = useState([]);
-  const deviceId = DeviceInfo.getDeviceId();
+  
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
   // const deviceType = DeviceInfo.getDeviceType();
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId,deviceType,'signup');

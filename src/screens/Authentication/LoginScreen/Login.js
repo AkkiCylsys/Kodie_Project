@@ -70,7 +70,9 @@ export default Login = props => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(false);
-  const deviceId = DeviceInfo.getDeviceId();
+  
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
   // const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
   const [googleSignIn, setGoogleSignIn] = useState([]);
@@ -636,9 +638,10 @@ export default Login = props => {
         }
       })
       .catch(error => {
+        console.log(error,'dfgsdgdfsdfdsf');
         if (error?.response || error?.response?.status === 400) {
           // alert('Failed to send OTP via email. Please try again later.');
-          alert(error?.response?.data.message)
+          Alert.alert('Warning ',error?.response?.data.message)
         } else {
         }
         console.error('sendotp error:', error);

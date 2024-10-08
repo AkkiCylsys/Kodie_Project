@@ -76,8 +76,11 @@ const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   return iconConfig;
 };
 export default FirstProperty = props => {
-  const deviceId = DeviceInfo.getDeviceId();
-  const deviceType = DeviceInfo.getDeviceType();
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
+  // const deviceType = DeviceInfo.getDeviceType();
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
+
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
