@@ -6,6 +6,7 @@ export const BedroomCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Container: {
+    flex:1,
     marginHorizontal: 16,
     // marginVertical: 16,
   },

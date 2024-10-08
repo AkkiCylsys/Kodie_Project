@@ -1,5 +1,5 @@
 // Screen 2,3,4,5,6
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   BackHandler,
@@ -47,6 +47,7 @@ import { loginApiActionCreator, googleLoginApi, googlesocial_loginApi } from '..
 import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
+import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
 export default Login = props => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -73,6 +74,18 @@ export default Login = props => {
   // const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
   const [googleSignIn, setGoogleSignIn] = useState([]);
+  const [isScreenFocused, setIsScreenFocused] = useState(false);
+
+  // Use useFocusEffect to detect screen focus
+  useFocusEffect(
+    useCallback(() => {
+      setIsScreenFocused(true); // Set focus state to true when the screen is focused
+      return () => setIsScreenFocused(false); // Set it back to false when the screen is unfocused
+    }, [])
+  );
+
+  const { isConnected, isInternetReachable } = useNetworkStatus(isScreenFocused);
+
   // Login with google here ......
   useEffect(() => {
     handlemessage();
@@ -84,7 +97,6 @@ export default Login = props => {
           iosClientId:
           '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
           offlineAccess: false,
-     
         });
       
     };
@@ -486,6 +498,10 @@ export default Login = props => {
   const handleSubmit = async () => {
     const encryptedPassword = await encryptPassword(newpassword, secretKey);
     const trimmedEmail = email.trim();
+    if (!isConnected || !isInternetReachable) {
+      Alert.alert('No Internet Connection', 'Please check your internet connection and try again.');
+      return; 
+    }
     if (email.trim() === '') {
       setEmailError('Email is required!');
     } else if (!validateEmail(email)) {
@@ -856,9 +872,10 @@ export default Login = props => {
               </TouchableOpacity>
               <View style={{ flex: 0.9 }} />
             </View>
+           
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={handleSubmit}
+              onPress={isConnected ? handleSubmit: null}
               _ButtonText={'Login'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               marginTop={20}

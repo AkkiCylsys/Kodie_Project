@@ -355,12 +355,14 @@ const Bedroom = props => {
           </View>
           <DividerIcon marginTop={5} />
           {isEditing ? (
+            <View style={{flex:1}}>
              <DragList
              data={editGetItem}
              keyExtractor={keyExtractor}
              onReordered={onReordered}
              renderItem={ListItem}
            />
+           </View>
             // <FlatList
             //   data={editGetItem}
             //   scrollEnabled
@@ -395,7 +397,7 @@ const Bedroom = props => {
                   onPress={() => setIsEditing(!isEditing)}
                   disabled={isLoading ? true : false}
                   width={'20%'}
-                  marginHorizontal={10}
+                  marginHorizontal={20}
                 />
                 <CustomSingleButton
                   _ButtonText={'Done'}
@@ -405,8 +407,8 @@ const Bedroom = props => {
       setIsEditing(!isEditing)
                   }}
                   disabled={isLoading ? true : false}
-                  width={'20%'}
-                  height={'50%'}
+                  width={'25%'}
+                  height={'70%'}
                 />
               </View>
             </>
