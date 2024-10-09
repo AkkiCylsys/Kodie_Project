@@ -49,6 +49,8 @@ import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
 import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
+import axiosInstance from '../../../services/axiosInstance';
+import { confirmPasswordServices, sendVerificationService, verifyOtpServices } from '../../../services/Authentication/ForgotPasswordServices';
 export default Login = props => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -97,11 +99,11 @@ export default Login = props => {
       GoogleSignin.configure({
         webClientId:
           '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
-          iosClientId:
+        iosClientId:
           '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
-          offlineAccess: false,
-        });
-      
+        offlineAccess: false,
+      });
+
     };
     configureGoogleSignIn();
   }, []);
@@ -195,7 +197,7 @@ export default Login = props => {
               device_os_type: deviceType,
               fcm_token: Fcm_token,
             }
-  
+
             let _socialloginres = await dispatch(googlesocial_loginApi(googleSignInPayload))
             if (_socialloginres?.data?.success === 'true') {
               props.navigation.navigate('DrawerNavigatorLeftMenu');
@@ -205,13 +207,13 @@ export default Login = props => {
           } catch (error) {
             setIsLoading(false)
             alert(error)
-            
+
           }
 
-          
+
         }
-        else if(_res?.data?.code == 2){
-          
+        else if (_res?.data?.code == 2) {
+
           Alert.alert('Account suspension', _res?.data?.message, [
             {
               text: 'Cancel',
@@ -220,7 +222,7 @@ export default Login = props => {
             },
             {
               text: 'Activate account',
-              onPress: async() => {
+              onPress: async () => {
                 console.log('activate account');
                 //handleActivateAccount();
                 const url = Config.BASE_URL;
@@ -230,7 +232,7 @@ export default Login = props => {
                 const activateAccount_Data = {
                   email: _userInfo?.user?.email,
                 };
-                console.log(activateAccount_Data,'fdf')
+                console.log(activateAccount_Data, 'fdf')
                 await axios
                   .post(activateAccount, activateAccount_Data)
                   .then(response => {
@@ -260,12 +262,12 @@ export default Login = props => {
 
       }
       else {
-        
+
         setIsLoading(false)
         alert(_res?.data?.message)
       }
     } catch (error) {
-     
+
       setIsLoading(false)
       console.log(error)
     }
@@ -421,13 +423,13 @@ export default Login = props => {
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === '') {
       setNewPasswordError('Please enter a new password!');
-    }else if (newpassword.length < 8) {
+    } else if (newpassword.length < 8) {
       setNewPasswordError('Oh no. The password must be at least 8 characters long!');
     } else if (confirmPassword.trim() === '') {
       setConfirmPasswordError('Please enter the confirmation password!');
-    }  else if (newpassword !== confirmPassword) {
+    } else if (newpassword !== confirmPassword) {
       setConfirmPasswordError('Password do not match!');
-    }else if (confirmPassword.length < 8) {
+    } else if (confirmPassword.length < 8) {
       setConfirmPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setConfirmPasswordError('');
@@ -488,7 +490,7 @@ export default Login = props => {
       setConfirmPasswordError('Please enter a confirmation password!');
     } else if (newpassword !== text) {
       setConfirmPasswordError('Password do not match!');
-    }else if (text.length < 8) {
+    } else if (text.length < 8) {
       setConfirmPasswordError('Oh no. The password must be at least 8 characters long!');
     } else {
       setConfirmPasswordError(''); // Clear the error message
@@ -497,13 +499,13 @@ export default Login = props => {
 
   //... inner reset password submit button variable define here
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId,deviceType,'login');
+  console.log(deviceId, deviceType, 'login');
   const handleSubmit = async () => {
     const encryptedPassword = await encryptPassword(newpassword, secretKey);
     const trimmedEmail = email.trim();
     if (!isConnected || !isInternetReachable) {
       Alert.alert('No Internet Connection', 'Please check your internet connection and try again.');
-      return; 
+      return;
     }
     if (email.trim() === '') {
       setEmailError('Email is required!');
@@ -598,35 +600,37 @@ export default Login = props => {
   };
 
   //send_verification_code Api code here....
-  const send_verification_code = () => {
+  const send_verification_code = async () => {
+
+
     const url = Config.BASE_URL;
     // const verification_code_url = url + "user_reset_password_email_verify";
     const trimmedEmail = resetEmail.trim();
 
     // const url = "https://e3.cylsys.com/api/v1/SendOTP";
-    const verification_code_url = url + 'SendOTP_Forget_password';
-    console.log('Request URL:', verification_code_url);
+    // const verification_code_url = url + 'SendOTP_Forget_password';
+    // console.log('Request URL:', verification_code_url);
+
     setIsLoading(true);
-    axios
-      .post(verification_code_url, {
-        email: trimmedEmail,
-        device_id: deviceId,
-        device_os_type: deviceType
-      })
+
+    const sendVerificationPayload = {
+      email: trimmedEmail,
+      device_id: deviceId,
+      device_os_type: deviceType
+    }
+
+    sendVerificationService(sendVerificationPayload)
       .then(response => {
-        console.log('API Response send otp:', response?.data);
-        // if (response?.data?.status === true)
-        if (response?.data?.code === 22) {
+        console.log('API Response send otp:', response);
+
+        // Check if the response code indicates success
+        if (response?.code === 22) {
           if (isClick === 1) {
-          alert(
-            'OTP resent successfully.',
-             );
-            }else{
-              alert(
-                'OTP sent successfully.',
-                 );
-            }
-          
+            Alert.alert("Success", 'OTP resent successfully.');
+          } else {
+            Alert.alert("Success", 'OTP sent successfully.');
+          }
+
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
@@ -635,55 +639,64 @@ export default Login = props => {
             setIsClick(isClick + 1);
           }
         } else {
-          alert(response?.data?.message);
+          // Handle error case from response, if applicable
+          alert(response?.message);
         }
       })
       .catch(error => {
-        console.log(error,'dfgsdgdfsdfdsf');
-        if (error?.response || error?.response?.status === 400) {
-          // alert('Failed to send OTP via email. Please try again later.');
-          Alert.alert('Warning ',error?.response?.data.message)
+        // Alert the error message from the service
+        Alert.alert("Warning", error.message); // Display the error message from the service
+        console.log("error in send ...", error);
+
+        // Additional error handling based on status code
+        if (error?.response?.status === 500) {
+          Alert.alert("Warning", 'Failed to send OTP via email. Please try again later.');
         } else {
+          console.log("error in send verification:", error);
         }
+
         console.error('sendotp error:', error);
         setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
       });
+
   };
 
   //verify_otp Api code here.....
   const verify_Otp = () => {
-    const url = Config.BASE_URL;
-    const verify_Otp_url = url + 'verifyotp';
+    // const url = Config.BASE_URL;
+    // const verify_Otp_url = url + 'verifyotp';
     const trimmedEmail = resetEmail.trim();
 
-    console.log('Request URL:', verify_Otp_url);
+    // console.log('Request URL:', verify_Otp_url);
+
+    const verifyOtpPayload = {
+      email: trimmedEmail,
+      otp: verificationcode,
+      device_id: deviceId,
+      device_os_type: deviceType
+    }
     setIsLoading(true);
-    axios
-      .post(verify_Otp_url, {
-        email: trimmedEmail,
-        otp: verificationcode,
-        device_id: deviceId,
-        device_os_type: deviceType
-      })
+
+    verifyOtpServices(verifyOtpPayload)
       .then(response => {
         console.log('API Response verify otp:', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success", response?.data?.message);
           setIsClick(isClick + 1);
-       
+
         } else if (verificationcode.length < 6) {
           setVerificationcodeError(
             'Verification code must be at least 6 digits!',
           )
-    
+
         } else {
           setVerificationcodeError(
             'The Verification Code You’ve Entered is Incorrect. Please Try Again!',
           );
-         
+
         }
       })
       .catch(error => {
@@ -734,29 +747,31 @@ export default Login = props => {
     try {
       const encryptedPassword = await encryptPassword(newpassword, secretKey);
       console.log('encryptedPassword', encryptedPassword);
-      const url = Config.BASE_URL;
-      const create_password_url = url + 'forgetpassword';
-      console.log('Request URL:', create_password_url);
+      // const url = Config.BASE_URL;
+      // const create_password_url = url + 'forgetpassword';
+      // console.log('Request URL:', create_password_url);
       const trimmedEmail = resetEmail.trim();
 
-      setIsLoading(true);
-      const response = await axios.post(create_password_url, {
+      const confirmPassWordPayload = {
         email: trimmedEmail,
         password: encryptedPassword,
-      });
+      }
+      setIsLoading(true);
+      const response = await confirmPasswordServices(confirmPassWordPayload)
+      console.log("response in confirm password ", response)
       if (response?.data?.success === true) {
 
         if (
           response?.data?.code == 21
         ) {
-          alert(response?.data?.message);
+          Alert.alert("Warning", response?.data?.message);
         } else {
           openSheetWithHeight(450)
-          alert(response?.data?.message);
+          Alert.alert("Success", response?.data?.message);
           setIsClick(isClick + 1);
         }
       } else {
-        alert('Password not created.');
+        Alert.alert("Warning", 'Password not created.');
       }
     } catch (error) {
       console.error('API failed create_password', error);
@@ -905,10 +920,10 @@ export default Login = props => {
               </TouchableOpacity>
               <View style={{ flex: 0.9 }} />
             </View>
-           
+
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={isConnected ? handleSubmit: null}
+              onPress={isConnected ? handleSubmit : null}
               _ButtonText={'Login'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               marginTop={20}
@@ -1066,7 +1081,7 @@ export default Login = props => {
                   placeholderTextColor="#999"
                   editable={false}
                   keyboardType={'email-address'}
-                textContentType='oneTimeCode'
+                  textContentType='oneTimeCode'
 
                 />
               </View>
@@ -1096,15 +1111,15 @@ export default Login = props => {
                 </View>
                 <View style={LoginStyles.codeMargin} />
 
-                <TouchableOpacity 
-                onPress={()=>{
-                  if (!isTimeron) {
-                    setIsTimeron(true);
-                  send_verification_code();
-                  }
-                }} 
-                style={LoginStyles.getButtonView}
-              disabled={isTimeron} // Disable the button when the timer is active
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!isTimeron) {
+                      setIsTimeron(true);
+                      send_verification_code();
+                    }
+                  }}
+                  style={LoginStyles.getButtonView}
+                  disabled={isTimeron} // Disable the button when the timer is active
 
                 >
                   {isTimeron ? (
@@ -1116,7 +1131,7 @@ export default Login = props => {
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
                         setIsTimeron(false); // Reset timer state
-            return [false]; // Stop the timer
+                        return [false]; // Stop the timer
                       }}>
                       {({ remainingTime }) => (
                         <Text style={{ color: _COLORS.Kodie_WhiteColor, fontSize: 14, fontFamily: FONTFAMILY.K_Bold }}>
@@ -1125,13 +1140,13 @@ export default Login = props => {
                       )}
                     </CountdownCircleTimer>
                   ) : (
-                    <TouchableOpacity onPress={()=>{
+                    <TouchableOpacity onPress={() => {
                       if (!isTimeron) {
                         setIsTimeron(true);
-                      send_verification_code();
+                        send_verification_code();
                       }
                     }}
-                    disabled={isTimeron}>
+                      disabled={isTimeron}>
                       <Text style={LoginStyles.getButton}>{'Resend'}</Text>
                     </TouchableOpacity>
                   )}
