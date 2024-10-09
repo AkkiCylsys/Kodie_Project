@@ -7,21 +7,22 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
-import {DeleteAccountStyle} from './DeleteAccountStyle';
+import React, { useState, useRef, useEffect } from 'react';
+import { DeleteAccountStyle } from './DeleteAccountStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import {_COLORS, IMAGES, LABEL_STYLES, FONTFAMILY} from '../../../Themes';
-import {_goBack} from '../../../services/CommonServices';
-import {Config} from '../../../Config';
+import { _COLORS, IMAGES, LABEL_STYLES, FONTFAMILY } from '../../../Themes';
+import { _goBack } from '../../../services/CommonServices';
+import { Config } from '../../../Config';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useSelector } from 'react-redux';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { accountDetailsServices } from '../../../services/AccoundDetailsServices/AccountDetailsServices';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
@@ -101,7 +102,7 @@ const DeleteAccount = props => {
     console.log('url...', deleteAccount_url);
     setIsLoading(true);
     await axios
-      .delete(deleteAccount_url, {data: dataToSend})
+      .delete(deleteAccount_url, { data: dataToSend })
       .then(res => {
         console.log('res delete Account......', res);
         if (res?.data?.success === true) {
@@ -126,33 +127,33 @@ const DeleteAccount = props => {
       await getPersonalDetails();
     }
   };
+  
   const getPersonalDetails = async () => {
-    setIsLoading(true);
-    const url = Config.BASE_URL;
-    const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
-    console.log('PersonalDetails_url..', apiUrl);
-    await axios
-      .get(apiUrl)
-      .then(response => {
-        // console.log('API Response:', response?.data?.data[0]);
-        if (
-          response?.data?.data &&
-          Array.isArray(response?.data?.data) &&
-          response?.data?.data?.length > 0
-        ) {
-          setAccountDetails(response?.data?.data[0]);
-          setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);
-        } else {
-          console.error('Invalid response data format:', response?.data);
-        }
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('API Error PersonalDetails contact:', error);
-        setIsLoading(false);
-      });
+    setIsLoading(true);  // Start loading state
+
+    try {
+      const response = await accountDetailsServices(loginData);  // Pass loginData from the current scope
+
+      console.log('API Response: in delete page', response?.data?.data[0]);
+
+      if (
+        response?.data?.data &&
+        Array.isArray(response?.data?.data) &&
+        response?.data?.data?.length > 0
+      ) {
+        setAccountDetails(response?.data?.data[0]);  // Set account details
+        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);  // Set phone number
+      } else {
+        console.error('Invalid response data format:', response?.data);  // Log invalid format
+      }
+    } catch (error) {
+      console.error('API Error PersonalDetails contact:', error);  // Handle errors
+    } finally {
+      setIsLoading(false);  // Stop loading state
+    }
   };
+
+
   return (
     <SafeAreaView style={DeleteAccountStyle.container}>
       <KeyboardAvoidingView
@@ -232,11 +233,10 @@ const DeleteAccount = props => {
               <TextInput
                 style={[
                   DeleteAccountStyle.input,
-                  {backgroundColor: _COLORS.Kodie_GrayColor},
+                  { backgroundColor: _COLORS.Kodie_GrayColor },
                 ]}
-                value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
-                  phoneNumber || ''
-                }`}
+                value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${phoneNumber || ''
+                  }`}
                 editable={false}
               />
             </View>
@@ -271,7 +271,7 @@ const DeleteAccount = props => {
               }}
             />
           </View>
-          <View style={{marginBottom: 110}}></View>
+          <View style={{ marginBottom: 110 }}></View>
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </KeyboardAvoidingView>

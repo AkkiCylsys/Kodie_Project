@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,26 +9,27 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
+import { CreateJobFirstStyle } from './CreateJobFirstScreenCss';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
-import {_COLORS, LABEL_STYLES, IMAGES} from '../../Themes/index';
+import { _COLORS, LABEL_STYLES, IMAGES } from '../../Themes/index';
 import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {Dropdown} from 'react-native-element-dropdown';
+import { _goBack } from '../../services/CommonServices';
+import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import ServicesBox from '../../components/Molecules/ServicesBox/ServicesBox';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Config} from '../../Config';
+import { Config } from '../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
 import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
-import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useSelector} from 'react-redux';
+import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import { SignupLookupDetails } from '../../APIs/AllApi';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
@@ -131,7 +132,7 @@ export default CreateJobFirstScreen = props => {
       }
     }, [JobId, saveJobId])
   );
-  console.log("saveJobId...",saveJobId)
+  console.log("saveJobId...", saveJobId)
   useEffect(() => {
     if (selectJobType !== null) {
       handleServices(selectJobType);
@@ -196,7 +197,7 @@ export default CreateJobFirstScreen = props => {
     setSelectJobTypeid(lookup_key);
     setSelectJobTypeidError();
   };
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -250,23 +251,23 @@ export default CreateJobFirstScreen = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Terms'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Terms'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -298,7 +299,7 @@ export default CreateJobFirstScreen = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
-      jm_job_id:saveJobId ? saveJobId : JobId,
+      jm_job_id: saveJobId ? saveJobId : JobId,
     };
     axios
       .post(jobDetails_url, jobDetails_Data)
@@ -444,7 +445,7 @@ export default CreateJobFirstScreen = props => {
   const updateCreateJob = () => {
     console.log('update job ');
     const url = Config.BASE_URL;
-    const update_createJob_url = url + `job/updateJob/${saveJobId ? saveJobId :JobId}`;
+    const update_createJob_url = url + `job/updateJob/${saveJobId ? saveJobId : JobId}`;
     console.log('Request URL update:', update_createJob_url);
     setIsLoading(true);
     const update_createJob_Data = {
@@ -477,7 +478,7 @@ export default CreateJobFirstScreen = props => {
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           props.navigation.navigate('CreateJobTermsScreen', {
-            JobId:saveJobId ? saveJobId: JobId,
+            JobId: saveJobId ? saveJobId : JobId,
             editMode: editMode,
             selectJobType: selectJobTypeid,
             servicesValue: servicesValue,
@@ -509,7 +510,7 @@ export default CreateJobFirstScreen = props => {
     const isSelected = selectedAddress?.property_id === item.property_id;
 
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobFirstStyle.itemView,
@@ -540,7 +541,7 @@ export default CreateJobFirstScreen = props => {
 
   const jobPriority_render = item => {
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobFirstStyle.itemView,
@@ -573,7 +574,7 @@ export default CreateJobFirstScreen = props => {
   };
   const property_Type_render = item => {
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobFirstStyle.itemView,
@@ -607,7 +608,7 @@ export default CreateJobFirstScreen = props => {
   const lookingServices_render = item => {
     setArrowIcon;
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobFirstStyle.itemView,
@@ -640,7 +641,7 @@ export default CreateJobFirstScreen = props => {
   };
   const ratingThreshold_render = item => {
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobFirstStyle.itemView,
@@ -677,9 +678,9 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  const jobType_render = ({item}) => {
+  const jobType_render = ({ item }) => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ServicesBox
           images
           Services_Name={item.lookup_description}
@@ -687,23 +688,23 @@ export default CreateJobFirstScreen = props => {
             item?.lookup_key === 166
               ? 'cleaning-services'
               : item?.lookup_key === 167
-              ? 'mower-bag'
-              : item?.lookup_key === 168
-              ? 'forklift'
-              : item?.lookup_key === 169
-              ? 'tools'
-              : 'MaterialIcons'
+                ? 'mower-bag'
+                : item?.lookup_key === 168
+                  ? 'forklift'
+                  : item?.lookup_key === 169
+                    ? 'tools'
+                    : 'MaterialIcons'
           }
           iconLibrary={
             item?.lookup_key === 166
               ? 'MaterialIcons'
               : item?.lookup_key === 167
-              ? 'MaterialCommunityIcons'
-              : item?.lookup_key === 168
-              ? 'MaterialCommunityIcons'
-              : item?.lookup_key === 169
-              ? 'Entypo'
-              : 'MaterialIcons'
+                ? 'MaterialCommunityIcons'
+                : item?.lookup_key === 168
+                  ? 'MaterialCommunityIcons'
+                  : item?.lookup_key === 169
+                    ? 'Entypo'
+                    : 'MaterialIcons'
           }
           iconColor={
             isClick === item?.lookup_key
@@ -720,8 +721,8 @@ export default CreateJobFirstScreen = props => {
               borderColor: selectJobTypeidError
                 ? _COLORS?.Kodie_redColor
                 : isClick === item?.lookup_key
-                ? _COLORS?.Kodie_GreenColor
-                : _COLORS.Kodie_GrayColor,
+                  ? _COLORS?.Kodie_GreenColor
+                  : _COLORS.Kodie_GrayColor,
             },
           ]}
           textColor={[
@@ -767,92 +768,80 @@ export default CreateJobFirstScreen = props => {
         setIsLoading(false);
       });
   };
-  const handleJob_priority = () => {
-    const propertyData = {
-      P_PARENT_CODE: 'JOB_PRIORITY',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then(response => {
-        // console.log('Job_priority', response?.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          // console.log('Job_priorityData....', response?.data?.lookup_details);
-          setJobPriorityData(response?.data?.lookup_details);
-        } else {
-          console.error('Job_priority_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Job_priority error:', error);
-        setIsLoading(false);
+
+  const handleJob_priority = async () => {
+    setIsLoading(true); // Start loading state
+
+    try {
+      const response = await SignupLookupDetails({
+        P_PARENT_CODE: 'JOB_PRIORITY',
+        P_TYPE: 'OPTION',
       });
+
+      console.log('Job Priority...', response); // Log the response
+
+      // Check the response status
+      if (response?.status === true) {
+        setJobPriorityData(response?.lookup_details); // Set the job priority data
+        console.log('JobPriorityData....', response?.lookup_details);
+      } else {
+        console.error('JobPriority_error:', response?.error); // Log error if status is not true
+      }
+    } catch (error) {
+      console.error('Job_priority error:', error); // Log any errors that occur during the API call
+    } finally {
+      setIsLoading(false); // Stop loading state
+    }
   };
-  const handleRatingThreshold = () => {
-    const propertyData = {
-      P_PARENT_CODE: 'RATING_THRESHOLD',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then(response => {
-        // console.log('RatingThreshold...', response?.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          // console.log(
-          //   'RatingThresholdData....',
-          //   response?.data?.lookup_details,
-          // );
-          setRatingThresholdData(response?.data?.lookup_details);
-        } else {
-          console.error(
-            'RatingThreshold_error:',
-            'Oops something went wrong! Please try again later.',
-          );
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('RatingThreshold error:', error);
-        setIsLoading(false);
+
+  const handleRatingThreshold = async () => {
+    setIsLoading(true); // Start loading state
+
+    try {
+      const response = await SignupLookupDetails({
+        P_PARENT_CODE: 'RATING_THRESHOLD',
+        P_TYPE: 'OPTION',
       });
+
+      console.log('RatingThreshold...', response); // Log the response
+
+      // Check the response status
+      if (response?.status === true) {
+        setRatingThresholdData(response?.lookup_details); // Set the rating threshold data
+        console.log('RatingThresholdData....', response?.lookup_details);
+      } else {
+        console.error('RatingThreshold_error:', response?.error); // Log error if status is not true
+      }
+    } catch (error) {
+      console.error('RatingThreshold error:', error); // Log any errors that occur during the API call
+    } finally {
+      setIsLoading(false); // Stop loading state
+    }
   };
-  const handleJobType = () => {
-    const propertyData = {
-      P_PARENT_CODE: 'JOB_TYPE',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then(response => {
-        // console.log('JobType...', response?.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          // console.log('JobTypeData....', response?.data?.lookup_details);
-          setJobTypeData(response?.data?.lookup_details);
-        } else {
-          console.error('JobType_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('JobType error:', error);
-        setIsLoading(false);
+
+  const handleJobType = async () => {
+    setIsLoading(true); // Start loading state
+
+    try {
+      const response = await SignupLookupDetails({
+        P_PARENT_CODE: 'JOB_TYPE',
+        P_TYPE: 'OPTION',
       });
+
+      console.log('JobType data...', response); // Log the response
+
+      // Check the response status
+      if (response?.status === true) {
+        setJobTypeData(response?.lookup_details); // Set the job type data
+        console.log('JobTypeData....', response?.lookup_details);
+      } else {
+        console.error('JobType_error:', response?.error); // Log error if status is not true
+      }
+    } catch (error) {
+      console.error('JobType error:', error); // Log any errors that occur during the API call
+    } finally {
+      setIsLoading(false); // Stop loading state
+    }
   };
 
   const handleServices = selectJobType => {
@@ -944,21 +933,21 @@ export default CreateJobFirstScreen = props => {
           IsMap
             ? setIsMap(false)
             : IsSearch
-            ? setIsSearch(false)
-            : ReviewInspection
-            ? _goBack(props)
-            : goBack();
+              ? setIsSearch(false)
+              : ReviewInspection
+                ? _goBack(props)
+                : goBack();
         }}
         MiddleText={
           IsMap || IsSearch
             ? 'Location'
             : editMode
-            ? 'Edit job'
-            : 'Create new job request'
+              ? 'Edit job'
+              : 'Create new job request'
         }
       />
       {IsMap || IsSearch ? null : (
-        <View style={{marginVertical: 10}}>
+        <View style={{ marginVertical: 10 }}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={0}
@@ -982,7 +971,7 @@ export default CreateJobFirstScreen = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
+            iscancel={() => setIsMap(false)}
 
             onRegionChange={onRegionChange}
             Maplat={latitude}
@@ -1016,7 +1005,7 @@ export default CreateJobFirstScreen = props => {
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
           </TouchableOpacity>
         </View>
       ) : IsSearch ? (
@@ -1036,10 +1025,10 @@ export default CreateJobFirstScreen = props => {
             <Text style={CreateJobFirstStyle.heading}>{'Job details'}</Text>
             <Text style={CreateJobFirstStyle.servicestext}>
               {'Select the type of job you need:'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
             </Text>
           </View>
-          <View style={{marginHorizontal: 6}}>
+          <View style={{ marginHorizontal: 6 }}>
             <FlatList
               data={jobTypeData}
               keyExtractor={item => item.lookup_key.toString()}
@@ -1053,10 +1042,10 @@ export default CreateJobFirstScreen = props => {
             ) : null}
           </View>
           <View style={CreateJobFirstStyle.formContainer}>
-            <View style={{flex: 1}}>
-              <Text style={[LABEL_STYLES.commontext, {marginTop: 6}]}>
+            <View style={{ flex: 1 }}>
+              <Text style={[LABEL_STYLES.commontext, { marginTop: 6 }]}>
                 {'What service are you looking for?'}
-                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <Dropdown
                 style={[
@@ -1109,10 +1098,10 @@ export default CreateJobFirstScreen = props => {
                 textAlignVertical={'top'}
               />
             </View>
-            <View style={{marginTop: 12}}>
+            <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Job priority:'}
-                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <Dropdown
                 style={[
@@ -1179,10 +1168,10 @@ export default CreateJobFirstScreen = props => {
                 {'Property type is required!'}
               </Text>
             ) : null} */}
-            <View style={{marginTop: 12}}>
+            <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Where is the job taking place?'}
-                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <Dropdown
                 style={[
@@ -1252,12 +1241,12 @@ export default CreateJobFirstScreen = props => {
               </Text>
             ) : null}
             {selectedAddress?.propertyType ? (
-              <View style={{marginTop: 12}}>
+              <View style={{ marginTop: 12 }}>
                 <Text style={LABEL_STYLES.commontext}>{'Property type:'}</Text>
                 <TextInput
                   style={[
                     CreateJobFirstStyle.input,
-                    {backgroundColor: _COLORS?.Kodie_GrayColor},
+                    { backgroundColor: _COLORS?.Kodie_GrayColor },
                   ]}
                   value={selectedAddress?.propertyType}
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -1296,7 +1285,7 @@ export default CreateJobFirstScreen = props => {
                 renderItem={ratingThreshold_render}
               />
             </View>
-            <View style={{marginTop: 27, marginBottom: 5}}>
+            <View style={{ marginTop: 27, marginBottom: 5 }}>
               <CustomSingleButton
                 disabled={isLoading ? true : false}
                 onPress={() => {

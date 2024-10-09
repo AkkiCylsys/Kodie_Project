@@ -9,13 +9,14 @@ import {
   fetchLogout,
 } from './AuthenticationApiAction';
 import { Config } from '../../../Config';
+import axiosInstance from '../../../services/axiosInstance';
 
 const url = Config.BASE_URL;
 
 export const loginApiActionCreator = data => async dispatch => {
   dispatch(fetchLoginData());
   try {
-    const res = await axios.post(`${url}/login`, data, {
+    const res = await axiosInstance.post(`${url}/login`, data, {
       headers: {
         'Content-Type': 'application/json',
       },

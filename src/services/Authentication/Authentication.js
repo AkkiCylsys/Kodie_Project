@@ -1,6 +1,7 @@
 import axios from 'axios';
 import CryptoJS from 'react-native-crypto-js';
 import { Config } from '../../Config';
+import axiosInstance from '../axiosInstance';
 
 const secretKey = 'XkhZG4fW2t2W';
 
@@ -21,7 +22,7 @@ export const encryptPassword = (password) => {
 export const signup = (data) => {
   const base_url = Config.BASE_URL;
   const url = `${base_url}register`;
-console.log(url);
+  console.log(url);
   return new Promise((resolve, reject) => {
     axios.post(url, data)
       .then(response => {
@@ -126,3 +127,29 @@ export const SignupVerification = (data) => {
       });
   });
 };
+
+export const userLogin = (data) => {
+  // axiosInstance.get('/user/profile')
+  //   .then((response) => {
+  //     console.log('Profile Data:', response.data);
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error fetching profile data:', error);
+  //   });
+
+  const postData = {
+    username: 'exampleUser',
+    password: 'examplePassword',
+  };
+
+  axiosInstance.post('/user/login', data)
+    .then((response) => {
+      console.log('Login Response Data:', response.data);
+    })
+    .catch((error) => {
+      console.error('Error during login API call:', error);
+    });
+}
+
+
+
