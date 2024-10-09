@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Config } from "../../Config";
+import axiosInstance from "../axiosInstance";
 
 export const acceptingLandlord = async (acceptingLandlordData) => {
   try {
@@ -7,7 +8,7 @@ export const acceptingLandlord = async (acceptingLandlordData) => {
     const acceptingLandlordUrl = `${url}accepting_landlord`;
     console.log('acceptingLandlordUrl:', acceptingLandlordUrl);
 
-    const response = await axios.post(acceptingLandlordUrl, acceptingLandlordData, {
+    const response = await axiosInstance.post(acceptingLandlordUrl, acceptingLandlordData, {
       headers: {
         'Content-Type': 'application/json',
       },

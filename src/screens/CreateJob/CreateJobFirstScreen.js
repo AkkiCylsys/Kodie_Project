@@ -30,6 +30,7 @@ import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoad
 import { useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { SignupLookupDetails } from '../../APIs/AllApi';
+import { createJobServices, getAddressTypeServices, getJobDetailServices, updateJobServices } from '../../services/JobModuleServices/JobModuleServices';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
@@ -295,14 +296,10 @@ export default CreateJobFirstScreen = props => {
   // EditMode ..................
   const getJobDetails = () => {
     const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
-    setIsLoading(true);
     const jobDetails_Data = {
       jm_job_id: saveJobId ? saveJobId : JobId,
     };
-    axios
-      .post(jobDetails_url, jobDetails_Data)
+    getJobDetailServices(jobDetails_Data)
       .then(response => {
         // console.log('API Response JobDetails:', response?.data);
         if (response?.data?.success === true) {
@@ -375,9 +372,6 @@ export default CreateJobFirstScreen = props => {
   };
   // createJOb method...
   const handleCreateJob = () => {
-    const url = Config.BASE_URL;
-    const createJob_url = url + 'job/create';
-    console.log('Request URL:', createJob_url);
     setIsLoading(true);
     const createJob_Data = {
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -402,8 +396,7 @@ export default CreateJobFirstScreen = props => {
       job_sub_type: myJob == 'requested' ? 1 : 0,
     };
     console.log('createJob_Data....', createJob_Data);
-    axios
-      .post(createJob_url, createJob_Data)
+    createJobServices(createJob_Data)
       .then(response => {
         console.log('API Response jobCreate..:', response?.data);
         if (response?.data?.success === true) {
@@ -444,9 +437,7 @@ export default CreateJobFirstScreen = props => {
 
   const updateCreateJob = () => {
     console.log('update job ');
-    const url = Config.BASE_URL;
-    const update_createJob_url = url + `job/updateJob/${saveJobId ? saveJobId : JobId}`;
-    console.log('Request URL update:', update_createJob_url);
+    const jobIdToUpdate = saveJobId ? saveJobId : JobId;
     setIsLoading(true);
     const update_createJob_Data = {
       type_of_job: selectJobTypeid,
@@ -471,8 +462,7 @@ export default CreateJobFirstScreen = props => {
       job_booking_insurance: null,
     };
     console.log('updatedBody.....', update_createJob_Data);
-    axios
-      .put(update_createJob_url, update_createJob_Data)
+    updateJobServices(jobIdToUpdate, update_createJob_Data)
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
@@ -747,11 +737,8 @@ export default CreateJobFirstScreen = props => {
     const Selected_Address = {
       account_id: loginData?.Login_details?.user_account_id,
     };
-    const url = Config.BASE_URL;
-    const Selected_AddressType = url + 'get_property_details_my_acc_id';
     setIsLoading(true);
-    axios
-      .post(Selected_AddressType, Selected_Address)
+    getAddressTypeServices(Selected_Address)
       .then(response => {
         // console.log('Selected_Address', response?.data);
         if (response?.data?.success === true) {

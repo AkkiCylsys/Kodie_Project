@@ -21,6 +21,7 @@ import moment from 'moment/moment';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import { getJobDetailServices } from '../../../services/JobModuleServices/JobModuleServices';
 const Reviewjobdetails1 = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
@@ -46,16 +47,12 @@ const Reviewjobdetails1 = props => {
     }
   }, [JobId]);
   const getJobDetails = () => {
-    const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
       // jm_job_id: F_job_id || SearchJobId,
       jm_job_id: JobId,
     };
-    axios
-      .post(jobDetails_url, jobDetailsData)
+    getJobDetailServices(jobDetailsData)
       .then(response => {
         console.log('API Response JobDetails:', response?.data);
         if (response.data.success === true) {

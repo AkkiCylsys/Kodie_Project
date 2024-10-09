@@ -1,5 +1,6 @@
 import {Config} from '../../Config';
 import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 export const PropertyViewApplicationService =
   async propertyViewApplicationData => {
@@ -11,7 +12,7 @@ export const PropertyViewApplicationService =
         'PropertyViewApplication url ...',
         PropertyViewApplicationUrl,
       );
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         PropertyViewApplicationUrl,
         propertyViewApplicationData,
       );
@@ -31,7 +32,7 @@ export const QuestionDetailsForTenantQues = async TenantQuestPayload => {
       'QuestionDetailsForTenantQues Url ...',
       QuestionDetailsForTenantQuesUrl,
     );
-    const response = await axios.post(
+    const response = await axiosInstance.post(
       QuestionDetailsForTenantQuesUrl,
       TenantQuestPayload,
     );
@@ -48,7 +49,7 @@ export const saveLandLordAcceptingService =
       const url = Config.BASE_URL;
       const savelandAccDeatils = url + 'save_landlord_accepting_details';
       console.log('savelandAccDeatils Url ...', savelandAccDeatils);
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         savelandAccDeatils,
         saveAcceptingDetailsPayload,
       );
@@ -69,7 +70,7 @@ export const UpdateLandLordAcceptingService =
         'UpdateLandLordAcceptingService Url ...',
         UpdateLandLordAcceptingurl,
       );
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         UpdateLandLordAcceptingurl,
         updateAcceptingDetailsPayload,
       );
@@ -86,7 +87,7 @@ export const UpdateLandLordAcceptingService =
       const url = Config.BASE_URL;
       const getLandlordDetailsByAcceptingIdUrl = url + 'get_landlord_details_by_accepting_id';
       console.log('getLandlordDetailsByAcceptingIdUrl ...', getLandlordDetailsByAcceptingIdUrl);
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         getLandlordDetailsByAcceptingIdUrl,
         getLandlordDetailsByAcceptingIdPayload,
       );

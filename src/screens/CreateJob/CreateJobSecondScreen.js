@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,12 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-import {CreateJobSecondStyle} from './CreateJobSecondScreenCss';
-import {_COLORS, LABEL_STYLES, BANNERS} from '../../Themes/index';
+import { CreateJobSecondStyle } from './CreateJobSecondScreenCss';
+import { _COLORS, LABEL_STYLES, BANNERS } from '../../Themes/index';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
 import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {SliderBox} from 'react-native-image-slider-box';
+import { _goBack } from '../../services/CommonServices';
+import { SliderBox } from 'react-native-image-slider-box';
 import UploadImageBoxes from '../../components/Molecules/UploadImageBoxes/UploadImageBoxes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -26,11 +26,12 @@ import Video from 'react-native-video';
 import ImagePicker from 'react-native-image-crop-picker';
 import UploadLeftImage from '../../components/Molecules/UploadImage/UploadLeftImage';
 import UploadRightImage from '../../components/Molecules/UploadImage/UploadRightImage';
-import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useDispatch, useSelector} from 'react-redux';
-import {Config} from '../../Config';
+import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useDispatch, useSelector } from 'react-redux';
+import { Config } from '../../Config';
 import axios from 'axios';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import { getJobDetailServices, updateJobImagesServices, uploadJobImagesServices } from '../../services/JobModuleServices/JobModuleServices';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 const CreateJobSecondScreen = props => {
   const videoRef = useRef(null);
@@ -134,7 +135,7 @@ const CreateJobSecondScreen = props => {
     refRBSheet2.current.close();
     console.log('close');
   };
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
@@ -188,24 +189,24 @@ const CreateJobSecondScreen = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Terms'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Terms'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -266,7 +267,7 @@ const CreateJobSecondScreen = props => {
             setSelectedVideos([video]); // Set only one video
             console.log('Video selected:', video);
           } else {
-            Alert.alert("Warning",'Video size exceeds the limit of 100 MB.');
+            Alert.alert("Warning", 'Video size exceeds the limit of 100 MB.');
           }
         } else {
           console.log('No video selected.');
@@ -276,7 +277,7 @@ const CreateJobSecondScreen = props => {
         console.error('Error selecting video:', error);
       });
   };
-  
+
   console.log('selectedVideos .....', selectedVideos);
 
 
@@ -287,19 +288,19 @@ const CreateJobSecondScreen = props => {
 
   const handlefrontImage = multipleImages => {
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-  
+
     // Find if any image exceeds the 5 MB size limit
     const oversizedImage = multipleImages.find(image => image.size > MAX_FILE_SIZE);
-  
+
     if (oversizedImage) {
       Alert.alert('The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
-  
+
     // Check the total number of images after the new selection
     const newTotalImages = MultiImageName.length + multipleImages.length;
-  
+
     if (newTotalImages > 4) {
       Alert.alert(
         'Maximum Image Limit Exceeded',
@@ -316,7 +317,7 @@ const CreateJobSecondScreen = props => {
       );
     }
   };
-  
+
 
 
   // const handleleftImage = leftImages => {
@@ -326,19 +327,19 @@ const CreateJobSecondScreen = props => {
 
   const handleleftImage = leftImages => {
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-  
+
     // Find if any image exceeds the 5 MB size limit
     const oversizedImage = leftImages.find(image => image.size > MAX_FILE_SIZE);
-  
+
     if (oversizedImage) {
       Alert.alert('The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
-  
+
     // Check the total number of images after the new selection
     const newTotalImages = leftImage.length + leftImages.length;
-  
+
     if (newTotalImages > 4) {
       Alert.alert(
         'Maximum Image Limit Exceeded',
@@ -355,7 +356,7 @@ const CreateJobSecondScreen = props => {
       );
     }
   };
-  
+
 
   // const handleRightImage = rightImages => {
   //   setRightImage([...rightImage, ...rightImages]);
@@ -364,19 +365,19 @@ const CreateJobSecondScreen = props => {
 
   const handleRightImage = rightImages => {
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-  
+
     // Find if any image exceeds the 5 MB size limit
     const oversizedImage = rightImages.find(image => image.size > MAX_FILE_SIZE);
-  
+
     if (oversizedImage) {
       Alert.alert('The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
-  
+
     // Check the total number of images after the new selection
     const newTotalImages = rightImage.length + rightImages.length;
-  
+
     if (newTotalImages > 4) {
       Alert.alert(
         'Maximum Image Limit Exceeded',
@@ -393,7 +394,7 @@ const CreateJobSecondScreen = props => {
       );
     }
   };
-  
+
 
   const imagePaths = MultiImageName.map(item => item.path);
   const leftImagePaths = leftImage.map(item => item.path);
@@ -404,15 +405,11 @@ const CreateJobSecondScreen = props => {
   ];
   // Api intrigation......
   const getJobDetails = () => {
-    const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
       jm_job_id: JobId,
     };
-    axios
-      .post(jobDetails_url, jobDetails_Data)
+    getJobDetailServices(jobDetails_Data)
       .then(response => {
         console.log('API Response JobDetails for updateImage:', response?.data);
         if (response?.data?.success === true) {
@@ -489,7 +486,7 @@ const CreateJobSecondScreen = props => {
     }
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
-        const {path, mime} = videoInfo;
+        const { path, mime } = videoInfo;
         const videoName = path.substring(path.lastIndexOf('/') + 1);
         formData.append(`video`, {
           uri: path,
@@ -504,17 +501,14 @@ const CreateJobSecondScreen = props => {
     // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
     console.log('formData', formData);
     console.log('length data ...', formData.length);
-    const url = Config.BASE_URL;
-    const update_uploadFile_url =
-      url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
-    console.log('Request URL image:', update_uploadFile_url);
+    // const url = Config.BASE_URL;
+    // const update_uploadFile_url =
+    //   url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
+    // console.log('Request URL image:', update_uploadFile_url);
+    const jobIdToUpdateImage = JobId > 0 ? JobId : job_id
     setIsLoading(true);
     try {
-      const response = await axios.put(update_uploadFile_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await updateJobImagesServices(jobIdToUpdateImage, formData);
       console.log('update_uploadJobFilesData....', response?.data);
       if (response?.data?.success === true) {
         setIsLoading(false);
@@ -599,7 +593,7 @@ const CreateJobSecondScreen = props => {
       // Append videos
       if (selectedVideos && selectedVideos.length > 0) {
         selectedVideos.forEach((videoInfo, index) => {
-          const {path, mime} = videoInfo;
+          const { path, mime } = videoInfo;
           const videoName = path.substring(path.lastIndexOf('/') + 1);
           formData.append(`video`, {
             uri: path,
@@ -616,11 +610,7 @@ const CreateJobSecondScreen = props => {
       console.log('Request URL:', uploadFile_url);
 
       setIsLoading(true);
-      const response = await axios.post(uploadFile_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await uploadJobImagesServices(formData);
 
       console.log('uploadJobFilesData', response?.data);
       if (response?.data && response?.data?.success === true) {
@@ -658,7 +648,7 @@ const CreateJobSecondScreen = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />
-      <View style={{marginVertical: 10}}>
+      <View style={{ marginVertical: 10 }}>
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={2}
@@ -675,10 +665,10 @@ const CreateJobSecondScreen = props => {
           </Text>
           <View style={CreateJobSecondStyle.slider_view}>
             {(imagePaths && imagePaths.length > 0) ||
-            (leftImagePaths && leftImagePaths.length > 0) ||
-            (rightImagePaths && rightImagePaths.length > 0) ||
-            editMode ||
-            (updateAllImage && updateAllImage.length > 0) ? (
+              (leftImagePaths && leftImagePaths.length > 0) ||
+              (rightImagePaths && rightImagePaths.length > 0) ||
+              editMode ||
+              (updateAllImage && updateAllImage.length > 0) ? (
               <SliderBox
                 images={
                   editMode || (updateAllImage && updateAllImage.length > 0)
@@ -718,7 +708,7 @@ const CreateJobSecondScreen = props => {
             />
           </View>
 
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <UploadImageBoxes
               Box_Text={'Add Photo'}
               onPress={() => {
@@ -743,7 +733,7 @@ const CreateJobSecondScreen = props => {
               color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <UploadImageBoxes
               Box_Text={'Add Photo'}
               onPress={() => {
@@ -762,7 +752,7 @@ const CreateJobSecondScreen = props => {
               color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <UploadImageBoxes
               Box_Text={'Add Photo'}
               onPress={() => {
@@ -790,16 +780,16 @@ const CreateJobSecondScreen = props => {
             }}
           />
           {selectedVideos.length > 0 && (
-            <View style={{marginTop: 10}}>
+            <View style={{ marginTop: 10 }}>
               <FlatList
                 horizontal
                 data={selectedVideos}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item, index}) => (
+                renderItem={({ item, index }) => (
                   <View>
                     <Video
                       ref={videoRef}
-                      source={{uri: item.path}}
+                      source={{ uri: item.path }}
                       style={{
                         flex: 1,
                         width: 325,

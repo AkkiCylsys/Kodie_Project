@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   Alert,
   Keyboard,
 } from 'react-native';
-import {_COLORS, LABEL_STYLES} from '../../../../Themes';
-import {RepairCss} from './RepairCss';
-import {_goBack} from '../../../../services/CommonServices/index';
+import { _COLORS, LABEL_STYLES } from '../../../../Themes';
+import { RepairCss } from './RepairCss';
+import { _goBack } from '../../../../services/CommonServices/index';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
@@ -18,17 +18,18 @@ import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ArchiveJob from '../../../../components/Molecules/Archive/ArchiveJob/ArchiveJob';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
-import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
-import {ArchiveJobStyle} from '../../../../components/Molecules/Archive/ArchiveJob/ArchiveJobStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { ArchiveJobStyle } from '../../../../components/Molecules/Archive/ArchiveJob/ArchiveJobStyle';
 import BottomModalData from '../../../../components/Molecules/BottomModal/BottomModalData';
 import BottomJobModal from '../../../../components/Molecules/BottomModal/BottomJobModal';
 import Modal from 'react-native-modal';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {color} from 'react-native-reanimated';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { color } from 'react-native-reanimated';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import { getJobDeleteServices, getJobListFilterRequestServices, getJobListFilterServices } from '../../../../services/JobModuleServices/JobModuleServices';
 const HorizontalData = ['All', 'Scheduled', 'Pending', 'Complete - Paid'];
 export default Repair = props => {
   const isvisible = useIsFocused();
@@ -72,7 +73,7 @@ export default Repair = props => {
         text_Size={14}
         backgroundColor={_COLORS.Kodie_lightGreenColor}
         height={45}
-        onPress={() => {}}
+        onPress={() => { }}
         disabled={isLoading ? true : false}
       />
     );
@@ -141,10 +142,10 @@ export default Repair = props => {
       setSearchQuery(query);
       const filtered = query
         ? JobData.filter(
-            item =>
-              item.service_looking &&
-              item.service_looking.toLowerCase().includes(query.toLowerCase()),
-          )
+          item =>
+            item.service_looking &&
+            item.service_looking.toLowerCase().includes(query.toLowerCase()),
+        )
         : JobData;
       console.log('filtered job.........', filtered);
       setFilteredRequestpropertyData(filtered);
@@ -152,10 +153,10 @@ export default Repair = props => {
       setSearchQuery(query);
       const filtered = query
         ? servicingJobData.filter(
-            item =>
-              item.service_looking &&
-              item.service_looking.toLowerCase().includes(query.toLowerCase()),
-          )
+          item =>
+            item.service_looking &&
+            item.service_looking.toLowerCase().includes(query.toLowerCase()),
+        )
         : servicingJobData;
       console.log('filtered job.........', filtered);
       setFilteredServicingpropertyData(filtered);
@@ -167,70 +168,77 @@ export default Repair = props => {
     setIsDeleteBottomSheetVisible(false);
   };
   // job i have requested...
-  const getJobDetailsByFilter = async filter => {
-    setIsLoading(true);
-    // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
+  const getJobDetailsByFilter = async (filter = 'Recent') => {
+    setIsLoading(true);  // Start loading
     try {
-      const url = Config.BASE_URL;
-      const filter_apiUrl = url + 'job/getJobbyFilter';
-      console.log('filter_apiUrl...', filter_apiUrl);
-      const response = await axios.post(filter_apiUrl, {
+      // Build the request payload
+      const jobDetailsRequestPayload = {
         job_filter: filter,
-        user_account_id: loginData?.Login_details?.user_account_id,
+        user_account_id: loginData?.Login_details?.user_account_id ?? '', // Ensure fallback value if undefined
         page_no: 1,
-        limit: filter == 'Recent' ? 5 : 10,
+        limit: filter === 'Recent' ? 5 : 10,  // Dynamic limit based on filter type
         order_col: '8',
         order_wise: 'DESC',
-      });
+      };
 
-      setJobData(response?.data?.job_details);
-      // console.log('listJobdata', response?.data?.job_details);
-      // setJob_sub_type(response?.data?.job_details.job_sub_type);
-      console.log('Job_sub_type....', response?.data?.job_details.job_sub_type);
-      setIsLoading(false);
-    } catch (error) {
-      if (error.response && error.response.status === 500) {
-        // alert(error.response.message);
-        setIsLoading(false);
+      // Call API service with payload
+      const response = await getJobListFilterRequestServices(jobDetailsRequestPayload);
+
+      // Check if data exists and set it
+      if (response?.data?.job_details) {
+        setJobData(response.data.job_details);
+        console.log('Job data in requested:', response.data.job_details);
+
+        // Optional: Access specific nested data safely
+        if (response?.data?.job_details?.job_sub_type) {
+          console.log('Job sub type:', response.data.job_details.job_sub_type);
+        }
       } else {
-        setIsLoading(false);
+        console.warn('No job details found.');
       }
-      console.error('API Error JobDetailsByFilter:', error);
-      setIsLoading(false);
+    } catch (error) {
+      // Handle specific errors like 500, and other types of errors
+      if (error.response && error.response.status === 500) {
+        console.error('Server error:', error.response.message || 'Internal Server Error');
+      } else {
+        console.error('Error in fetching job details:', error.message || 'Unknown error occurred');
+      }
+    } finally {
+      setIsLoading(false);  // Stop loading in both success and failure cases
     }
   };
+
   // job i have servicing...
-  const getJobDetails_Filter_Service = async filter => {
+  const getJobDetails_Filter_Service = async (filter = 'Recent') => {
     setIsLoading(true);
+
     try {
-      const url = Config.BASE_URL;
-      const Filter_Service_url = url + 'job/getJobbyFilter_Service';
-      console.log('Filter_Service_url...', Filter_Service_url);
-      const response = await axios.post(Filter_Service_url, {
+      const jobServicingPayload = {
         job_filter: filter,
-        user_account_id: loginData?.Login_details?.user_account_id,
+        user_account_id: loginData?.Login_details?.user_account_id ?? '', // Ensure fallback value
         page_no: 1,
-        limit: filter == 'Recent' ? 5 : 10,
+        limit: filter === 'Recent' ? 5 : 10,
         order_col: '8',
         order_wise: 'DESC',
-      });
-      // console.log('response.. job by filter ser....', response?.data);
-      setServicingJobData(response?.data?.job_details);
-      console.log(
-        'listJobdata for servicing.....',
-        response?.data?.job_details,
-      );
-      setIsLoading(false);
+      };
+
+      const response = await getJobListFilterServices(jobServicingPayload);
+
+      // Set the data only if it's available
+      if (response?.data?.job_details) {
+        setServicingJobData(response.data.job_details);
+        console.log('Job data for servicing:', response.data.job_details);
+      } else {
+        console.warn('No job details found');
+      }
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        // alert(error.response.message);
-        setIsLoading(false);
+        console.error('Server error: ', error.response.message);
       } else {
-        // alert('An error occurred. Please try again later.');
-        setIsLoading(false);
+        console.error('API error: ', error.message || 'Unknown error occurred');
       }
-      console.error('API Error JobDetails_Filter_Service:', error);
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false); // Ensures the loading state is turned off in both success and failure cases
     }
   };
   useEffect(() => {
@@ -247,39 +255,43 @@ export default Repair = props => {
     setActiveScreen(
       myJob_Type == 1 || job_sub_type_req == 1
         ? //  ||
-          // hasTenantRole ||
-          // hasLandlordRole
+        // hasTenantRole ||
+        // hasLandlordRole
 
-          true
+        true
         : false,
     );
   }, []);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
   };
-  const FinalDeleteProperty = async () => {
-    setIsLoading(true);
+  const FinalDeleteJob = async () => {
+    setIsLoading(true);  // Start loading
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
-    const url = Config.BASE_URL;
-    const jobdelete = url + `job/deletejob/${JobId}`;
-    console.log('jobdelete', jobdelete);
-    try {
-      const response = await axios.delete(jobdelete);
 
-      // console.log('API Response:', response.data);
-      if (response?.data?.success === true) {
-        Alert.alert('Job Deleted', response?.data?.message);
-        getJobDetailsByFilter(selectedFilter);
-        getJobDetails_Filter_Service(selectedFilter);
-        setIsLoading(false);
+    try {
+      // Call the API service to delete the job
+      const response = await getJobDeleteServices(JobId);
+
+      // Check if the deletion was successful
+      if (response?.data?.success) {
+        Alert.alert('Job Deleted', response.data.message);
+
+        // Refresh job details after deletion
+        await getJobDetailsByFilter(selectedFilter);
+        await getJobDetails_Filter_Service(selectedFilter);
+      } else {
+        console.warn('Job deletion failed:', response?.data?.message);
       }
     } catch (error) {
-      console.error('API Error DeleteProperty :', error);
-      setIsLoading(false);
+      console.error('API Error in FinalDeleteJob:', error.message || error);
+      Alert.alert('Error', 'An error occurred while trying to delete the job.');
+    } finally {
+      setIsLoading(false);  // Stop loading in all cases (success or error)
     }
   };
-  const horizontal_render = ({item}) => {
+  const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
         style={[
@@ -315,7 +327,7 @@ export default Repair = props => {
         <Text
           style={[
             RepairCss.item_style,
-            {color: selectedFilter === item ? 'white' : 'gray'},
+            { color: selectedFilter === item ? 'white' : 'gray' },
           ]}>
           {item}
         </Text>
@@ -330,7 +342,7 @@ export default Repair = props => {
     );
   };
   <ArchiveJob />;
-  const propertyData_render1 = ({item}) => {
+  const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
     setJob_sub_type(item.job_sub_type);
     // console.log("job type servicing and request .....", item.job_sub_type);
@@ -360,7 +372,7 @@ export default Repair = props => {
                       backgroundColor: _COLORS.Kodie_minLiteGrayColor,
                     },
                   ]}>
-                  <View style={{alignSelf: 'center'}}>
+                  <View style={{ alignSelf: 'center' }}>
                     <Entypo
                       name="dot-single"
                       size={23}
@@ -383,12 +395,12 @@ export default Repair = props => {
                     setJobId(item.job_id);
                     setAddress(`Ref #${item?.job_reference}`);
                   }}
-                  style={{alignSelf: 'center'}}>
+                  style={{ alignSelf: 'center' }}>
                   <Entypo
                     name={'dots-three-horizontal'}
                     size={20}
                     color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                    style={{marginLeft: 15, alignSelf: 'center'}}
+                    style={{ marginLeft: 15, alignSelf: 'center' }}
                   />
                 </TouchableOpacity>
               </View>
@@ -399,14 +411,14 @@ export default Repair = props => {
                       <Text
                         style={[
                           RepairCss.tom,
-                          {color: _COLORS?.Kodie_MediumGrayColor},
+                          { color: _COLORS?.Kodie_MediumGrayColor },
                         ]}>{`${item.first_name} ${item.last_name}`}</Text>
                       <View style={RepairCss.locationView}>
                         <MaterialCommunityIcons
                           name={'map-marker'}
                           size={16}
                           color={_COLORS.Kodie_MediumGrayColor}
-                          style={{alignSelf: 'center', marginTop: 3}}
+                          style={{ alignSelf: 'center', marginTop: 3 }}
                         />
                         <Text
                           style={RepairCss.locationText}
@@ -435,7 +447,7 @@ export default Repair = props => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        <View style={{marginHorizontal: 16, marginVertical: 15}}>
+        <View style={{ marginHorizontal: 16, marginVertical: 15 }}>
           {/* <View style={RepairCss.BtnView}>{renderRowButtons()}</View> */}
           <RowButtons
             LeftButtonText={'Jobs I am servicing'}
@@ -567,7 +579,7 @@ export default Repair = props => {
           style={[
             RepairCss.modalContent,
             // {height: isDeleteData_Clicked ? '30%' : '40%'},
-            {height: isDeleteData_Clicked ? '30%' : '33%'},
+            { height: isDeleteData_Clicked ? '30%' : '33%' },
           ]}>
           <TouchableOpacity
             style={RepairCss.closeButton}
@@ -580,7 +592,7 @@ export default Repair = props => {
             onDelete={jobDelete}
             onCloseModal={handleCloseModal}
             isDeletePropertyClicked={isDeleteData_Clicked}
-            onDeleteData={FinalDeleteProperty}
+            onDeleteData={FinalDeleteJob}
             Address={Address}
             onClose={CloseUp}
             // job_sub_type_serv={1}
