@@ -38,6 +38,7 @@ import {Config} from '../../Config';
 import axios from 'axios';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
 import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import { setToken } from '../../services/TokenManagments';
 
 const IncomeData = [
   {
@@ -93,6 +94,7 @@ export default Dashboard = props => {
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
+
   // console.log('signUp_account_response.....', signUp_account_response);
   const singup_Data = signUp_account_response;
   const [isOverlayVisible, setOverlayVisible] = useState(false);
@@ -135,6 +137,9 @@ export default Dashboard = props => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, [navigation, isvisible]);
+  const token = loginData?.Login_details?.token; // Get this from your login process
+    const deviceId = loginData?.Login_details?.device_id; // Get this from device information
+    const deviceType =loginData?.Login_details?.device_os_type;
   const fetchData = async () => {
     if (
       loginData?.Login_details?.user_id ||
@@ -143,6 +148,9 @@ export default Dashboard = props => {
       await getPersonalDetails();
       await handleprofileCompletion();
       await check_subscription();
+      
+    // Save token, device ID, and device type
+    await setToken(token, deviceId, deviceType);
     }
   };
 

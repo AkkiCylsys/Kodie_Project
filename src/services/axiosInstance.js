@@ -9,22 +9,28 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
-    async (config) => {
-        // Retrieve the token from secure storage (e.g., AsyncStorage, SecureStore)
-        const token = await getToken(); // You need to implement getToken()
-
-        // If token exists, add it to the request headers
+    async(config) => {
+        // Add headers dynamically
+        const { token, deviceId, deviceType } = await getToken();
+       console.log(token,'token', deviceId, deviceType);
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+          config.headers['Authorization'] = `Bearer ${token}`;
         }
-
-        // alert("instance..")
+        if (deviceId) {
+          config.headers['uli-device-id'] = deviceId;
+        }
+        if (deviceType) {
+          config.headers['uli-device-os-type'] = deviceType;
+        }
+    
+        // Track request time
+        config.metadata = { startTime: new Date() };
         return config;
-    },
-    (error) => {
-        // Handle the request error
+      },
+      error => {
         return Promise.reject(error);
-    }
+      }
+    
 );
 
 // Add a response interceptor (for handling token expiration, etc.)

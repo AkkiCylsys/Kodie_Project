@@ -36,6 +36,7 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 import DeviceInfo from 'react-native-device-info';
+import { SavePropertyDetailSevices, getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const addPropertySecondStepData = useSelector(
@@ -72,29 +73,18 @@ export default PropertyDetails = props => {
   console.log(deviceId,deviceType,'propperty');
   const loginData = useSelector(state => state.authenticationReducer.data);
   useEffect(() => {
-    // Avoid updating state if addressComponents are undefined or haven't changed
     if (!addressComponents) return;
-  
-    // Function to get address component based on type
     function getAddressComponent(addressComponents, type) {
       return addressComponents.find(component => component.types.includes(type))?.long_name || '';
     }
-  
-    // Extract the city, state, and country at once
     const selected_city = getAddressComponent(addressComponents, 'locality');
     const selected_state = getAddressComponent(addressComponents, 'administrative_area_level_1');
     const selected_country = getAddressComponent(addressComponents, 'country');
-  
-    // Only update if values have changed to avoid unnecessary re-renders
     setCity(selected_city);
     setState(selected_state);
     setCountry(selected_country);
   
   }, [addressComponents]);
-
-  console.log(`selected_city: ${city}`);
-  console.log(`Selected_State: ${state}`);
-  console.log(`selected_Country: ${country}`);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
@@ -124,21 +114,13 @@ export default PropertyDetails = props => {
   useFocusEffect(
     React.useCallback(() => {
       if (savePropertyId || propertyid) {
-        DetailsData(); // Fetch property details when the screen is focused
+        DetailsData(); 
       }
-    }, [savePropertyId]),
+    }, [savePropertyId,propertyid]),
   );
 
   useEffect(() => {
     handleProperty_Type();
-
-    // propertyid > 0 ||
-    // (Array.isArray(addPropertySecondStepData) &&
-    //   addPropertySecondStepData.length > 0) ||
-    // typeof addPropertySecondStepData === 'number'
-    //   ? DetailsData()
-    //   : null;
-
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -147,54 +129,29 @@ export default PropertyDetails = props => {
     setPropertyDesc('');
   }, [propertyid, addPropertySecondStepData]);
   const DetailsData = async () => {
-    const detailData = {
-      property_id: savePropertyId ? savePropertyId : propertyid,
-    };
-    console.log('detailData', detailData);
-    const url = Config.BASE_URL;
-    const property_Detailss = url + 'get_property_details';
-    console.log('Request URL:', property_Detailss);
     setIsLoading(true);
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
-      'uli-device-id': deviceId, 
-      'uli-device-os-type': deviceType, 
-    };
     try {
-      const response = await axios.post(property_Detailss, detailData,{headers});
-      console.log('propertyDetail', response?.data);
-
-      if (response?.data?.success === true) {
-        setIsLoading(false);
-        setProperty_Details(response?.data?.property_details[0]);
-        setLocation(response?.data?.property_details[0]?.location);
-        setlongitude(response?.data?.property_details[0]?.longitude);
-        setlatitude(response?.data?.property_details[0]?.latitude);
-        setProperty_value(
-          parseInt(response?.data?.property_details[0]?.property_type_id),
-        );
-        setCity(response?.data?.property_details[0]?.city);
-        setCountry(response?.data?.property_details[0]?.country);
-        setState(response?.data?.property_details[0]?.state);
-        setPropertyDesc(
-          response?.data?.property_details[0]?.property_description,
-        );
-
-        console.log('propertyDetail....', response?.data?.property_details);
-      } else {
-        console.error('propertyDetail_error:', response?.data?.error);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error(
-        'property_type error in get data:',
-        error?.response?.data?.message,
-      );
+      const details = await getPropertyDetailSevice(savePropertyId || propertyid);
+      console.log(details,"detailis");
+      setProperty_Details(details);
+      setLocation(details?.location);
+      setlongitude(details?.longitude);
+      setlatitude(details?.latitude);
+      setProperty_value(parseInt(details?.property_type_id));
+      setCity(details?.city);
+      setCountry(details?.country);
+      setState(details?.state);
+      setPropertyDesc(details?.property_description);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    } finally {
       setIsLoading(false);
     }
   };
-  console.log(property_Detail, 'property_Detail?.key_features');
-  const updatePropertyDetails = () => {
+    console.log(property_Detail, 'property_Detail?.key_features');
+  const updatePropertyDetails = async() => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -216,21 +173,9 @@ export default PropertyDetails = props => {
       p_country: country,
     };
     console.log('updateData', updateData);
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
-      'uli-device-id': deviceId, 
-      'uli-device-os-type': deviceType, 
-    };
-    const url = Config.BASE_URL;
-    const update_property_details = url + 'update_property_details';
-    console.log('Request URL:', update_property_details);
-    setIsLoading(true);
-    console.log('updated data in edit mode cgheck...', updateData);
-    axios
-      .put(update_property_details, updateData,{headers})
-      .then(response => {
-        console.log('update_property_details', response?.data);
-        if (response?.data?.success === true) {
+ const response = await updatePropertyDetailSevices(updateData)
+ console.log(response,'updateProperty');
+        if (response?.success === true) {
           setIsLoading(false);
           props.navigation.navigate('PropertyFeature', {
             location: location,
@@ -249,46 +194,7 @@ export default PropertyDetails = props => {
           console.error('update_property_detailserror:', response?.data?.error);
           setIsLoading(false);
         }
-      })
-      .catch(error => {
-        console.error('update_property_details error:', error);
-        setIsLoading(false);
-      });
-  };
-  const getLocation = () => {
-    // Geolocation.getCurrentPosition(position => {
-    //   console.log('you are here.');
-    //   const {latitude, longitude} = position.coords;
-    //   console.log('position.coords in map components....', position.coords);
-    //   // setlatitude(latitude);
-    //   setLat(latitude);
-    //   setLong(longitude);
-    //   setIsLoading(false);
-    //   // setlongitude(longitude);
-    //   // animateToCoordinate(latitude, longitude)
-    // });
-    alert('location');
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('you are here.', position);
-        // alert(JSON.stringify(position))
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords in map components....', position.coords);
-        // alert(position.coords.latitude)
-        // alert(position.coords.longitude)
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        setIsLoading(false);
-      },
-      error => {
-        console.error('Error getting location:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      },
-    );
+      
   };
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
@@ -503,78 +409,59 @@ export default PropertyDetails = props => {
     props.navigation.pop();
   };
   const property_details = async () => {
-    const url = Config.BASE_URL;
-    const additionalApi = url + 'add_property_details';
-    console.log('Request URL:', additionalApi);
-    setIsLoading(true);
+    setIsLoading(true); 
     const addPropertyPayload = {
-      user: loginData?.Login_details?.user_id,
-      user_account_details_id: loginData?.Login_details?.user_account_id,
-      location: location,
-      location_longitude: longitude,
-      location_latitude: latitude,
-      islocation: 1,
-      property_description: propertyDesc,
-      property_type: property_value > 0 ? property_value : 0,
-      key_features: [
-        {Bedrooms: 0},
-        {Bathrooms: 0},
-        {'Reception rooms': 0},
-        {'Parking / garage spaces': 0},
-        {'On-street parking': 0},
-      ],
-      additional_features: '0,0,0,0',
-      additional_key_features: 0,
-      autolist: 0,
-      UPD_FLOOR_SIZE: 0,
-      UPD_LAND_AREA: 0,
-      p_city: city,
-      p_state: state,
-      p_country: country,
+        user: loginData?.Login_details?.user_id,
+        user_account_details_id: loginData?.Login_details?.user_account_id,
+        location,
+        location_longitude: longitude,
+        location_latitude: latitude,
+        islocation: 1,
+        property_description: propertyDesc,
+        property_type: property_value > 0 ? property_value : 0,
+        key_features: [
+            { Bedrooms: 0 },
+            { Bathrooms: 0 },
+            { 'Reception rooms': 0 },
+            { 'Parking / garage spaces': 0 },
+            { 'On-street parking': 0 },
+        ],
+        additional_features: '0,0,0,0',
+        additional_key_features: 0,
+        autolist: 0,
+        UPD_FLOOR_SIZE: 0,
+        UPD_LAND_AREA: 0,
+        p_city: city,
+        p_state: state,
+        p_country: country,
     };
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
-      'uli-device-id': deviceId, 
-      'uli-device-os-type': deviceType, 
-    };
-    console.log('Property details data..', addPropertyPayload);
-    axios
-      .post(additionalApi, addPropertyPayload,{headers})
-
-      .then(response => {
-        console.log('property_details', response?.data);
-        if (response?.data?.success === true) {
-          setIsLoading(false);
-          setSavePropertyId(response?.data?.Property_id);
-          console.log(
-            'response?.data?.Property_id',
-            response?.data?.Property_id,
-          );
-
-          props.navigation.navigate('PropertyFeature', {
-            location: location,
-            property_value: property_value,
-            propertyDesc: propertyDesc,
-            selectedButtonId: 0,
-            latitude: latitude,
-            longitude: longitude,
-            city: city,
-            state: state,
-            country: country,
-            editMode: editMode,
-            propertyid: response?.data?.Property_id,
-          });
-          console.log('property_details....', response?.data);
+    try {
+        const response = await SavePropertyDetailSevices(addPropertyPayload);
+        if (response?.success) {
+            setSavePropertyId(response?.Property_id);
+            console.log('Property ID:', response?.Property_id);
+            props.navigation.navigate('PropertyFeature', {
+                location,
+                property_value,
+                propertyDesc,
+                selectedButtonId: 0,
+                latitude,
+                longitude,
+                city,
+                state,
+                country,
+                editMode,
+                propertyid: response?.Property_id,
+            });
         } else {
-          console.error('property_details_error:', response?.data?.error);
-          setIsLoading(false);
+            console.error('Error in property details:', response?.error);
         }
-      })
-      .catch(error => {
-        console.error('property_details error:', error);
+    } catch (error) {
+        console.error('Error while saving property details:', error);
+    } finally {
         setIsLoading(false);
-      });
-  };
+    }
+};
   return (
     <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
       <TopHeader

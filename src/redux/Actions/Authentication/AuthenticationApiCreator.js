@@ -16,7 +16,7 @@ const url = Config.BASE_URL;
 export const loginApiActionCreator = data => async dispatch => {
   dispatch(fetchLoginData());
   try {
-    const res = await axiosInstance.post(`${url}/login`, data, {
+    const res = await axios.post(`${url}/login`, data, {
       headers: {
         'Content-Type': 'application/json',
       },

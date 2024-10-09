@@ -26,6 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
+import { getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyFeature = props => {
   const addPropertySecondStepData = useSelector(
@@ -90,24 +91,14 @@ export default PropertyFeature = props => {
     }
   }, [keyFeaturesString]);
   const DetailsData = async () => {
-    const detailData = {
-      // property_id:
-      //   addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-      //     ? addPropertySecondStepData
-      //     : propertyid,
-      property_id: propertyid,
-    };
-    const url = Config.BASE_URL;
-    const property_Detailss = url + 'get_property_details';
     setIsLoading(true);
     try {
-      const response = await axios.post(property_Detailss, detailData);
-      if (response?.data?.success === true) {
-        console.log('response in property feture..', response);
-        setIsLoading(false);
-        setProperty_Details(response?.data?.property_details[0]);
+      const details = await getPropertyDetailSevice(propertyid);
+      console.log(details,"detailis");
+      setIsLoading(false);
+        setProperty_Details(details);
         const featureValues =
-          response?.data?.property_details[0]?.additional_features_id
+        details?.additional_features_id
             ?.split(',')
             .map(value => value.trim());
         if (featureValues.length >= 4) {
@@ -116,11 +107,11 @@ export default PropertyFeature = props => {
           setSelectedButtonGardenId(featureValues[2] === '1' ? 1 : 0);
           setSelectedButtonDepositId(featureValues[3] === '1' ? 1 : 0);
         }
-        response?.data?.property_details[0]?.floor_size == 0
+        details?.floor_size == 0
           ? setFlorSize('')
-          : setFlorSize(response?.data?.property_details[0]?.floor_size);
+          : setFlorSize(details?.floor_size);
         const keyFeaturesId =
-          response?.data?.property_details[0]?.additional_key_features_id;
+        details?.additional_key_features_id;
         const parsedKeyFeaturesId =
           typeof keyFeaturesId === 'string'
             ? JSON.parse(keyFeaturesId)
@@ -128,18 +119,18 @@ export default PropertyFeature = props => {
         setAdditionalFeaturesKeyValue(
           Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
         );
-        response?.data?.property_details[0]?.land_area == 0
+        details?.land_area == 0
           ? setLandArea('')
-          : setLandArea(response?.data?.property_details[0]?.land_area);
-      } else {
-        console.error('propertyDetail_error:', response?.data?.error);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('property_type error:', error);
+          : setLandArea(details?.land_area);
+      
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    } finally {
       setIsLoading(false);
     }
   };
+  
   const AllCountsData = [
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
@@ -389,7 +380,7 @@ export default PropertyFeature = props => {
     }
   };
 
-  const updatePropertyDetails = () => {
+  const updatePropertyDetails = async() => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -405,26 +396,14 @@ export default PropertyFeature = props => {
       UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
       autolist: property_Detail?.auto_list,
-      property_id:
-        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-        //   ? addPropertySecondStepData
-        //   :
-        propertyid,
+      property_id:propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
     };
     console.log('updateData', updateData);
-    const url = Config.BASE_URL;
-    const update_property_details = url + 'update_property_details';
-    console.log('Request URL:', update_property_details);
-    setIsLoading(true);
-    console.log('updated data in edit mode cgheck...', updateData);
-    axios
-      .put(update_property_details, updateData)
-      .then(response => {
-        console.log('update_property_details', response?.data);
-        if (response?.data?.success === true) {
+  const response = await updatePropertyDetailSevices(updateData)
+        if (response?.success === true) {
           setIsLoading(false);
           props.navigation.navigate('PropertyImages', {
             property_id: propertyid,
@@ -434,11 +413,6 @@ export default PropertyFeature = props => {
           console.error('update_property_detailserror:', response?.data?.error);
           setIsLoading(false);
         }
-      })
-      .catch(error => {
-        console.error('update_property_details error:', error);
-        setIsLoading(false);
-      });
   };
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
