@@ -176,7 +176,7 @@ const GuestSelectionContent = ({
           justifyContent: 'flex-end',
           alignItems: 'center',
           backgroundColor: _COLORS?.Kodie_WhiteColor,
-          paddingVertical: 16,
+          // paddingVertical: 16,
         }}>
         <TouchableOpacity
           style={{paddingHorizontal: 16, paddingVertical: 10}}
