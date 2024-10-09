@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import WheelPicker from 'react-native-wheel-scrollview-picker';
 import { FONTFAMILY, _COLORS } from '../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { MAX_COMPOSER_HEIGHT } from 'react-native-gifted-chat';
 
 const CustomNotificationPicker = (props) => {
   const [selectedValue, setSelectedValue] = useState(1);
@@ -74,7 +75,9 @@ const CustomNotificationPicker = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginHorizontal:16
+    
   },
   title: {
     fontSize: 20,

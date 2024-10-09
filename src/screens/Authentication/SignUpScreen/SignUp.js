@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -12,23 +12,23 @@ import {
   SafeAreaView,
   Linking,
 } from 'react-native';
-import {BANNERS} from '../../../Themes/CommonVectors/Images';
+import { BANNERS } from '../../../Themes/CommonVectors/Images';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import BottomTextsButton from '../../../components/Molecules/BottomTextsButton/BottomTextsButton';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import {IMAGES, _COLORS} from '../../../Themes/index';
+import { IMAGES, _COLORS } from '../../../Themes/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {LABEL_STYLES} from '../../../Themes/CommonStyles/CommonStyles';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { LABEL_STYLES } from '../../../Themes/CommonStyles/CommonStyles';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import messaging from '@react-native-firebase/messaging';
 import {
   encryptPassword,
   signup,
 } from '../../../services/Authentication/Authentication';
-import {SignUpStyles} from './SignUpStyle';
+import { SignUpStyles } from './SignUpStyle';
 import DeviceInfo from 'react-native-device-info';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 const SignUp = props => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -40,12 +40,12 @@ const SignUp = props => {
   const [Fcm_token, setFcm_token] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [googleSignIn, setGoogleSignIn] = useState([]);
-  
+
   const device = DeviceInfo.getUniqueId();
   const deviceId = device?._z
   // const deviceType = DeviceInfo.getDeviceType();
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId,deviceType,'signup');
+  console.log(deviceId, deviceType, 'signup');
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
@@ -56,10 +56,10 @@ const SignUp = props => {
       GoogleSignin.configure({
         webClientId:
           '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
-          iosClientId:
+        iosClientId:
           '1095041111738-qk57a303oc8jp5rg3ep8useuc97tl739.apps.googleusercontent.com',
-          offlineAccess: false,
-        });
+        offlineAccess: false,
+      });
     };
     configureGoogleSignIn();
   }, []);
@@ -173,9 +173,9 @@ const SignUp = props => {
         'Please read and accept both Terms & Conditions and Privacy Policy!',
       );
     } else if (!term) {
-      Alert.alert("Warning",'Please read and accept Terms & Conditions!');
+      Alert.alert("Warning", 'Please read and accept Terms & Conditions!');
     } else if (!privacy) {
-      Alert.alert("Warning",'Please read and accept our Privacy Policy!');
+      Alert.alert("Warning", 'Please read and accept our Privacy Policy!');
     } else {
       handleSignup();
     }
@@ -245,13 +245,13 @@ const SignUp = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor }}>
       <KeyboardAvoidingView
         style={SignUpStyles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled">
           <View style={SignUpStyles.logoContainer}>
             <Image
@@ -273,7 +273,7 @@ const SignUp = props => {
             <View style={SignUpStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>
                 Email address
-                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <TextInput
                 style={[
@@ -299,7 +299,7 @@ const SignUp = props => {
             <View style={SignUpStyles.inputContainer}>
               <Text
                 style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
-                Password<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                Password<Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <View
                 style={[
@@ -421,11 +421,14 @@ const SignUp = props => {
             />
             <DividerIcon
               DeviderText={'or'}
-              style={{marginTop: 32, marginBottom: 30}}
+              style={{
+                marginTop: 32,
+                //  marginBottom: 30
+              }}
             />
 
             {/*.............. signup option field here ..................*/}
-            <CustomSingleButton
+            {/* <CustomSingleButton
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
               _ButtonText={'Sign up with Google'}
@@ -447,7 +450,7 @@ const SignUp = props => {
                   Alert.alert('Sign with Facebook', 'Coming soon');
                 }}
               />
-            </View>
+            </View> */}
             <View style={SignUpStyles.already_account_login}>
               <BottomTextsButton
                 _LeftButtonText={'Already have an account?'}

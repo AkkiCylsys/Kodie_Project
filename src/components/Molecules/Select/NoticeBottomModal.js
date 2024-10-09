@@ -111,6 +111,9 @@ const NoticeBottomModal = props => {
       const response = await axios.post(createNoticeReminder_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+          'uli-device-id': loginData?.Login_details?.device_id,
+          'uli-device-os-type': loginData?.Login_details?.device_os_type,
         },
       });
       console.log('createNoticeReminder....', response?.data);

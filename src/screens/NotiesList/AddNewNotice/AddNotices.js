@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,8 @@ import {
   Image,
   Keyboard,
 } from 'react-native';
-import {useSelector} from 'react-redux';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { useSelector } from 'react-redux';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import SwitchToggle from 'react-native-switch-toggle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -23,12 +23,12 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {AddNewNoticeStyle} from './AddNewNoticeStyle';
+import { AddNewNoticeStyle } from './AddNewNoticeStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import {IMAGES, LABEL_STYLES, _COLORS} from '../../../Themes';
-import {Dropdown} from 'react-native-element-dropdown';
-import {SignupLookupDetails} from '../../../APIs/AllApi';
-import {Divider} from 'react-native-paper';
+import { IMAGES, LABEL_STYLES, _COLORS } from '../../../Themes';
+import { Dropdown } from 'react-native-element-dropdown';
+import { SignupLookupDetails } from '../../../APIs/AllApi';
+import { Divider } from 'react-native-paper';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -38,14 +38,14 @@ import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import CustomNotificationPicker from '../../../components/CustomNotificationPicker/CustomNotificationPicker';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
-import {debounce} from 'lodash';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { debounce } from 'lodash';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument';
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import axios from 'axios';
 import moment from 'moment';
-import {_goBack} from '../../../services/CommonServices';
+import { _goBack } from '../../../services/CommonServices';
 const AddNotices = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -89,8 +89,8 @@ const AddNotices = props => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [notes, setNotes] = useState('');
   const [NoticeAllData, setNoticeAllData] = useState(null);
-const propertyView = props.route.params?.propertyView;
-console.log(propertyView);
+  const propertyView = props.route.params?.propertyView;
+  console.log(propertyView);
   const refRBSheet1 = useRef();
   const refRBSheet = useRef();
   const UploadrbSheetRef = useRef();
@@ -406,9 +406,14 @@ console.log(propertyView);
       const Url = Config.BASE_URL;
       const search_Url = Url + 'add_attendees/search';
       console.log('Inspection_Url', search_Url);
+      const headers = {
+        'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+        'uli-device-id': loginData?.Login_details?.device_id,
+        'uli-device-os-type': loginData?.Login_details?.device_os_type,
+      };
       const response = await axios.post(search_Url, {
         search: searchQuery,
-      });
+      }, { headers });
       if (response?.data?.success == true) {
         setResults(response?.data?.data);
         setIsLoading(false);
@@ -518,7 +523,7 @@ console.log(propertyView);
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
-      console.log("pdfFile.....",pdfFile);
+      console.log("pdfFile.....", pdfFile);
 
       formData.append('file_name', {
         uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
@@ -526,15 +531,15 @@ console.log(propertyView);
         type: 'application/pdf',
       });
     }
-  
+
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
-      console.log("file.....",file.uri);
+      console.log("file.....", file.uri);
       const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
-        name: filename ,
+        name: filename,
         type: 'image/jpeg',  // Adjust MIME type as necessary
       });
     });
@@ -547,6 +552,9 @@ console.log(propertyView);
       const response = await axios.post(createNoticeReminder_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+          'uli-device-id': loginData?.Login_details?.device_id,
+          'uli-device-os-type': loginData?.Login_details?.device_os_type,
         },
       });
       console.log('hello deependra');
@@ -573,9 +581,14 @@ console.log(propertyView);
     const notification_data = {
       notices_reminder_id: noticeReminderid,
     };
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+      'uli-device-id': loginData?.Login_details?.device_id,
+      'uli-device-os-type': loginData?.Login_details?.device_os_type,
+    };
     console.log(notification_data, 'notification_datakhds');
     axios
-      .post(getNoticesReminderDetails_url, notification_data)
+      .post(getNoticesReminderDetails_url, notification_data, { headers })
       .then(response => {
         console.log(
           'API Response getNoticesReminderDetailsData...:',
@@ -633,7 +646,7 @@ console.log(propertyView);
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
-      console.log("pdfFile.....",pdfFile);
+      console.log("pdfFile.....", pdfFile);
 
       formData.append('file_name', {
         uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
@@ -641,11 +654,11 @@ console.log(propertyView);
         type: 'application/pdf',
       });
     }
-  
+
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
-      console.log("pdfFile.....",file);
+      console.log("pdfFile.....", file);
       const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
@@ -653,7 +666,7 @@ console.log(propertyView);
         type: 'image/jpeg',  // Adjust MIME type as necessary
       });
     });
-    console.log('formData vdsfs',formData);
+    console.log('formData vdsfs', formData);
     const url = Config.BASE_URL;
     const update_createNoticeReminder_url = url + 'update_notices_reminder';
     setIsLoading(true);
@@ -665,6 +678,9 @@ console.log(propertyView);
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+            'uli-device-id': loginData?.Login_details?.device_id,
+            'uli-device-os-type': loginData?.Login_details?.device_os_type,
           },
         },
       );
@@ -783,7 +799,7 @@ console.log(propertyView);
     );
   };
 
-  
+
   const handleRemoveFile = id => {
     setUploadedFiles(prevFiles => prevFiles.filter(file => file.id !== id));
   };
@@ -807,11 +823,11 @@ console.log(propertyView);
   const images = uploadedFiles.filter(isImage);
   const documents = uploadedFiles.filter(isDocument);
 
-  const renderImageItem = ({item, index}) => {
+  const renderImageItem = ({ item, index }) => {
     const uri = typeof item === 'string' ? item : item.uri;
     return (
       <View style={AddNewNoticeStyle.uploadedImageContainer}>
-        <Image source={{uri}} style={AddNewNoticeStyle.uploadedImage} />
+        <Image source={{ uri }} style={AddNewNoticeStyle.uploadedImage} />
         <TouchableOpacity
           style={{
             flex: 1,
@@ -840,10 +856,10 @@ console.log(propertyView);
       </View>
     );
   };
-  const renderDocumentItem = ({item, index}) => {
+  const renderDocumentItem = ({ item, index }) => {
     const uri = typeof item === 'string' ? item : item.uri[0].uri;
     const name = typeof item === 'string' ? item.split('/').pop() : item.uri[0].name;
-     return (
+    return (
       <View style={AddNewNoticeStyle.container}>
         <View style={AddNewNoticeStyle.pdfInfo}>
           <FontAwesome
@@ -872,17 +888,17 @@ console.log(propertyView);
           IsMap
             ? setIsMap(false)
             : IsSearch
-            ? setIsSearch(false) : 
-            propertyView ?
-             props?.navigation?.navigate('Properties')
-            : _goBack(props)
+              ? setIsSearch(false) :
+              propertyView ?
+                props?.navigation?.navigate('Properties')
+                : _goBack(props)
         }
         MiddleText={
           IsMap || IsSearch
             ? 'Location'
             : editNotice
-            ? 'Edit notice'
-            : 'Add new notice'
+              ? 'Edit notice'
+              : 'Add new notice'
         }
       />
       {IsMap ? (
@@ -902,7 +918,7 @@ console.log(propertyView);
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
+            iscancel={() => setIsMap(false)}
 
             onRegionChange={onRegionChange}
             Maplat={latitude}
@@ -938,7 +954,7 @@ console.log(propertyView);
           <TouchableOpacity
             style={AddNewNoticeStyle.BtnContainer}
             onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
           </TouchableOpacity>
         </View>
       ) : IsSearch ? (
@@ -962,13 +978,13 @@ console.log(propertyView);
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Select the type of notice you want to create'}
-                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <Dropdown
-                style={[AddNewNoticeStyle.dropdown,{
-                  borderColor:showNoticeTypeError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
-  
-                    }]}
+                style={[AddNewNoticeStyle.dropdown, {
+                  borderColor: showNoticeTypeError ? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+
+                }]}
                 placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                 selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                 inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -988,19 +1004,19 @@ console.log(propertyView);
                 }}
                 renderItem={TypeOfNotices}
               />
-            {showNoticeTypeError ? (
-              <Text style={AddNewNoticeStyle.errorText}>
-                {'Please select a notice type.'}
-              </Text>
-            ) : null}
+              {showNoticeTypeError ? (
+                <Text style={AddNewNoticeStyle.errorText}>
+                  {'Please select a notice type.'}
+                </Text>
+              ) : null}
             </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{'Notice title'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
               </Text>
               <TextInput
-                style={[AddNewNoticeStyle.input,{
-                  borderColor:titleError? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+                style={[AddNewNoticeStyle.input, {
+                  borderColor: titleError ? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
 
                 }]}
                 value={noticeTittle}
@@ -1009,9 +1025,9 @@ console.log(propertyView);
                 placeholder="Notice title"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
-            {titleError ? (
-              <Text style={AddNewNoticeStyle.errorText}>{titleError}</Text>
-            ) : null}
+              {titleError ? (
+                <Text style={AddNewNoticeStyle.errorText}>{titleError}</Text>
+              ) : null}
             </View>
             <Divider style={AddNewNoticeStyle.divider} />
 
@@ -1020,7 +1036,7 @@ console.log(propertyView);
                 name="repeat"
                 size={35}
                 color={_COLORS.Kodie_ExtraLiteGrayColor}
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
               />
               <Text style={AddNewNoticeStyle.repeattext}>Repeat</Text>
               <View style={AddNewNoticeStyle.noticedropdownview}>
@@ -1031,7 +1047,7 @@ console.log(propertyView);
                       borderRadius: 8,
                       height: 30,
                       marginLeft: '20%',
-                      marginTop:0
+                      marginTop: 0
                     },
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
@@ -1076,13 +1092,13 @@ console.log(propertyView);
                 backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
                 containerStyle={AddNewNoticeStyle.toggle_con}
                 circleStyle={AddNewNoticeStyle.toggle_circle}
-              
+
               />
             </View>
             <View style={AddNewNoticeStyle.datetimeview}>
               <View style={AddNewNoticeStyle.dateview}>
                 <CalendarModal
-                    current={selectedDate}
+                  current={selectedDate}
 
                   // SelectDate={selectedDate ? selectedDate : "Select Date"}
                   SelectDate={
@@ -1127,7 +1143,7 @@ console.log(propertyView);
                     borderWidth: 0,
                     marginTop: 0,
                   }}
-                  timetextStyle={{textAlign:'right'}}
+                  timetextStyle={{ textAlign: 'right' }}
                   _TextTimeColor={
                     currentfromTime
                       ? _COLORS.Kodie_BlackColor
@@ -1142,7 +1158,7 @@ console.log(propertyView);
                 />
               </View>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{flex: 1,justifyContent:'flex-start',alignItems:'flex-start'}}>
+                <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                   <CalendarModal
                     current={selectedToDate}
 
@@ -1178,7 +1194,7 @@ console.log(propertyView);
                     _ApplyButton={apply_toggleToDateModal}
                   />
                 </View>
-              
+
                 <TimePicker
                   selectedTime={
                     currentToTime && currentToTime != ''
@@ -1189,7 +1205,7 @@ console.log(propertyView);
                     borderWidth: 0,
                     marginTop: 0,
                   }}
-                  timetextStyle={{textAlign:'right'}}
+                  timetextStyle={{ textAlign: 'right' }}
                   _TextTimeColor={
                     currentToTime
                       ? _COLORS.Kodie_BlackColor
@@ -1203,10 +1219,10 @@ console.log(propertyView);
                   onChange={() => handleToTime(currentToTime)}
                 />
               </View>
-              </View>
-           
+            </View>
+
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               {selectedDateError ? (
                 <Text style={[AddNewNoticeStyle.errorText]}>
                   {selectedDateError}
@@ -1214,13 +1230,13 @@ console.log(propertyView);
               ) : null}
               {selectedFromTimeError ? (
                 <Text
-                  style={[AddNewNoticeStyle.errorText, {textAlign: 'right'}]}>
+                  style={[AddNewNoticeStyle.errorText, { textAlign: 'right' }]}>
                   {selectedFromTimeError}
                 </Text>
               ) : null}
             </View>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               {selectedToDateError ? (
                 <Text style={AddNewNoticeStyle.errorText}>
                   {selectedToDateError}
@@ -1237,7 +1253,7 @@ console.log(propertyView);
               {/* <AddGuest /> */}
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Add guests'}</Text>
-                <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
                   <TouchableOpacity
                     style={[
                       AddNewNoticeStyle.input,
@@ -1257,22 +1273,22 @@ console.log(propertyView);
                       {displaySelectedValues
                         ? displaySelectedValues
                         : NoticeAllData?.guests
-                        ? NoticeAllData?.guests
-                        : 'Add guests'}
+                          ? NoticeAllData?.guests
+                          : 'Add guests'}
                     </Text>
                     <Feather
                       name="user-plus"
                       size={30}
                       color={_COLORS.Kodie_GrayColor}
-                      style={{alignSelf: 'center', marginHorizontal: 10}}
+                      style={{ alignSelf: 'center', marginHorizontal: 10 }}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={()=>props?.navigation?.navigate('Chats',{chats:'chats'})}>
+                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={() => props?.navigation?.navigate('Chats', { chats: 'chats' })}>
                     <Ionicons
                       name="chatbubble-ellipses-outline"
                       size={30}
                       color={_COLORS.Kodie_WhiteColor}
-                      style={{alignSelf: 'center'}}
+                      style={{ alignSelf: 'center' }}
                     />
                     <Text style={AddNewNoticeStyle.ChatText}>{'Chat'}</Text>
                   </TouchableOpacity>
@@ -1348,7 +1364,7 @@ console.log(propertyView);
                   Set notification type
                 </Text>
                 <Dropdown
-                  style={[AddNewNoticeStyle.setnotificationdrop, {width: 130}]}
+                  style={[AddNewNoticeStyle.setnotificationdrop, { width: 130 }]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1369,11 +1385,11 @@ console.log(propertyView);
               {/*nine part start here */}
               <View style={AddNewNoticeStyle.setcustomview}>
                 <Text style={AddNewNoticeStyle.setcustometext}>Set custom</Text>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                   <Text
                     style={[
                       AddNewNoticeStyle.setcustometext,
-                      {marginRight: 15},
+                      { marginRight: 15 },
                     ]}>
                     {selectedCustemValue}
                   </Text>
@@ -1385,7 +1401,7 @@ console.log(propertyView);
                       name="chevron-small-right"
                       size={22}
                       color={_COLORS.Kodie_GrayColor}
-                      style={{flex: 1, alignItems: 'center'}}
+                      style={{ flex: 1, alignItems: 'center' }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -1395,7 +1411,7 @@ console.log(propertyView);
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
                 <TextInput
-                  style={[AddNewNoticeStyle.input, {height: 100}]}
+                  style={[AddNewNoticeStyle.input, { height: 100 }]}
                   value={notes}
                   onChangeText={setNotes}
                   placeholder="Add additional notes"

@@ -10,12 +10,12 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import React, {useRef, useState, useEffect, useCallback} from 'react';
-import {NoticesStyle} from './NoticesStyle';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { NoticesStyle } from './NoticesStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../services/CommonServices';
+import { _goBack } from '../../../services/CommonServices';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import {_COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
+import { _COLORS, IMAGES, FONTFAMILY } from '../../../Themes';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
@@ -25,21 +25,21 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import NoticeBottomModal from '../../../components/Molecules/Select/NoticeBottomModal';
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import axios from 'axios';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
-import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {Calendar} from 'react-native-calendars'; //calender
-import {debounce} from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { Calendar } from 'react-native-calendars'; //calender
+import { debounce } from 'lodash';
 import { log } from 'react-native-reanimated';
 const HorizontalData = [
-  {filtername: 'All', filterId: 'All'},
-  {filtername: 'General', filterId: '367'},
-  {filtername: 'Inspection', filterId: '368'},
-  {filtername: 'Rent', filterId: '369'},
-  {filtername: 'Job', filterId: '370'},
+  { filtername: 'All', filterId: 'All' },
+  { filtername: 'General', filterId: '367' },
+  { filtername: 'Inspection', filterId: '368' },
+  { filtername: 'Rent', filterId: '369' },
+  { filtername: 'Job', filterId: '370' },
 ];
 
 const noticeData = [
@@ -80,7 +80,7 @@ const Notices = props => {
   const [selectedDate, setSelectedDate] = useState(''); // calender state
   const isFocused = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
+  console.log('loginResponse in notices.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [noticeRemiderDetails, setNoticeRemiderDetails] = useState([]);
   const [getNoticeRemiderDetails, setgetNoticeRemiderDetails] = useState([]);
@@ -88,18 +88,18 @@ const Notices = props => {
   const [noticeReminderid, setNoticeReminderid] = useState('');
   const refRBSheet = useRef();
   const [_MONTHS, set_MONTHS] = useState([
-    {id: 1, name: 'January'},
-    {id: 2, name: 'February'},
-    {id: 3, name: 'March'},
-    {id: 4, name: 'April'},
-    {id: 5, name: 'May'},
-    {id: 6, name: 'June'},
-    {id: 7, name: 'July'},
-    {id: 8, name: 'August'},
-    {id: 9, name: 'September'},
-    {id: 10, name: 'October'},
-    {id: 11, name: 'November'},
-    {id: 12, name: 'December'},
+    { id: 1, name: 'January' },
+    { id: 2, name: 'February' },
+    { id: 3, name: 'March' },
+    { id: 4, name: 'April' },
+    { id: 5, name: 'May' },
+    { id: 6, name: 'June' },
+    { id: 7, name: 'July' },
+    { id: 8, name: 'August' },
+    { id: 9, name: 'September' },
+    { id: 10, name: 'October' },
+    { id: 11, name: 'November' },
+    { id: 12, name: 'December' },
   ]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleYear, setIsModalVisibleyear] = useState(false);
@@ -125,15 +125,15 @@ const Notices = props => {
     setSearchQuery(query);
     const filtered = query
       ? noticeRemiderDetails.filter(
-          item =>
-            item.type_notice && item.type_notice.toLowerCase().includes(query.toLowerCase()),
-        )
+        item =>
+          item.type_notice && item.type_notice.toLowerCase().includes(query.toLowerCase()),
+      )
       : noticeRemiderDetails;
     console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
   };
   const generateYears = startYear => {
-    return Array.from({length: 12}, (_, index) => startYear - index);
+    return Array.from({ length: 12 }, (_, index) => startYear - index);
   };
 
   const generatetopYears = selectedYear => {
@@ -163,7 +163,7 @@ const Notices = props => {
     set_selectedYear(year);
     toggleYearModal(); // Close the modal after selecting a month
   };
-  
+
   const onDayPress = day => {
     //......
     setSelectedDate(day.dateString);
@@ -171,7 +171,7 @@ const Notices = props => {
   useFocusEffect(
     useCallback(() => {
       getNoticesReminderDetails();
-  
+
     }, [])
   );
   const getNoticesReminderDetails = (id) => {
@@ -183,8 +183,14 @@ const Notices = props => {
     const notification_data = {
       notices_reminder_id: id,
     };
+
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+      'uli-device-id': loginData?.Login_details?.device_id,
+      'uli-device-os-type': loginData?.Login_details?.device_os_type,
+    };
     axios
-      .post(getNoticesReminderDetails_url, notification_data)
+      .post(getNoticesReminderDetails_url, notification_data, { headers })
       .then(response => {
         console.log(
           'API Response getNoticesReminderDetailsData for duplicate...:',
@@ -207,9 +213,9 @@ const Notices = props => {
   };
   const onClose = () => {
     refRBSheet.current.close();
-    
+
   };
-  const reloadDuplicateData=()=>{
+  const reloadDuplicateData = () => {
     getNoticesReminderDeatilsByFilter({
       monthId: _selectedMonthId,
       year: _selectedYear,
@@ -226,11 +232,11 @@ const Notices = props => {
       });
     }
   }, [isFocused, selectedFilter]);
- 
-  const horizontal_render = ({item}) => {
+
+  const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
-      key={item.filterId}
+        key={item.filterId}
         style={[
           NoticesStyle.flatlistView,
           {
@@ -259,13 +265,13 @@ const Notices = props => {
             ]}
           />
         )}
-        <View style={{justifyContent:'center',alignItems:'center',flex:1}}></View>
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}></View>
         <Text
           style={[
             NoticesStyle.item_style,
             {
-              color: selectedFilter.includes(item.filterId)   ? _COLORS?.Kodie_WhiteColor
-              : _COLORS?.Kodie_VeryLightGrayColor,
+              color: selectedFilter.includes(item.filterId) ? _COLORS?.Kodie_WhiteColor
+                : _COLORS?.Kodie_VeryLightGrayColor,
             },
           ]}>
           {item.filtername}
@@ -281,9 +287,9 @@ const Notices = props => {
     );
   };
 
-  const noticeRenderData = ({item, index}) => {
+  const noticeRenderData = ({ item, index }) => {
     console.log(item?.type_notice_id);
-    const lineImageSource = item?.type_notice_id == "366" || item?.type_notice_id == "367" || item?.type_notice_id == "370"  ? IMAGES.greenLine : item?.type_notice_id == "368" ? IMAGES?.blueLine: IMAGES.redLine;
+    const lineImageSource = item?.type_notice_id == "366" || item?.type_notice_id == "367" || item?.type_notice_id == "370" ? IMAGES.greenLine : item?.type_notice_id == "368" ? IMAGES?.blueLine : IMAGES.redLine;
 
     return (
       <View style={NoticesStyle.mainContainer} key={item?.id}>
@@ -294,21 +300,21 @@ const Notices = props => {
         </View>
         <View style={NoticesStyle.middatabindview}>
           <View style={NoticesStyle.bindview}>
-            
+
             <Image source={lineImageSource} style={NoticesStyle.lineimg} />
             <View style={NoticesStyle.headinglineview}>
               <Text style={NoticesStyle.headintext}>{item.type_notice}</Text>
               <View style={NoticesStyle.addressviewbind}>
-              
-                {item.location? (
-                <><EvilIcons
-                  name="location"
-                  size={25}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={{alignSelf:'center'}}
-                />
-               
-                <Text numberOfLines={2} ellipsizeMode="tail" style={NoticesStyle.addresstext}>{item.location}</Text></>):null}
+
+                {item.location ? (
+                  <><EvilIcons
+                    name="location"
+                    size={25}
+                    color={_COLORS.Kodie_GrayColor}
+                    style={{ alignSelf: 'center' }}
+                  />
+
+                    <Text numberOfLines={2} ellipsizeMode="tail" style={NoticesStyle.addresstext}>{item.location}</Text></>) : null}
               </View>
             </View>
           </View>
@@ -318,7 +324,7 @@ const Notices = props => {
               refRBSheet.current.open();
               setNoticeReminderid(item.id);
               console.log('noticereminderId....', item.id);
-              getNoticesReminderDetails(item.id); 
+              getNoticesReminderDetails(item.id);
             }}>
             <Entypo
               name="dots-three-vertical"
@@ -333,7 +339,7 @@ const Notices = props => {
   };
 
   // Api intrigation...
-  const getNoticesReminderDeatilsByFilter = async ({monthId, year}) => {
+  const getNoticesReminderDeatilsByFilter = async ({ monthId, year }) => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
@@ -343,6 +349,11 @@ const Notices = props => {
         'NoticesReminderDeatilsByFilter...',
         NoticesReminderDeatilsByFilter_url,
       );
+      const headers = {
+        'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+        'uli-device-id': loginData?.Login_details?.device_id,
+        'uli-device-os-type': loginData?.Login_details?.device_os_type,
+      };
       const data = {
         notices_filter: selectedFilter,
         account_id: loginData?.Login_details?.user_account_id,
@@ -354,7 +365,7 @@ const Notices = props => {
       console.log('monthdatae', data);
       const response = await axios.post(
         NoticesReminderDeatilsByFilter_url,
-        data,
+        data, { headers }
       ); // Use monthId and year received as parameters
       console.log(
         'NoticesReminderDeatilsByFilter_Data response...',
@@ -368,7 +379,7 @@ const Notices = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        Alert.alert("Warning",error.response.data.message || "Internal Server Error");
+        Alert.alert("Warning", error.response.data.message || "Internal Server Error");
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -377,7 +388,7 @@ const Notices = props => {
       setIsLoading(false);
     }
   };
-  
+
   const FinalDeleteProperty = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -388,8 +399,13 @@ const Notices = props => {
       // notices_reminder_id: 24,
     };
     // console.log('noticesDeleteData body.....', noticesDeleteData);
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+      'uli-device-id': loginData?.Login_details?.device_id,
+      'uli-device-os-type': loginData?.Login_details?.device_os_type,
+    };
     try {
-      const response = await axios.post(noticedelete, noticesDeleteData);
+      const response = await axios.post(noticedelete, noticesDeleteData, { headers });
       // console.log('API Response:', response.data);
       if (response?.data?.status === true) {
         // Alert.alert("notice Deleted", response?.data?.message);
@@ -470,9 +486,9 @@ const Notices = props => {
             placeholder="Search notices"
             searchData={searchNoticesList}
             SortedData={sortByDate}
-            upArrow={sortOrder == 'asc'?'long-arrow-up':'long-arrow-down'}
-            downArrow={sortOrder == 'asc'? 'long-arrow-down':'long-arrow-up'}
-         
+            upArrow={sortOrder == 'asc' ? 'long-arrow-up' : 'long-arrow-down'}
+            downArrow={sortOrder == 'asc' ? 'long-arrow-down' : 'long-arrow-up'}
+
           />
         </View>
 
@@ -514,7 +530,7 @@ const Notices = props => {
             }}>
             <View
               // onPress={toggleModal}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
+              style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -527,7 +543,7 @@ const Notices = props => {
             </View>
             <View
               // onPress={toggleYearModal}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
+              style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -548,10 +564,10 @@ const Notices = props => {
             <Entypo name={'chevron-right'} size={22} color={'black'} />
           </TouchableOpacity>
         </View>
-        <View style={{marginTop: 20, alignSelf: 'center'}}>
+        <View style={{ marginTop: 20, alignSelf: 'center' }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
-            data={searchQuery? filteredUsers : noticeRemiderDetails}
+            data={searchQuery ? filteredUsers : noticeRemiderDetails}
             keyExtractor={(index, item) => item?.id}
             renderItem={noticeRenderData}
           />
@@ -571,7 +587,7 @@ const Notices = props => {
           container: NoticesStyle.bottomModal_container,
         }}>
         <NoticeBottomModal
-        onchange={reloadDuplicateData}
+          onchange={reloadDuplicateData}
           onClose={onClose}
           noticeReminderid={noticeReminderid}
           FinalDeleteProperty={FinalDeleteProperty}
