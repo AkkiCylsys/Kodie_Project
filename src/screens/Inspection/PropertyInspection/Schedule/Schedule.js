@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import { useSelector } from 'react-redux';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const Schedule = (props) => {
   const isFoucus = useNavigation()
@@ -53,9 +54,9 @@ useFocusEffect(
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+     `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
-    await axios
+    await axiosInstance
       .get(apiUrl)
       .then(response => {
         // console.log('API Response getPersonalDetails:', response?.data?.data[0]);

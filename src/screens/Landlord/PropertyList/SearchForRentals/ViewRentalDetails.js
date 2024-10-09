@@ -35,6 +35,7 @@ import {useSelector} from 'react-redux';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
 import { MapUrlTile } from 'react-native-maps';
 import { useFocusEffect } from '@react-navigation/native';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
@@ -300,11 +301,12 @@ const ViewRentalDetails = props => {
       const detailData = {
         property_id: propertyId,
       };
-      const url = `${Config.BASE_URL}get_property_details`;
+      // const url = `${Config.BASE_URL}get_property_details`;
+      const url = "get_property_details";
       console.log('url:', url);
       setIsLoading(true);
 
-      const response = await axios.post(url, detailData);
+      const response = await axiosInstance.post(url, detailData);
       setIsLoading(false);
 
       console.log('response_get_property_details:', response?.data);

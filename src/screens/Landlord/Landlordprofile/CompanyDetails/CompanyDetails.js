@@ -39,6 +39,7 @@ import {
 } from '@react-navigation/native';
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
+import axiosInstance from '../../../../services/axiosInstance';
  
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
@@ -490,8 +491,8 @@ export default CompanyDetails = props => {
     const url = Config.BASE_URL;
     setIsLoading(true);
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
-    axios
+      `getAccount_details/${loginData.Login_details.user_account_id}`;
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]);
