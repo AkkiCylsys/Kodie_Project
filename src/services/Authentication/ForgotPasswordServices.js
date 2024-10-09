@@ -1,7 +1,9 @@
 import axios from "axios";
+import { Config } from "../../Config";
+const url = Config?.BASE_URL
 
 export const sendVerificationService = (sendVerificationPayload) => {
-    return axios.post('SendOTP_Forget_password', sendVerificationPayload)
+    return axios.post(`${url}SendOTP_Forget_password`, sendVerificationPayload)
         .then((response) => {
             console.log('API Response Data SendOTP_Forget_password:', response?.data);
             return response.data; // Return response data directly
@@ -17,7 +19,7 @@ export const sendVerificationService = (sendVerificationPayload) => {
 
 
 export const verifyOtpServices = (data) => {
-    return axios.post('verifyotp', data)
+    return axios.post(`${url}verifyotp`, data)
         .then((response) => {
             console.log('API Response Data verify otp:', response.data);
             return response;  // Make sure to return the response
@@ -33,7 +35,7 @@ export const verifyOtpServices = (data) => {
 
 
 export const confirmPasswordServices = (data) => {
-    return axios.post('forgetpassword', data)
+    return axios.post(`${url}forgetpassword`, data)
         .then((response) => {
             console.log('API Response Data confirmPassWord', response.data);
             return response;  // Make sure to return the response
