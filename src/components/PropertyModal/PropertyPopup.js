@@ -21,8 +21,8 @@ import {CommonLoader} from '../Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {Config} from '../../Config';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import axios from 'axios';
 import {SignupLookupDetails} from '../../APIs/AllApi';
+import axiosInstance from '../../services/axiosInstance';
 const PropertyPopup = props => {
   const [selectedCommDate, setselectedCommDate] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
@@ -102,7 +102,7 @@ const PropertyPopup = props => {
     : currentDateTime;
   const handle_addlease_Bid = () => {
     const url = Config.BASE_URL;
-    const add_Bid_url = `${url}property_market_place_enable_bidding`;
+    const add_Bid_url = `property_market_place_enable_bidding`;
     console.log('Request URL:', add_Bid_url);
     setIsLoading(true);
     const currentDate = new Date().toISOString().slice(0, 10);
@@ -126,7 +126,7 @@ const PropertyPopup = props => {
       new_bid_before: '0',
     };
     console.log("Bid_Data payload...",Bid_Data)
-    axios
+    axiosInstance
       .post(add_Bid_url, Bid_Data)
       .then(response => {
         // console.log('API Response add_bid:', response?.data);

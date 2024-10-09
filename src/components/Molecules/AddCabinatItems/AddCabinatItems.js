@@ -23,11 +23,11 @@ import UploadCabinateImage from './UploadCabinateImage';
 import { SignupLookupDetails } from '../../../APIs/AllApi';
 import { useSelector } from 'react-redux';
 import { Config } from '../../../Config';
-import axios from 'axios';
 import { set } from 'lodash';
 import { CommonLoader } from '../ActiveLoader/ActiveLoader';
 import { fontSize } from '../../../Themes/FontStyle/FontStyle';
 import { useFocusEffect } from '@react-navigation/native';
+import axiosInstance from '../../../services/axiosInstance';
 
 const data = [
   { label: 'Good', value: '1' },
@@ -97,11 +97,11 @@ const CreateCabinate = async () => {
 
   console.log('formData', formData); // Log FormData for debugging
 
-  const url = Config.BASE_URL + 'add_cabinets'; // Construct the full URL
+  const url ='add_cabinets'; // Construct the full URL
   setIsLoading(true); // Show loader
   try {
     console.log('Request URL:', url);
-    const response = await axios.post(url, formData, {
+    const response = await axiosInstance.post(url, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -130,11 +130,11 @@ const getCabinate = async () => {
  }
   console.log('getData', getData);
   const url = Config.BASE_URL;
-  const getCabinate_url = url + 'get/CabinateInspectionDetails';
+  const getCabinate_url ='get/CabinateInspectionDetails';
   // setIsLoading(true);
   try {
     console.log('Request URL:', getCabinate_url);
-    const response = await axios.post(getCabinate_url, getData);
+    const response = await axiosInstance.post(getCabinate_url, getData);
     console.log('getCabinate_url....', response.data.data[0]);
  setCabinateDetail(response?.data?.data[0])
     setComment(response?.data?.data[0].TIMC_COMMENTS);

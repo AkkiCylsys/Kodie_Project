@@ -15,7 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import { Config } from '../../../Config';
-import axios from 'axios';
+import axiosInstance from '../../../services/axiosInstance';
 
 const BottomModalSearchRental = props => {
   const {propertyId, rentalAmount, bibId, landlordId, searchRentalData,propertyDetailsItem} = props;
@@ -39,10 +39,10 @@ const BottomModalSearchRental = props => {
       const detailData = {
         property_id: propertyId,
       };
-      const url = `${Config.BASE_URL}get_property_details`;
+      const url = `get_property_details`;
    
 
-      const response = await axios.post(url, detailData);
+      const response = await axiosInstance.post(url, detailData);
 
       console.log('response_get_property_details:', response?.data);
       if (response?.data?.success) {

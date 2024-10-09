@@ -6,12 +6,12 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import AddBiddingDetails from '../../../../components/Molecules/AddBiddingDetails/AddBiddingDetails';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Config} from '../../../../Config';
-import axios from 'axios';
 import Contractors from '../../../../components/Molecules/Contractors/Contractors';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import ContractorsComponent from '../../../../components/Molecules/ContractorsComponent/ContractorsComponent';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
+import axiosInstance from '../../../../services/axiosInstance';
 export default JobBiddingDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse jobbiding.....', loginData);
@@ -62,7 +62,7 @@ export default JobBiddingDetails = props => {
   // };
   const handleGetContractor = () => {
     const url = Config.BASE_URL;
-    const ContractorUrl = url + 'job/getallBidRequestForJob';
+    const ContractorUrl = 'job/getallBidRequestForJob';
     console.log('Request URL:', ContractorUrl);
     setIsLoading(true);
     const bidRequestData = {
@@ -70,7 +70,7 @@ export default JobBiddingDetails = props => {
       // job_id: 1,
       uad_key: userAccountid,
     };
-    axios
+    axiosInstance
       .post(ContractorUrl, bidRequestData)
       .then(response => {
         console.log('getContractor', response?.data);

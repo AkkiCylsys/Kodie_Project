@@ -12,13 +12,11 @@ import {
 import {PersonJobStyle} from './PersonJobStyle';
 // import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
 import {_COLORS, LABEL_STYLES} from '../../Themes';
-// import axios from "axios";
-import axios from 'axios';
 // import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import {CommonLoader} from '../Molecules/ActiveLoader/ActiveLoader';
 // import { useDispatch, useSelector } from "react-redux";
 import {useDispatch, useSelector} from 'react-redux';
-import {Config} from '../../Config';
+import axiosInstance from '../../services/axiosInstance';
 export default PersonJob = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginData.....', loginData);
@@ -107,12 +105,11 @@ export default PersonJob = props => {
       phone_number: PhoneNumber,
       notes: note,
     };
-    const url = Config.BASE_URL;
-    const PersonUrl = url + 'tanant_details/create/person';
+    const PersonUrl ='tanant_details/create/person';
     console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(PersonUrl, PersonDetailsData)
       .then(response => {
         setpersonResponse(response?.data);

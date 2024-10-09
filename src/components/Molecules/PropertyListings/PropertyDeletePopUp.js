@@ -7,7 +7,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {PropertyModalStyle} from '../../PropertyModal/PropertyModalStyle';
 import {_COLORS} from '../../../Themes';
 import {Config} from '../../../Config';
-import axios from 'axios';
+import axiosInstance from '../../../services/axiosInstance';
 
 const data1 = [
   {
@@ -48,7 +48,7 @@ const PropertyDeletePopup = props => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const response = await axios.delete(url + 'delete_property_by_id', {
+      const response = await axiosInstance.delete('delete_property_by_id', {
         data: JSON.stringify({property_id: propertyId}),
         headers: {
           'Content-Type': 'application/json',

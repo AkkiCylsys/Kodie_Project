@@ -42,6 +42,7 @@ import GuestSelectionContent from '../../../components/GuestSelectionContent/Gue
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AddCustomArea, GetInspectionAreaDetail } from '../../../services/InspectionModuleServices.js/InspectionServices';
 import { log } from 'react-native-reanimated';
+import axiosInstance from '../../../services/axiosInstance';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -161,10 +162,10 @@ const CreateNewInspection = props => {
   const getInspectionDetails = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const apiUrl = `${url}get_inspection_details/${TIM_KEY}`;
+    const apiUrl = `get_inspection_details/${TIM_KEY}`;
   
     try {
-      const response = await axios.get(apiUrl);
+      const response = await axiosInstance.get(apiUrl);
       const data = response?.data?.data[0];
   
       setInspection_Details(data);
@@ -264,10 +265,10 @@ const CreateNewInspection = props => {
       account_id: loginData?.Login_details?.user_account_id,
     };
     const url = Config.BASE_URL;
-    const Selected_AddressType = url + 'get_property_details_my_acc_id';
+    const Selected_AddressType = 'get_property_details_my_acc_id';
     console.log('Request URL:', Selected_AddressType);
     setIsLoading(true);
-    await axios
+    await axiosInstance
       .post(Selected_AddressType, Selected_Address)
       .then(response => {
         console.log('Selected_Address', response?.data);
@@ -431,9 +432,9 @@ const CreateNewInspection = props => {
       };
       console.log('inspec', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url = Url + 'inspection_details/save';
+      const Inspection_Url ='inspection_details/save';
       console.log('Inspection_Url', Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata);
+      const res = await axiosInstance.post(Inspection_Url, Inspectiondata);
       console.log('scheduule inspection....', res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
@@ -489,9 +490,9 @@ const CreateNewInspection = props => {
       };
       console.log('inspecsdupdate', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url = Url + 'inspection_details/update';
+      const Inspection_Url ='inspection_details/update';
       console.log('Inspection_Url', Inspection_Url);
-      const res = await axios.put(Inspection_Url, Inspectiondata);
+      const res = await axiosInstance.put(Inspection_Url, Inspectiondata);
       console.log(res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
@@ -550,9 +551,9 @@ const CreateNewInspection = props => {
     setIsLoading(true);
     try {
       const Url = Config.BASE_URL;
-      const search_Url = Url + 'add_attendees/search';
+      const search_Url ='add_attendees/search';
       console.log('Inspection_Url', search_Url);
-      const response = await axios.post(search_Url, {
+      const response = await axiosInstance.post(search_Url, {
         search: searchQuery,
       });
       if (response?.data?.success == true) {

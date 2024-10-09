@@ -64,14 +64,14 @@ const DeshboardNotice = props => {
   };
   const handleprofileCompletion = () => {
     const url = Config.BASE_URL;
-    const profileCompletion_url = url + 'Profile_Completion';
+    const profileCompletion_url ='Profile_Completion';
     console.log('requested url..', profileCompletion_url);
     setIsLoading(true);
     const profileCompletion_urlBody = {
       // account_id: "531",
       user_id: userID,
     };
-    axios
+    axiosInstance
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response?.data);

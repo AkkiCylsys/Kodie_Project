@@ -22,9 +22,9 @@ import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {SignupLookupDetails} from '../../../APIs/AllApi';
+import axiosInstance from '../../../services/axiosInstance';
 const data = [
   {label: '3-month', value: '1'},
   {label: '6-month', value: '2'},
@@ -113,8 +113,7 @@ const AddBiddingDetails = props => {
     props.onClose();
   };
   const handle_add_Bid = () => {
-    const url = Config.BASE_URL;
-    const add_Bid_url = url + 'job/addBidding';
+    const add_Bid_url ='job/addBidding';
     console.log('Request URL:', add_Bid_url);
 
     setIsLoading(true);
@@ -138,7 +137,7 @@ const AddBiddingDetails = props => {
       IS_ACTIVE: true,
     };
     console.log('Bid_Data', Bid_Data);
-    axios
+    axiosInstance
       .post(add_Bid_url, Bid_Data)
       .then(response => {
         console.log('API Response add_bid:', response?.data);

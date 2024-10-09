@@ -29,7 +29,6 @@ import UploadRightImage from '../../components/Molecules/UploadImage/UploadRight
 import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { Config } from '../../Config';
-import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import { getJobDetailServices, updateJobImagesServices, uploadJobImagesServices } from '../../services/JobModuleServices/JobModuleServices';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];

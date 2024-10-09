@@ -18,7 +18,6 @@ import AddBiddingDetails from '../components/Molecules/AddBiddingDetails/AddBidd
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {Config} from '../Config';
 import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import PropertyModal from '../components/PropertyModal/PropertyModal';
 import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';

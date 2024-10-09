@@ -1,10 +1,10 @@
-import axios from 'axios';
 import {
     fetchSubscriptionData,
     fetchSubscriptionSuccess,
     fetchSubscriptionError,
 } from './SubscriptionApiAction';
 import {Config} from '../../../Config';
+import axiosInstance from '../../../services/axiosInstance';
 
 const url = Config.BASE_URL;
 
@@ -12,7 +12,7 @@ export const userSubscribedCreator = data => async dispatch => {
     // alert(JSON.stringify(data));
     dispatch(fetchSubscriptionData());
     try {
-      const res = await axios.post(url + 'check_subscription', data, {
+      const res = await axiosInstance.post(url + 'check_subscription', data, {
         headers: {
           'Content-Type': 'application/json',
         },
