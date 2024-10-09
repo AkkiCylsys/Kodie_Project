@@ -27,6 +27,8 @@ import {useIsFocused} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListEmptyComponent from '../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import { deletePropertySevices } from '../services/PropertyModule/PropertyModul';
+import { PropertyListingDetails } from '../services/PropertyListing/ListingServices';
 const HorizontalData = [
   'All',
   // 'Recent',
@@ -54,7 +56,6 @@ const MarketplacePropertyListing = props => {
 
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
   const isvisible = useIsFocused();
-  const [expandedItemId, setExpandedItemId] = useState(null);
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -117,62 +118,47 @@ const MarketplacePropertyListing = props => {
     setFilteredMarketPlace(filtered);
   };
   // Get Api Bind here...
-  const get_MarketplacePropertyListing = () => {
-    const url = Config.BASE_URL;
-    const PropertyListing_url = url + 'property_market_by_account_id';
+  const get_MarketplacePropertyListing = async() => {
     setIsLoading(true);
-    console.log('Request URL:', PropertyListing_url);
-    // setIsLoading(true);
     const PropertyListing_id = {
       account_id: loginData?.Login_details?.user_account_id,
     };
-    axios
-      .post(PropertyListing_url, PropertyListing_id)
-      .then(response => {
-        console.log(
-          'Property Market Details Retrieve Successfully:',
-          JSON.stringify(response?.data),
-        );
-        if (response?.data?.success === true) {
-          setPropertyListingData(response?.data?.property_details);
+   const ListingRes = await PropertyListingDetails(PropertyListing_id)
+        if (ListingRes?.success === true) {
+          setPropertyListingData(ListingRes?.property_details);
           setIsLoading(false);
         } else {
           setIsLoading(false);
         }
-      })
-      .catch(error => {
-        if (error?.response?.status === 400) {
-          setPropertyListingData([]);
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-        }
-        console.error('API failed PropertyListing', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
+
   // delete marketplace list
   const FinalDeleteVacant = async () => {
+    console.log('propertyDelId:', propId);
     setIsLoading(true);
+  
     try {
-      const url = Config.BASE_URL;
-      const response = await axios.delete(url + 'delete_property_by_id', {
-        data: JSON.stringify({property_id: propId}),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      // console.log('API Response:', response?.data);
-      if (response?.data?.success === true) {
-        Alert.alert('Property deleted', response?.data?.message);
-        get_MarketplacePropertyListing();
-        setIsLoading(false);
+      if (!propId) {
+        throw new Error('Invalid property ID. Please try again.');
       }
+  
+      const propertyIdString = String(propId); // Ensure property ID is a string
+      const data = { property_id: propertyIdString };
+      console.log('Data being sent:', data);
+      const deletePropertyResponse = await deletePropertySevices(data);
+      console.log('API Response:', deletePropertyResponse); // Log the response
+  
+        Alert.alert(
+          'Property deleted',
+          deletePropertyResponse?.message || 'The property was deleted successfully.')
+        await get_MarketplacePropertyListing(); // Refresh property details
+  
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
+      const errorMessage = error?.response?.data?.message || error.message || 'An error occurred. Please try again.';
+      Alert.alert('Warning', errorMessage);
+    } finally {
+      setIsLoading(false); // Ensure loading is disabled even after error
     }
   };
   useEffect(() => {

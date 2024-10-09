@@ -49,7 +49,6 @@ import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
 import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
-import axiosInstance from '../../../services/axiosInstance';
 import { confirmPasswordServices, sendVerificationService, verifyOtpServices } from '../../../services/Authentication/ForgotPasswordServices';
 export default Login = props => {
   const dispatch = useDispatch();

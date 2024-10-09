@@ -1,7 +1,6 @@
 import axios from 'axios';
 import CryptoJS from 'react-native-crypto-js';
 import { Config } from '../../Config';
-import axiosInstance from '../axiosInstance';
 
 const secretKey = 'XkhZG4fW2t2W';
 
@@ -129,20 +128,13 @@ export const SignupVerification = (data) => {
 };
 
 export const userLogin = (data) => {
-  // axiosInstance.get('/user/profile')
-  //   .then((response) => {
-  //     console.log('Profile Data:', response.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error fetching profile data:', error);
-  //   });
 
   const postData = {
     username: 'exampleUser',
     password: 'examplePassword',
   };
 
-  axiosInstance.post('/user/login', data)
+  axios.post('/user/login', data)
     .then((response) => {
       console.log('Login Response Data:', response.data);
     })

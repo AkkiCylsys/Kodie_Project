@@ -9,7 +9,6 @@ import {
   fetchLogout,
 } from './AuthenticationApiAction';
 import { Config } from '../../../Config';
-import axiosInstance from '../../../services/axiosInstance';
 
 const url = Config.BASE_URL;
 

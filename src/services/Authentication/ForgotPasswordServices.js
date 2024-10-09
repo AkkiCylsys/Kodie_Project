@@ -1,8 +1,7 @@
-import { handleApiError } from "../../APIs/ErrorHandler";
-import axiosInstance from "../axiosInstance";
+import axios from "axios";
 
 export const sendVerificationService = (sendVerificationPayload) => {
-    return axiosInstance.post('SendOTP_Forget_password', sendVerificationPayload)
+    return axios.post('SendOTP_Forget_password', sendVerificationPayload)
         .then((response) => {
             console.log('API Response Data SendOTP_Forget_password:', response?.data);
             return response.data; // Return response data directly
@@ -18,7 +17,7 @@ export const sendVerificationService = (sendVerificationPayload) => {
 
 
 export const verifyOtpServices = (data) => {
-    return axiosInstance.post('verifyotp', data)
+    return axios.post('verifyotp', data)
         .then((response) => {
             console.log('API Response Data verify otp:', response.data);
             return response;  // Make sure to return the response
@@ -34,7 +33,7 @@ export const verifyOtpServices = (data) => {
 
 
 export const confirmPasswordServices = (data) => {
-    return axiosInstance.post('forgetpassword', data)
+    return axios.post('forgetpassword', data)
         .then((response) => {
             console.log('API Response Data confirmPassWord', response.data);
             return response;  // Make sure to return the response

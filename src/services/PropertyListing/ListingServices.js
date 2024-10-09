@@ -5,7 +5,6 @@ import { handleApiError } from "../../APIs/ErrorHandler";
 import axiosInstance from "../axiosInstance";
 
 export const insertMarketDetails = (data) => {
-    const url = `${Config.BASE_URL}insert_market_details`;
   
     return new Promise((resolve, reject) => {
       axiosInstance.post('insert_market_details', data)
@@ -22,6 +21,24 @@ export const insertMarketDetails = (data) => {
         });
     });
   };
+  export const PropertyListingDetails = (data) => {
+  
+    return new Promise((resolve, reject) => {
+      axiosInstance.post('property_market_by_account_id', data)
+        .then(response => {
+          if (response?.data?.success) {
+            resolve(response.data);
+          } else {
+            reject(new Error(response?.data?.error || 'Unknown error'));
+          }
+        })
+        .catch(error => {
+          const errorMessage = handleApiError(error);
+        reject(errorMessage);
+        });
+    });
+  };
+
   export const UnlistMarketDetails = async (data) => {
     try {
       const response = await axiosInstance.post('unlist_property_details', data);
