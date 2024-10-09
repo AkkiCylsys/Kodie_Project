@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Config} from '../../Config';
+import axiosInstance from '../axiosInstance';
 
 export const FavouriteServices = async favourtiesPayload => {
   try {
@@ -7,7 +8,7 @@ export const FavouriteServices = async favourtiesPayload => {
     const FavouriteUri = `${url}saveFavoriteMapping`;
     console.log('FavouriteUri:', FavouriteUri);
 
-    const response = await axios.post(FavouriteUri, favourtiesPayload, {
+    const response = await axiosInstance.post(FavouriteUri, favourtiesPayload, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,7 +27,7 @@ export const GetFavouriteServices = async getfavourtiesPayload => {
     const getFavouriteUri = `${url}Favoritelist`;
     console.log('getFavouriteUri:', getFavouriteUri);
 
-    const response = await axios.post(getFavouriteUri, getfavourtiesPayload, {
+    const response = await axiosInstance.post(getFavouriteUri, getfavourtiesPayload, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -45,7 +46,7 @@ export const GetJobFavouriteServices = async getJobfavourtiesPayload => {
     const getFavouriteUri = `${url}Favoritelist`;
     console.log('getJobFavouriteUri:', getFavouriteUri);
 
-    const response = await axios.post(getFavouriteUri, getJobfavourtiesPayload, {
+    const response = await axiosInstance.post(getFavouriteUri, getJobfavourtiesPayload, {
       headers: {
         'Content-Type': 'application/json',
       },
