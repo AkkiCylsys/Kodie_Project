@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {CreateJobTermsStyle} from './CreateJobTermsStyle';
+import { CreateJobTermsStyle } from './CreateJobTermsStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../services/CommonServices';
-import {Dropdown} from 'react-native-element-dropdown';
-import {_COLORS, LABEL_STYLES} from '../../../Themes/index';
+import { _goBack } from '../../../services/CommonServices';
+import { Dropdown } from 'react-native-element-dropdown';
+import { _COLORS, LABEL_STYLES } from '../../../Themes/index';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import moment from 'moment';
 import RangeSlider from '../../../components/Molecules/RangeSlider/RangeSlider';
@@ -23,17 +23,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import axios from 'axios';
-import {useDispatch, useSelector} from 'react-redux';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {fetchCreateJobSuccess} from '../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { fetchCreateJobSuccess } from '../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
+import { getJobDetailServices, updateJobServices } from '../../../services/JobModuleServices/JobModuleServices';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 const data = [
-  {label: '3 hours', value: '1'},
-  {label: '4 hours', value: '2'},
-  {label: '5 hours', value: '3'},
-  {label: '6 hours', value: '4'},
+  { label: '3 hours', value: '1' },
+  { label: '4 hours', value: '2' },
+  { label: '5 hours', value: '3' },
+  { label: '6 hours', value: '4' },
 ];
 export default CreateJobTermsScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -128,7 +129,7 @@ export default CreateJobTermsScreen = props => {
     setModalVisible(!isModalVisible);
   };
 
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -181,23 +182,23 @@ export default CreateJobTermsScreen = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Terms'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Terms'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -262,7 +263,7 @@ export default CreateJobTermsScreen = props => {
   // renderitems.....
   const NeedHour_render = item => {
     return (
-      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
+      <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobTermsStyle.itemView,
@@ -295,7 +296,7 @@ export default CreateJobTermsScreen = props => {
   };
   const NeedService_render = item => {
     return (
-      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
+      <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateJobTermsStyle.itemView,
@@ -497,15 +498,14 @@ export default CreateJobTermsScreen = props => {
 
   // EditMode Api.........
   const getJobDetails = () => {
-    const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
-    console.log('Request URL:', jobDetails_url);
+    // const url = Config.BASE_URL;
+    // const jobDetails_url = url + 'job/get';
+    // console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
       jm_job_id: JobId,
     };
-    axios
-      .post(jobDetails_url, jobDetails_Data)
+    getJobDetailServices(jobDetails_Data)
       .then(response => {
         console.log('API Response JobDetails:', response?.data);
         if (response?.data?.success === true) {
@@ -558,10 +558,8 @@ export default CreateJobTermsScreen = props => {
   };
 
   const updateCreateJob = () => {
-    const url = Config.BASE_URL;
-    const update_createJob_url = url + `job/updateJob/${JobId}`;
-    console.log('Request URL u:', update_createJob_url);
     setIsLoading(true);
+    const jobIdToUpdate = JobId
     const update_createJob_Data = {
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
@@ -587,8 +585,7 @@ export default CreateJobTermsScreen = props => {
       job_booking_insurance: null,
     };
     console.log('updatedBody in second step .....', update_createJob_Data);
-    axios
-      .put(update_createJob_url, update_createJob_Data)
+    updateJobServices(jobIdToUpdate, update_createJob_Data)
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
@@ -618,7 +615,7 @@ export default CreateJobTermsScreen = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />
-      <View style={{marginVertical: 10}}>
+      <View style={{ marginVertical: 10 }}>
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={1}
@@ -633,7 +630,7 @@ export default CreateJobTermsScreen = props => {
           <Text style={CreateJobTermsStyle.terms_Text}>{'Terms'}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {'What date and time would you prefer?'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -766,65 +763,65 @@ export default CreateJobTermsScreen = props => {
           />
           {
             hasContractorRole ? null :
-          
-          <View style={CreateJobTermsStyle.resp_View}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'Who is responsible for paying for this?'}
-            </Text>
-            <Text style={CreateJobTermsStyle.sub_des_Text}>
-              {
-                'Authorisation will be required by the party responsible for payment.'
-              }
-            </Text>
 
-            <RowButtons
-              LeftButtonText={
-                selectedResponsibleData[0]?.lookup_description || 'Tenant'
-              }
-              leftButtonbackgroundColor={
-                !selectedButtonResponsible
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selectedButtonResponsible
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selectedButtonResponsible
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelectedButtonResponsible(false);
-                setSelectedButtonResponsibleId(259);
-              }}
-              RightButtonText={
-                selectedResponsibleData[1]?.lookup_description || 'Landlord'
-              }
-              RightButtonbackgroundColor={
-                selectedButtonResponsible
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selectedButtonResponsible
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selectedButtonResponsible
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelectedButtonResponsible(true);
-                setSelectedButtonResponsibleId(260);
-              }}
-            />
-          </View>
-}
+              <View style={CreateJobTermsStyle.resp_View}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Who is responsible for paying for this?'}
+                </Text>
+                <Text style={CreateJobTermsStyle.sub_des_Text}>
+                  {
+                    'Authorisation will be required by the party responsible for payment.'
+                  }
+                </Text>
+
+                <RowButtons
+                  LeftButtonText={
+                    selectedResponsibleData[0]?.lookup_description || 'Tenant'
+                  }
+                  leftButtonbackgroundColor={
+                    !selectedButtonResponsible
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButtonResponsible
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButtonResponsible
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButtonResponsible(false);
+                    setSelectedButtonResponsibleId(259);
+                  }}
+                  RightButtonText={
+                    selectedResponsibleData[1]?.lookup_description || 'Landlord'
+                  }
+                  RightButtonbackgroundColor={
+                    selectedButtonResponsible
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButtonResponsible
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButtonResponsible
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButtonResponsible(true);
+                    setSelectedButtonResponsibleId(260);
+                  }}
+                />
+              </View>
+          }
           {/* <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"Booking insurance?"}
           </Text>

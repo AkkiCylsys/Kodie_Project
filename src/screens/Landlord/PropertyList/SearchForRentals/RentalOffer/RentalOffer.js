@@ -43,6 +43,7 @@ import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {PropertyList2Css} from '../PropertyList2Css';
 import MultiSelect from 'react-native-multiple-select';
+import { getEditAllQuestionServices, getTenantQuestionServices, saveAllJsonDynamicQuestionServices } from '../../../../../services/TenantScreeningServices/TenantScreeningServices';
 
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
@@ -303,9 +304,6 @@ const RentalOffer = props => {
   };
 
   const getEditAllQuestion = async () => {
-    const url = Config.BASE_URL;
-    const Ques_url = url + 'question_details_for_tenant_ques';
-    console.log('Request URL:', Ques_url);
     setIsLoading(true);
 
     const QuesData = {
@@ -316,7 +314,7 @@ const RentalOffer = props => {
     console.log('QuesData in edit offer..', QuesData);
 
     try {
-      const response = await axios.post(Ques_url, QuesData);
+      const response = await getEditAllQuestionServices(QuesData);
       console.log('Response edit question..', response?.data);
 
       // This is for get Occupants ,Leaseholders,EmployeeReference and Reference Data.
@@ -1380,17 +1378,13 @@ const RentalOffer = props => {
   };
   // Api intrigation....
   const handleTenantQues = () => {
-    const url = Config.BASE_URL;
-    const tenantQues_url = url + 'question_details_for_tenant_ques';
-    console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
     console.log('tenant_ques payload..', tenantQuesData);
-    axios
-      .post(tenantQues_url, tenantQuesData)
+    getTenantQuestionServices(tenantQuesData)
       .then(response => {
         if (response?.data?.success === true) {
           console.log(
@@ -1788,9 +1782,9 @@ const RentalOffer = props => {
   };
 
   const saveAllJson = finalJson => {
-    const url = Config.BASE_URL;
-    const saveJson_url = `${url}save_json_details`;
-    console.log('Request URL:', saveJson_url);
+    // const url = Config.BASE_URL;
+    // const saveJson_url = `${url}save_json_details`;
+    // console.log('Request URL:', saveJson_url);
     setIsLoading(true);
 
     const saveJsonData = {
@@ -1802,8 +1796,7 @@ const RentalOffer = props => {
 
     console.log('saveJsonData:', JSON.stringify(saveJsonData));
 
-    axios
-      .post(saveJson_url, saveJsonData)
+    saveAllJsonDynamicQuestionServices(saveJsonData)
       .then(response => {
         if (response?.data?.success === true) {
           console.log(
@@ -1854,6 +1847,9 @@ const RentalOffer = props => {
       .post(saveBiddingDetails_url, saveBiddingDetailsData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+          'uli-device-id': loginData?.Login_details?.device_id,
+          'uli-device-os-type': loginData?.Login_details?.device_os_type,
         },
       })
       .then(response => {

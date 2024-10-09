@@ -35,6 +35,7 @@ import {
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 import MultiSelect from 'react-native-multiple-select';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
+import { getSearchForRentalServices } from '../../../../services/SearchForRentalServices/SearchForRentalServices';
 
 const PropertyList2 = props => {
   const [furnished, setFurnished] = useState(0);
@@ -287,9 +288,6 @@ const PropertyList2 = props => {
   };
 
   const searchForRental = () => {
-    const url = Config.BASE_URL;
-    const serchForrental_url = url + 'Search_For_Rental';
-    console.log('Request URL:', serchForrental_url);
     setIsLoading(true);
     const searchForrental_Data = {
       location: location,
@@ -306,8 +304,7 @@ const PropertyList2 = props => {
       pet_friendly: selectPetFriendlyBtnId,
     };
     console.log('request Data search for rental.. ', searchForrental_Data);
-    axios
-      .post(serchForrental_url, searchForrental_Data)
+    getSearchForRentalServices(searchForrental_Data)
       .then(response => {
         console.log('API Response searchForRental..', response?.data);
         if (response?.data?.success === true) {
