@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ import BottomModalData from '../../../../components/Molecules/BottomModal/Bottom
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../../Config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -31,6 +31,7 @@ import {head} from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import DeviceInfo from 'react-native-device-info';
+import { archiveSevices, deletePropertySevices, getPropertyFilterSevice } from '../../../../services/PropertyModule/PropertyModul';
 const HorizontalData = [
   'All',
   'Recent',
@@ -101,27 +102,25 @@ const PropertyList = props => {
     setFilteredpropertyData(filtered);
   };
   const archiveProperty = async id => {
+    console.log(id);
     setIsLoading(true);
     try {
-      const url = Config.BASE_URL;
-      const archive_apiUrl = url + 'archieve_property';
-      const response = await axios.post(archive_apiUrl, {
+      const data = {
         property_id: id,
-      });
+      }
+      const archiveData = await archiveSevices(data)
       setPropertyData(prevData =>
         prevData.map(item =>
           item.property_id === id ? {...item, isArchived: true} : item,
         ),
       );
       setTimeout(() => {
-        if (response?.data?.success === true) {
-          // Remove the item from the list
+        if (archiveData?.success === true) {
+          // alert(archiveData?.message)
           getPropertyDetailsByFilter(selectedFilter);
           swipeableRef.current[id]?.close();
         } else {
           swipeableRef.current[id]?.close();
-
-          // If the request failed, revert the item to its original state
           setPropertyData(prevData =>
             prevData.map(item =>
               item.property_id === id ? {...item, isArchived: false} : item,
@@ -130,40 +129,36 @@ const PropertyList = props => {
         }
       }, 200);
     } catch (error) {
-      Alert.alert('Error', 'An error occurred while archiving the property.');
+      alert(error)
+      // Alert.alert('Error', 'An error occurred while archiving the property.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getPropertyDetailsByFilter = async filter => {
-    setIsLoading(true);
+  const getPropertyDetailsByFilter = async (filter) => {
+    setIsLoading(true); // Start loading
+  
     try {
-      const url = Config.BASE_URL;
-      const filter_apiUrl = url + 'get_property_details_by_filter';
-      // Adding the headers with deviceId, deviceType, and token
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
-      'uli-device-id': deviceId, 
-      'uli-device-os-type': deviceType, 
-    };
-      console.log('filter_apiUrl...', filter_apiUrl);
-      const response = await axios.post(filter_apiUrl, {
+      // Construct the data for the API call
+      const PropertyData = {
         property_filter: filter,
         user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
-        limit: filter === 'Recent' ? 5 : 1000,
-        order_col: '1',
-        order_wise: 'DESC',
-      },
-      { headers }
-    );
-      //alert(JSON.stringify(response))
-      setPropertyData(response?.data?.property_details);
-      console.log('property Data....', response?.data?.property_details);
-      setIsLoading(false);
+        limit: filter === 'Recent' ? 5 : 1000, // Adjust limit based on filter type
+        order_col: '1', // Sorting column
+        order_wise: 'DESC', // Sort in descending order
+      };
+      const filterData = await getPropertyFilterSevice(PropertyData);
+      if (!filterData || filterData.length === 0) {
+        throw new Error('No property data found for the selected filter.');
+      }
+      setPropertyData(filterData);
+      console.log('Property Data:', filterData);
     } catch (error) {
-      // Alert.alert('Warning', error?.response?.data?.message);
+      console.error('Error fetching property details:', error.message || error);
+      setPropertyData([]);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -202,10 +197,13 @@ const PropertyList = props => {
     );
   };
 
-  useEffect(() => {
-    getPropertyDetailsByFilter(selectedFilter);
-  }, [selectedFilter, isvisible]);
-
+  useFocusEffect(
+    useCallback(() => {
+      // Fetch property details whenever the screen is focused
+      getPropertyDetailsByFilter(selectedFilter);
+  
+    }, [selectedFilter])
+  );
   const handleEndReached = () => {
     if (!isLoading) {
       setPage(prevPage => prevPage + 1);
@@ -215,34 +213,36 @@ const PropertyList = props => {
     setIsDeleteData_Clicked(true);
   };
   const FinalDeleteProperty = async () => {
+    console.log('propertyDelId:', propertyDelId);
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
+  
     try {
-      const url = Config.BASE_URL;
-      const response = await axios.delete(url + 'delete_property_by_id', {
-        data: JSON.stringify({property_id: propertyDelId}),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      // console.log('API Response:', response?.data);
-      if (response?.data?.success === true) {
+      if (!propertyDelId) {
+        throw new Error('Invalid property ID. Please try again.');
+      }
+  
+      const propertyIdString = String(propertyDelId); // Ensure property ID is a string
+      const data = { property_id: propertyIdString };
+      console.log('Data being sent:', data);
+      const deletePropertyResponse = await deletePropertySevices(data);
+      console.log('API Response:', deletePropertyResponse); // Log the response
+  
         Alert.alert(
           'Property deleted',
-          response?.data?.message || 'The property was deleted successfully.',
-        );
-
-        getPropertyDetailsByFilter(selectedFilter);
-        setIsLoading(false);
-      }
+          deletePropertyResponse?.message || 'The property was deleted successfully.')
+        await getPropertyDetailsByFilter(selectedFilter); // Refresh property details
+  
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
-      Alert.alert('Warning', error?.response?.data?.message);
+      const errorMessage = error?.response?.data?.message || error.message || 'An error occurred. Please try again.';
+      Alert.alert('Warning', errorMessage);
+    } finally {
+      setIsLoading(false); // Ensure loading is disabled even after error
     }
   };
-
+  
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity

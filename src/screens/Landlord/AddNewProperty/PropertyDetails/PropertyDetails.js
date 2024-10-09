@@ -34,7 +34,6 @@ import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import Geolocation from '@react-native-community/geolocation';
 import DeviceInfo from 'react-native-device-info';
 import { SavePropertyDetailSevices, getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
@@ -67,10 +66,6 @@ export default PropertyDetails = props => {
   const [error, setError] = useState('');
   const [notesError, setNotesError] = useState('');
   const [propertyError, setPropertyError] = useState('');
-  const device = DeviceInfo.getUniqueId();
-  const deviceId = device?._z
-  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId,deviceType,'propperty');
   const loginData = useSelector(state => state.authenticationReducer.data);
   useEffect(() => {
     if (!addressComponents) return;
@@ -361,7 +356,7 @@ export default PropertyDetails = props => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('property_type error:', error);
+      console.error('property_type P_PARENT_CODE error:', error);
       setIsLoading(false);
     }
   };

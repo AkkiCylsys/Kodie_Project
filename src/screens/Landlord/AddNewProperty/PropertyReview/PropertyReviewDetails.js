@@ -34,6 +34,7 @@ import CustomTabNavigator from '../../../../components/Molecules/CustomTopNaviga
 import {BackHandler} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { useFocusEffect } from '@react-navigation/native';
+import { getPropertyDetailSevice } from '../../../../services/PropertyModule/PropertyModul';
 export default PropertyReviewDetails = props => {
   const property_id = props?.route?.params?.property_id;
   const propertyid = props?.route?.params?.propertyid;
@@ -171,27 +172,6 @@ export default PropertyReviewDetails = props => {
       )}
     </View>
   );
-
-  // const renderCategory = ({ item }) => (
-  //   <View style={DetailsStyle.categoryContainer}>
-  //     <Text style={DetailsStyle.categoryTitle}>{item.category}</Text>
-  //     <DividerIcon marginTop={5}/>
-  //     <FlatList
-  //       data={item.items}
-  //       renderItem={renderpointItem}
-  //       keyExtractor={(item, index) => index.toString()}
-  //       ListFooterComponent={<TouchableOpacity onPress={()=>{
-  //         // alert(JSON.stringify(item.items.length))
-  //         if(item.items.length >2){
-
-  //         }else{
-  //           // alert(JSON.stringify("No more data found!"))
-  //         }
-  //       }}><Text style={DetailsStyle.viewMore}>View more...</Text></TouchableOpacity>}
-  //     />
-
-  //   </View>
-  // );
   const iconMapping = {
     Pool: {component: MaterialIcons, name: 'pool'},
     Garage: {component: MaterialCommunityIcons, name: 'garage'},
@@ -257,53 +237,42 @@ export default PropertyReviewDetails = props => {
       </View>
     );
   };
-  const fetchData = async () => {
-    try {
-      const detailData = {
-        property_id:
-          propertyView || propertyVacantListing ? propertyid : property_id,
-      };
-      const url = Config.BASE_URL;
-      const property_Detailss = url + 'get_property_details';
-
-      console.log('url..', property_Detailss);
+    // Api intrigation here ....
+    const fetchData = async () => {
       setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
-      setIsLoading(false);
-      console.log('response_get_property_details...', response?.data);
-      if (response?.data?.success === true) {
-        setProperty_Details(response?.data?.property_details[0]);
-        console.log(
-          'type of property....',
-          response?.data?.property_details[0],
-        );
-        if (response?.data?.property_details[0].key_features) {
+      try {
+        const details = await getPropertyDetailSevice(  propertyView || propertyVacantListing ? propertyid : property_id);
+        console.log(details, "detailis");
+        setProperty_Details(details); 
+        if (details?.key_features) {
           const parsedData = JSON.parse(
-            response?.data?.property_details[0].key_features.replace(/\\/g, ''),
+            details?.key_features.replace(
+              /\\/g,
+              '',
+            ),
           );
           setDetail(parsedData);
           console.log('parsedData....', parsedData);
         }
         const additionalKeyFeatures =
-          response?.data?.property_details[0].additional_key_features[0];
+        details?.additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
-      } else {
-        console.error('propertyDetail_error:', response?.data?.error);
-      }
       const additionalFeatures_id =
-        response?.data?.property_details[0].additional_features_id;
-      console.log('additionalFeaturesid....', additionalFeatures_id);
-      const additionalFeaturesIds = additionalFeatures_id
-        .split(',')
-        .map(value => value.trim()); // ['1', '1', '1', '0']
-      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
-      setAddtionalFeaturesID(additionalFeaturesIds);
-    } catch (error) {
-      console.error('Error:', error);
-      setIsLoading(false);
-    }
-  };
-
+      details?.additional_features_id;
+    console.log('additionalFeaturesid....', additionalFeatures_id);
+    const additionalFeaturesIds = additionalFeatures_id
+    .split(',')
+    .map(value => value.trim()); // ['1', '1', '1', '0']
+    console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+    setAddtionalFeaturesID(additionalFeaturesIds);
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        alert(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
   useEffect(() => {
     setActiveTab(DocTab ? 'Tab4' : 'Tab1');
     fetchData();

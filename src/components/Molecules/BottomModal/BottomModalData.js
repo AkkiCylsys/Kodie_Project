@@ -12,6 +12,7 @@ import {Config} from '../../../Config';
 import axios from 'axios';
 import {UnlistMarketDetails} from '../../../services/PropertyListing/ListingServices';
 import {useSelector} from 'react-redux';
+import { archiveSevices } from '../../../services/PropertyModule/PropertyModul';
 
 const BottomModalData = ({
   propertyId,
@@ -246,13 +247,12 @@ const BottomModalData = ({
   const archiveProperty = async () => {
     console.log('sdfsdfdsf');
     try {
-      const url = Config.BASE_URL;
-      const archive_apiUrl = url + 'archieve_property';
-      const response = await axios.post(archive_apiUrl, {
+      const data = {
         property_id: propertyId,
-      });
+      }
+      const archived = await archiveSevices(data)
       setTimeout(() => {
-        if (response?.data?.success === true) {
+        if (archived?.success === true) {
           onClose();
         }
       }, 200);

@@ -41,6 +41,7 @@ import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/Ad
 import { useDispatch, useSelector } from 'react-redux';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import Geolocation from '@react-native-community/geolocation';
+import { getPropertyDetailSevice } from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
   const addPropertySecondStepData = useSelector(
@@ -77,24 +78,39 @@ export default PropertyReview = props => {
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
   useFocusEffect(
     useCallback(() => {
-      // Geolocation.getCurrentPosition(
-      //   position => {
-      //     const {latitude, longitude} = position.coords;
-      //     console.log(latitude, longitude, 'latitude,longitude');
-      // alert(property_Detail?.longitude)
           fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-          // fetchPointsOfInterest("33.8849","151.2052");
-          // fetchPointsOfInterest("27.149994", "79.499901");
-      //   },
-      //   error => console.error(error),
-      //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-      // );
-  
-      return () => {
-        // Cleanup if necessary when the screen is unfocused
-      };
-    }, [property_Detail]) // Add necessary dependencies
+    }, [property_Detail])
   );
+  useEffect(() => {
+    const handleLink = async () => {
+      const initialLink = await dynamicLinks().getInitialLink();
+      if (initialLink) {
+        await handleDynamicLink(initialLink);
+      }
+      const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+      return () => {
+        console.log('Cleaning up dynamic link listener');
+        unsubscribe();
+      };
+    };
+
+    handleLink();
+  }, [navigation]);
+  useEffect(() => {
+    setActiveTab(DocTab ? 'Tab4' : 'Tab1');
+    fetchData();
+    try {
+      const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+      setAdditionalKeyFeatures(keyFeaturesArray);
+    } catch (error) {
+      console.error('Error parsing additional_key_features:', error);
+    }
+    const timeout = setTimeout(() => {
+      setNumColumns(2); // Change to the desired number of columns
+    }, 2000); // Change this delay as needed
+
+    return () => clearTimeout(timeout);
+  }, [property_id, propertyid, additionalKeyFeaturesString]);
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
@@ -109,7 +125,6 @@ export default PropertyReview = props => {
       console.error('Error fetching POIs:', error);
     }
   };
-
   const categorizeData = (places) => {
     const categories = {
       'Schools & Education': [],
@@ -117,7 +132,6 @@ export default PropertyReview = props => {
       'Health': [],
       'Transport': []
     };
-
     places.forEach(place => {
       const { name, vicinity } = place;
       const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
@@ -134,14 +148,11 @@ export default PropertyReview = props => {
 
     return Object.entries(categories).map(([category, items]) => ({ category, items }));
   };
-
   const renderpointItem = ({ item }) => (
     <>
     <View style={DetailsStyle.itemContainer}>
       <Text style={DetailsStyle.itemName}>{item.name}</Text>
       <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
-      
-    {/* <DividerIcon /> */}
     </View>
     </>
   );
@@ -177,8 +188,6 @@ export default PropertyReview = props => {
       console.error('Failed to build dynamic link:', error);
     }
   };
-
-  // Function to handle the dynamic link
   const handleDynamicLink = async (link) => {
     console.log('Received Dynamic Link:', link.url);
 
@@ -196,28 +205,6 @@ export default PropertyReview = props => {
       console.error('Error handling dynamic link:', error);
     }
   };
-
-  // Handle dynamic links both from the app and from initial link
-  useEffect(() => {
-    const handleLink = async () => {
-      // Check if there's an initial link when the app starts
-      const initialLink = await dynamicLinks().getInitialLink();
-      if (initialLink) {
-        await handleDynamicLink(initialLink);
-      }
-
-      // Listen for subsequent dynamic links
-      const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-      return () => {
-        console.log('Cleaning up dynamic link listener');
-        unsubscribe();
-      };
-    };
-
-    handleLink();
-  }, [navigation]);
-
-  // Function to share content
   const shareContent = async () => {
     const shareOptions = {
       title: 'Share file',
@@ -303,72 +290,40 @@ export default PropertyReview = props => {
 
   // Api intrigation here ....
   const fetchData = async () => {
+    setIsLoading(true);
     try {
-      const detailData = {
-        property_id: propertyView || propertyListing ? propertyid : property_id,
-      };
-      console.log('detailData.............', detailData);
-      const url = Config.BASE_URL;
-      const property_Detailss = url + 'get_property_details';
-      console.log('url..', property_Detailss);
-      setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
-      setIsLoading(false);
-      console.log('response_get_property_details...', response?.data);
-      if (response?.data?.success === true) {
-        setProperty_Details(response?.data?.property_details[0]);
-        console.log(
-          'type of property....',
-          response?.data?.property_details[0],
+      const details = await getPropertyDetailSevice( propertyView || propertyListing ? propertyid : property_id);
+      console.log(details, "detailis");
+      setProperty_Details(details); 
+      if (details?.key_features) {
+        const parsedData = JSON.parse(
+          details?.key_features.replace(
+            /\\/g,
+            '',
+          ),
         );
-        if (response?.data?.property_details[0]?.key_features) {
-          const parsedData = JSON.parse(
-            response?.data?.property_details[0]?.key_features.replace(
-              /\\/g,
-              '',
-            ),
-          );
-          setDetail(parsedData);
-          console.log('parsedData....', parsedData);
-        }
-        const additionalKeyFeatures =
-          response?.data?.property_details[0]?.additional_key_features[0];
-        setAdditionalKeyFeaturesString(additionalKeyFeatures);
-      } else {
-        console.error('propertyDetail_error:', response?.data?.error);
+        setDetail(parsedData);
+        console.log('parsedData....', parsedData);
       }
-      const additionalFeatures_id =
-      response?.data?.property_details[0].additional_features_id;
-    console.log('additionalFeaturesid....', additionalFeatures_id);
-    const additionalFeaturesIds = additionalFeatures_id
-    .split(',')
-    .map(value => value.trim()); // ['1', '1', '1', '0']
-    console.log('is_additionalFeaturesid....', additionalFeaturesIds);
-    setAddtionalFeaturesID(additionalFeaturesIds);
-
-    } catch (error) {
-      console.error('Error:', error);
+      const additionalKeyFeatures =
+      details?.additional_key_features[0];
+      setAdditionalKeyFeaturesString(additionalKeyFeatures);
+    const additionalFeatures_id =
+    details?.additional_features_id;
+  console.log('additionalFeaturesid....', additionalFeatures_id);
+  const additionalFeaturesIds = additionalFeatures_id
+  .split(',')
+  .map(value => value.trim()); // ['1', '1', '1', '0']
+  console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+  setAddtionalFeaturesID(additionalFeaturesIds);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    } finally {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    
-    setActiveTab(DocTab ? 'Tab4' : 'Tab1');
-    fetchData();
-    try {
-      const keyFeaturesArray = additionalKeyFeaturesString.split(',');
-      setAdditionalKeyFeatures(keyFeaturesArray);
-    } catch (error) {
-      console.error('Error parsing additional_key_features:', error);
-    }
-    const timeout = setTimeout(() => {
-      setNumColumns(2); // Change to the desired number of columns
-    }, 2000); // Change this delay as needed
-
-    return () => clearTimeout(timeout);
-  }, [property_id, propertyid, additionalKeyFeaturesString]);
-
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
@@ -466,7 +421,6 @@ export default PropertyReview = props => {
   const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking / garage spaces"] : null;
   const OnStreetParkingObj = Detail.find(item => "On-street parking" in item);
   const OnStreetParkingValue = OnStreetParkingObj ? OnStreetParkingObj["On-street parking"] : null;
-
   const goBack = () => {
     props.navigation.pop();
   };
@@ -681,58 +635,6 @@ export default PropertyReview = props => {
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
-                {/* <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Kitchen'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Lounge'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Dining Room'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} />
-                <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
-                    {'Other'}
-                  </Text>
-                  <Text
-                    style={[
-                      LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
-                    ]}>
-                    {'0'}
-                  </Text>
-                </View>
-                <DividerIcon marginTop={8} /> */}
               </>
             ) : null}
             <View>
@@ -863,18 +765,6 @@ export default PropertyReview = props => {
               </View>
               {propertyView ? null : (
                 <>
-                  {/* <View style={PropertyReviewStyle.btnView}>
-                    <CustomSingleButton
-                      _ButtonText={
-                        editMode
-                          ? 'Edit property features later'
-                          : 'Add property features later'
-                      }
-                      Text_Color={_COLORS.Kodie_BlackColor}
-                      backgroundColor={_COLORS.Kodie_WhiteColor}
-                      disabled={isLoading ? true : false}
-                    />
-                  </View> */}
                   <TouchableOpacity
                     style={PropertyReviewStyle.goBack_View}
                     onPress={() => {
@@ -899,15 +789,6 @@ export default PropertyReview = props => {
         return (
           <>
             <Leases property_id={propertyid} />
-            {/* {Alert.alert('Lease', 'Coming soon', [
-          {
-            text: 'OK',
-            onPress: () => {
-              console.log('OK Pressed');
-              setActiveTab('Tab1');
-            },
-          },
-        ])} */}
           </>
         )
 
@@ -915,17 +796,6 @@ export default PropertyReview = props => {
         return (
           <>
             <Expenses property_id={propertyid} />
-
-            {/* {Alert.alert('Expenses', 'Coming soon', [
-          {
-            text: 'OK',
-            onPress: () => {
-              console.log('OK Pressed');
-              setActiveTab('Tab1');
-            },
-          },
-        ])} */}
-
           </>
         )
       case 'Tab4':
@@ -946,11 +816,6 @@ export default PropertyReview = props => {
         return <Details />;
     }
   };
-  const corouseRenderItem = ({ item }) => (
-    <View style={styles.slide}>
-      <Image source={{ uri: item }} style={styles.image} />
-    </View>
-  );
   return (
     <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
@@ -1040,20 +905,6 @@ export default PropertyReview = props => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                onPress={() => {
-                  setLike(!like);
-                }}>
-                <AntDesign
-                  name={like ? 'heart' : 'hearto'}
-                  color={
-                    like
-                      ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  size={24}
-                />
-              </TouchableOpacity> */}
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>

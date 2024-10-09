@@ -26,7 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
-import { getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
+import { SavePropertyDetailSevices, getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyFeature = props => {
   const addPropertySecondStepData = useSelector(
@@ -281,9 +281,6 @@ export default PropertyFeature = props => {
     props.navigation.pop();
   };
   const property_details = async () => {
-    const url = Config.BASE_URL;
-    const additionalApi = url + 'add_property_details';
-    console.log('Request URL:', additionalApi);
     setIsLoading(true);
     let data = {
       user: loginData?.Login_details?.user_id,
@@ -305,54 +302,24 @@ export default PropertyFeature = props => {
       p_country: country,
     };
     console.log('Property feature data in feature..', data);
-    axios
-      .post(additionalApi, {
-        user: loginData?.Login_details?.user_id,
-        user_account_details_id: loginData?.Login_details?.user_account_id,
-        location: location,
-        location_longitude: longitude,
-        location_latitude: latitude,
-        islocation: 1,
-        property_description: propertyDesc,
-        property_type: property_value > 0 ? property_value : 0,
-        key_features: AllCountsData,
-        additional_features: PreFriedly,
-        additional_key_features: additionalfeatureskeyvalue,
-        autolist: selectedButtonId,
-        UPD_FLOOR_SIZE: florSize,
-        UPD_LAND_AREA: landArea,
-        p_city: city,
-        p_state: state,
-        p_country: country,
-      })
-
-      .then(response => {
-        console.log('property_details', response?.data);
-        if (response?.data?.success === true) {
+    const response = await SavePropertyDetailSevices(data)
+        if (response?.success === true) {
           setIsLoading(false);
-
           console.log(
-            'response?.data?.Property_id',
-            response?.data?.Property_id,
+            'response?.Property_id',
+            response?.Property_id,
           );
-
           dispatch(
-            fetchAddPropertySecondStepsSuccess(response?.data?.Property_id),
+            fetchAddPropertySecondStepsSuccess(response?.Property_id),
           );
-
           props.navigation.navigate('PropertyImages', {
-            property_id: response?.data?.Property_id,
+            property_id: response?.Property_id,
           });
           console.log('property_details....', response?.data);
         } else {
-          console.error('property_details_error:', response?.data?.error);
+          console.error('property_details_error:', response?.error);
           setIsLoading(false);
         }
-      })
-      .catch(error => {
-        console.error('property_details error:', error);
-        setIsLoading(false);
-      });
   };
   const additional_features = async () => {
     const url = Config.BASE_URL;

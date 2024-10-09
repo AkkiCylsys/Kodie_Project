@@ -32,7 +32,7 @@ const GuestSelectionContent = ({
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      style={{flex: 1, marginHorizontal: 16, marginVertical: 16}} >
+      style={{flex: 1, marginHorizontal: 16}} >
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
@@ -59,7 +59,7 @@ const GuestSelectionContent = ({
           borderColor: _COLORS.Kodie_GrayColor,
           borderWidth: 1,
           borderRadius: 8,
-          marginVertical: 22,
+          marginTop: 22,
           alignItems: 'center',
           paddingHorizontal: 10,
         }}>
@@ -79,7 +79,7 @@ const GuestSelectionContent = ({
           placeholderTextColor={_COLORS.Kodie_BlackColor}
         />
       </View>
-      <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1, marginBottom: 80}}>
+      <ScrollView keyboardShouldPersistTaps="handled" style={{flex: 1}}>
         <FlatList
           data={results}
           keyExtractor={item => item.UAD_KEY.toString()}
@@ -168,18 +168,13 @@ const GuestSelectionContent = ({
       </ScrollView>
       <View
         style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
           backgroundColor: _COLORS?.Kodie_WhiteColor,
-          // paddingVertical: 16,
         }}>
         <TouchableOpacity
-          style={{paddingHorizontal: 16, paddingVertical: 10}}
+          style={{paddingHorizontal: 25, paddingVertical: 12}}
           onPress={handleClosePopup}>
           <Text
             style={{
