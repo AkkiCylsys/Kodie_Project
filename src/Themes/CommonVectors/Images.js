@@ -139,6 +139,7 @@ export const IMAGES = {
   vacantProperties: require('../../assets/icons/vacantProperties.png'),
   Inspections: require('../../assets/icons/Inspections.png'),
   Tenants: require('../../assets/icons/Tenants.png'),
+  NoInternet: require('../../assets/icons/no-wifi.png'),
 };
 
 export const BANNERS = {

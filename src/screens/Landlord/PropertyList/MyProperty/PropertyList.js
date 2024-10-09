@@ -30,6 +30,7 @@ import {brown100} from 'react-native-paper/lib/typescript/styles/themes/v2/color
 import {head} from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
+import DeviceInfo from 'react-native-device-info';
 const HorizontalData = [
   'All',
   'Recent',
@@ -45,7 +46,10 @@ const PropertyList = props => {
   console.log(loginData, 'loginData');
   // const userRole = '3,2';
   const roleArray = userRole ? userRole.split(',') : [];
-
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  console.log(deviceId,deviceType,'propperty');
   const hasTenantRole = roleArray.includes('2');
   const hasLandlordRole = roleArray.includes('3');
   const hasContractor = roleArray.includes('4');
@@ -137,6 +141,12 @@ const PropertyList = props => {
     try {
       const url = Config.BASE_URL;
       const filter_apiUrl = url + 'get_property_details_by_filter';
+      // Adding the headers with deviceId, deviceType, and token
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
+      'uli-device-id': deviceId, 
+      'uli-device-os-type': deviceType, 
+    };
       console.log('filter_apiUrl...', filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         property_filter: filter,
@@ -145,7 +155,9 @@ const PropertyList = props => {
         limit: filter === 'Recent' ? 5 : 1000,
         order_col: '1',
         order_wise: 'DESC',
-      });
+      },
+      { headers }
+    );
       //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
       console.log('property Data....', response?.data?.property_details);

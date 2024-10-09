@@ -20,6 +20,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {LoginManager, AccessToken, Profile} from 'react-native-fbsdk-next';
 import { logos } from '../../../Themes/CommonVectors/Images';
 import { LoginStyles } from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -769,6 +770,35 @@ export default Login = props => {
     refRBSheet.current.open();
   };
 
+  const loginWithFacebook = async () => {
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+ 
+      if (result.isCancelled) {
+        console.log('Login cancelled');
+      } else {
+        const data = await AccessToken.getCurrentAccessToken();
+        if (!data) {
+          throw new Error('Something went wrong obtaining access token');
+        }
+ 
+        const accessToken = data.accessToken.toString();
+        console.log('Access Token: ', accessToken);
+ 
+        // You can fetch user profile or send token to your server here
+        const userProfile = await Profile.getCurrentProfile();
+        if (userProfile) {
+          console.log('User Profile: ', userProfile);
+          if (userProfile?.userID != null || userProfile?.userID != '' || userProfile?.userID != undefined ||userProfile?.userID !=0) {
+            _facebookLoginApi(userProfile)
+            //props.navigation.navigate('SignUpSteps');
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Login fail with error: ', error);
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -906,6 +936,9 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
+              onPress={()=>{
+                loginWithFacebook();
+              }}
               // onPress={() => {
               //   LoginManager.logInWithPermissions(["public_profile", "email"]).then(
               //     function (result) {

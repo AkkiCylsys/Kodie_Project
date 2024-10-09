@@ -38,7 +38,7 @@ target 'Kodie' do
   pod 'FirebaseCore', :modular_headers => true
   pod 'FirebaseFirestore', :modular_headers => true
   pod 'FirebaseStorage', :modular_headers => true
- 
+  pod 'FBSDKCoreKit',:modular_headers => true
  
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -71,6 +71,10 @@ target 'Kodie' do
   #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
   # end
   post_install do |installer|
+    installer.aggregate_targets.first.user_project.native_targets.each do |target|
+      target.build_configurations.each do |config|
+          config.build_settings['LIBRARY_SEARCH_PATHS'] = ['$(inherited)', '$(SDKROOT)/usr/lib/swift']
+      end
     bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
    def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
      framework_path = File.join(Dir.pwd, framework_relative_path)
@@ -102,6 +106,8 @@ target 'Kodie' do
       end
     end
   end
+  
+end
   def __apply_Xcode_14_3_RC_post_install_workaround(installer)
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|

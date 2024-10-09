@@ -35,6 +35,7 @@ import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
+import DeviceInfo from 'react-native-device-info';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const addPropertySecondStepData = useSelector(
@@ -65,6 +66,10 @@ export default PropertyDetails = props => {
   const [error, setError] = useState('');
   const [notesError, setNotesError] = useState('');
   const [propertyError, setPropertyError] = useState('');
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  console.log(deviceId,deviceType,'propperty');
   const loginData = useSelector(state => state.authenticationReducer.data);
   useEffect(() => {
     // Avoid updating state if addressComponents are undefined or haven't changed
@@ -150,9 +155,13 @@ export default PropertyDetails = props => {
     const property_Detailss = url + 'get_property_details';
     console.log('Request URL:', property_Detailss);
     setIsLoading(true);
-
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
+      'uli-device-id': deviceId, 
+      'uli-device-os-type': deviceType, 
+    };
     try {
-      const response = await axios.post(property_Detailss, detailData);
+      const response = await axios.post(property_Detailss, detailData,{headers});
       console.log('propertyDetail', response?.data);
 
       if (response?.data?.success === true) {
@@ -207,13 +216,18 @@ export default PropertyDetails = props => {
       p_country: country,
     };
     console.log('updateData', updateData);
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
+      'uli-device-id': deviceId, 
+      'uli-device-os-type': deviceType, 
+    };
     const url = Config.BASE_URL;
     const update_property_details = url + 'update_property_details';
     console.log('Request URL:', update_property_details);
     setIsLoading(true);
     console.log('updated data in edit mode cgheck...', updateData);
     axios
-      .put(update_property_details, updateData)
+      .put(update_property_details, updateData,{headers})
       .then(response => {
         console.log('update_property_details', response?.data);
         if (response?.data?.success === true) {
@@ -518,10 +532,14 @@ export default PropertyDetails = props => {
       p_state: state,
       p_country: country,
     };
-
+    const headers = {
+      'Authorization': `Bearer ${loginData?.Login_details?.token}`, 
+      'uli-device-id': deviceId, 
+      'uli-device-os-type': deviceType, 
+    };
     console.log('Property details data..', addPropertyPayload);
     axios
-      .post(additionalApi, addPropertyPayload)
+      .post(additionalApi, addPropertyPayload,{headers})
 
       .then(response => {
         console.log('property_details', response?.data);
