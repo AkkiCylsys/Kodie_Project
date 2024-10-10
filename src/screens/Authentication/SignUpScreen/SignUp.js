@@ -419,13 +419,13 @@ const SignUp = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={handleSubmit}
             />
-            <DividerIcon
+            {/* <DividerIcon
               DeviderText={'or'}
               style={{
                 marginTop: 32,
                 //  marginBottom: 30
               }}
-            />
+            /> */}
 
             {/*.............. signup option field here ..................*/}
             {/* <CustomSingleButton
