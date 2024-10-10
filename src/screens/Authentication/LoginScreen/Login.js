@@ -786,33 +786,45 @@ export default Login = props => {
 
   const loginWithFacebook = async () => {
     try {
+      // Request permissions for Facebook login
       const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
- 
+  
+      // Check if the login was cancelled
       if (result.isCancelled) {
         console.log('Login cancelled');
+        return; // Early return if login is cancelled
+      }
+  
+      // Get the current access token
+      const data = await AccessToken.getCurrentAccessToken();
+      if (!data) {
+        throw new Error('Something went wrong obtaining access token');
+      }
+  
+      const accessToken = data.accessToken.toString();
+      console.log('Access Token: ', accessToken);
+  
+      // Fetch user profile using the access token
+      const userProfile = await Profile.getCurrentProfile();
+      if (userProfile) {
+        console.log('User Profile: ', userProfile);
+  
+        // Check if user ID is valid
+        if (userProfile.userID) { // Simplified check
+          // _facebookLoginApi(userProfile); // Call your API function
+          // Optionally navigate to the next screen
+          // props.navigation.navigate('SignUpSteps');
+        } else {
+          console.log('User ID is invalid');
+        }
       } else {
-        const data = await AccessToken.getCurrentAccessToken();
-        if (!data) {
-          throw new Error('Something went wrong obtaining access token');
-        }
- 
-        const accessToken = data.accessToken.toString();
-        console.log('Access Token: ', accessToken);
- 
-        // You can fetch user profile or send token to your server here
-        const userProfile = await Profile.getCurrentProfile();
-        if (userProfile) {
-          console.log('User Profile: ', userProfile);
-          if (userProfile?.userID != null || userProfile?.userID != '' || userProfile?.userID != undefined ||userProfile?.userID !=0) {
-            _facebookLoginApi(userProfile)
-            //props.navigation.navigate('SignUpSteps');
-          }
-        }
+        console.log('User profile not found');
       }
     } catch (error) {
-      console.log('Login fail with error: ', error);
+      console.error('Login failed with error: ', error); // Use console.error for better visibility
     }
   };
+  
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

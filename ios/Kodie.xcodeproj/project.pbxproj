@@ -14,8 +14,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1585F974C97241098FD9D247 /* PlusJakartaSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 337EF02CBDDF49DDB7E459BD /* PlusJakartaSans-Light.ttf */; };
+		181287B52CB78C4000228BE5 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181287B42CB78C4000228BE5 /* File.swift */; };
 		18367BC42BD14824006D4204 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18367BC32BD14824006D4204 /* StoreKit.framework */; };
-		1838B13C2CB5324200C876D5 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1838B13B2CB5324200C876D5 /* File.swift */; };
 		186314D52CA713960087D980 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 186314D42CA713960087D980 /* GoogleService-Info.plist */; };
 		1F617D9445B44680A61F4DAE /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F1CAA20D6AA4DDE8DA976F8 /* Poppins-Italic.ttf */; };
 		2A482E9160C04DF99E0721A6 /* NunitoSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B53F7DFCE11847D9B44C337A /* NunitoSans-ExtraBoldItalic.ttf */; };
@@ -90,9 +90,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Kodie/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Kodie/main.m; sourceTree = "<group>"; };
 		17B8480B6CC04547912E379E /* NunitoSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NunitoSans-ExtraBold.ttf"; path = "../src/assets/fonts/NunitoSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		181287B32CB78C4000228BE5 /* Kodie-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kodie-Bridging-Header.h"; sourceTree = "<group>"; };
+		181287B42CB78C4000228BE5 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		18367BC32BD14824006D4204 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		1838B13B2CB5324200C876D5 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		1838B13D2CB5327B00C876D5 /* Kodie-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kodie-Bridging-Header.h"; sourceTree = "<group>"; };
 		186314D42CA713960087D980 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18DA5F282BB2E89300D602B1 /* Kodie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Kodie.entitlements; path = Kodie/Kodie.entitlements; sourceTree = "<group>"; };
 		2198887B6FB24EBA97B18D49 /* PlusJakartaSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-Bold.ttf"; path = "../src/assets/fonts/PlusJakartaSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -195,8 +195,8 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				186314D42CA713960087D980 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				1838B13B2CB5324200C876D5 /* File.swift */,
-				1838B13D2CB5327B00C876D5 /* Kodie-Bridging-Header.h */,
+				181287B42CB78C4000228BE5 /* File.swift */,
+				181287B32CB78C4000228BE5 /* Kodie-Bridging-Header.h */,
 			);
 			name = Kodie;
 			sourceTree = "<group>";
@@ -383,6 +383,7 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
 				18DA5F272BB29A7500D602B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				181287B62CB79ED200228BE5 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -637,7 +638,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				1838B13C2CB5324200C876D5 /* File.swift in Sources */,
+				181287B52CB78C4000228BE5 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -948,6 +949,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		181287B62CB79ED200228BE5 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
 		18DA5F272BB29A7500D602B1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
