@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  PermissionsAndroid
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
@@ -43,9 +44,9 @@ import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveL
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument';
 import { Config } from '../../../Config';
-import axios from 'axios';
 import moment from 'moment';
 import { _goBack } from '../../../services/CommonServices';
+import axiosInstance from '../../../services/axiosInstance';
 const AddNotices = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -404,16 +405,11 @@ const AddNotices = props => {
 
     try {
       const Url = Config.BASE_URL;
-      const search_Url = Url + 'add_attendees/search';
+      const search_Url = 'add_attendees/search';
       console.log('Inspection_Url', search_Url);
-      const headers = {
-        'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-        'uli-device-id': loginData?.Login_details?.device_id,
-        'uli-device-os-type': loginData?.Login_details?.device_os_type,
-      };
-      const response = await axios.post(search_Url, {
+      const response = await axiosInstance.post(search_Url, {
         search: searchQuery,
-      }, { headers });
+      });
       if (response?.data?.success == true) {
         setResults(response?.data?.data);
         setIsLoading(false);
@@ -545,16 +541,13 @@ const AddNotices = props => {
     });
     console.log('FormData content:', formData);
     const url = Config.BASE_URL;
-    const createNoticeReminder_url = url + 'create_notices_reminder';
+    const createNoticeReminder_url = 'create_notices_reminder';
     setIsLoading(true);
     try {
       console.log('Request URL:', createNoticeReminder_url);
-      const response = await axios.post(createNoticeReminder_url, formData, {
+      const response = await axiosInstance.post(createNoticeReminder_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-          'uli-device-id': loginData?.Login_details?.device_id,
-          'uli-device-os-type': loginData?.Login_details?.device_os_type,
         },
       });
       console.log('hello deependra');
@@ -575,20 +568,15 @@ const AddNotices = props => {
 
   const getNoticesReminderDetails = () => {
     const url = Config.BASE_URL;
-    const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
+    const getNoticesReminderDetails_url = 'get_notices_reminder_details';
     console.log('Request URL:', getNoticesReminderDetails_url);
     setIsLoading(true);
     const notification_data = {
       notices_reminder_id: noticeReminderid,
     };
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-      'uli-device-id': loginData?.Login_details?.device_id,
-      'uli-device-os-type': loginData?.Login_details?.device_os_type,
-    };
     console.log(notification_data, 'notification_datakhds');
-    axios
-      .post(getNoticesReminderDetails_url, notification_data, { headers })
+    axiosInstance
+      .post(getNoticesReminderDetails_url, notification_data)
       .then(response => {
         console.log(
           'API Response getNoticesReminderDetailsData...:',
@@ -668,19 +656,16 @@ const AddNotices = props => {
     });
     console.log('formData vdsfs', formData);
     const url = Config.BASE_URL;
-    const update_createNoticeReminder_url = url + 'update_notices_reminder';
+    const update_createNoticeReminder_url = 'update_notices_reminder';
     setIsLoading(true);
     try {
       console.log('Request URL:', update_createNoticeReminder_url);
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         update_createNoticeReminder_url,
         formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-            'uli-device-id': loginData?.Login_details?.device_id,
-            'uli-device-os-type': loginData?.Login_details?.device_os_type,
           },
         },
       );

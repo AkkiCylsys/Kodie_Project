@@ -100,7 +100,6 @@ import Reviewjobdetails3 from '../../screens/CreateJob/ReviewJobDetails/Reviewjo
 import CompletedJobs from '../../screens/CreateJob/ReviewJobDetails/CompletedJobs';
 import Ratingandfeedback from '../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback';
 import EditDashboard from '../../screens/Dashboard/EditDashboard';
-import AddPropertyMainPage from '../../screens/Landlord/AddNewProperty/AddPropertyMainPage';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
 import DocumentDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/Documents/DocumentDetails/DocumentDetails';
 import ViewDocument from '../../screens/Landlord/AddNewProperty/PropertyReview/Documents/ViewDocuments/ViewDocument';
@@ -633,11 +632,6 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'FirstProperty'}
           component={FirstProperty}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
-        <Stack.Screen
-          name={'AddPropertyMainPage'}
-          component={AddPropertyMainPage}
           options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen

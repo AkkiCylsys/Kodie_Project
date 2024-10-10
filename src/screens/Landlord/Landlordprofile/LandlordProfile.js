@@ -14,7 +14,6 @@ import {
   CommonActions,
   useNavigation,
 } from '@react-navigation/native';
-import axios from 'axios';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {LandlordProfileStyle} from './LandlordProfileStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

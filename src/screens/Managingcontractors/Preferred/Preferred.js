@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -11,6 +10,7 @@ import {useIsFocused} from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import ContractorsImage from '../../../components/Molecules/Contractors/ContractorsImage/ContractorsImage';
 import {_COLORS} from '../../../Themes';
+import axiosInstance from '../../../services/axiosInstance';
 
 const data = [
   {
@@ -57,10 +57,10 @@ const Preferred = () => {
       User_USP_KEY: loginData.Login_details.user_account_id,
     };
     const url = Config.BASE_URL;
-    const PreferredUrl = url + 'invitecontractor_details_account_id';
+    const PreferredUrl ='invitecontractor_details_account_id';
     console.log('Request URL:', PreferredUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(PreferredUrl, PreferredBody)
       .then(response => {
         console.log('PreferredData', response.data);
@@ -83,10 +83,10 @@ const Preferred = () => {
       p_CONTRACTOR_ID: ContractorId,
     };
     const url = Config.BASE_URL;
-    const DeleteUrl = url + 'invitecontractor_details_delete';
+    const DeleteUrl ='invitecontractor_details_delete';
     console.log('Request URL:', DeleteUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(DeleteUrl, DeleteContractor)
       .then(response => {
         console.log('DeleteData', response.data);

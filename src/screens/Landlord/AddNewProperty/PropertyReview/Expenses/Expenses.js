@@ -7,10 +7,10 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import AddExpensesDetails from './AddExpensesDetails/AddExpensesDetails';
 import PropertyExpenses from './PropertyExpenses/PropertyExpenses';
 import Entypo from 'react-native-vector-icons/Entypo';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {Config} from '../../../../../Config';
+import axiosInstance from '../../../../../services/axiosInstance';
 export default Expenses = props => {
   const property_id = props.property_id;
   console.log('property_id in Expenses..', property_id);
@@ -24,9 +24,9 @@ export default Expenses = props => {
 
   const get_Expenses_Details = async () => {
     const url = Config.BASE_URL;
-    const Expenses_Details_url = url + `getAll/Expenses/${property_id}`;
+    const Expenses_Details_url =`getAll/Expenses/${property_id}`;
     console.log('Request URL:', Expenses_Details_url);
-    await axios
+    await axiosInstance
       .get(Expenses_Details_url)
       .then(response => {
         console.log('API Response Expenses_Details_url:', response?.data);

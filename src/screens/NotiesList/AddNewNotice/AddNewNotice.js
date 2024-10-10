@@ -45,6 +45,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument';
 import CustomNotificationPicker from '../../../components/CustomNotificationPicker/CustomNotificationPicker';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
+import axiosInstance from '../../../services/axiosInstance';
 const AddNewNotice = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -481,11 +482,11 @@ const AddNewNotice = props => {
     });
     console.log('formData', formData);
     const url = Config.BASE_URL;
-    const createNoticeReminder_url = url + 'create_notices_reminder';
+    const createNoticeReminder_url ='create_notices_reminder';
     setIsLoading(true);
     try {
       console.log('Request URL:', createNoticeReminder_url);
-      const response = await axios.post(createNoticeReminder_url, formData, {
+      const response = await axiosInstance.post(createNoticeReminder_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -510,14 +511,14 @@ const AddNewNotice = props => {
 
   const getNoticesReminderDetails = () => {
     const url = Config.BASE_URL;
-    const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
+    const getNoticesReminderDetails_url ='get_notices_reminder_details';
     console.log('Request URL:', getNoticesReminderDetails_url);
     setIsLoading(true);
     const notification_data = {
       notices_reminder_id: noticeReminderid,
     };
     console.log(notification_data, 'notification_datakhds');
-    axios
+    axiosInstance
       .post(getNoticesReminderDetails_url, notification_data)
       .then(response => {
         console.log(
@@ -596,11 +597,11 @@ const AddNewNotice = props => {
     });
     console.log('formData', formData);
     const url = Config.BASE_URL;
-    const update_createNoticeReminder_url = url + 'update_notices_reminder';
+    const update_createNoticeReminder_url = 'update_notices_reminder';
     setIsLoading(true);
     try {
       console.log('Request URL:', update_createNoticeReminder_url);
-      const response = await axios.put(
+      const response = await axiosInstance.put(
         update_createNoticeReminder_url,
         formData,
         {
@@ -757,9 +758,9 @@ const AddNewNotice = props => {
 
     try {
       const Url = Config.BASE_URL;
-      const search_Url = Url + 'add_attendees/search';
+      const search_Url = 'add_attendees/search';
       console.log('Inspection_Url', search_Url);
-      const response = await axios.post(search_Url, {
+      const response = await axiosInstance.post(search_Url, {
         search: searchQuery,
       });
       if (response?.data?.success == true) {

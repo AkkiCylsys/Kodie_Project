@@ -12,7 +12,6 @@ import {
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
 import {Config} from '../../../../Config';
 import {JobDocumentsStyle} from './JobDocumentStyle';
 import {_COLORS} from '../../../../Themes';
@@ -24,6 +23,7 @@ import Share from 'react-native-share';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import FileViewer from 'react-native-file-viewer';
+import axiosInstance from '../../../../services/axiosInstance';
 
 export default JobDocuments = props => {
   const navigation = useNavigation();
@@ -105,10 +105,10 @@ export default JobDocuments = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend,
       })
@@ -335,11 +335,11 @@ export default JobDocuments = props => {
   // Api intrigation ......
   const getAllDocuments =async () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `get/document/${JOB_ID}`;
+    const getDocument_url =`get/document/${JOB_ID}`;
     // const getDocument_url = url + `tanant_details/get/document/${15}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-   await axios
+   await axiosInstance
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response.data);
@@ -364,14 +364,14 @@ export default JobDocuments = props => {
 
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl ='get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: JOB_ID,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);

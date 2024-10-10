@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../../../Config';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
 import {PersonContractorStyle} from './PersonContractorStyle';
+import axiosInstance from '../../../../services/axiosInstance';
 export default PersonContractor = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [firstName, setFirstName] = useState('');
@@ -279,11 +280,11 @@ export default PersonContractor = props => {
       NOTES: note,
     };
     const url = Config.BASE_URL;
-    const PersonUrl = url + 'invitecontractor_details';
+    const PersonUrl ='invitecontractor_details';
     console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(PersonUrl, PersonDetailsData)
       .then(response => {
         console.log('Person Details_data response', response?.data);

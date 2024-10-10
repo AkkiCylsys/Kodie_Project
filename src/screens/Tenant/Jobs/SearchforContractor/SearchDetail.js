@@ -6,7 +6,6 @@ import Icon from "react-native-vector-icons/AntDesign";
 import { FONTFAMILY, _COLORS } from "../../../../Themes";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import ContractorsComponent from "../../../../components/Molecules/ContractorsComponent/ContractorsComponent";
-import axios from "axios";
 
 const SearchDetail = (props) => {
   let SearchDataDetail = props?.route?.params?.SearchDataDetail;

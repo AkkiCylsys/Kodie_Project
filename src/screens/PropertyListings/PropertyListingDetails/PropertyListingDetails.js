@@ -34,7 +34,6 @@ import {
 } from '../../../services/PropertyListing/ListingServices';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
-import axios from 'axios';
 
 const PropertyListingDetail = props => {
   const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(true);

@@ -1,5 +1,4 @@
 import {Config} from '../../Config';
-import axios from 'axios';
 import axiosInstance from '../axiosInstance';
 
 export const PropertyViewApplicationService =
@@ -7,7 +6,7 @@ export const PropertyViewApplicationService =
     try {
       const url = Config.BASE_URL;
       const PropertyViewApplicationUrl =
-        url + 'view_tenant_profile_by_bid_details';
+       'view_tenant_profile_by_bid_details';
       console.log(
         'PropertyViewApplication url ...',
         PropertyViewApplicationUrl,
@@ -27,7 +26,7 @@ export const QuestionDetailsForTenantQues = async TenantQuestPayload => {
   try {
     const url = Config.BASE_URL;
     const QuestionDetailsForTenantQuesUrl =
-      url + 'question_details_for_tenant_ques';
+      'question_details_for_tenant_ques';
     console.log(
       'QuestionDetailsForTenantQues Url ...',
       QuestionDetailsForTenantQuesUrl,
@@ -47,7 +46,7 @@ export const saveLandLordAcceptingService =
   async saveAcceptingDetailsPayload => {
     try {
       const url = Config.BASE_URL;
-      const savelandAccDeatils = url + 'save_landlord_accepting_details';
+      const savelandAccDeatils ='save_landlord_accepting_details';
       console.log('savelandAccDeatils Url ...', savelandAccDeatils);
       const response = await axiosInstance.post(
         savelandAccDeatils,
@@ -65,7 +64,7 @@ export const UpdateLandLordAcceptingService =
     try {
       const url = Config.BASE_URL;
       const UpdateLandLordAcceptingurl =
-        url + 'update_landlord_accepting_details';
+        'update_landlord_accepting_details';
       console.log(
         'UpdateLandLordAcceptingService Url ...',
         UpdateLandLordAcceptingurl,
@@ -85,7 +84,7 @@ export const UpdateLandLordAcceptingService =
   async getLandlordDetailsByAcceptingIdPayload => {
     try {
       const url = Config.BASE_URL;
-      const getLandlordDetailsByAcceptingIdUrl = url + 'get_landlord_details_by_accepting_id';
+      const getLandlordDetailsByAcceptingIdUrl ='get_landlord_details_by_accepting_id';
       console.log('getLandlordDetailsByAcceptingIdUrl ...', getLandlordDetailsByAcceptingIdUrl);
       const response = await axiosInstance.post(
         getLandlordDetailsByAcceptingIdUrl,

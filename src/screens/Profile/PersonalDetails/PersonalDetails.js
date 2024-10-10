@@ -30,7 +30,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {Config} from '../../../Config';
 import {_COLORS, IMAGES, LABEL_STYLES} from '../../../Themes';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import axios from 'axios';
+import axiosInstance from '../../../services/axiosInstance';
 
 const PersonalDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -204,11 +204,11 @@ const PersonalDetails = props => {
     formData.append('latitude', latitude);
     console.log('formData', formData);
     const url = Config.BASE_URL;
-    const updateProfile_url = url + 'profile/updateProfile';
+    const updateProfile_url ='profile/updateProfile';
     console.log('Request URL:', updateProfile_url);
     setIsLoading(true);
     try {
-      const response = await axios.put(updateProfile_url, formData, {
+      const response = await axiosInstance.put(updateProfile_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

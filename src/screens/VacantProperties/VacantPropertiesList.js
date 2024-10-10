@@ -14,9 +14,9 @@ import {_COLORS, IMAGES} from '../../Themes';
 import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
 import PropertyListing from '../../components/Molecules/PropertyListings/PropertyListing';
 import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import {Config} from '../../Config';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../services/axiosInstance';
 
 const VacantPropertiesList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -84,12 +84,12 @@ const VacantPropertiesList = props => {
   const get_Vacant_Details = async () => {
     try {
       const url = Config.BASE_URL;
-      const Vacant_Details_url = url + 'get_vacant_property_list';
+      const Vacant_Details_url ='get_vacant_property_list';
       setIsLoading(true);
       const data = {
         account_id: accountId,
       };
-      const response = await axios.post(Vacant_Details_url, data);
+      const response = await axiosInstance.post(Vacant_Details_url, data);
       if (response?.data?.success === true) {
         const data = response?.data?.property_details || [];
         console.log('vacant DataList..', data);

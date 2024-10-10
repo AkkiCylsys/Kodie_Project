@@ -17,11 +17,11 @@ import EditDocumentsModal from '../../../../../components/Molecules/EditDocument
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DocumentPicker from 'react-native-document-picker';
 import {Config} from '../../../../../Config';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import RNFetchBlob from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
 import Share from 'react-native-share';
+import axiosInstance from '../../../../../services/axiosInstance';
 const TenantDocumentsDetails = props => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
@@ -60,11 +60,11 @@ const TenantDocumentsDetails = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend, // Send data as part of the config object
       })
@@ -166,7 +166,7 @@ const TenantDocumentsDetails = props => {
     console.log('p_referral_key....', property_id);
     console.log('p_module_name....', moduleName);
     const url = Config.BASE_URL;
-    const uploadDoc_url = url + 'uploadDocument';
+    const uploadDoc_url ='uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
     try {
@@ -180,7 +180,7 @@ const TenantDocumentsDetails = props => {
       formData.append('p_module_name', moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData, {
+      const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -203,14 +203,14 @@ const TenantDocumentsDetails = props => {
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl ='get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: property_id,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response?.data);

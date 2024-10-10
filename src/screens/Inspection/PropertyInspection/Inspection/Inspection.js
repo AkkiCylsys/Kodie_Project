@@ -31,12 +31,12 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Bedroom from './Bedroom/Bedroom';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Config } from '../../../../Config';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { GetInspectionItem, UpdateInspectionItem } from '../../../../services/InspectionModuleServices.js/InspectionServices';
 import DragList, { DragListRenderItemInfo } from 'react-native-draglist';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const Inspection = props => {
   const navigation = useNavigation();
@@ -128,11 +128,11 @@ const Inspection = props => {
       p_TIM_KEY: 0,
       p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
     };
-    const AreaGetUrl = `${url}get_inspection_area`;
+    const AreaGetUrl = `get_inspection_area`;
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
     try {
-      const response = await axios.post(AreaGetUrl, AreaData);
+      const response = await axiosInstance.post(AreaGetUrl, AreaData);
       console.log('area response', response?.data);
       if (response?.data?.success === true) {
         setGetCustomeArea(response?.data?.data || []);
@@ -149,10 +149,10 @@ const Inspection = props => {
   };
   const getInspectionAreas = () => {
     const url = Config.BASE_URL;
-    const AreaGetUrl = url + `get_inspection_area_details/${TIM_KEY}`;
+    const AreaGetUrl =`get_inspection_area_details/${TIM_KEY}`;
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(AreaGetUrl)
       .then(response => {
         console.log('Selected_Address', response?.data);
@@ -206,7 +206,7 @@ const Inspection = props => {
     // alert(value);
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const AreaPostUrl = url + `inspection_details/CustomArea`;
+    const AreaPostUrl =`inspection_details/CustomArea`;
     const InspectionData = {
       custom_area_name: email,
       is_standard_check_inspection: selectedButtonStandardId,
@@ -218,7 +218,7 @@ const Inspection = props => {
     };
     console.log('InspectionData.....', InspectionData);
     try {
-      const response = await axios.post(AreaPostUrl, InspectionData);
+      const response = await axiosInstance.post(AreaPostUrl, InspectionData);
       console.log(response);
       if (response?.data?.success) {
         Alert.alert('Success', 'Custom area added successfully');
@@ -243,10 +243,10 @@ const Inspection = props => {
   const handleDeleteInspection = async () => {
     console.log('delete');
     const url = Config.BASE_URL;
-    const deleteUrl = url + `delete_inspection_details/${TIM_KEY}`;
+    const deleteUrl =`delete_inspection_details/${TIM_KEY}`;
 
     try {
-      const response = await axios.delete(deleteUrl);
+      const response = await axiosInstance.delete(deleteUrl);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
         navigation?.navigate('NewInspection');
@@ -292,8 +292,8 @@ const Inspection = props => {
   const getInspectionDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const apiUrl = url + `get_inspection_details/${TIM_KEY}`;
-    axios
+    const apiUrl =`get_inspection_details/${TIM_KEY}`;
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         setGetInspection(response?.data?.data[0]);
@@ -328,9 +328,9 @@ const Inspection = props => {
       };
       console.log('inspec', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url = Url + 'inspection_details/save';
+      const Inspection_Url ='inspection_details/save';
       console.log('Inspection_Url', Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata);
+      const res = await axiosInstance.post(Inspection_Url, Inspectiondata);
       console.log('scheduule inspection....', res?.data);
       refRBSheet2.current.close();
       if (res?.data?.success == true) {

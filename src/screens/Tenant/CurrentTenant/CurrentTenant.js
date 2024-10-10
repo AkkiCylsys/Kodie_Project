@@ -14,8 +14,8 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import ManagingTenant from '../../../components/Molecules/ManagingTenant/ManagingTenant';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
 import {Config} from '../../../Config';
+import axiosInstance from '../../../services/axiosInstance';
 const CurrentTenant = props => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,10 +46,10 @@ const CurrentTenant = props => {
   // Api intrigation..
   const getCurrentTenantList = async () => {
     const url = Config.BASE_URL;
-    const currectTenantUrl = url + 'tanant_details/getAll/tanant/manually';
+    const currectTenantUrl ='tanant_details/getAll/tanant/manually';
     console.log('url...', currectTenantUrl);
     setIsLoading(true);
-    await axios
+    await axiosInstance
       .get(currectTenantUrl)
       .then(res => {
         console.log('response CurrentTenantList  ', res?.data);

@@ -20,12 +20,12 @@ import {_goBack} from '../../../../services/CommonServices';
 import {useIsFocused} from '@react-navigation/native';
 import Share from 'react-native-share';
 import {Config} from '../../../../Config';
-import axios from 'axios';
 import FileViewer from 'react-native-file-viewer';
 import RNFetchBlob from 'rn-fetch-blob';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {ScrollView} from 'react-native-gesture-handler';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const TenantDocuments = props => {
   const refRBSheet = useRef();
@@ -93,10 +93,10 @@ const TenantDocuments = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend,
       })
@@ -119,11 +119,11 @@ const TenantDocuments = props => {
   const REMOTE_PATH = filePath;
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = `${url}get/document/${property_id}`;
+    const getDocument_url = `get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response?.data);
@@ -151,14 +151,14 @@ const TenantDocuments = props => {
 
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: property_id,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response?.data);

@@ -43,6 +43,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {CreateJobFirstStyle} from '../../../CreateJob/CreateJobFirstScreenCss';
 import {useDispatch, useSelector} from 'react-redux';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
+import axiosInstance from '../../../../services/axiosInstance';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default SearchForContractor = props => {
@@ -405,10 +406,10 @@ export default SearchForContractor = props => {
       account_id: loginData?.Login_details?.user_account_id,
     };
     const url = Config.BASE_URL;
-    const propertyType = url + 'get_property_details_my_acc_id';
+    const propertyType ='get_property_details_my_acc_id';
     console.log('Request URL:', propertyType);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(propertyType, propertyData)
       .then(response => {
         console.log('property_type', response.data);
@@ -437,10 +438,10 @@ export default SearchForContractor = props => {
       latitude: latitude || property_value.latitude,
     };
     const url = Config.BASE_URL;
-    const SearchType = url + 'search_for_contractor';
+    const SearchType ='search_for_contractor';
     console.log('Request URL:', SearchType);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(SearchType, SearchData)
       .then(response => {
         console.log('property_type', response.data);

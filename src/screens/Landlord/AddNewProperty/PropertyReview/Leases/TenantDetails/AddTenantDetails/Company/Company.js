@@ -10,8 +10,8 @@ import {CompanyStyle} from './CompanyStyle';
 import {_COLORS, LABEL_STYLES} from '../../../../../../../../Themes';
 import {useDispatch, useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import {Config} from '../../../../../../../../Config';
+import axiosInstance from '../../../../../../../../services/axiosInstance';
 
 export default Company = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -110,11 +110,11 @@ export default Company = props => {
     // const url = Config.API_URL;
     // const PersonUrl = url + "user_signup";
     const url = Config.BASE_URL;
-    const CompanyUrl = url + 'tanant_details/create/company';
+    const CompanyUrl ='tanant_details/create/company';
     console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(CompanyUrl, CompanyDetailsData)
       .then(response => {
         setCompanyResponse(response?.data);

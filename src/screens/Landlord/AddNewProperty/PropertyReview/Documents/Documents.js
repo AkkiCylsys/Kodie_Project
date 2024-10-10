@@ -14,7 +14,6 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
 import {Config} from '../../../../../Config';
 import EditDocumentsModal from '../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -23,6 +22,7 @@ import {useIsFocused} from '@react-navigation/native';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
 import FileViewer from 'react-native-file-viewer';
+import axiosInstance from '../../../../../services/axiosInstance';
 
 export default Documents = props => {
   const isfocused = useIsFocused();
@@ -100,10 +100,10 @@ export default Documents = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend,
       })
@@ -253,11 +253,11 @@ export default Documents = props => {
   // Api intrigation ......
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = `${url}get/document/${property_id}`;
+    const getDocument_url = `get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
   
-    axios
+    axiosInstance
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response?.data);
@@ -286,14 +286,14 @@ export default Documents = props => {
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
     // const getDocumentUrl = url + 'tanant_details/get/documents';
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl ='get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: property_id,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response?.data);

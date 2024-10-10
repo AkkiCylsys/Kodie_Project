@@ -8,12 +8,12 @@ import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon'
 import RBSheet from 'react-native-raw-bottom-sheet';
 import InviteTenantModal from '../../../../../../components/Molecules/InviteTenantModal/InviteTenantModal';
 import TenantDetails from '../TenantDetails/TenantDetails';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import Logrentalpayment from '../Logrentalpayment/Logrentalpayment';
 import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../../../../../Config';
+import axiosInstance from '../../../../../../services/axiosInstance';
 
 const tental_recipt_data = [
   {
@@ -80,10 +80,10 @@ export default LeaseSummary = props => {
   const lease_summary = () => {
     const url = Config.BASE_URL;
     const lease_summary_url =
-      url + `property_lease_details/getAll/${property_id}`;
+     `property_lease_details/getAll/${property_id}`;
     console.log('Request URL:', lease_summary_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(lease_summary_url)
       .then(response => {
         console.log('API Response lease_summary:', response?.data);
@@ -108,10 +108,10 @@ export default LeaseSummary = props => {
   const get_retal_receipt = () => {
     const url = Config.BASE_URL;
     const retal_receip_url =
-      url + `property_lease_details/get/paymentdetails/${property_id}`;
+     `property_lease_details/get/paymentdetails/${property_id}`;
     console.log('Request URL:', retal_receip_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(retal_receip_url)
       .then(response => {
         console.log('API Response retal_receip_url:', response?.data);

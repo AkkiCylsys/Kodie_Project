@@ -13,8 +13,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import {_COLORS, BANNERS, LABEL_STYLES, IMAGES} from '../../../../../Themes';
 import {Config} from '../../../../../Config';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axiosInstance from '../../../../../services/axiosInstance';
 const Detail = [
   {
     id: '1',
@@ -63,10 +63,10 @@ export default Details = props => {
   const [isLoading, setIsLoading] = useState([]);
   const getPropertyDetails = () => {
     const url = Config.API_URL;
-    const getPropertyDetailsurl = url + 'get_All_Property_details';
+    const getPropertyDetailsurl ='get_All_Property_details';
     console.log('Request URL:', getPropertyDetailsurl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(getPropertyDetailsurl, {
         user: 2,
       })

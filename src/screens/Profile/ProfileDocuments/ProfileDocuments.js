@@ -8,10 +8,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import ProfileDocumentDetails from '../ProfileDocumentDetails/ProfileDocumentDetails';
-import axios from 'axios';
 import {Config} from '../../../Config';
 import {useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../../services/axiosInstance';
 
 const ProfileDocuments = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,14 +61,14 @@ const ProfileDocuments = props => {
   }, [isfocused]);
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl ='get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: loginData.Login_details.user_account_id,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);

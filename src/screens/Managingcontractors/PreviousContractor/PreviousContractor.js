@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
@@ -11,6 +10,7 @@ import ContractorCurrent from '../../../components/Molecules/Contractors/Contrac
 import {_COLORS} from '../../../Themes';
 import {PreviousContractorStyle} from './PreviousContractorStyle';
 import ContractorPrevious from '../../../components/Molecules/Contractors/ContractorPreviousTab/ContractorPrevious';
+import axiosInstance from '../../../services/axiosInstance';
 
 const PreviousContractor = () => {
   const navigation = useNavigation();
@@ -27,10 +27,10 @@ const PreviousContractor = () => {
 
   const handlePreferredData = () => {
     const url = Config.BASE_URL;
-    const PreferredUrl = url + 'previous_contractor_details';
+    const PreferredUrl ='previous_contractor_details';
     console.log('Request URL:', PreferredUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(PreferredUrl)
       .then(response => {
         console.log('PreferredData', response.data);
@@ -58,10 +58,10 @@ const PreviousContractor = () => {
       p_CONTRACTOR_ID: ContractorId,
     };
     const url = Config.BASE_URL;
-    const DeleteUrl = url + 'invitecontractor_details_delete';
+    const DeleteUrl ='invitecontractor_details_delete';
     console.log('Request URL:', DeleteUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(DeleteUrl, DeleteContractor)
       .then(response => {
         console.log('DeleteData', response.data);

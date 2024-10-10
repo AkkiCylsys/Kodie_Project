@@ -25,6 +25,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import axios from 'axios';
 import {stringify} from 'querystring';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../../services/axiosInstance';
 
 const data = [
   {label: 'Electricals', value: '1'},
@@ -173,11 +174,11 @@ const PreScreening = props => {
         tpq_created_by: 'admin123',
       };
     const url = Config.BASE_URL;
-    const PreScreeningUrl = url + 'add_tenant_questionarie/create';
+    const PreScreeningUrl ='add_tenant_questionarie/create';
     console.log('Request URL:', PreScreeningUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(PreScreeningUrl, PreScreeningData)
       .then(response => {
         setPreScreening(response.data);
