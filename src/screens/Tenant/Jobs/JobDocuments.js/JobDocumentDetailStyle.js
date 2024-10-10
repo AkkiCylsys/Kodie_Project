@@ -3,6 +3,7 @@ import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const JobDocumentDetailStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor:_COLORS?.Kodie_WhiteColor
   },
   submodalContainer: {
     flexDirection: "row",

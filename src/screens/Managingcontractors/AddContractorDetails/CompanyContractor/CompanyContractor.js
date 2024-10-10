@@ -17,6 +17,7 @@ import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBo
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import {CompanyContractorStyle} from './CompanyContractorStyle';
+import axiosInstance from '../../../../services/axiosInstance';
 
 export default CompanyContractor = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -126,11 +127,11 @@ export default CompanyContractor = props => {
       NOTES: note,
     };
     const url = Config.BASE_URL;
-    const CompanyUrl = url + 'invitecontractor_details';
+    const CompanyUrl ='invitecontractor_details';
     console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(CompanyUrl, CompanyDetailsData)
       .then(response => {
         setCompanyResponse(response?.data);

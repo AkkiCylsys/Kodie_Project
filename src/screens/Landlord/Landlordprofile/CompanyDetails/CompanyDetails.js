@@ -625,11 +625,11 @@ export default CompanyDetails = props => {
     );
     console.log('formData', formData);
     const url = Config.BASE_URL;
-    const updateCompanyData_url = url + 'profile/updateusercompanydata';
+    const updateCompanyData_url ='profile/updateusercompanydata';
     console.log('Request URL:', updateCompanyData_url);
     setIsLoading(true);
     try {
-      const response = await axios.put(updateCompanyData_url, formData, {
+      const response = await axiosInstance.put(updateCompanyData_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

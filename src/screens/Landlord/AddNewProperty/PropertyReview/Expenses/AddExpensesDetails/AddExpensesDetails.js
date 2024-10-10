@@ -20,6 +20,7 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {color} from 'react-native-reanimated';
 import { matrixTransform } from 'react-native-svg/lib/typescript/elements/Shape';
+import axiosInstance from '../../../../../../services/axiosInstance';
 
 const data = [
   {label: '3-month', value: '1'},
@@ -102,12 +103,12 @@ export default AddExpensesDetails = props => {
     );
   };
   const fetchLeaseSummary = async () => {
-    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const url = `getPaymentDueday`;
     const data = {p_UPLD_UPD_KEY: property_id};
 
     setIsLoading(true);
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.data.success) {
         setLeaseSummaryData(response.data.data);
         setIsLoading(false);
@@ -331,11 +332,11 @@ export default AddExpensesDetails = props => {
     console.log(ExpenceData,'ExpenceData.......');
     const url = Config.BASE_URL;
     // const ExpenceUrl = url + 'property_expenses_details/create';
-    const ExpenceUrl = url + 'create/expenses';
+    const ExpenceUrl ='create/expenses';
     console.log('Request URL:', ExpenceUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(ExpenceUrl, ExpenceData)
       .then(response => {
         setExpenceResponse(response?.data);

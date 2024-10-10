@@ -34,7 +34,6 @@ import {
 } from '../../../services/PropertyListing/ListingServices';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
-import axios from 'axios';
 
 const PropertyListingDetail = props => {
   const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(true);
@@ -239,7 +238,7 @@ const PropertyListingDetail = props => {
     console.log('add market place..', data);
     try {
       const response = await insertMarketDetails(data);
-      Alert.alert('Success', 'Market details have been save successfully.');
+      Alert.alert('Success', 'Market details have been saved successfully.');
       props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');

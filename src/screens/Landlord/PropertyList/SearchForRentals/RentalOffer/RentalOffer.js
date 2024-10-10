@@ -44,6 +44,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {PropertyList2Css} from '../PropertyList2Css';
 import MultiSelect from 'react-native-multiple-select';
 import { getEditAllQuestionServices, getTenantQuestionServices, saveAllJsonDynamicQuestionServices } from '../../../../../services/TenantScreeningServices/TenantScreeningServices';
+import axiosInstance from '../../../../../services/axiosInstance';
 
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
@@ -1818,7 +1819,8 @@ const RentalOffer = props => {
   };
   const saveBiddingDetails = () => {
     const url = Config.BASE_URL;
-    const saveBiddingDetails_url = `${url}save_bidding_details`;
+    // const saveBiddingDetails_url = `${url}save_bidding_details`;
+    const saveBiddingDetails_url = `save_bidding_details`;
     console.log('Request URL:', saveBiddingDetails_url);
     setIsLoading(true);
 
@@ -1843,13 +1845,13 @@ const RentalOffer = props => {
 
     console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
 
-    axios
+    axiosInstance
       .post(saveBiddingDetails_url, saveBiddingDetailsData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-          'uli-device-id': loginData?.Login_details?.device_id,
-          'uli-device-os-type': loginData?.Login_details?.device_os_type,
+          // 'Authorization': `Bearer ${loginData?.Login_details?.token}`,
+          // 'uli-device-id': loginData?.Login_details?.device_id,
+          // 'uli-device-os-type': loginData?.Login_details?.device_os_type,
         },
       })
       .then(response => {

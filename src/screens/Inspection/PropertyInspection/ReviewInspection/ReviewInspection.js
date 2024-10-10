@@ -23,7 +23,7 @@ import { GetInspectioncabinateDetail } from '../../../../services/InspectionModu
 import { useNavigation } from '@react-navigation/native';
 import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { Config } from '../../../../Config';
-import axios from 'axios';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const ReviewInspection = (props) => {
   const navigation = useNavigation();
@@ -48,9 +48,9 @@ const ReviewInspection = (props) => {
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url + `get_inspection_details/${TIM_KEY}`;
+      `get_inspection_details/${TIM_KEY}`;
 
-    axios
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         setInspection_Details(response?.data?.data[0]);

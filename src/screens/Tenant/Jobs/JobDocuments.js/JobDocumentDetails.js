@@ -20,7 +20,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 // import RNFS from "react-native-fs";
@@ -29,6 +28,7 @@ import {Config} from '../../../../Config';
 import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 import {useIsFocused} from '@react-navigation/native';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const JobDocumentDetails = props => {
   const refRBSheet = useRef();
@@ -109,10 +109,10 @@ const JobDocumentDetails = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url =  'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend,
       })
@@ -139,7 +139,7 @@ const JobDocumentDetails = props => {
     console.log('p_referral_key....', JOB_ID);
     console.log('p_module_name....', moduleName);
     const url = Config.BASE_URL;
-    const uploadDoc_url = url + 'uploadDocument';
+    const uploadDoc_url = 'uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
     try {
@@ -153,7 +153,7 @@ const JobDocumentDetails = props => {
       formData.append('p_module_name', moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData, {
+      const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -182,14 +182,14 @@ const JobDocumentDetails = props => {
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: JOB_ID,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response.data);

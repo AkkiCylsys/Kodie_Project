@@ -13,8 +13,8 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import ManagingTenant from '../../../components/Molecules/ManagingTenant/ManagingTenant';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import axios from 'axios';
 import {Config} from '../../../Config';
+import axiosInstance from '../../../services/axiosInstance';
 
 const PreviousTenant = props => {
   const [rating, setRating] = useState(2);
@@ -47,10 +47,10 @@ const PreviousTenant = props => {
   // Api intrigation..
   const getPreviousTenantList = async () => {
     const url = Config.BASE_URL;
-    const previousTenantUrl = url + 'tanant_details/getAll/tanant';
+    const previousTenantUrl ='tanant_details/getAll/tanant';
     console.log('url...', previousTenantUrl);
     setIsLoading(true);
-    await axios
+    await axiosInstance
       .get(previousTenantUrl)
       .then(res => {
         console.log('response previousTenantList  ', res?.data);

@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import {PersonStyle} from './PersonStyle';
 import {_COLORS, LABEL_STYLES} from '../../../../../../../../Themes';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useDispatch, useSelector} from 'react-redux';
 import {Config} from '../../../../../../../../Config';
+import axiosInstance from '../../../../../../../../services/axiosInstance';
 export default Person = props => {
   const handleClosePopup = () => {
     props.onClose();
@@ -102,11 +102,11 @@ export default Person = props => {
       notes: note,
     };
     const url = Config.BASE_URL;
-    const PersonUrl = url + 'tanant_details/create/person';
+    const PersonUrl ='tanant_details/create/person';
     console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
-    axios
+    axiosInstance
       .post(PersonUrl, PersonDetailsData)
       .then(response => {
         setpersonResponse(response?.data);

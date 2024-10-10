@@ -18,11 +18,11 @@ import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {FlatList} from 'react-native-gesture-handler';
 
-import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
+import axiosInstance from '../../../services/axiosInstance';
 
 //ScreenNo:209
 
@@ -258,14 +258,14 @@ const ManageSubscription = props => {
   };
   const createCustomer = () => {
     const baseUrl = Config.BASE_URL;
-    const url = baseUrl + 'create_customer';
+    const url =  'create_customer';
     console.log('Request URL:', loginData?.Login_details?.email);
     setIsLoading(true);
     const createCustomer_data = {
       name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
       email: loginData?.Login_details?.email,
     };
-    axios
+    axiosInstance
       .post(url, createCustomer_data)
       .then(response => {
         console.log('API Response createCustomer', response.data);
@@ -290,7 +290,7 @@ const ManageSubscription = props => {
   };
   const demoSubscription = priceId => {
     const baseUrl = Config.BASE_URL;
-    const url = baseUrl + 'demo';
+    const url ='demo';
     console.log('Request URL:', url);
     console.log(customerID);
     setIsLoading(true);
@@ -299,7 +299,7 @@ const ManageSubscription = props => {
       price_id: priceId,
     };
     console.log(createSubscription_data, 'createSubscription_data');
-    axios
+    axiosInstance
       .post(url, createSubscription_data)
       .then(response => {
         console.log('API Response createSubscription_data', response.data);
@@ -333,7 +333,7 @@ const ManageSubscription = props => {
 
   const Insertdemodata = _Subscrip_id => {
     const baseUrl = Config.BASE_URL;
-    const url = baseUrl + 'insert_subscription';
+    const url ='insert_subscription';
     console.log('Request URL:', url);
     // console.log(id);
     setIsLoading(true);
@@ -347,7 +347,7 @@ const ManageSubscription = props => {
       collection_method: 'string',
       subscribe_type: 'string',
     };
-    axios
+    axiosInstance
       .post(url, Insert_data)
       .then(response => {
         console.log('API Response insert_subscription', response.data);

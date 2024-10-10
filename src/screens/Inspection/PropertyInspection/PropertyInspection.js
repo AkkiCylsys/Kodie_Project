@@ -12,8 +12,8 @@ import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import Inspection from './Inspection/Inspection';
 import Schedule from './Schedule/Schedule';
 import {Config} from '../../../Config';
-import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axiosInstance from '../../../services/axiosInstance';
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -43,11 +43,11 @@ const PropertyInspection = props => {
       };
       // alert(JSON.stringify(detailData))
       const url = Config.BASE_URL;
-      const property_Detailss = url + 'get_property_details';
+      const property_Detailss ='get_property_details';
 
       console.log('url..', property_Detailss);
       setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
+      const response = await axiosInstance.post(property_Detailss, detailData);
       setIsLoading(false);
       console.log('response_get_property_details...', response?.data);
       if (response?.data?.success === true) {
@@ -68,11 +68,11 @@ const PropertyInspection = props => {
         TIM_KEY: TIM_KEY,
       };
       const url = Config.BASE_URL;
-      const Cancel_Inspection = url + 'inspection_details/cancel';
+      const Cancel_Inspection ='inspection_details/cancel';
 
       console.log('url..', Cancel_Inspection);
       setIsLoading(true);
-      const response = await axios.put(Cancel_Inspection, detailData);
+      const response = await axiosInstance.put(Cancel_Inspection, detailData);
       setIsLoading(false);
       console.log('response_Cancel_Inspection..', response?.data);
       if (response?.data?.success === true) {

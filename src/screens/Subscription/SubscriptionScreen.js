@@ -12,8 +12,8 @@ import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader
 import {StripeProvider} from '@stripe/stripe-react-native';
 import {_COLORS} from '../../Themes';
 import {_goBack} from '../../services/CommonServices';
-import axios from 'axios';
 import { Config } from '../../Config';
+import axiosInstance from '../../services/axiosInstance';
 const SubscriptionScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
@@ -55,14 +55,14 @@ const SubscriptionScreen = props => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/payment_intent';
     // const url = 'https://kodietestapi.cylsys.com/api/v1/payment_intent';
     const baseUrl = Config?.BASE_URL
-    const url = `${baseUrl}payment_intent`
+    const url = `payment_intent`
     console.log('Request URL:', url);
     setIsLoading(true);
     const client_data = {
       amount: '69',
       currency: 'AUD',
     };
-    axios
+    axiosInstance
       .post(url, client_data)
       .then(response => {
         console.log('API Response client_data', response.data);
@@ -122,7 +122,7 @@ const SubscriptionScreen = props => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/create_subscription';
     // const url = 'https://kodietestapi.cylsys.com/api/v1/create_subscription';
     const baseUrl = Config?.BASE_URL
-    const url = `${baseUrl}create_subscription`
+    const url = `create_subscription`
     console.log('Request URL:', url);
     setIsLoading(true);
     console.log('customer id inside..', customerID);
@@ -131,7 +131,7 @@ const SubscriptionScreen = props => {
       customer_id: 'cus_PenbsmBdrGURhV',
       price: 'price_1Oqa9iKIJa7H9ZVBdnDQYQg9',
     };
-    axios
+    axiosInstance
       .post(url, subscribeCustomer_data)
       .then(response => {
         console.log('API Response subscribeCustomer', response.data);

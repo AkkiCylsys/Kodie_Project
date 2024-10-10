@@ -15,7 +15,6 @@ import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import moment from 'moment/moment';
 import { Config } from '../../../../Config';
-import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import { useSelector } from 'react-redux';
@@ -81,9 +80,9 @@ useFocusEffect(
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url + `get_inspection_details/${TIM_KEY}`;
+      `get_inspection_details/${TIM_KEY}`;
 
-    axios
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response: dfdd', response?.data?.data[0]);
@@ -98,10 +97,10 @@ useFocusEffect(
   };
   const Area_key = () => {
     const url = Config.BASE_URL;
-    const AreaGetUrl = url + `get_inspection_area_details/${TIM_KEY}`;
+    const AreaGetUrl =`get_inspection_area_details/${TIM_KEY}`;
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(AreaGetUrl)
       .then(response => {
         console.log('Selected_Address', response?.data);

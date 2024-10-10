@@ -16,7 +16,6 @@ import {LABEL_STYLES} from '../../../../../../Themes/CommonStyles/CommonStyles';
 import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
 import {Dropdown} from 'react-native-element-dropdown';
 import SwitchToggle from 'react-native-switch-toggle';
-import axios from 'axios';
 import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,6 +23,7 @@ import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon'
 import moment from 'moment/moment';
 import {SignupLookupDetails} from '../../../../../../APIs/AllApi';
 import {useIsFocused} from '@react-navigation/native';
+import axiosInstance from '../../../../../../services/axiosInstance';
 const daysOfWeek = [
   {label: 'Monday', value: '1'},
   {label: 'Tuesday', value: '2'},
@@ -223,7 +223,7 @@ export default AddLeaseDetails = props => {
   };
   const handle_add_Lease = () => {
     const url = Config.BASE_URL;
-    const add_Lease_url = url + 'create/lease';
+    const add_Lease_url ='create/lease';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
@@ -252,7 +252,7 @@ export default AddLeaseDetails = props => {
       lease_before_after: true,
     };
     console.log(lease_Data, 'lease_Data///////');
-    axios
+    axiosInstance
       .post(add_Lease_url, lease_Data)
       .then(response => {
         console.log('API Response add_lease:', response?.data);
@@ -280,7 +280,7 @@ export default AddLeaseDetails = props => {
   const handle_update_Lease = () => {
     console.log('paymentDueDay....', paymentDueDay);
     const url = Config.BASE_URL;
-    const add_Lease_url = url + 'updateLeasePropertyDetails';
+    const add_Lease_url ='updateLeasePropertyDetails';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
@@ -309,7 +309,7 @@ export default AddLeaseDetails = props => {
       p_LEASE_BEFORE_AFTER: true,
     };
     console.log(lease_Data, 'lease_Data////update///');
-    axios
+    axiosInstance
       .put(add_Lease_url, lease_Data)
       .then(response => {
         console.log('API Response add_lease:', response?.data);

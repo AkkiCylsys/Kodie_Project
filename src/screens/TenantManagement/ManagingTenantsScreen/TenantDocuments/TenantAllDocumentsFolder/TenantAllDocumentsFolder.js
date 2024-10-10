@@ -13,7 +13,7 @@ import {_goBack} from '../../../../../services/CommonServices';
 import {TenantAllDocumentsFolderStyle} from './TenantAllDocumentsFolderStyle';
 import {_COLORS} from '../../../../../Themes';
 import {Config} from '../../../../../Config';
-import axios from 'axios';
+import axiosInstance from '../../../../../services/axiosInstance';
 
 const TenantAllDocumentsFolder = props => {
   const property_id = props.route.params?.property_id;
@@ -39,14 +39,14 @@ const TenantAllDocumentsFolder = props => {
   }, []);
 
   const getUploadedDocumentsByModule = moduleName => {
-    const url = Config.BASE_URL + 'get/documents';
+    const url ='get/documents';
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: property_id,
     };
 
-    axios
+    axiosInstance
       .post(url, documentModuleData)
       .then(response => {
         if (response?.data?.status == true) {

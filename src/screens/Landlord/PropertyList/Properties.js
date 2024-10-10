@@ -8,7 +8,6 @@ import {_goBack} from './../../../services/CommonServices/index';
 import {_COLORS} from '../../../Themes';
 import {PropertiesCSS} from './PropertiesCss';
 import {Config} from '../../../Config';
-import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {
   useFocusEffect,

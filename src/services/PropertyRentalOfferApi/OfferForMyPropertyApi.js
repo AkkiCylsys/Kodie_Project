@@ -5,7 +5,7 @@ import axiosInstance from '../axiosInstance';
 export const addressType = async addressData => {
   try {
     const url = Config.BASE_URL;
-    const Address_Type_apiUrl = url + 'get_property_details_my_acc_id';
+    const Address_Type_apiUrl ='get_property_details_my_acc_id';
 
     console.log('addressType_apiUrl...', Address_Type_apiUrl);
     const response = await axiosInstance.post(Address_Type_apiUrl, addressData);
@@ -18,7 +18,7 @@ export const addressType = async addressData => {
 export const offerForMyProperty = async (offerPropertyDataPayload) => {
   try {
     const url = Config.BASE_URL;
-    const offerForMyPropertyUrl = url + 'offer_for_my_property_by_account_id';
+    const offerForMyPropertyUrl ='offer_for_my_property_by_account_id';
     console.log('offerForMyProperty url ...', offerForMyPropertyUrl);
     const response = await axiosInstance.post(offerForMyPropertyUrl, offerPropertyDataPayload);
     return response?.data;

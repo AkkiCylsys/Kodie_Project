@@ -26,7 +26,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import NoticeBottomModal from '../../../components/Molecules/Select/NoticeBottomModal';
 import { Config } from '../../../Config';
-import axios from 'axios';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +33,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { Calendar } from 'react-native-calendars'; //calender
 import { debounce } from 'lodash';
 import { log } from 'react-native-reanimated';
+import axiosInstance from '../../../services/axiosInstance';
 const HorizontalData = [
   { filtername: 'All', filterId: 'All' },
   { filtername: 'General', filterId: '367' },
@@ -177,20 +177,14 @@ const Notices = props => {
   const getNoticesReminderDetails = (id) => {
     console.log(id);
     const url = Config.BASE_URL;
-    const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
+    const getNoticesReminderDetails_url = 'get_notices_reminder_details';
     console.log('Request URL:', getNoticesReminderDetails_url);
     setIsLoading(true);
     const notification_data = {
       notices_reminder_id: id,
     };
-
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-      'uli-device-id': loginData?.Login_details?.device_id,
-      'uli-device-os-type': loginData?.Login_details?.device_os_type,
-    };
-    axios
-      .post(getNoticesReminderDetails_url, notification_data, { headers })
+    axiosInstance
+      .post(getNoticesReminderDetails_url, notification_data)
       .then(response => {
         console.log(
           'API Response getNoticesReminderDetailsData for duplicate...:',
@@ -344,16 +338,11 @@ const Notices = props => {
     try {
       const url = Config.BASE_URL;
       const NoticesReminderDeatilsByFilter_url =
-        url + 'get_details_by_account_id_notices_reminder';
+        'get_details_by_account_id_notices_reminder';
       console.log(
         'NoticesReminderDeatilsByFilter...',
         NoticesReminderDeatilsByFilter_url,
       );
-      const headers = {
-        'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-        'uli-device-id': loginData?.Login_details?.device_id,
-        'uli-device-os-type': loginData?.Login_details?.device_os_type,
-      };
       const data = {
         notices_filter: selectedFilter,
         account_id: loginData?.Login_details?.user_account_id,
@@ -363,9 +352,9 @@ const Notices = props => {
         year: year,
       };
       console.log('monthdatae', data);
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         NoticesReminderDeatilsByFilter_url,
-        data, { headers }
+        data
       ); // Use monthId and year received as parameters
       console.log(
         'NoticesReminderDeatilsByFilter_Data response...',
@@ -392,20 +381,15 @@ const Notices = props => {
   const FinalDeleteProperty = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const noticedelete = url + `delete_notices_reminder_details`;
+    const noticedelete =`delete_notices_reminder_details`;
     console.log('noticedelete', noticedelete);
     const noticesDeleteData = {
       notices_reminder_id: noticeReminderid,
       // notices_reminder_id: 24,
     };
     // console.log('noticesDeleteData body.....', noticesDeleteData);
-    const headers = {
-      'Authorization': `Bearer ${loginData?.Login_details?.token}`,
-      'uli-device-id': loginData?.Login_details?.device_id,
-      'uli-device-os-type': loginData?.Login_details?.device_os_type,
-    };
     try {
-      const response = await axios.post(noticedelete, noticesDeleteData, { headers });
+      const response = await axiosInstance.post(noticedelete, noticesDeleteData);
       // console.log('API Response:', response.data);
       if (response?.data?.status === true) {
         // Alert.alert("notice Deleted", response?.data?.message);

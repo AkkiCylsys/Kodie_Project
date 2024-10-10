@@ -19,7 +19,6 @@ import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ArchiveJob from '../../../../components/Molecules/Archive/ArchiveJob/ArchiveJob';
 import { Config } from '../../../../Config';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { ArchiveJobStyle } from '../../../../components/Molecules/Archive/ArchiveJob/ArchiveJobStyle';

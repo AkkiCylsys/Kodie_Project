@@ -20,7 +20,6 @@ import {_COLORS, FONTFAMILY, IMAGES} from '../../../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DocumentPicker from 'react-native-document-picker';
 import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFS from 'react-native-fs';
@@ -31,6 +30,7 @@ import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RNFetchBlob from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
+import axiosInstance from '../../../../../../services/axiosInstance';
 
 const DocumentDetails = props => {
   const navigation = useNavigation();
@@ -94,11 +94,11 @@ const DocumentDetails = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
   
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend, // Send data as part of the config object
       })
@@ -126,7 +126,7 @@ const DocumentDetails = props => {
     console.log('p_referral_key....', property_id);
     console.log('p_module_name....', moduleName);
     const url = Config.BASE_URL;
-    const uploadDoc_url = url + 'uploadDocument';
+    const uploadDoc_url ='uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
     try {
@@ -140,7 +140,7 @@ const DocumentDetails = props => {
       formData.append('p_module_name', moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData, {
+      const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -234,14 +234,14 @@ const DocumentDetails = props => {
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'get/documents';
+    const getDocumentUrl ='get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
       fileReferenceKey: property_id,
     };
-    axios
+    axiosInstance
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response?.data);

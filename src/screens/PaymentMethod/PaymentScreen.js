@@ -20,7 +20,6 @@ import {
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useEffect } from "react";
-import axios from "axios";
 import { Config } from "../../Config";
 import { useSelector } from "react-redux";
 const PaymentScreen = (props) => {

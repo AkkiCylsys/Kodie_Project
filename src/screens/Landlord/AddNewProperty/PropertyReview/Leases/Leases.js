@@ -14,13 +14,13 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import AddLeaseDetails from './AddLeaseDetails/AddLeaseDetails';
 import {LeaseSummaryStyle} from './LeaseSummary/LeaseSummaryStyle';
 import {Config} from '../../../../../Config';
-import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 import Logrentalpayment from './Logrentalpayment/Logrentalpayment';
 import {useIsFocused} from '@react-navigation/native';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axiosInstance from '../../../../../services/axiosInstance';
 const Leases = props => {
   const {property_id} = props;
   const isFocus = useIsFocused();
@@ -62,12 +62,12 @@ const Leases = props => {
   };
 
   const fetchLeaseSummary = async () => {
-    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const url = `getPaymentDueday`;
     const data = {p_UPLD_UPD_KEY: property_id};
 
     setIsLoading(true);
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.data.success) {
         setLeaseSummaryData(response.data.data);
         setIsLoading(false);
@@ -83,11 +83,11 @@ const Leases = props => {
   };
 
   const fetchRentalReceipt = async () => {
-    const url = `${Config.BASE_URL}get/paymentdetails/${property_id}`;
+    const url = `get/paymentdetails/${property_id}`;
 
     setIsLoading(true);
     try {
-      const response = await axios.get(url);
+      const response = await axiosInstance.get(url);
       console.log(response?.data?.data);
       if (response.data.success) {
         setRentalReceiptData(response?.data?.data);

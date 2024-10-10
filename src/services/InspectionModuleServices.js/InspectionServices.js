@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Config } from "../../Config";
 import { handleApiError } from "../../APIs/ErrorHandler";
+import axiosInstance from "../axiosInstance";
 
 export const GetInspectionDeatilsByFilter = (data) => {
-  const url = `${Config.BASE_URL}get/AllInspectionDetails/ByFilter`;
+  const url = `get/AllInspectionDetails/ByFilter`;
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axiosInstance.post(url, data)
       .then(response => {
         if (response?.data?.success) {
           resolve(response.data.data);
@@ -22,9 +23,9 @@ export const GetInspectionDeatilsByFilter = (data) => {
   });
 };
 export const GetInspectionAreas = (teamKey) => {
-    const url = `${Config.BASE_URL}get_inspection_area_details/${teamKey}`;
+    const url = `get_inspection_area_details/${teamKey}`;
     return new Promise((resolve, reject) => {
-      axios.get(url)
+      axiosInstance.get(url)
         .then(response => {
           if (response?.data?.success) {
             resolve(response.data.data);
@@ -42,10 +43,10 @@ export const GetInspectionAreas = (teamKey) => {
   };
 
   export const UpdateInspectionItem = (data) => {
-    const url = `${Config.BASE_URL}getInspectionItem`;
+    const url = `getInspectionItem`;
   
     return new Promise((resolve, reject) => {
-      axios.post(url, data)
+      axiosInstance.post(url, data)
         .then(response => {
           if (response?.data?.success) {
             resolve(response.data.data);
@@ -62,10 +63,10 @@ export const GetInspectionAreas = (teamKey) => {
   };
 
   export const EditInspectionItem = (data) => {
-    const url = `${Config.BASE_URL}getItemCustomInspectionDetails`;
+    const url = `getItemCustomInspectionDetails`;
   
     return new Promise((resolve, reject) => {
-      axios.post(url, data)
+      axiosInstance.post(url, data)
         .then(response => {
           if (response?.data?.success) {
             resolve(response.data.data);
@@ -82,10 +83,10 @@ export const GetInspectionAreas = (teamKey) => {
   };
 
   export const InspectionAddItem = (data) => {
-    const url = `${Config.BASE_URL}add/Item`;
+    const url = `add/Item`;
   
     return new Promise((resolve, reject) => {
-      axios.post(url, data, {
+      axiosInstance.post(url, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -106,10 +107,10 @@ export const GetInspectionAreas = (teamKey) => {
   };
   
   export const UpdateItemMapping = (data) => {
-    const url = `${Config.BASE_URL}updateInspectionItemMapping`;
+    const url = `updateInspectionItemMapping`;
   
     return new Promise((resolve, reject) => {
-      axios.put(url, data, {
+      axiosInstance.put(url, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -131,10 +132,10 @@ export const GetInspectionAreas = (teamKey) => {
 
 
 export const GetInspectioncabinateDetail = (data) => {
-  const url = `${Config.BASE_URL}cabinetStatus`;
+  const url = `cabinetStatus`;
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axiosInstance.post(url, data)
       .then(response => {
         if (response?.data?.success) {
           resolve(response.data.data);
@@ -150,10 +151,10 @@ export const GetInspectioncabinateDetail = (data) => {
   });
 };
 export const GetInspectionItem = (data) => {
-  const url = `${Config.BASE_URL}inspectionarea`;
+  const url = `inspectionarea`;
 
   return new Promise((resolve, reject) => {
-    axios.delete(url, data)
+    axiosInstance.delete(url, data)
       .then(response => {
         console.log(response,'dfdfddffd');
         if (response?.data?.success) {
@@ -170,10 +171,10 @@ export const GetInspectionItem = (data) => {
   });
 };
 export const GetInspectionAreaDetail = (data) => {
-  const url = `${Config.BASE_URL}get_inspection_area`;
+  const url = `get_inspection_area`;
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axiosInstance.post(url, data)
       .then(response => {
         if (response?.data?.success) {
           resolve(response.data.data);
@@ -189,10 +190,10 @@ export const GetInspectionAreaDetail = (data) => {
   });
 };
 export const AddCustomArea = (data) => {
-  const url = `${Config.BASE_URL}inspection_details/CustomArea`;
+  const url = `inspection_details/CustomArea`;
 
   return new Promise((resolve, reject) => {
-    axios.post(url, data)
+    axiosInstance.post(url, data)
       .then(response => {
         if (response?.data?.success) {
           resolve(response.data);

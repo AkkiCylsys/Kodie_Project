@@ -12,12 +12,12 @@ import CalendarModal from '../../../../components/Molecules/CalenderModal/Calend
 import {Divider} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import axios from 'axios';
 import {Config} from '../../../../Config';
 import {useSelector} from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import axiosInstance from '../../../../services/axiosInstance';
 const BidforJob = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
@@ -64,13 +64,13 @@ const BidforJob = props => {
 
   const getJobDetails = () => {
     const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
+    const jobDetails_url ='job/get';
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
       jm_job_id: SearchJobId || BidJobId,
     };
-    axios
+    axiosInstance
       .post(jobDetails_url, jobDetailsData)
       .then(response => {
         console.log('API Response JobDetails:', response.data);
@@ -93,7 +93,7 @@ const BidforJob = props => {
   };
   const BidSubmitDetails = () => {
     const url = Config.BASE_URL;
-    const BidSubmit_url = url + 'job/insertBidRequestData';
+    const BidSubmit_url ='job/insertBidRequestData';
     console.log('Request URL:', BidSubmit_url);
     setIsLoading(true);
     const BidSubmitData = {
@@ -106,7 +106,7 @@ const BidforJob = props => {
       cover_later: CoverLater,
     };
     console.log(BidSubmitData);
-    axios
+    axiosInstance
       .post(BidSubmit_url, BidSubmitData)
       .then(response => {
         console.log('API Response JobDetails:', response.data);

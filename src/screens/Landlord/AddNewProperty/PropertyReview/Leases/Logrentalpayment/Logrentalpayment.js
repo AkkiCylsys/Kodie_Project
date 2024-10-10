@@ -17,6 +17,7 @@ import {Config} from '../../../../../../Config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../../../../../services/axiosInstance';
 const data = [
   {label: '3-month', value: '1'},
   {label: '6-month', value: '2'},
@@ -98,12 +99,12 @@ const Logrentalpayment = props => {
     }
   };
   const fetchLeaseSummary = async () => {
-    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const url = `getPaymentDueday`;
     const data = {p_UPLD_UPD_KEY: property_id};
 
     setIsLoading(true);
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.data.success) {
         setLeaseSummaryData(response.data.data);
         setIsLoading(false);
@@ -206,7 +207,7 @@ const Logrentalpayment = props => {
 
   const handle_rental_payment = () => {
     const url = Config.BASE_URL;
-    const rental_payment_url = url + 'create/paymentlog';
+    const rental_payment_url ='create/paymentlog';
     console.log('Request URL:', rental_payment_url);
     setIsLoading(true);
     const rental_payment_Data = {
@@ -224,7 +225,7 @@ const Logrentalpayment = props => {
       p_CREATED_BY: loginData?.Login_details?.user_account_id,
     };
     console.log(rental_payment_Data, 'rental_payment_Data.....');
-    axios
+    axiosInstance
       .post(rental_payment_url, rental_payment_Data)
       .then(response => {
         console.log('API Response add_lease:', response?.data);

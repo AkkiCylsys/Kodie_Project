@@ -7,7 +7,6 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import axios from 'axios';
 import {Config} from '../../../../Config';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useIsFocused} from '@react-navigation/native';
@@ -28,6 +27,7 @@ import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
+import axiosInstance from '../../../../services/axiosInstance';
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -328,11 +328,11 @@ export default ViewPropertyDetails = props => {
         property_id: propertyid,
       };
       const url = Config.BASE_URL;
-      const property_Detailss = url + 'get_property_details';
+      const property_Detailss ='get_property_details';
 
       console.log('url..', property_Detailss);
       setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
+      const response = await axiosInstance.post(property_Detailss, detailData);
       setIsLoading(false);
       console.log('response_get_property_details...', response?.data);
       if (response?.data?.success === true) {

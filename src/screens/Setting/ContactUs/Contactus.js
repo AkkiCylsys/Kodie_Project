@@ -12,7 +12,7 @@ import DeviceInfo from 'react-native-device-info';
 import {Config} from '../../../Config';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useDispatch, useSelector} from 'react-redux';
-import axios from 'axios';
+import axiosInstance from '../../../services/axiosInstance';
 const Contactus = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const accountEmail = loginData?.Login_details?.email;
@@ -47,7 +47,7 @@ const Contactus = props => {
   // Api intrigation ....
   const handleContactus = () => {
     const url = Config.BASE_URL;
-    const contactUsUrl = url + 'Contact_Us';
+    const contactUsUrl ='Contact_Us';
     console.log('Request URL:', contactUsUrl);
     setIsLoading(true);
     const contactus_data = {
@@ -55,7 +55,7 @@ const Contactus = props => {
       message: aboutHelp,
       device_information: check ? osName : null,
     };
-    axios
+    axiosInstance
       .post(contactUsUrl, contactus_data)
       .then(response => {
         console.log('API Response contact us:', response.data);

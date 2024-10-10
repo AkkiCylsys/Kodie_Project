@@ -35,6 +35,7 @@ import {
 import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
+import axiosInstance from '../../../services/axiosInstance';
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -226,7 +227,7 @@ const ProfileDocumentDetails = props => {
       return;
     }
     const url = Config.BASE_URL;
-    const uploadDoc_url = url + 'uploadDocument';
+    const uploadDoc_url ='uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
 
@@ -242,7 +243,7 @@ const ProfileDocumentDetails = props => {
       formData.append('p_file_Name', D_file_name);
       formData.append('p_document_type', folderId ? 0 : 1);
       formData.append('p_sub_module_name', documentLookupDataValue);
-      const response = await axios.post(uploadDoc_url, formData, {
+      const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -296,7 +297,7 @@ const ProfileDocumentDetails = props => {
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = `${url}/get/documents`;
+    const getDocumentUrl = `/get/documents`;
     console.log('Request url....', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -305,7 +306,7 @@ const ProfileDocumentDetails = props => {
     };
 
     console.log('documentModuleData....', JSON.stringify(documentModuleData));
-    axios
+    axiosInstance
       .post(
         getDocumentUrl,
         // params: documentModuleData,
@@ -332,10 +333,10 @@ const ProfileDocumentDetails = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url = url + 'deletedocument';
+    const delete_url ='deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .delete(delete_url, {
         data: dataToSend,
       })
