@@ -29,6 +29,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import {Config} from '../../../Config';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
+import axiosInstance from '../../../services/axiosInstance';
 
 const LandlordProfile = () => {
   const dispatch = useDispatch();
@@ -142,8 +143,8 @@ const LandlordProfile = () => {
   const fetchAccountDetails = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(
-        `${Config.BASE_URL}getAccount_details/${userId}`,
+      const response = await axiosInstance.get(
+        `getAccount_details/${userId}`,
       );
       setAccountDetails(response?.data?.data[0]);
     } catch (error) {

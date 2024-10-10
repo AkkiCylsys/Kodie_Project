@@ -5,7 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { BedroomCss } from "../../screens/Inspection/PropertyInspection/Inspection/Bedroom/BedroomCss";
 import { _COLORS, LABEL_STYLES } from "../../Themes";
 import { Config } from "../../Config";
-import axios from "axios";
+import axiosInstance from "../../services/axiosInstance";
 
 const AddCustomItems = (props) => {
   const [name, setName] = useState('');
@@ -42,11 +42,10 @@ const AddCustomItems = (props) => {
       taimFutureInspection: futureInspectionId,
       taimCreatedBy: Created_Id.toString(),
     };
-    const Url = Config.BASE_URL;
-    const CustomItemUrl = Url + 'add/CustomItem';
+    const CustomItemUrl ='add/CustomItem';
 
     try {
-      await axios.post(CustomItemUrl, data, {
+      await axiosInstance.post(CustomItemUrl, data, {
         headers: {
           'Content-Type': 'application/json',
         },

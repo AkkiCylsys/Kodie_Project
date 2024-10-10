@@ -23,6 +23,7 @@ import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/Act
 import {useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../../../../services/axiosInstance';
 const data = [
   {lookup_key: 1, lookup_description: 'Item 1'},
   {lookup_key: 2, lookup_description: 'Item 2'},
@@ -240,9 +241,9 @@ const IndividualInProfile = ({
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
+      `getAccount_details/${loginData.Login_details.user_account_id}`;
 
-    axios
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         // console.log('API Response:', response?.data?.data[0]);

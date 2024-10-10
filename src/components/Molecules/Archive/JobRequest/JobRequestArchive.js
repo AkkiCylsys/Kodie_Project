@@ -454,6 +454,7 @@ import DividerIcon from '../../../Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import { Config } from '../../../../Config';
+import axiosInstance from '../../../../services/axiosInstance';
 
 const hapticFeedbackOptions = {
   enableVibrateFallback: true,
@@ -656,11 +657,11 @@ const JobRequestArchive = () => {
     // const url = 'https://kodieapis.cylsys.com/api/v1/job/getAlljobs/479';
     // const url = 'https://kodietestapi.cylsys.com/api/v1/job/getAlljobs/479';
     const baseUrl = Config?.BASE_URL
-    const url = `${baseUrl}job/getAlljobs/479`
+    const url = `job/getAlljobs/479`
     const Details_url = url;
     console.log('Request URL:', Details_url);
     setIsLoading(true);
-    axios
+    axiosInstance
       .get(Details_url)
       .then(response => {
         if (response?.data && response?.data?.data.length > 0) {

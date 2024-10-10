@@ -24,7 +24,6 @@ import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import CustomSingleButton from '../../../Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../Molecules/RowButtons/RowButtons';
 import {Config} from '../../../../Config';
-import axios from 'axios';
 import {CommonLoader} from '../../../Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
 import Geocoder from 'react-native-geocoding';
@@ -32,6 +31,7 @@ import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
 import {acceptingLandlord} from '../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 import {useNavigation} from '@react-navigation/native';
+import axiosInstance from '../../../../services/axiosInstance';
 const PreRentalQuestionnaire = props => {
   const {
     accountId,
@@ -176,7 +176,7 @@ const PreRentalQuestionnaire = props => {
 
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
-    const Ques_url = url + 'question_details_for_tenant_ques';
+    const Ques_url ='question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
 
@@ -187,7 +187,7 @@ const PreRentalQuestionnaire = props => {
     };
 
     try {
-      const response = await axios.post(Ques_url, QuesData);
+      const response = await axiosInstance.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
 
       if (response?.data?.success === true) {
@@ -959,14 +959,14 @@ const PreRentalQuestionnaire = props => {
   // Api intrigation....
   const handleTenantQues = () => {
     const url = Config.BASE_URL;
-    const tenantQues_url = url + 'question_details_for_tenant_ques';
+    const tenantQues_url ='question_details_for_tenant_ques';
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
       p_account_id: accountId,
       p_property_id: propertyId,
     };
-    axios
+    axiosInstance
       .post(tenantQues_url, tenantQuesData)
       .then(response => {
         if (response?.data?.success === true) {

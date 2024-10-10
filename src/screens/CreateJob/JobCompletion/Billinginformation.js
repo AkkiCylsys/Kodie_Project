@@ -19,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {normalizeUnits} from 'moment';
 import {Config} from '../../../Config';
-import axios from 'axios';
+import axiosInstance from '../../../services/axiosInstance';
 const Billinginformation = props => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,13 +30,13 @@ const Billinginformation = props => {
   }, []);
   const getJobDetails = () => {
     const url = Config.BASE_URL;
-    const jobDetails_url = url + 'job/get';
+    const jobDetails_url ='job/get';
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
       jm_job_id: 72,  //will change when work on this..
     };
-    axios
+    axiosInstance
       .post(jobDetails_url, jobDetailsData)
       .then(response => {
         console.log('API Response JobDetails:', response?.data);

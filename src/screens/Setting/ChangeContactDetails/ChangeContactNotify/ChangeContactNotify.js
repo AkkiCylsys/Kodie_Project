@@ -11,8 +11,8 @@ import {Config} from '../../../../Config';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useDispatch, useSelector} from 'react-redux';
 import SwitchToggle from 'react-native-switch-toggle';
-import axios from 'axios';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
+import axiosInstance from '../../../../services/axiosInstance';
 //ScreenNo:207
 const ChangeContactNotify = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -43,9 +43,9 @@ const ChangeContactNotify = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+      `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
-    await axios
+    await axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response in notify:', response?.data?.data[0]);
@@ -69,7 +69,7 @@ const ChangeContactNotify = props => {
   };
   const UpdateContactDetails = () => {
     const url = Config.BASE_URL;
-    const updateContactDetailUrl = `${url}profile/updateContactdetails`;
+    const updateContactDetailUrl = `profile/updateContactdetails`;
     console.log('url...', updateContactDetailUrl);
     const dataToSend = {
       uad_key: loginData?.Login_details?.user_account_id,
@@ -80,7 +80,7 @@ const ChangeContactNotify = props => {
     };
     console.log("dataToSend ....",dataToSend);
     setIsLoading(true);
-    axios
+    axiosInstance
       .put(updateContactDetailUrl, dataToSend)
       .then(res => {
         console.log('res UpdateContactDetails......', res?.data);

@@ -9,7 +9,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Config} from '../../../Config';
-import axios from 'axios';
 import {UnlistMarketDetails} from '../../../services/PropertyListing/ListingServices';
 import {useSelector} from 'react-redux';
 import { archiveSevices } from '../../../services/PropertyModule/PropertyModul';

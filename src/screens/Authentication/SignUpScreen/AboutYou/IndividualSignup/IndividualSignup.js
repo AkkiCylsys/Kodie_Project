@@ -13,7 +13,6 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
 import IndividualSignupStyle from './IndividualSignupStyle';
-import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFocusEffect} from '@react-navigation/native';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';

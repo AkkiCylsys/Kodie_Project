@@ -17,8 +17,8 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import {Config} from '../../../../Config';
+import axiosInstance from '../../../../services/axiosInstance';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,9 +49,9 @@ const ChangeContactInput = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+    `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
-    await axios
+    await axiosInstance
       .get(apiUrl)
       .then(response => {
         // console.log('API Response:', response?.data?.data[0]);

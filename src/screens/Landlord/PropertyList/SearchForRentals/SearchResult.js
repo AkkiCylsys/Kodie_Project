@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import {_COLORS, LABEL_STYLES, BANNERS, IMAGES} from '../../../../Themes';
 import {SearchResultCss} from './SearchResultCss';
@@ -117,7 +118,7 @@ export default SearchResult = props => {
       const response = await FavouriteServices(favourtiesPayload);
       console.log('response in FavouriteServices', response);
       if (response?.success === true) {
-        alert(response?.message);
+        Alert.alert("Success",response?.message);
       }
     } catch (error) {
       console.error('Error fetchingFavouriteServices', error);

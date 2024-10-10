@@ -22,11 +22,11 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
 import moment from 'moment';
+import axiosInstance from '../../../services/axiosInstance';
 const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancelled"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
@@ -121,7 +121,7 @@ export default NewInspection = (props) => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const InspectionDeatilsByFilter_url = `${url}get/AllInspectionDetails/ByFilter`;
+      const InspectionDeatilsByFilter_url = `get/AllInspectionDetails/ByFilter`;
       const data = {
         v_Filter: filter,
         P_TIM_CREATED_BY: loginData?.Login_details?.user_account_id,
@@ -132,7 +132,7 @@ export default NewInspection = (props) => {
         p_page: 1,
       };
       console.log(data);
-      const response = await axios.post(InspectionDeatilsByFilter_url, data);
+      const response = await axiosInstance.post(InspectionDeatilsByFilter_url, data);
       if (response?.data?.success === true) {
         setInspectionDetails(response?.data?.data);
         console.log('Updated inspection details:', response?.data?.data);
@@ -159,9 +159,9 @@ export default NewInspection = (props) => {
     setIsLoading(true);
     const url = Config.BASE_URL;
 
-    const apiUrl = url + `get_inspection_details/${id}`;
+    const apiUrl = `get_inspection_details/${id}`;
 
-    axios
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response: getinspection', response?.data?.data[0]);
@@ -177,10 +177,10 @@ export default NewInspection = (props) => {
 
     console.log('Attempting to delete inspection...');
     const url = Config.BASE_URL;
-    const deleteUrl = `${url}delete_inspection_details/${Tim_Key}`;
+    const deleteUrl = `delete_inspection_details/${Tim_Key}`;
     setIsLoading(true)
     try {
-      const response = await axios.delete(deleteUrl);
+      const response = await axiosInstance.delete(deleteUrl);
       console.log('Response from delete inspection:', response?.data);
       if (response?.data?.success) {
         Alert.alert('Success', response?.data?.message);
@@ -228,9 +228,9 @@ export default NewInspection = (props) => {
       };
       console.log('inspecdup', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url = Url + 'inspection_details/save';
+      const Inspection_Url ='inspection_details/save';
       console.log('Inspection_Url', Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata);
+      const res = await axiosInstance.post(Inspection_Url, Inspectiondata);
       console.log('scheduule inspection....', res?.data);
       refRBSheet2.current.close();
       if (res?.data?.success == true) {

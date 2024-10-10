@@ -21,11 +21,11 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import VacantModal from '../VacantModal/VacantModal';
 import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
-import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axiosInstance from '../../../services/axiosInstance';
 const PropertyListing = props => {
   const refRBSheet = useRef(null);
   const refRBSheet1 = useRef(null);
@@ -85,7 +85,7 @@ const PropertyListing = props => {
     // setIsDeleteBottomSheetVisible(false);
     try {
       const url = Config.BASE_URL;
-      const response = await axios.delete(url + 'delete_property_by_id', {
+      const response = await axiosInstance.delete('delete_property_by_id', {
         data: JSON.stringify({property_id: propId}),
         headers: {
           'Content-Type': 'application/json',

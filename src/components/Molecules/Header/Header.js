@@ -1,16 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {Text, Image, TouchableOpacity, View, StatusBar} from 'react-native';
-import {HeaderStyle} from './HeaderStyle';
-import {FONTFAMILY, SMALLICON, IMAGES, _COLORS} from './../../../Themes/index';
-import {_goBack} from '../../../services/CommonServices';
+import React, { useState, useEffect } from 'react';
+import { Text, Image, TouchableOpacity, View, StatusBar } from 'react-native';
+import { HeaderStyle } from './HeaderStyle';
+import { FONTFAMILY, SMALLICON, IMAGES, _COLORS } from './../../../Themes/index';
+import { _goBack } from '../../../services/CommonServices';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
-import {useSelector} from 'react-redux';
-import {Config} from '../../../Config';
-import axios from 'axios';
-import {useIsFocused, CommonActions} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { useIsFocused, CommonActions } from '@react-navigation/native';
+import axiosInstance from '../../../services/axiosInstance';
 
 const TopHeader = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -21,33 +20,7 @@ const TopHeader = props => {
   const [isLoading, setIsLoading] = useState(true);
   const [accountDetails, setAccountDetails] = useState(null);
   const isvisible = useIsFocused();
-  // const getPersonalDetails = async () => {
-  // if (
-  //   !loginData ||
-  //   !loginData?.Login_details ||
-  //   !loginData?.Login_details?.user_id
-  // ) {
-  //   console.log('login data not available');
-  //   return;
-  // }
-  //   const url = Config.BASE_URL;
 
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
-  //   // Make a GET request using Axios
-  //   await axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       // Handle successful response
-  //       console.log('API Response:', response?.data?.data[0]);
-  //       setAccountDetails(response?.data?.data[0]);
-  //     })
-  //     .catch(error => {
-  //       // Handle error
-  //       console.error('API Error PersonalDetails h:', error);
-  //     });
-  // };
   const fetchData = async () => {
     if (
       loginData?.Login_details?.user_id ||
@@ -58,11 +31,10 @@ const TopHeader = props => {
   };
   const getPersonalDetails = async () => {
     setIsLoading(true);
-    const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+      `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
-    await axios
+    await axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]?.image_path[0]);
@@ -121,13 +93,13 @@ const TopHeader = props => {
             <Image source={props.MiddleImage} style={HeaderStyle.MiddleIcon} />
           ) : (
             <Text
-              style={[HeaderStyle.LabelText, {color: props.Text_Color}]}
+              style={[HeaderStyle.LabelText, { color: props.Text_Color }]}
               numberOfLines={1}>
               {props.MiddleText}
             </Text>
           )}
         </View>
-       
+
         {props.isrightImage ? (
           <TouchableOpacity
             onPress={props?.onPressRightButton}
@@ -145,14 +117,14 @@ const TopHeader = props => {
                   style={HeaderStyle.MenuIcon}
                 />
               ) : // <Image
-              //   source={IMAGES.NotificationIcon}
-              //   style={HeaderStyle.leftIcon}
-              // />
-              null}
+                //   source={IMAGES.NotificationIcon}
+                //   style={HeaderStyle.leftIcon}
+                // />
+                null}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={props?.onPressRightImgProfile}
-              style={{alignSelf: 'center'}}>
+              style={{ alignSelf: 'center' }}>
               {props.isprofileImage ? (
                 userProfileImageUri ? (
                   <Image
@@ -166,46 +138,47 @@ const TopHeader = props => {
                     name="user-circle"
                     size={38}
                     color={_COLORS.Kodie_GrayColor}
-                    style={{marginLeft: 10}}
+                    style={{ marginLeft: 10 }}
                   />
                 )
               ) : null}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={props?.onPressManurightIcon}
-              style={{alignSelf: 'center'}}>
-            {props.ManurightIcon ? 
-        
-        <Entypo
-              name={'dots-three-vertical'}
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-              style={[HeaderStyle.MenuIcon,{marginLeft:'70%'}]}
-            />
-      
-      :  null
-    }
-    </TouchableOpacity>
-    <TouchableOpacity
+              style={{ alignSelf: 'center' }}>
+              {props.ManurightIcon ?
+
+                <Entypo
+                  name={'dots-three-vertical'}
+                  size={20}
+                  color={_COLORS.Kodie_BlackColor}
+                  style={[HeaderStyle.MenuIcon, { marginLeft: '70%' }]}
+                />
+
+                : null
+              }
+            </TouchableOpacity>
+            <TouchableOpacity
               onPress={props?.onPressEdit}
-              style={{alignSelf: 'center'}}>
-            {props.EditText ? 
-        
-        
-      <Text style={{ fontSize: 16,
-        fontFamily: FONTFAMILY.K_Bold,
-        color: _COLORS.Kodie_BlackColor,
-        marginLeft:'60%'
-        }}>
-          {'Edit'}
-        </Text>
-      :  null
-    }
-    </TouchableOpacity>
+              style={{ alignSelf: 'center' }}>
+              {props.EditText ?
+
+
+                <Text style={{
+                  fontSize: 16,
+                  fontFamily: FONTFAMILY.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                  marginLeft: '60%'
+                }}>
+                  {'Edit'}
+                </Text>
+                : null
+              }
+            </TouchableOpacity>
 
           </View>
         )}
-       
+
       </View>
       <DividerIcon marginTop={2} marginBottom={-0.1} />
     </>

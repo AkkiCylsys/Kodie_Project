@@ -15,9 +15,9 @@ import Entypo from "react-native-vector-icons/Entypo";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
-import axios from "axios";
 import { Config } from "../../../Config";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import axiosInstance from "../../../services/axiosInstance";
 const data = [
   { id: "1", image: BANNERS.previewImage },
   { id: "2", image: BANNERS.previewImage },
@@ -35,10 +35,10 @@ export default ContractorProfile = (props) => {
     const dataProfile = {
       account_id: account_id,
     };
-    const ContractorUrl = url + `Contractor_details_by_account_id`;
+    const ContractorUrl =`Contractor_details_by_account_id`;
     console.log("Request URL:", ContractorUrl);
     setIsLoading(true);
-    axios
+    axiosInstance
       .post(ContractorUrl, dataProfile)
       .then((response) => {
         console.log("API Response ContractorProfile:", response.data);

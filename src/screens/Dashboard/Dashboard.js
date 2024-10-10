@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,32 +13,32 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
-import {useNavigation, useTheme} from '@react-navigation/native';
-import {DashboardStyle} from './DashboardStyle';
+import { userSubscribedCreator } from '../../redux/Actions/Subscription/SubscriptionApiCreator';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { DashboardStyle } from './DashboardStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {Dropdown} from 'react-native-element-dropdown';
-import {IMAGES, SMALLICON, _COLORS} from '../../Themes/index';
+import { _goBack } from '../../services/CommonServices';
+import { Dropdown } from 'react-native-element-dropdown';
+import { IMAGES, SMALLICON, _COLORS } from '../../Themes/index';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
 import DeshboardNotice from '../../components/Molecules/deshboardNoice/DeshboardNotice';
-import {LineChart} from 'react-native-chart-kit';
-import {Card} from 'react-native-paper';
-import {logos} from '../../Themes/CommonVectors/Images';
+import { LineChart } from 'react-native-chart-kit';
+import { Card } from 'react-native-paper';
+import { logos } from '../../Themes/CommonVectors/Images';
 import CircleProgress from '../../components/Molecules/CircleProgress/CircleProgress';
 import SelectProperties from '../../components/Molecules/SelectProperties/SelectProperties';
 import SelectDate from '../../components/Molecules/SelectDate/SelectDate';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {BackHandler} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { BackHandler } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
-import {Config} from '../../Config';
-import axios from 'axios';
-import {useIsFocused, CommonActions} from '@react-navigation/native';
-import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import { Config } from '../../Config';
+import { useIsFocused, CommonActions } from '@react-navigation/native';
+import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import { setToken } from '../../services/TokenManagments';
+import axiosInstance from '../../services/axiosInstance';
 
 const IncomeData = [
   {
@@ -85,9 +85,9 @@ const Notice = [
 ];
 
 const data = [
-  {label: 'India', value: '1'},
-  {label: 'Australia', value: '2'},
-  {label: 'America', value: '3'},
+  { label: 'India', value: '1' },
+  { label: 'Australia', value: '2' },
+  { label: 'America', value: '3' },
 ];
 
 export default Dashboard = props => {
@@ -138,8 +138,8 @@ export default Dashboard = props => {
     };
   }, [navigation, isvisible]);
   const token = loginData?.Login_details?.token; // Get this from your login process
-    const deviceId = loginData?.Login_details?.device_id; // Get this from device information
-    const deviceType =loginData?.Login_details?.device_os_type;
+  const deviceId = loginData?.Login_details?.device_id; // Get this from device information
+  const deviceType = loginData?.Login_details?.device_os_type;
   const fetchData = async () => {
     if (
       loginData?.Login_details?.user_id ||
@@ -148,21 +148,21 @@ export default Dashboard = props => {
       await getPersonalDetails();
       await handleprofileCompletion();
       await check_subscription();
-      
-    // Save token, device ID, and device type
-    await setToken(token, deviceId, deviceType);
+
+      // Save token, device ID, and device type
+      await setToken(token, deviceId, deviceType);
     }
   };
 
   const handleprofileCompletion = async () => {
     const url = Config.BASE_URL;
-    const profileCompletion_url = url + 'Profile_Completion';
+    const profileCompletion_url = 'Profile_Completion';
     console.log('requested url..', profileCompletion_url);
     setIsLoading(true);
     const profileCompletion_urlBody = {
       user_id: loginData?.Login_details?.user_id,
     };
-    await axios
+    await axiosInstance
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response?.data);
@@ -192,7 +192,7 @@ export default Dashboard = props => {
     const res = await dispatch(userSubscribedCreator(check_Subs));
   };
 
-  const Income_render = ({item, index}) => {
+  const Income_render = ({ item, index }) => {
     return (
       <>
         <View style={DashboardStyle.income_Box_View}>
@@ -220,7 +220,7 @@ export default Dashboard = props => {
     return text;
   };
 
-  const NoticeData = ({item, index}) => {
+  const NoticeData = ({ item, index }) => {
     return (
       <>
         <View style={DashboardStyle.pdf_container}>
@@ -253,9 +253,9 @@ export default Dashboard = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+      `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
-    await axios
+    await axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]);
@@ -303,15 +303,14 @@ export default Dashboard = props => {
             onPress={() => {
               props.navigation.navigate('ManageSubscription');
             }}
-            continue={()=>{
+            continue={() => {
               props.navigation.navigate('EditProfile');
             }}
 
           />
           <View style={DashboardStyle.container}>
-            <Text style={DashboardStyle.Name_Text}>{`Hi ${
-              accountDetails?.UAD_FIRST_NAME || ''
-            }! `}</Text>
+            <Text style={DashboardStyle.Name_Text}>{`Hi ${accountDetails?.UAD_FIRST_NAME || ''
+              }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
               style={{
@@ -319,7 +318,7 @@ export default Dashboard = props => {
                 justifyContent: 'space-between',
               }}>
               <Dropdown
-                style={[DashboardStyle.dropdown, {flex: 1}]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -338,7 +337,7 @@ export default Dashboard = props => {
               />
 
               <Dropdown
-                style={[DashboardStyle.dropdown, {flex: 1}]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -433,10 +432,10 @@ export default Dashboard = props => {
                   {'Maintenance status'}
                 </Text>
                 <TouchableOpacity
-                  // onPress={() => {
-                  //   setModalVisible(true);
-                  // }}
-                  >
+                // onPress={() => {
+                //   setModalVisible(true);
+                // }}
+                >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
@@ -511,10 +510,10 @@ export default Dashboard = props => {
               <View style={DashboardStyle.Notice_view}>
                 <Text style={DashboardStyle.maintenance_Text}>{'Notices'}</Text>
                 <TouchableOpacity
-                  // onPress={() => {
-                  //   refRBSheet.current.open();
-                  // }}
-                  >
+                // onPress={() => {
+                //   refRBSheet.current.open();
+                // }}
+                >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}

@@ -48,6 +48,7 @@ import PhoneInput from 'react-native-phone-number-input';
 import styles from 'rn-range-slider/styles';
 import ServicesBox from '../../../components/Molecules/ServicesBox/ServicesBox';
 import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
+import axiosInstance from '../../../services/axiosInstance';
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -184,10 +185,10 @@ const EditProfile = props => {
     const url = Config.BASE_URL;
     setIsLoading(true);
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
+      `getAccount_details/${loginData.Login_details.user_account_id}`;
     console.log(apiUrl, 'apiUrl');
     // Make a GET request using Axios
-    axios
+    axiosInstance
       .get(apiUrl)
       .then(response => {
         // console.log('API Response:', response?.data?.data[0]);

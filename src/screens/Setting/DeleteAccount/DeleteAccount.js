@@ -14,7 +14,6 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import { _COLORS, IMAGES, LABEL_STYLES, FONTFAMILY } from '../../../Themes';
 import { _goBack } from '../../../services/CommonServices';
 import { Config } from '../../../Config';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
@@ -23,6 +22,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { accountDetailsServices } from '../../../services/AccoundDetailsServices/AccountDetailsServices';
+import axiosInstance from '../../../services/axiosInstance';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
@@ -98,10 +98,10 @@ const DeleteAccount = props => {
       phone_number: phoneNumber,
     };
     const url = Config.BASE_URL;
-    const deleteAccount_url = `${url}profile/deleteuseraccount`;
+    const deleteAccount_url = `profile/deleteuseraccount`;
     console.log('url...', deleteAccount_url);
     setIsLoading(true);
-    await axios
+    await axiosInstance
       .delete(deleteAccount_url, { data: dataToSend })
       .then(res => {
         console.log('res delete Account......', res);

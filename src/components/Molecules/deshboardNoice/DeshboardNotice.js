@@ -14,6 +14,7 @@ import {Config} from '../../../Config';
 import axios from 'axios';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
+import axiosInstance from '../../../services/axiosInstance';
 const DeshboardNotice = props => {
   const loginData = useSelector(state => state?.authenticationReducer?.data);
   const SignData = useSelector(state => state?.authenticationReducer?.data);
@@ -40,14 +41,13 @@ const DeshboardNotice = props => {
   };
 
   const handleprofileDays = () => {
-    const url = Config.BASE_URL;
-    const profileDay_url = url + 'Profile_Day';
+    const profileDay_url ='Profile_Day';
     console.log('requested url..', profileDay_url);
     setIsLoading(true);
     const profileDayBody = {
       user_id: userID,
     };
-    axios
+    axiosInstance
       .post(profileDay_url, profileDayBody)
       .then(response => {
         console.log('profileDays response....', response?.data);
@@ -64,14 +64,14 @@ const DeshboardNotice = props => {
   };
   const handleprofileCompletion = () => {
     const url = Config.BASE_URL;
-    const profileCompletion_url = url + 'Profile_Completion';
+    const profileCompletion_url ='Profile_Completion';
     console.log('requested url..', profileCompletion_url);
     setIsLoading(true);
     const profileCompletion_urlBody = {
       // account_id: "531",
       user_id: userID,
     };
-    axios
+    axiosInstance
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response?.data);
