@@ -1085,7 +1085,7 @@ export default CreateJobFirstScreen = props => {
                 textAlignVertical={'top'}
               />
             </View>
-            <View style={{ marginTop: 12 }}>
+            <View style={{ marginTop: 20 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Job priority:'}
                 <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
@@ -1155,7 +1155,7 @@ export default CreateJobFirstScreen = props => {
                 {'Property type is required!'}
               </Text>
             ) : null} */}
-            <View style={{ marginTop: 12 }}>
+            <View style={{ marginTop: 20 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Where is the job taking place?'}
                 <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
