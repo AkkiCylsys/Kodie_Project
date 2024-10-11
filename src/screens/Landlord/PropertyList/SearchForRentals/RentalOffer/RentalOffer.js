@@ -43,7 +43,11 @@ import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {PropertyList2Css} from '../PropertyList2Css';
 import MultiSelect from 'react-native-multiple-select';
-import { getEditAllQuestionServices, getTenantQuestionServices, saveAllJsonDynamicQuestionServices } from '../../../../../services/TenantScreeningServices/TenantScreeningServices';
+import {
+  getEditAllQuestionServices,
+  getTenantQuestionServices,
+  saveAllJsonDynamicQuestionServices,
+} from '../../../../../services/TenantScreeningServices/TenantScreeningServices';
 import axiosInstance from '../../../../../services/axiosInstance';
 
 const RentalOffer = props => {
@@ -60,7 +64,7 @@ const RentalOffer = props => {
   // console.log('propertyId..', propertyId);
   // console.log('bibId in rental..', bibId);
   // console.log('profile_image...', profile_image);
-  // console.log('loginAccountDetails...', loginAccountDetails);
+  console.log('loginAccountDetails...', loginAccountDetails);
 
   const [errors, setErrors] = useState({});
   const [allparentsQuestion, setAllparentsQuestion] = useState([]);
@@ -2926,9 +2930,10 @@ const RentalOffer = props => {
               )} */}
 
               {loginAccountDetails?.UAD_PROFILE_PHOTO_PATH &&
-              loginAccountDetails?.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+              loginAccountDetails.UAD_PROFILE_PHOTO_PATH !== 'null' &&
+              loginAccountDetails.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
                 <Image
-                  source={{uri: loginAccountDetails?.UAD_PROFILE_PHOTO_PATH}}
+                  source={{uri: loginAccountDetails.UAD_PROFILE_PHOTO_PATH}}
                   resizeMode="cover"
                   style={RentalOfferStyle.userImg}
                 />

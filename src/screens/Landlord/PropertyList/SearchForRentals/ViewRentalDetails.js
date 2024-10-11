@@ -211,6 +211,7 @@ const ViewRentalDetails = props => {
     }
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+      console.log("keyFeaturesArray in view mode..",keyFeaturesArray)
       setAdditionalKeyFeatures(keyFeaturesArray);
     } catch (error) {
       console.error('Error parsing additional_key_features:', error);

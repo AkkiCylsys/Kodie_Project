@@ -89,8 +89,13 @@ const PropertyModal = props => {
         style={PropertyModalStyle.container}
         onPress={() => {
           if (item.id === '1') {
-            navigation.navigate('PropertyReview', {
+            // navigation.navigate('PropertyReview', {
+            //   propertyid: propertyId,
+            //   propertyListing: 'propertyListing',
+            // });
+            navigation.navigate('PropertyReviewDetails', {
               propertyid: propertyId,
+              propertyView: 'propertyView',
               propertyListing: 'propertyListing',
             });
             handleCloseModal();

@@ -173,7 +173,7 @@ const ReviewInspection = (props) => {
           marginBottom={90}
           onPress={() => {
             // refRBSheet.current.open();
-            Alert.alert('Coming soon')
+            Alert.alert("Warning",'Coming soon')
           }}
           disabled={isLoading ? true : false}
         />
