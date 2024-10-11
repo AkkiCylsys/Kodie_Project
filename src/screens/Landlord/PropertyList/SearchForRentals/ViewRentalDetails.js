@@ -33,8 +33,8 @@ import Geolocation from '@react-native-community/geolocation';
 import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
 import {useSelector} from 'react-redux';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
-import { MapUrlTile } from 'react-native-maps';
-import { useFocusEffect } from '@react-navigation/native';
+import {MapUrlTile} from 'react-native-maps';
+import {useFocusEffect} from '@react-navigation/native';
 import axiosInstance from '../../../../services/axiosInstance';
 
 const ViewRentalDetails = props => {
@@ -72,18 +72,21 @@ const ViewRentalDetails = props => {
       //     const {latitude, longitude} = position.coords;
       //     console.log(latitude, longitude, 'latitude,longitude');
       // alert(property_Detail?.longitude)
-          fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-          // fetchPointsOfInterest("33.8849","151.2052");
-          // fetchPointsOfInterest("27.149994", "79.499901");
+      fetchPointsOfInterest(
+        property_Detail?.latitude,
+        property_Detail?.longitude,
+      );
+      // fetchPointsOfInterest("33.8849","151.2052");
+      // fetchPointsOfInterest("27.149994", "79.499901");
       //   },
       //   error => console.error(error),
       //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       // );
-  
+
       return () => {
         // Cleanup if necessary when the screen is unfocused
       };
-    }, [property_Detail]) // Add necessary dependencies
+    }, [property_Detail]), // Add necessary dependencies
   );
 
   const handleFavouriteItem = async propertyId => {
@@ -209,14 +212,13 @@ const ViewRentalDetails = props => {
     {
       propertyId ? fetchData() : null;
     }
-    try {
-      const keyFeaturesArray = additionalKeyFeaturesString.split(',');
-      console.log("keyFeaturesArray in view mode..",keyFeaturesArray)
-      setAdditionalKeyFeatures(keyFeaturesArray);
-    } catch (error) {
-      console.error('Error parsing additional_key_features:', error);
-    }
-  }, [additionalKeyFeaturesString, propertyId]);
+    // try {
+    //   const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+    //   setAdditionalKeyFeatures(keyFeaturesArray);
+    // } catch (error) {
+    //   console.error('Error parsing additional_key_features:', error);
+    // }
+  }, [propertyId]);
   const iconMapping = {
     Pool: {component: MaterialIcons, name: 'pool'},
     Garage: {component: MaterialCommunityIcons, name: 'garage'},
@@ -297,46 +299,125 @@ const ViewRentalDetails = props => {
     : null;
 
   // Api intrigation...
+  // const fetchData = async () => {
+  //   try {
+  //     const detailData = {
+  //       property_id: propertyId,
+  //     };
+  //     // const url = `${Config.BASE_URL}get_property_details`;
+  //     const url = 'get_property_details';
+  //     console.log('url:', url);
+  //     setIsLoading(true);
+
+  //     const response = await axiosInstance.post(url, detailData);
+  //     setIsLoading(false);
+
+  //     console.log('response_get_property_details:', response?.data);
+  //     if (response?.data?.success) {
+  //       const propertyDetails = response?.data?.property_details?.[0];
+  //       setProperty_Details(propertyDetails);
+  //       console.log('type of property:', propertyDetails);
+
+  //       // Fetch and process key features
+  //       if (propertyDetails?.key_features) {
+  //         try {
+  //           const parsedData = JSON.parse(
+  //             propertyDetails.key_features.replace(/\\/g, ''),
+  //           );
+  //           setDetail(parsedData);
+  //           console.log('parsedData:', parsedData);
+  //         } catch (parseError) {
+  //           console.error('Error parsing key features:', parseError);
+  //         }
+  //       }
+
+  //       const additionalFeatures_id =
+  //         response?.data?.property_details[0].additional_features_id;
+  //       console.log('additionalFeaturesid....', additionalFeatures_id);
+  //       const additionalFeaturesIds = additionalFeatures_id
+  //         .split(',')
+  //         .map(value => value.trim()); // ['1', '1', '1', '0']
+  //       console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+  //       setAddtionalFeaturesID(additionalFeaturesIds);
+  //       console.log(
+  //         'aditioal key feature.. in ..',
+  //         JSON.stringify(
+  //           response?.data?.property_details[0].additional_key_features || [],
+  //         ),
+  //       );
+  //       setAdditionalKeyFeaturesString(
+  //         response?.data?.property_details[0].additional_key_features || [],
+  //       );
+  //       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+  //       setAdditionalKeyFeatures(keyFeaturesArray);
+  //       console.log('setAdditionalKeyFeatures...', additionalKeyFeatures);
+  //     } else {
+  //       console.error('propertyDetail_error:', response?.data?.error);
+  //       // Uncomment if you want to display an alert to the user
+  //       // alert('Oops something went wrong! Please try again later.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     setIsLoading(false);
+  //     // Uncomment if you want to display an alert to the user
+  //     // alert('An error occurred while fetching the property details. Please try again.');
+  //   }
+  // };
+
   const fetchData = async () => {
     try {
       const detailData = {
         property_id: propertyId,
       };
-      // const url = `${Config.BASE_URL}get_property_details`;
-      const url = "get_property_details";
+      const url = 'get_property_details';
       console.log('url:', url);
       setIsLoading(true);
-
+  
       const response = await axiosInstance.post(url, detailData);
       setIsLoading(false);
-
+  
       console.log('response_get_property_details:', response?.data);
       if (response?.data?.success) {
         const propertyDetails = response?.data?.property_details?.[0];
         setProperty_Details(propertyDetails);
         console.log('type of property:', propertyDetails);
-
+  
         // Fetch and process key features
         if (propertyDetails?.key_features) {
           try {
-            const parsedData = JSON.parse(
-              propertyDetails.key_features.replace(/\\/g, ''),
-            );
+            const parsedData = JSON.parse(propertyDetails.key_features.replace(/\\/g, ''));
             setDetail(parsedData);
             console.log('parsedData:', parsedData);
           } catch (parseError) {
             console.error('Error parsing key features:', parseError);
           }
         }
-
-        const additionalFeatures_id =
-          response?.data?.property_details[0].additional_features_id;
+  
+        const additionalFeatures_id = propertyDetails?.additional_features_id;
         console.log('additionalFeaturesid....', additionalFeatures_id);
         const additionalFeaturesIds = additionalFeatures_id
-          .split(',')
-          .map(value => value.trim()); // ['1', '1', '1', '0']
+          ? additionalFeatures_id.split(',').map(value => value.trim())
+          : []; // Handle case where additionalFeatures_id might be undefined
+  
         console.log('is_additionalFeaturesid....', additionalFeaturesIds);
         setAddtionalFeaturesID(additionalFeaturesIds);
+  
+        console.log('additional key features:', JSON.stringify(propertyDetails.additional_key_features || []));
+        const additionalKeyFeaturesString = propertyDetails.additional_key_features || [];
+        setAdditionalKeyFeaturesString(additionalKeyFeaturesString);
+  
+        // Move the splitting logic here after setting additionalKeyFeaturesString
+        if (Array.isArray(additionalKeyFeaturesString)) {
+          setAdditionalKeyFeatures(additionalKeyFeaturesString);
+        } else {
+          try {
+            const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+            setAdditionalKeyFeatures(keyFeaturesArray);
+            console.log("setAdditionalKeyFeatures...", keyFeaturesArray);
+          } catch (error) {
+            console.error('Error parsing additional_key_features:', error);
+          }
+        }
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // Uncomment if you want to display an alert to the user
@@ -349,7 +430,7 @@ const ViewRentalDetails = props => {
       // alert('An error occurred while fetching the property details. Please try again.');
     }
   };
-
+  
   const available = property_Detail?.available; // Fallback to default date if not available
   const availableDate = moment(available); // Convert to moment object
   const currentDate = moment(); // Get current date
