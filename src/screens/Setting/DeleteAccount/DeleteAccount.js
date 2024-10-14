@@ -14,7 +14,7 @@ import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSin
 import { _COLORS, IMAGES, LABEL_STYLES, FONTFAMILY } from '../../../Themes';
 import { _goBack } from '../../../services/CommonServices';
 import { Config } from '../../../Config';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,9 +23,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { accountDetailsServices } from '../../../services/AccoundDetailsServices/AccountDetailsServices';
 import axiosInstance from '../../../services/axiosInstance';
+import { logoutActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
@@ -89,6 +93,18 @@ const DeleteAccount = props => {
       DeleteAccount();
     }
   };
+  const handleLogout = () => {
+    setTimeout(() => {
+      dispatch(logoutActionCreator());
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'LoginScreen'}],
+        }),
+      );
+    }, 500);
+  };
+
 
   // Api intrigation..
   const DeleteAccount = async () => {
@@ -107,7 +123,7 @@ const DeleteAccount = props => {
         console.log('res delete Account......', res);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
-          props.navigation.navigate('LoginScreen');
+          handleLogout();
         }
       })
       .catch(error => {
