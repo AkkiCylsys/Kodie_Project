@@ -1018,7 +1018,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
   return (
     <>
       {IsMap ? (
-        <View style={{height: windowHeight - 150, flex: 1}}>
+        <View style={{height:Platform.OS === 'ios'?  windowHeight - 200:  windowHeight - 150, flex: 1}}>
           <View
             style={{
               flex:1,
