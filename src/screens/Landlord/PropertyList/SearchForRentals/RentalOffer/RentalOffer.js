@@ -2930,7 +2930,7 @@ const RentalOffer = props => {
               )} */}
 
               {loginAccountDetails?.UAD_PROFILE_PHOTO_PATH &&
-              loginAccountDetails.UAD_PROFILE_PHOTO_PATH !== 'null' &&
+              loginAccountDetails.UAD_PROFILE_PHOTO_PATH !== null &&
               loginAccountDetails.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
                 <Image
                   source={{uri: loginAccountDetails.UAD_PROFILE_PHOTO_PATH}}

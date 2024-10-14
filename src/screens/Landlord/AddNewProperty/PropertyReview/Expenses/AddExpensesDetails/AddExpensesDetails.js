@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 import {AddExpensesDetailsStyle} from './AddExpensesDetailsStyle';
 import {_COLORS} from '../../../../../../Themes';
@@ -342,7 +343,7 @@ export default AddExpensesDetails = props => {
         setExpenceResponse(response?.data);
         console.log('Expence Details_data response', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success",response?.data?.message);
           setTotalAmount('');
           setAccountXcl('');
           setTax('');
@@ -378,7 +379,7 @@ export default AddExpensesDetails = props => {
     } else if (!selectedButtonRepeating && lease_end_value == '') {
       setlLease_end_valueError(true);
     } else if (!ExpenceCategoryValue) {
-      setExpenceCategoryValueError('Select Responsible Category.');
+      setExpenceCategoryValueError('Please select an option.');
     }
     // else if (selectedPaidDate.trim() === "") {
     //   setSelectedPaidDateError("Paid date is required!");
@@ -660,7 +661,7 @@ export default AddExpensesDetails = props => {
           ) : null}
           {!selectedButtonRepeating && lease_end_valueError ? (
             <Text style={AddExpensesDetailsStyle.errorText}>
-              {'Please select a payment frequency!'}
+              {'Please select an option.'}
             </Text>
           ) : null}
           <View style={AddExpensesDetailsStyle.additiontext}>

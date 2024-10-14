@@ -107,7 +107,7 @@ export default Expenses = props => {
                   {getExpenseCategory(item.UPED_EXPENSE_CATEGORY)}
                 </Text>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={ExpensesStyle.Paid_Text}>{'Paid by:'}</Text>
+                  <Text style={ExpensesStyle.Paid_Text}>{'Paid by: '}</Text>
                   <Text style={ExpensesStyle.Paid_Text}>
                     {item.UPED_RESPONSIBLE_PAYING == 266
                       ? 'Landlord'
@@ -119,7 +119,7 @@ export default Expenses = props => {
                 <Text style={ExpensesStyle.Amount_Text}>
                   {item.UPED_PAID == 0 ? 'Amount due' : 'Amount paid'}
                 </Text>
-                <Text style={ExpensesStyle.Accounting_Text}>
+                <Text style={[ExpensesStyle.Accounting_Text,{ textAlign: 'right'}]}>
                   {item.UPED_TOTAL_AMOUNT}
                 </Text>
               </View>
@@ -128,9 +128,12 @@ export default Expenses = props => {
           <View style={ExpensesStyle.datePaid_main_view}>
             <View style={ExpensesStyle.paidDate_subView}>
               <View style={ExpensesStyle.paid_Date_View}>
-                <Text style={ExpensesStyle.date_paid}>{'Date paid:'}</Text>
+                <Text style={ExpensesStyle.date_paid}>{'Date paid: '}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {item.UPED_PAID == 0? moment(item.UPED_START_DATE.substring(0, 10)).format('DD-MMM'): '-'}
+                  {/* {item.UPED_PAID == 0? moment(item.UPED_START_DATE.substring(0, 10)).format('DD-MMM'): '-'} */}
+                  {item.UPED_PAID == 0
+    ? moment(item.UPED_START_DATE.substring(0, 10)).format('DD MMMM YYYY')
+    : '-'}
                 </Text>
               </View>
               <TouchableOpacity

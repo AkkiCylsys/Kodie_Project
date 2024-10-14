@@ -81,7 +81,7 @@ export const ExpensesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   date_paid: {
-    fontSize: 10,
+    fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
   },
