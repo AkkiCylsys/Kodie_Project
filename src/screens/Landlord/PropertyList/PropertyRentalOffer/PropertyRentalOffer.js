@@ -560,7 +560,7 @@ const PropertyRentalOffer = props => {
               </View>
               <View style={{ alignSelf: 'flex-end', marginLeft: 10 }}>
                 <Text style={PropertyRentalOfferStyle.listpriceText}>
-                  {'Listed price'}
+                  {'Budget'}
                 </Text>
                 <Text style={PropertyRentalOfferStyle.listprice}>
                   {`$${item.offer_amount}`}

@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {JobDocumentDetailStyle} from './JobDocumentDetailStyle';
@@ -119,7 +120,7 @@ const JobDocumentDetails = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          alert(res?.data?.message);
+          Alert.alert("Success",res?.data?.message);
           closeModal();
         }
         getUploadedDocumentsByModule();
@@ -161,7 +162,7 @@ const JobDocumentDetails = props => {
       console.log('API Response uploadDocument:', response.data);
 
       if (response?.data?.status === true) {
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         // props.navigation.pop();
         getUploadedDocumentsByModule();
       } else {
@@ -169,7 +170,7 @@ const JobDocumentDetails = props => {
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
-      alert(error);
+      // alert(error);
       // Handle network errors more gracefully
       // if (!error.response) {
       //   alert("Network error. Please check your internet connection.");
@@ -248,7 +249,7 @@ const JobDocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
           });
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
@@ -258,13 +259,13 @@ const JobDocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
             setIsLoading(false);
           });
       }
     } catch (error) {
       console.error('Error downloading file:', error);
-      Alert.alert('Error', 'Failed to download file');
+      Alert.alert('Warning', 'Failed to download file');
     }
   };
   const DocumentsData = ({item, index}) => {
@@ -401,7 +402,7 @@ const JobDocumentDetails = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        alert('File Downloaded Successfully.');
+        Alert.alert("Success",'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });

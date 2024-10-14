@@ -221,7 +221,7 @@ const ProfileDocumentDetails = props => {
     // console.log("p_referral_key....");
     // console.log("p_module_name....",);
     if (doc[0].size === null) {
-      alert(
+      Alert.alert("Warning",
         'The selected document size is null. Please select a valid document.',
       );
       return;
@@ -250,10 +250,10 @@ const ProfileDocumentDetails = props => {
       });
       console.log('API Response uploadDocument:', response.data);
       if (response?.data?.status === true) {
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         await getUploadedDocumentsByModule();
       } else {
-        alert(response?.data?.message);
+        Alert.alert("Warning",response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
@@ -285,7 +285,7 @@ const ProfileDocumentDetails = props => {
           setDocumentLookupData(response?.data?.lookup_details);
         } else {
           console.error('Document dropDown..._error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -343,7 +343,7 @@ const ProfileDocumentDetails = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          alert(res?.data?.message);
+          Alert.alert("Success",res?.data?.message);
           getUploadedDocumentsByModule();
           closeModal();
         }
@@ -414,7 +414,7 @@ const ProfileDocumentDetails = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        alert('File Downloaded Successfully.');
+        Alert.alert("Success",'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -438,13 +438,13 @@ const ProfileDocumentDetails = props => {
       .then(res => {
         console.log('File downloaded successfully');
         setIsLoading(false);
-        alert('Document Downloaded Successfully.');
+        Alert.alert("Success",'Document downloaded successfully.');
         closeModal();
       })
       .catch(error => {
         console.error('Error downloading file:', error);
         setIsLoading(false);
-        alert('Failed to download document.');
+        Alert.alert("Warning",'Failed to download document.');
       });
   };
   const downloadFile = async url => {
@@ -566,7 +566,7 @@ const ProfileDocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
           });
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
@@ -576,13 +576,13 @@ const ProfileDocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
             setIsLoading(false);
           });
       }
     } catch (error) {
       console.error('Error downloading file:', error);
-      Alert.alert('Error', 'Failed to download file');
+      Alert.alert('Warning', 'Failed to download file');
     }
   };
 

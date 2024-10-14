@@ -898,6 +898,7 @@ export default FirstProperty = props => {
           {IsMap ? (
             <View
               style={{
+                flex:1,
                 backgroundColor: 'transparent',
               }}>
               <MapScreen

@@ -105,7 +105,7 @@ const DocumentDetails = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          alert(res?.data?.message);
+          Alert.alert("Success",res?.data?.message);
           closeModal();
         }
         getUploadedDocumentsByModule();
@@ -149,7 +149,7 @@ const DocumentDetails = props => {
       console.log('API Response uploadDocument:', response?.data);
 
       if (response?.data?.status === true) {
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         getUploadedDocumentsByModule();
       } else {
         alert(response?.data?.message);
@@ -214,7 +214,7 @@ const DocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
           });
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
@@ -223,13 +223,13 @@ const DocumentDetails = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
             setIsLoading(false);
           });
       }
     } catch (error) {
       console.error('Error downloading file:', error);
-      Alert.alert('Error', 'Failed to download file');
+      Alert.alert('Warning', 'Failed to download file');
     }
   };
   const getUploadedDocumentsByModule = () => {
@@ -382,7 +382,7 @@ const DocumentDetails = props => {
       .fetch('GET', image_URL)
       .then(res => {
         console.log('res -> ', JSON.stringify(res));
-        alert('File Downloaded Successfully.');
+        Alert.alert("Success",'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });

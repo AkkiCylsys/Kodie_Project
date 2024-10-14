@@ -40,14 +40,14 @@ import {
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
 import axiosInstance from '../../../../services/axiosInstance';
-import { floor } from 'react-native-reanimated';
- 
+import {floor} from 'react-native-reanimated';
+
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log("loginData...",loginData)
+  console.log('loginData...', loginData);
   const [tabValue, setTabValue] = useState('IndividualInProfile');
   const [isLoading, setIsLoading] = useState(false);
   const [ImageName, setImageName] = useState('');
@@ -83,6 +83,7 @@ export default CompanyDetails = props => {
   const [IndiservicesData, setIndiServicesData] = useState([]);
   const isvisible = useIsFocused();
   const [IsHeeight, SetIsHeeight] = useState(false);
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -93,9 +94,9 @@ export default CompanyDetails = props => {
         }
         return false;
       };
- 
+
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
- 
+
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
@@ -176,7 +177,7 @@ export default CompanyDetails = props => {
       setIndiSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
     }
   };
- 
+
   const jobType_render = ({item}) => {
     return (
       <View style={{flex: 1}}>
@@ -295,9 +296,9 @@ export default CompanyDetails = props => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
- 
+
     setIsLoading(true);
- 
+
     const fetchServiceData = async jobType => {
       const propertyData = {
         P_PARENT_CODE:
@@ -312,13 +313,13 @@ export default CompanyDetails = props => {
             : null,
         P_TYPE: 'OPTION',
       };
- 
+
       const url = Config.BASE_URL;
       const propertyType = url + 'lookup_details';
- 
+
       try {
         const response = await axios.post(propertyType, propertyData);
- 
+
         if (response?.data?.status === true) {
           servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
@@ -335,12 +336,12 @@ export default CompanyDetails = props => {
         setIsLoading(false);
       }
     };
- 
+
     const fetchAllServices = async () => {
       try {
         const promises = jobTypes.map(jobType => fetchServiceData(jobType));
         await Promise.all(promises);
- 
+
         setIsLoading(false);
         console.log('All Services Data:', servicesDatas);
         setServicesData(servicesDatas);
@@ -349,7 +350,7 @@ export default CompanyDetails = props => {
         console.error('Error fetching services:', error);
       }
     };
- 
+
     fetchAllServices();
     setIsLoading(false);
   };
@@ -357,9 +358,9 @@ export default CompanyDetails = props => {
     const jobTypes = selectedselectIndiJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
- 
+
     setIsLoading(true);
- 
+
     const fetchIndiServiceData = async jobType => {
       const propertyData = {
         P_PARENT_CODE:
@@ -374,15 +375,15 @@ export default CompanyDetails = props => {
             : null,
         P_TYPE: 'OPTION',
       };
- 
+
       const url = Config.BASE_URL;
       const propertyType = url + 'lookup_details';
- 
+
       try {
         const response = await axios.post(propertyType, propertyData);
- 
+
         if (response?.data?.status === true) {
-          console.log("knsdnven....",response?.data?.lookup_details)
+          console.log('knsdnven....', response?.data?.lookup_details);
           servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
         } else {
@@ -398,35 +399,35 @@ export default CompanyDetails = props => {
         setIsLoading(false);
       }
     };
- 
+
     const fetchIndiAllServices = async () => {
       try {
         const promises = jobTypes.map(jobType => fetchIndiServiceData(jobType));
         await Promise.all(promises);
- 
+
         setIsLoading(false);
         console.log('All Services Data:', servicesDatas);
- 
+
         setIndiServicesData(servicesDatas);
       } catch (error) {
         setIsLoading(false);
         console.error('Error fetching services:', error);
       }
     };
- 
+
     fetchIndiAllServices();
     setIsLoading(false);
   };
   const selectedselectJobTypesString = selectJobTypeid.join(',');
   const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
- 
+
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
     console.log('................ImageNAmeDeependra', newImageName.path);
     refRBSheet.current.close();
   };
- 
+
   const ConfirmAddress = () => {
     setIsMap(false);
     if (tabValue == 'IndividualInProfile') {
@@ -447,7 +448,7 @@ export default CompanyDetails = props => {
       setCompanylatitude(Region.latitude);
       setCompanylongitude(Region.longitude);
     }
- 
+
     getAddress(Region.latitude, Region.longitude);
     // getAddress();
   };
@@ -475,7 +476,7 @@ export default CompanyDetails = props => {
           json.results[0].address_components[7].long_name +
           ', ' +
           json.results[0].address_components[8].long_name;
- 
+
         var addressComponent2 = json.results[0].address_components[1];
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
@@ -487,31 +488,37 @@ export default CompanyDetails = props => {
       })
       .catch(error => console.warn(error));
   };
- 
+
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
-    const apiUrl =
-      `getAccount_details/${loginData.Login_details.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData.Login_details.user_account_id}`;
     axiosInstance
       .get(apiUrl)
       .then(response => {
-        console.log('API Response: in company details ', response?.data?.data[0]);
-        setAccountDetails(response?.data?.data[0]);
-        setLocation(response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS_INDIVIDUAL
+        console.log(
+          'API Response: in company details ',
+          response?.data?.data[0],
         );
-        setCompanyLocation(response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS);
+        setAccountDetails(response?.data?.data[0]);
+        setLocation(
+          response?.data?.data[0]?.business_data
+            ?.UAD_COMPANY_ADDRESS_INDIVIDUAL,
+        );
+        setCompanyLocation(
+          response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS,
+        );
         const initialJobTypeIds = response?.data?.data[0]?.business_data
           ?.service_offer
           ? response?.data?.data[0].business_data?.service_offer
               .split(',')
               .map(Number)
           : [];
-        const initialJobTypeIdsIndividual = response?.data?.data[0]?.business_data
-          ?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL
-          ? response?.data?.data[0].business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL
-              .split(',')
-              .map(Number)
+        const initialJobTypeIdsIndividual = response?.data?.data[0]
+          ?.business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL
+          ? response?.data?.data[0].business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL.split(
+              ',',
+            ).map(Number)
           : [];
         const initialServiceIds = response?.data?.data[0]?.business_data
           ?.service_perform
@@ -519,37 +526,38 @@ export default CompanyDetails = props => {
               .split(',')
               .map(Number)
           : [];
-          console.log('UAD_SERVICE_YOU_PERFORM_INDIVIDUAL...',initialServiceIds,response?.data?.data[0]?.business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL.split(','));
-        const initialServiceIdsIndividual = response?.data?.data[0]?.business_data
-          ?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL
-          ? response?.data?.data[0].business_data?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL
-              .split(',')
-              .map(Number)
+        console.log(
+          'UAD_SERVICE_YOU_PERFORM_INDIVIDUAL...',
+          initialServiceIds,
+          response?.data?.data[0]?.business_data?.UAD_CATEGORY_SERVICE_YOU_OFFER_INDIVIDUAL.split(
+            ',',
+          ),
+        );
+        const initialServiceIdsIndividual = response?.data?.data[0]
+          ?.business_data?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL
+          ? response?.data?.data[0].business_data?.UAD_SERVICE_YOU_PERFORM_INDIVIDUAL.split(
+              ',',
+            ).map(Number)
           : [];
-        setSelectJobTypeid(initialJobTypeIds
-         );
-        setIndiSelectJobTypeid(initialJobTypeIdsIndividual
+        setSelectJobTypeid(initialJobTypeIds);
+        setIndiSelectJobTypeid(initialJobTypeIdsIndividual);
+        setSelectJobType(initialJobTypeIds);
+        setIndiSelectJobType(initialJobTypeIdsIndividual);
+
+        setservicesValue(initialServiceIds);
+
+        setIndiservicesValue(initialServiceIdsIndividual);
+        setWebsite(response?.data?.data[0]?.UAD_WEBSITE);
+        setIndiWebsite(
+          response?.data?.data[0]?.business_data?.UAD_WEBSITE_INDIVIDUAL,
         );
-        setSelectJobType(initialJobTypeIds
+        setCompanyName(
+          response?.data?.data[0]?.business_data?.organization_name,
         );
-        setIndiSelectJobType(initialJobTypeIdsIndividual
+        SetBusinessNumber(
+          response?.data?.data[0]?.business_data?.Austrilian_business_no,
         );
- 
-        setservicesValue(initialServiceIds
-        );
-        
-        setIndiservicesValue(initialServiceIdsIndividual
-        );
-        setWebsite(response?.data?.data[0]?.UAD_WEBSITE
-        );
-        setIndiWebsite(response?.data?.data[0]?.business_data?.UAD_WEBSITE_INDIVIDUAL
-        );
-        setCompanyName(response?.data?.data[0]?.business_data?.organization_name
-        );
-        SetBusinessNumber(response?.data?.data[0]?.business_data?.Austrilian_business_no
-        );
-        setCompanyGSTNumber(response?.data?.data[0]?.business_data?.gst || ""
-        );
+        setCompanyGSTNumber(response?.data?.data[0]?.business_data?.gst || '');
         setIsLoading(false);
       })
       .catch(error => {
@@ -559,17 +567,17 @@ export default CompanyDetails = props => {
   };
   const UpdateCompanyData = async () => {
     const formData = new FormData();
- 
+
     // const fileUri = ImageName.path;
     // const fileName = fileUri
     //   ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
     //   : null;
     // const fileType = ImageName.mime;
-    
+
     // console.log('fileUri....', fileUri);
     // console.log('fileName....', fileName);
     // console.log('fileType....', fileType);
-    
+
     // if (!fileUri || !fileName || !fileType) {
     //   console.error('Invalid image data:', ImageName);
     // } else {
@@ -579,7 +587,8 @@ export default CompanyDetails = props => {
     //     type: fileType,
     //   });
     // }
-    const fileUri = ImageName?.path || accountDetails?.business_data?.company_logo[0];
+    const fileUri =
+      ImageName?.path || accountDetails?.business_data?.company_logo[0];
     const fileName = fileUri
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
@@ -599,60 +608,39 @@ export default CompanyDetails = props => {
     }
     formData.append('account_id', loginData?.Login_details?.user_account_id);
     formData.append('run_business', '0,1');
-    formData.append('austrialian_business_no',businessNumber,);
+    formData.append('austrialian_business_no', businessNumber);
+    formData.append('organisation_name', companyName);
+    formData.append('company_gst', companyGSTNumber);
+    formData.append('category_offer', selectedselectJobTypesString);
     formData.append(
-      'organisation_name', companyName,
+      'category_offer_individual',
+      selectedselectIndiJobTypesString,
     );
-    formData.append(
-      'company_gst',companyGSTNumber,
-    );
-    formData.append(
-      'category_offer', selectedselectJobTypesString,
-    );
-    formData.append(
-      'category_offer_individual',selectedselectIndiJobTypesString   
-    );
-    formData.append(
-      'service_perform',servicesValue,
-    );
-    formData.append(
-      'service_perform_individual',IndiservicesValue
-    );
-    formData.append(
-      'company_address', Companylocation,
-    );
-    formData.append(
-      'company_address_individual',location
-    );
-    formData.append(
-      'company_longitude',Companylongitude,
-    );
-    formData.append(
-      'company_longitude_individual', longitude
-    );
-    formData.append(
-      'company_latitude',Companylatitude,
-    );
-    formData.append(
-      'company_latitude_individual',latitude
-    );
-    formData.append(
-      'website',website,
-    );
-    formData.append(
-      'website_individual',Indiwebsite 
-    );
+    formData.append('service_perform', servicesValue);
+    formData.append('service_perform_individual', IndiservicesValue);
+    formData.append('company_address', Companylocation);
+    formData.append('company_address_individual', location);
+    formData.append('company_longitude', Companylongitude);
+    formData.append('company_longitude_individual', longitude);
+    formData.append('company_latitude', Companylatitude);
+    formData.append('company_latitude_individual', latitude);
+    formData.append('website', website);
+    formData.append('website_individual', Indiwebsite);
     console.log('formData update company details', formData);
     const url = Config.BASE_URL;
-    const updateCompanyData_url ='profile/updateusercompanydata';
+    const updateCompanyData_url = 'profile/updateusercompanydata';
     console.log('Request URL:', updateCompanyData_url);
     setIsLoading(true);
     try {
-      const response = await axiosInstance.put(updateCompanyData_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const response = await axiosInstance.put(
+        updateCompanyData_url,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
       console.log('UpdateCompanyData....', response.data);
       if (response?.data?.success === true) {
         alert(response?.data?.message);
@@ -671,22 +659,22 @@ export default CompanyDetails = props => {
       lastOtherIndex = index;
     }
   });
-console.log("IndiservicesData...dee",IndiservicesData)
+  console.log('IndiservicesData...dee', IndiservicesData);
   const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
     return item.lookup_description !== 'Other' || index === lastOtherIndex;
   });
- 
+
   let lastComOtherIndex = -1;
   servicesData.forEach((item, index) => {
     if (item.lookup_description === 'Other') {
       lastComOtherIndex = index;
     }
   });
- 
+
   const filteredCompservicesData = servicesData.filter((item, index) => {
     return item.lookup_description !== 'Other' || index === lastComOtherIndex;
   });
- 
+
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualInProfile':
@@ -712,44 +700,49 @@ console.log("IndiservicesData...dee",IndiservicesData)
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
-                items={filteredIndiservicesData}
-                uniqueKey="lookup_key"
-                noItemsText={'Feature being searched for is not found on the list.'}
-                onSelectedItemsChange={(item)=>setIndiservicesValue(item)}
-                selectedItems={IndiservicesValue}
-                    
-                selectText="Select items"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={item => {
-                  console.warn(item);
-                  // setAdditionalFeaturesKeyValue(item)
-                }}
-                tagBorderColor={_COLORS.Kodie_BlackColor}
-                selectedItemTextColor={_COLORS.Kodie_GreenColor}
-                selectedItemIconColor={_COLORS.Kodie_GreenColor}
-                itemTextColor="#000"
-                displayKey="lookup_description"
-                searchInputStyle={CompanyDetailsStyle.searchInput}
-                styleListContainer={CompanyDetailsStyle.listContainer}
-                styleRowList={CompanyDetailsStyle.rowList}
-                tagContainerStyle={CompanyDetailsStyle.tagContainer}
-                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
-                styleTextTag={CompanyDetailsStyle.textTag}
-                styleTextDropdown={[CompanyDetailsStyle.textDropdown,
-                  {
-                    paddingHorizontal: IndiservicesValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                styleDropdownMenu={[CompanyDetailsStyle.dropdownMenu,
-                  {
-                    paddingHorizontal: IndiservicesValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                submitButtonColor={_COLORS.Kodie_GreenColor}
-                submitButtonText={
-                  IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
-                }
-              />
+                    items={filteredIndiservicesData}
+                    uniqueKey="lookup_key"
+                    noItemsText={
+                      'Feature being searched for is not found on the list.'
+                    }
+                    onSelectedItemsChange={item => setIndiservicesValue(item)}
+                    selectedItems={IndiservicesValue}
+                    selectText="Select items"
+                    searchInputPlaceholderText="Search Items..."
+                    onChangeInput={item => {
+                      console.warn(item);
+                      // setAdditionalFeaturesKeyValue(item)
+                    }}
+                    tagBorderColor={_COLORS.Kodie_BlackColor}
+                    selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                    selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                    itemTextColor="#000"
+                    displayKey="lookup_description"
+                    searchInputStyle={CompanyDetailsStyle.searchInput}
+                    styleListContainer={CompanyDetailsStyle.listContainer}
+                    styleRowList={CompanyDetailsStyle.rowList}
+                    tagContainerStyle={CompanyDetailsStyle.tagContainer}
+                    tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                    styleTextTag={CompanyDetailsStyle.textTag}
+                    styleTextDropdown={[
+                      CompanyDetailsStyle.textDropdown,
+                      {
+                        paddingHorizontal:
+                          IndiservicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    styleDropdownMenu={[
+                      CompanyDetailsStyle.dropdownMenu,
+                      {
+                        paddingHorizontal:
+                          IndiservicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    submitButtonColor={_COLORS.Kodie_GreenColor}
+                    submitButtonText={
+                      IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
+                    }
+                  />
                   {/* <MultiSelect
                     style={[IndividualProfileStyle.dropdown]}
                     placeholderStyle={IndividualProfileStyle.placeholderStyle}
@@ -779,7 +772,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 <Text style={LABEL_STYLES.commontext}>
                   {'Company physical address'}
                 </Text>
- 
+
                 <View style={IndividualProfileStyle.inputContainer}>
                   <View style={IndividualProfileStyle.locationConView}>
                     <View style={IndividualProfileStyle.locationContainer}>
@@ -788,7 +781,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                         value={location}
                         onChangeText={setLocation}
                         onFocus={() => {
-                          setIsSearch(true)
+                          setIsSearch(true);
                         }}
                         placeholder="Search location"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -809,7 +802,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   </View>
                 </View>
               </View>
- 
+
               <View style={IndividualProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
                 <TextInput
@@ -830,7 +823,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
         );
       case 'CompanyInProfile':
         return (
-          <View>
+          <View style={{flex: 1}}>
             <View style={CompanyInProfileStyle.card}>
               <View style={CompanyInProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
@@ -848,7 +841,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   correspondence from Kodie.
                 </Text>
               </View>
- 
+
               <View style={CompanyInProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Australian business number'}
@@ -861,7 +854,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   placeholderTextColor="#999"
                 />
               </View>
- 
+
               <View style={CompanyInProfileStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Company GST / VAT number'}
@@ -874,7 +867,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   placeholderTextColor="#999"
                 />
               </View>
- 
+
               <View>
                 <Text style={CompanyInProfileStyle.want_Heading}>
                   {
@@ -894,44 +887,47 @@ console.log("IndiservicesData...dee",IndiservicesData)
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
-                items={filteredCompservicesData}
-                uniqueKey="lookup_key"
-                noItemsText={'Feature being searched for is not found on the list.'}
-                onSelectedItemsChange={(item)=>setservicesValue(item)}
-                selectedItems={servicesValue}
-                    
-                selectText="Select items"
-                searchInputPlaceholderText="Search Items..."
-                onChangeInput={item => {
-                  console.warn(item);
-                  // setAdditionalFeaturesKeyValue(item)
-                }}
-                tagBorderColor={_COLORS.Kodie_BlackColor}
-                selectedItemTextColor={_COLORS.Kodie_GreenColor}
-                selectedItemIconColor={_COLORS.Kodie_GreenColor}
-                itemTextColor="#000"
-                displayKey="lookup_description"
-                searchInputStyle={CompanyDetailsStyle.searchInput}
-                styleListContainer={CompanyDetailsStyle.listContainer}
-                styleRowList={CompanyDetailsStyle.rowList}
-                tagContainerStyle={CompanyDetailsStyle.tagContainer}
-                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
-                styleTextTag={CompanyDetailsStyle.textTag}
-                styleTextDropdown={[CompanyDetailsStyle.textDropdown,
-                  {
-                    paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                styleDropdownMenu={[CompanyDetailsStyle.dropdownMenu,
-                  {
-                    paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
-                  },
-                ]}
-                submitButtonColor={_COLORS.Kodie_GreenColor}
-                submitButtonText={
-                  servicesValue.length > 0 ? 'Done' : 'Cancel'
-                }
-              />
+                    items={filteredCompservicesData}
+                    uniqueKey="lookup_key"
+                    noItemsText={
+                      'Feature being searched for is not found on the list.'
+                    }
+                    onSelectedItemsChange={item => setservicesValue(item)}
+                    selectedItems={servicesValue}
+                    selectText="Select items"
+                    searchInputPlaceholderText="Search Items..."
+                    onChangeInput={item => {
+                      console.warn(item);
+                      // setAdditionalFeaturesKeyValue(item)
+                    }}
+                    tagBorderColor={_COLORS.Kodie_BlackColor}
+                    selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                    selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                    itemTextColor="#000"
+                    displayKey="lookup_description"
+                    searchInputStyle={CompanyDetailsStyle.searchInput}
+                    styleListContainer={CompanyDetailsStyle.listContainer}
+                    styleRowList={CompanyDetailsStyle.rowList}
+                    tagContainerStyle={CompanyDetailsStyle.tagContainer}
+                    tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                    styleTextTag={CompanyDetailsStyle.textTag}
+                    styleTextDropdown={[
+                      CompanyDetailsStyle.textDropdown,
+                      {
+                        paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    styleDropdownMenu={[
+                      CompanyDetailsStyle.dropdownMenu,
+                      {
+                        paddingHorizontal: servicesValue.length > 0 ? 10 : 5,
+                      },
+                    ]}
+                    submitButtonColor={_COLORS.Kodie_GreenColor}
+                    submitButtonText={
+                      servicesValue.length > 0 ? 'Done' : 'Cancel'
+                    }
+                  />
                   {/* <MultiSelect
                     style={[CompanyInProfileStyle.dropdown]}
                     placeholderStyle={CompanyInProfileStyle.placeholderStyle}
@@ -969,9 +965,9 @@ console.log("IndiservicesData...dee",IndiservicesData)
                           style={CompanyInProfileStyle.locationInput}
                           value={Companylocation}
                           onChangeText={setCompanyLocation}
-                          onFocus={() =>{
-
-                           setIsSearch(true)}}
+                          onFocus={() => {
+                            setIsSearch(true);
+                          }}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1018,10 +1014,15 @@ console.log("IndiservicesData...dee",IndiservicesData)
   return (
     <>
       {IsMap ? (
-        <View style={{height:Platform.OS === 'ios'?  windowHeight - 200:  windowHeight - 150, flex: 1}}>
+        <View
+          style={{
+            height:
+              Platform.OS === 'ios' ? windowHeight - 200 : windowHeight - 150,
+            flex: 1,
+          }}>
           <View
             style={{
-              flex:1,
+              flex: 1,
               backgroundColor: 'transparent',
               alignItems: 'center',
               height: '100%',
@@ -1033,8 +1034,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 alignSelf: 'center',
                 marginBottom: 10,
               }}
-              iscancel={()=> setIsMap(false)}
-
+              iscancel={() => setIsMap(false)}
               onRegionChange={onRegionChange}
               Maplat={
                 tabValue == 'IndividualInProfile' ? latitude : Companylatitude
@@ -1059,7 +1059,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
               <TextInput
                 style={{
                   backgroundColor: 'transparent',
- 
+
                   width: '90%',
                   height: 45,
                   alignSelf: 'center',
@@ -1079,6 +1079,8 @@ console.log("IndiservicesData...dee",IndiservicesData)
       ) : IsSearch ? (
         <SearchPlaces
           onPress={(data, details = null) => {
+            setIsSearch(false);
+            setIsMap(true);
             console.log('LocationData....', details);
             if (tabValue == 'IndividualInProfile') {
               setlatitude(details.geometry.location.lat);
@@ -1087,9 +1089,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
               setCompanylatitude(details.geometry.location.lat);
               setCompanylongitude(details.geometry.location.lng);
             }
- 
-            setIsSearch(false);
-            setIsMap(true);
+
             setCurrentLocation(details.formatted_address);
           }}
         />
@@ -1117,7 +1117,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                     <Image
                       style={CompanyDetailsStyle.profilelogo}
                       source={{
-                        uri:accountDetails?.business_data?.company_logo[0],
+                        uri: accountDetails?.business_data?.company_logo[0],
                       }}
                       resizeMode="cover"
                     />
@@ -1146,7 +1146,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                 </Text>
               </View>
               <Divider style={CompanyDetailsStyle.firstdivider} />
- 
+
               <View style={CompanyDetailsStyle.tabmainview}>
                 <Text style={CompanyDetailsStyle.tabheadingtext}>
                   How do you run your business?
@@ -1206,7 +1206,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                   </TouchableOpacity>
                 </View>
               </View>
- 
+
               {checkTabs()}
               {/* {Platform.OS == 'ios' ? (
                 <View style={{height: IsHeeight ? 120 : 0}}></View>

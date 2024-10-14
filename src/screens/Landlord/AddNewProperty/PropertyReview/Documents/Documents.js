@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   PermissionsAndroid,
+  Alert
 } from 'react-native';
 import {DocumentsStyle} from './DocumentsStyle';
 import {_COLORS, IMAGES} from '../../../../../Themes';
@@ -110,7 +111,7 @@ export default Documents = props => {
       .then(res => {
         console.log('res......', res?.data);
         if (res?.data?.success === true) {
-          alert(res?.data?.message);
+          Alert.alert("Success",res?.data?.message);
           getAllDocuments();
           closeModal();
         }
@@ -178,7 +179,7 @@ export default Documents = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        alert('File Downloaded Successfully.');
+        Alert.alert("Success",'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -387,7 +388,7 @@ export default Documents = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
           });
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
@@ -397,13 +398,13 @@ export default Documents = props => {
           })
           .catch(error => {
             console.error('Error opening file:', error);
-            Alert.alert('Error', 'Failed to view file');
+            Alert.alert('Warning', 'Failed to view file');
             setIsLoading(false);
           });
       }
     } catch (error) {
       console.error('Error downloading file:', error);
-      Alert.alert('Error', 'Failed to download file');
+      Alert.alert('Warning', 'Failed to download file');
     }
   };
 
