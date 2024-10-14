@@ -40,6 +40,7 @@ import {
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
 import axiosInstance from '../../../../services/axiosInstance';
+import { floor } from 'react-native-reanimated';
  
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
@@ -786,7 +787,9 @@ console.log("IndiservicesData...dee",IndiservicesData)
                         style={IndividualProfileStyle.locationInput}
                         value={location}
                         onChangeText={setLocation}
-                        onFocus={() => setIsSearch(true)}
+                        onFocus={() => {
+                          setIsSearch(true)
+                        }}
                         placeholder="Search location"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
@@ -966,7 +969,9 @@ console.log("IndiservicesData...dee",IndiservicesData)
                           style={CompanyInProfileStyle.locationInput}
                           value={Companylocation}
                           onChangeText={setCompanyLocation}
-                          onFocus={() => setIsSearch(true)}
+                          onFocus={() =>{
+
+                           setIsSearch(true)}}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1013,9 +1018,10 @@ console.log("IndiservicesData...dee",IndiservicesData)
   return (
     <>
       {IsMap ? (
-        <View style={{height: windowHeight - 200, flex: 1}}>
+        <View style={{height: windowHeight - 150, flex: 1}}>
           <View
             style={{
+              flex:1,
               backgroundColor: 'transparent',
               alignItems: 'center',
               height: '100%',

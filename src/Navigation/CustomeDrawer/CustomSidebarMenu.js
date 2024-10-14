@@ -18,9 +18,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {logoutActionCreator} from '../../redux/Actions/Authentication/AuthenticationApiCreator';
 import {useDispatch, useSelector} from 'react-redux';
-import {DrawerActions} from '@react-navigation/native';
+import {CommonActions, DrawerActions, useNavigation} from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 const CustomSidebarMenu = props => {
+  const navigation = useNavigation()
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '2';
@@ -106,13 +107,26 @@ const CustomSidebarMenu = props => {
         break;
     }
   };
+  // const LogOut = () => {
+  //   props.navigation.dispatch(DrawerActions.closeDrawer());
+  //   props.navigation.navigate('LoginScreen');
+  //   setTimeout(() => {
+  //     dispatch(logoutActionCreator());
+  //   }, 3000);
+  //   refRBSheet.current.close();
+  // };
+
   const LogOut = () => {
-    props.navigation.dispatch(DrawerActions.closeDrawer());
-    props.navigation.navigate('LoginScreen');
+    refRBSheet.current.close();
     setTimeout(() => {
       dispatch(logoutActionCreator());
-    }, 3000);
-    refRBSheet.current.close();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'LoginScreen'}],
+        }),
+      );
+    }, 500);
   };
   const handleGeneralSettingsPress = () => {
     Alert.alert('Alert', 'Coming soon');

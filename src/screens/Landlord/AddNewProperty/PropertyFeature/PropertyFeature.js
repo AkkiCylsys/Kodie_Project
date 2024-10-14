@@ -26,7 +26,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
-import { SavePropertyDetailSevices, getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
+import {
+  SavePropertyDetailSevices,
+  getPropertyDetailSevice,
+  updatePropertyDetailSevices,
+} from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyFeature = props => {
   const addPropertySecondStepData = useSelector(
@@ -94,35 +98,32 @@ export default PropertyFeature = props => {
     setIsLoading(true);
     try {
       const details = await getPropertyDetailSevice(propertyid);
-      console.log(details,"detailis");
+      console.log(details, 'detailis');
       setIsLoading(false);
-        setProperty_Details(details);
-        const featureValues =
-        details?.additional_features_id
-            ?.split(',')
-            .map(value => value.trim());
-        if (featureValues.length >= 4) {
-          setSelectedButtonFurnishedId(featureValues[0] === '1' ? 1 : 0);
-          setSelectedButtonStorageId(featureValues[1] === '1' ? 1 : 0);
-          setSelectedButtonGardenId(featureValues[2] === '1' ? 1 : 0);
-          setSelectedButtonDepositId(featureValues[3] === '1' ? 1 : 0);
-        }
-        details?.floor_size == 0
-          ? setFlorSize('')
-          : setFlorSize(details?.floor_size);
-        const keyFeaturesId =
-        details?.additional_key_features_id;
-        const parsedKeyFeaturesId =
-          typeof keyFeaturesId === 'string'
-            ? JSON.parse(keyFeaturesId)
-            : keyFeaturesId;
-        setAdditionalFeaturesKeyValue(
-          Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
-        );
-        details?.land_area == 0
-          ? setLandArea('')
-          : setLandArea(details?.land_area);
-      
+      setProperty_Details(details);
+      const featureValues = details?.additional_features_id
+        ?.split(',')
+        .map(value => value.trim());
+      if (featureValues.length >= 4) {
+        setSelectedButtonFurnishedId(featureValues[0] === '1' ? 1 : 0);
+        setSelectedButtonStorageId(featureValues[1] === '1' ? 1 : 0);
+        setSelectedButtonGardenId(featureValues[2] === '1' ? 1 : 0);
+        setSelectedButtonDepositId(featureValues[3] === '1' ? 1 : 0);
+      }
+      details?.floor_size == 0
+        ? setFlorSize('')
+        : setFlorSize(details?.floor_size);
+      const keyFeaturesId = details?.additional_key_features_id;
+      const parsedKeyFeaturesId =
+        typeof keyFeaturesId === 'string'
+          ? JSON.parse(keyFeaturesId)
+          : keyFeaturesId;
+      setAdditionalFeaturesKeyValue(
+        Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
+      );
+      details?.land_area == 0
+        ? setLandArea('')
+        : setLandArea(details?.land_area);
     } catch (err) {
       console.log(err);
       alert(err.message);
@@ -130,7 +131,7 @@ export default PropertyFeature = props => {
       setIsLoading(false);
     }
   };
-  
+
   const AllCountsData = [
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
@@ -302,24 +303,19 @@ export default PropertyFeature = props => {
       p_country: country,
     };
     console.log('Property feature data in feature..', data);
-    const response = await SavePropertyDetailSevices(data)
-        if (response?.success === true) {
-          setIsLoading(false);
-          console.log(
-            'response?.Property_id',
-            response?.Property_id,
-          );
-          dispatch(
-            fetchAddPropertySecondStepsSuccess(response?.Property_id),
-          );
-          props.navigation.navigate('PropertyImages', {
-            property_id: response?.Property_id,
-          });
-          console.log('property_details....', response?.data);
-        } else {
-          console.error('property_details_error:', response?.error);
-          setIsLoading(false);
-        }
+    const response = await SavePropertyDetailSevices(data);
+    if (response?.success === true) {
+      setIsLoading(false);
+      console.log('response?.Property_id', response?.Property_id);
+      dispatch(fetchAddPropertySecondStepsSuccess(response?.Property_id));
+      props.navigation.navigate('PropertyImages', {
+        property_id: response?.Property_id,
+      });
+      console.log('property_details....', response?.data);
+    } else {
+      console.error('property_details_error:', response?.error);
+      setIsLoading(false);
+    }
   };
   const additional_features = async () => {
     const url = Config.BASE_URL;
@@ -347,7 +343,7 @@ export default PropertyFeature = props => {
     }
   };
 
-  const updatePropertyDetails = async() => {
+  const updatePropertyDetails = async () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -363,23 +359,23 @@ export default PropertyFeature = props => {
       UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
       autolist: property_Detail?.auto_list,
-      property_id:propertyid,
+      property_id: propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
     };
     console.log('updateData', updateData);
-  const response = await updatePropertyDetailSevices(updateData)
-        if (response?.success === true) {
-          setIsLoading(false);
-          props.navigation.navigate('PropertyImages', {
-            property_id: propertyid,
-            editMode: editMode,
-          });
-        } else {
-          console.error('update_property_detailserror:', response?.data?.error);
-          setIsLoading(false);
-        }
+    const response = await updatePropertyDetailSevices(updateData);
+    if (response?.success === true) {
+      setIsLoading(false);
+      props.navigation.navigate('PropertyImages', {
+        property_id: propertyid,
+        editMode: editMode,
+      });
+    } else {
+      console.error('update_property_detailserror:', response?.data?.error);
+      setIsLoading(false);
+    }
   };
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
