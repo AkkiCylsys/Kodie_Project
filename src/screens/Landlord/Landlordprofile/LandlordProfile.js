@@ -30,7 +30,7 @@ import {Config} from '../../../Config';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import axiosInstance from '../../../services/axiosInstance';
 
-const LandlordProfile = () => {
+const LandlordProfile = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -231,7 +231,10 @@ const LandlordProfile = () => {
   return (
     <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => navigation.goBack()}
+        onPressLeftButton={() => {
+          // navigation.goBack()
+          props.navigation.navigate('Dashboard')
+        }}
         MiddleText="Profile"
       />
       <ScrollView>

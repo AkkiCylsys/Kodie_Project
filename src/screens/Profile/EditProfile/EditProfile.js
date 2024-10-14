@@ -437,11 +437,11 @@ const EditProfile = props => {
     formData.append('latitude', latitude);
     console.log('formData in editmode...', formData);
     const url = Config.BASE_URL;
-    const updateProfile_url = url + 'profile/updateProfile';
+    const updateProfile_url = 'profile/updateProfile';
     console.log('Request URL:', updateProfile_url);
     setIsLoading(true);
     try {
-      const response = await axios.put(updateProfile_url, formData, {
+      const response = await axiosInstance.put(updateProfile_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

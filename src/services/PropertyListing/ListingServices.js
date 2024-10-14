@@ -21,23 +21,42 @@ export const insertMarketDetails = (data) => {
         });
     });
   };
-  export const PropertyListingDetails = (data) => {
+  // export const PropertyListingDetails = (data) => {
   
+  //   return new Promise((resolve, reject) => {
+  //     axiosInstance.post('property_market_by_account_id', data)
+  //       .then(response => {
+  //         if (response?.data?.success) {
+  //           resolve(response.data);
+  //         } else {
+  //           reject(new Error(response?.data?.error || 'Unknown error'));
+  //         }
+  //       })
+  //       .catch(error => {
+  //         const errorMessage = handleApiError(error);
+  //       reject(errorMessage);
+  //       });
+  //   });
+  // };
+
+
+  export const PropertyListingDetails = (data) => {
     return new Promise((resolve, reject) => {
-      axiosInstance.post('property_market_by_account_id', data)
-        .then(response => {
-          if (response?.data?.success) {
-            resolve(response.data);
-          } else {
-            reject(new Error(response?.data?.error || 'Unknown error'));
-          }
-        })
-        .catch(error => {
-          const errorMessage = handleApiError(error);
-        reject(errorMessage);
-        });
+        axiosInstance.post('property_market_by_account_id', data)
+            .then(response => {
+                if (response?.data?.success) {
+                    resolve(response.data);
+                } else {
+                    reject(new Error(response?.data?.error || 'Unknown error'));  // Reject with error message
+                }
+            })
+            .catch(error => {
+                const errorMessage = handleApiError(error);  // Handle and transform error as needed
+                reject(errorMessage);  // Reject the error to be caught in the async function
+            });
     });
-  };
+};
+
 
   export const UnlistMarketDetails = async (data) => {
     try {

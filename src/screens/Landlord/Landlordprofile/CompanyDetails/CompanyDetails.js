@@ -495,7 +495,7 @@ export default CompanyDetails = props => {
     axiosInstance
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        console.log('API Response: in company details ', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setLocation(response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS_INDIVIDUAL
         );
@@ -623,7 +623,7 @@ export default CompanyDetails = props => {
     formData.append(
       'website_individual',Indiwebsite 
     );
-    console.log('formData', formData);
+    console.log('formData update company details', formData);
     const url = Config.BASE_URL;
     const updateCompanyData_url ='profile/updateusercompanydata';
     console.log('Request URL:', updateCompanyData_url);

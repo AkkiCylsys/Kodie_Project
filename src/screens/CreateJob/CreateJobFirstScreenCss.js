@@ -40,7 +40,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginLeft: 10,
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: 13,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,

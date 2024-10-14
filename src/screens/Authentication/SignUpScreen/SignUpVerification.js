@@ -40,8 +40,10 @@ export default SignUpVerification = props => {
     setValue,
   });
 
-  const deviceId = DeviceInfo.getDeviceId();
+  // const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId,deviceType,'Signup_verification');
   const [isTimerActive, setIsTimerActive] = useState(true);
@@ -57,6 +59,7 @@ export default SignUpVerification = props => {
         device_id:deviceId,
       device_os_type:deviceType
       };
+      console.log("SignUpData in verfication ..",SignUpData)
       const response = await signupSendCode(SignUpData);
       // alert(response?.message); // as per manish discussion he said use static alert.
       alert('OTP resent successfully.');
