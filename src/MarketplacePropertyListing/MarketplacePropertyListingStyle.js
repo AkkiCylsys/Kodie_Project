@@ -32,9 +32,9 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
   locationText: {
     flex: 1,
     fontSize: 10,
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_MediumGrayColor,
     // marginTop: 8,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Bold,
   },
   imageStyle: {
     // flex: 0.5,
