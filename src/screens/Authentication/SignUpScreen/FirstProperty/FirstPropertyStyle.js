@@ -260,7 +260,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   BtnContainer: {

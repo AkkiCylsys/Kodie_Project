@@ -45,6 +45,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import Counter from '../../../../components/Molecules/CounterComponent/Counter';
 import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
+import { isMap } from 'lodash';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -436,6 +437,7 @@ export default FirstProperty = props => {
       setNotesError('');
     }
   };
+  console.log(additionalfeatureskeyvalue,"[additionalfeatureskeyvalue]");
   const handleSaveSignup = async () => {
     setIsLoading(true);
     let newData = {
@@ -468,8 +470,8 @@ export default FirstProperty = props => {
       buildingFlorSize: buildingFlorSize,
       deviceId: deviceId,
       deviceType: deviceType,
-      additional_features: additionalfeatureskeyvalue,
-      key_additional_features: PreFriedly,
+      additional_features: PreFriedly,
+      key_additional_features: JSON.stringify(additionalfeatureskeyvalue),
       selectManageProperty: selectManageProperty,
       auto_list: 0,
       fcm_token: Fcm_token,
@@ -502,79 +504,68 @@ export default FirstProperty = props => {
       };
     }
     const formData = new FormData();
-    formData.append('user', newData?.user_key);
-    formData.append('email', newData?.email);
-    formData.append('first_name', newData?.firstName);
-    formData.append('last_name', newData?.lastName);
-    formData.append('country_code', newData?.country_code);
-    formData.append('phone_number', newData?.mobileNumber);
-    formData.append('physical_address', newData?.physicalAddress);
-    formData.append('p_longitude', newData?.p_longitude);
-    formData.append('p_latitude', newData?.p_latitude);
-    formData.append('State', newData?.state);
-    formData.append('Country', newData?.country);
-    formData.append('City', newData?.city);
-    formData.append('organisation_name', newData?.organisation);
-    formData.append('referral_code', newData?.referral);
-    formData.append('describe_yourself', newData?.selectedServiceKeysString);
-    formData.append('kodie_help', newData?.kodieHelpValue);
-    formData.append('property_manage', newData?.selectManageProperty);
-    formData.append('location', newData?.location);
-    formData.append('location_longitude', newData?.longitude);
-    formData.append('location_latitude', newData?.latitude);
-    formData.append('islocation', newData?.islocation);
-    formData.append('property_description', newData?.propertyDesc);
-    formData.append('property_type', newData?.property_value);
-    formData.append('key_features', newData?.key_features);
-    formData.append('additional_features', newData?.additional_features);
-    formData.append(
-      'key_additional_features',
-      newData?.key_additional_features,
-    );
-    formData.append('auto_list', newData?.auto_list);
-    formData.append('land_area', newData?.landArea);
-    formData.append('floor_size', newData?.buildingFlorSize);
-    formData.append('p_state', newData?.P_state);
-    formData.append('p_country', newData?.p_country);
-    formData.append('p_city', newData?.p_city);
-    formData.append('device_id', newData?.deviceId);
-    formData.append('device_type', newData?.deviceType);
-    formData.append('fcm_token', newData?.fcm_token);
-    formData.append('run_your_business', newData?.run_your_business);
-    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
-    formData.append('category_service_offer', newData?.category_service_offer);
-    formData.append(
-      'category_service_offer_individual',
-      newData?.category_service_offer_individual,
-    );
-    formData.append(
-      'category_service_perform',
-      newData?.category_service_perform,
-    );
-    formData.append(
-      'category_service_perform_individual',
-      newData?.category_service_perform_individual,
-    );
-    formData.append('company_address', newData?.company_address);
-    formData.append(
-      'company_address_individual',
-      newData?.company_address_individual,
-    );
-    formData.append('company_longitude', newData?.company_longitude);
-    formData.append(
-      'company_longitude_individual',
-      newData?.company_longitude_individual,
-    );
-    formData.append('company_latitude', newData?.company_latitude);
-    formData.append(
-      'company_latitude_individual',
-      newData?.company_latitude_individual,
-    );
-    formData.append('website', newData?.website);
-    formData.append('p_website_individual', newData?.p_website_individual);
-    formData.append('bio', newData?.bio);
-    formData.append('profile_photo', newData?.image);
-
+  
+    // Fields to append in formData
+    const fields = {
+      user: newData?.user_key,
+      email: newData?.email,
+      first_name: newData?.firstName,
+      last_name: newData?.lastName,
+      country_code: newData?.country_code,
+      phone_number: newData?.mobileNumber,
+      physical_address: newData?.physicalAddress,
+      p_longitude: newData?.p_longitude,
+      p_latitude: newData?.p_latitude,
+      State: newData?.state,
+      Country: newData?.country,
+      City: newData?.city,
+      organisation_name: newData?.organisation,
+      referral_code: newData?.referral,
+      describe_yourself: newData?.selectedServiceKeysString,
+      kodie_help: newData?.kodieHelpValue,
+      property_manage: newData?.selectManageProperty,
+      location: newData?.location,
+      location_longitude: newData?.longitude,
+      location_latitude: newData?.latitude,
+      islocation: newData?.islocation,
+      property_description: newData?.propertyDesc,
+      property_type: newData?.property_value,
+      key_features: newData?.key_features,
+      additional_features: newData?.additional_features,
+      key_additional_features: newData?.key_additional_features,
+      auto_list: newData?.auto_list,
+      land_area: newData?.landArea,
+      floor_size: newData?.buildingFlorSize,
+      p_state: newData?.P_state,
+      p_country: newData?.p_country,
+      p_city: newData?.p_city,
+      device_id: newData?.deviceId,
+      device_type: newData?.deviceType,
+      fcm_token: newData?.fcm_token,
+      run_your_business: newData?.run_your_business,
+      austrilian_busi_no: newData?.austrilian_busi_no,
+      category_service_offer: newData?.category_service_offer,
+      category_service_offer_individual: newData?.category_service_offer_individual,
+      category_service_perform: newData?.category_service_perform,
+      category_service_perform_individual: newData?.category_service_perform_individual,
+      company_address: newData?.company_address,
+      company_address_individual: newData?.company_address_individual,
+      company_longitude: newData?.company_longitude,
+      company_longitude_individual: newData?.company_longitude_individual,
+      company_latitude: newData?.company_latitude,
+      company_latitude_individual: newData?.company_latitude_individual,
+      website: newData?.website,
+      p_website_individual: newData?.p_website_individual,
+      bio: newData?.bio,
+      profile_photo: newData?.image,
+    };
+  
+    // Append fields to formData
+    for (const key in fields) {
+      if (fields[key] !== undefined) {
+        formData.append(key, fields[key]);
+      }
+    }
     console.log('formData.....', JSON.stringify(formData));
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
@@ -583,8 +574,8 @@ export default FirstProperty = props => {
       setIsLoading(false);
       registerUser();
       // props.navigation.navigate('DrawerNavigatorLeftMenu');
-      setCurrentPage(0);
-      setAdditionalFeaturesKeyValue('');
+      // setCurrentPage(0);
+      // setAdditionalFeaturesKeyValue([]);
     } else {
       setIsLoading(false);
       console.error('Save Account Details error:', res?.data?.error);
@@ -783,8 +774,8 @@ export default FirstProperty = props => {
       registerUserfill();
 
       // props.navigation.navigate('DrawerNavigatorLeftMenu');
-      setCurrentPage(0);
-      setAdditionalFeaturesKeyValue('');
+      // setCurrentPage(0);
+      // setAdditionalFeaturesKeyValue([]);
     } else {
       setIsLoading(false);
       console.error('Save Account Details error:', res?.data?.error);
@@ -902,11 +893,12 @@ export default FirstProperty = props => {
             IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
           }}
         />
-        <View style={FirstPropertyStyle.container}>
+        <View style={[FirstPropertyStyle.container,{
+          flex:IsMap  ? null : 1
+        }]}>
           {IsMap ? (
             <View
               style={{
-                flex: 1,
                 backgroundColor: 'transparent',
               }}>
               <MapScreen
