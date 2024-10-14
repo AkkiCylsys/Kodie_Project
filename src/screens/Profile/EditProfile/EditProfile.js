@@ -179,7 +179,7 @@ const EditProfile = props => {
     setPhoneNumber(remainingNumber);
     console.log(country_Code_Get, 'country_Code_Get');
   } else {
-    console.error('Invalid phone number format');
+    console.log('Invalid phone number format');
   }
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
