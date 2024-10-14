@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import { userSubscribedCreator } from '../../redux/Actions/Subscription/SubscriptionApiCreator';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { DashboardStyle } from './DashboardStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
 import { _goBack } from '../../services/CommonServices';
@@ -39,6 +39,7 @@ import { useIsFocused, CommonActions } from '@react-navigation/native';
 import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 import { setToken } from '../../services/TokenManagments';
 import axiosInstance from '../../services/axiosInstance';
+import { useCallback } from 'react';
 
 const IncomeData = [
   {
@@ -122,21 +123,25 @@ export default Dashboard = props => {
   const SubscriptionData = useSelector(
     state => state.subscriptionReducer.data?.data,
   );
-  useEffect(() => {
-    fetchData();
-    const handleBackPress = () => {
-      if (navigation.isFocused()) {
-        BackHandler.exitApp();
-        return true;
-      }
-      return false;
-    };
-
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-    };
-  }, [navigation, isvisible]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+  
+      const handleBackPress = () => {
+        if (navigation.isFocused()) {
+          BackHandler.exitApp();
+          return true;
+        }
+        return false;
+      };
+  
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+  
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      };
+    }, [navigation])
+  );
   const token = loginData?.Login_details?.token; // Get this from your login process
   const deviceId = loginData?.Login_details?.device_id; // Get this from device information
   const deviceType = loginData?.Login_details?.device_os_type;

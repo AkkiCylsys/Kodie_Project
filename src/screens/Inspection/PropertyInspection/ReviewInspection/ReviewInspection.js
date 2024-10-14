@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
@@ -146,11 +146,18 @@ const ReviewInspection = (props) => {
               onChange={text => setContractor(text)}
               placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
             />
-            <Image
+           <Feather
+                name="user"
+                size={25}
+                color={_COLORS.Kodie_MediumGrayColor}
+              style={ReviewInspectionCss.userStyle}
+                
+              />
+            {/* <Image
               source={IMAGES.userIcons}
               style={ReviewInspectionCss.userStyle}
               resizeMode={'center'}
-            />
+            /> */}
           </View>
         </TouchableOpacity>
         <Text style={ReviewInspectionCss.inspections}>

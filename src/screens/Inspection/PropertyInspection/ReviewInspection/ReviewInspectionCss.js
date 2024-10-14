@@ -58,7 +58,7 @@ export const ReviewInspectionCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  userStyle: { height: 20, width: 20, marginHorizontal: 10 },
+  userStyle: { marginHorizontal: 10 },
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,
