@@ -177,8 +177,8 @@ const ViewApplicationSummary = props => {
       !referenceAcceptButtonId
     ) {
       Alert.alert(
-        'Error',
-        'Please choose an Accept or Reject option for all sections.',
+        'Warning',
+        'Please select either the Accept or Reject option for each section.',
       );
       return;
     }

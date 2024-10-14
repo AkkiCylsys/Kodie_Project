@@ -547,7 +547,7 @@ export default CompanyDetails = props => {
         );
         SetBusinessNumber(response?.data?.data[0]?.business_data?.Austrilian_business_no
         );
-        setCompanyGSTNumber(response?.data?.data[0]?.business_data?.gst
+        setCompanyGSTNumber(response?.data?.data[0]?.business_data?.gst || ""
         );
         setIsLoading(false);
       })
@@ -559,19 +559,37 @@ export default CompanyDetails = props => {
   const UpdateCompanyData = async () => {
     const formData = new FormData();
  
-    const fileUri = ImageName.path;
+    // const fileUri = ImageName.path;
+    // const fileName = fileUri
+    //   ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
+    //   : null;
+    // const fileType = ImageName.mime;
+    
+    // console.log('fileUri....', fileUri);
+    // console.log('fileName....', fileName);
+    // console.log('fileType....', fileType);
+    
+    // if (!fileUri || !fileName || !fileType) {
+    //   console.error('Invalid image data:', ImageName);
+    // } else {
+    //   formData.append('company_logo', {
+    //     uri: fileUri,
+    //     name: fileName,
+    //     type: fileType,
+    //   });
+    // }
+    const fileUri = ImageName?.path || accountDetails?.business_data?.company_logo[0];
     const fileName = fileUri
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
-    const fileType = ImageName.mime;
-    
+    const fileType = ImageName?.mime || 'image/jpeg'; // Default MIME type if it's not provided
+
     console.log('fileUri....', fileUri);
     console.log('fileName....', fileName);
     console.log('fileType....', fileType);
-    
-    if (!fileUri || !fileName || !fileType) {
-      console.error('Invalid image data:', ImageName);
-    } else {
+
+    // Append the image only if the fileUri exists
+    if (fileUri && fileName && fileType) {
       formData.append('company_logo', {
         uri: fileUri,
         name: fileName,
