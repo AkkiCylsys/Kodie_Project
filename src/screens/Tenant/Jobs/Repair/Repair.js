@@ -180,6 +180,8 @@ export default Repair = props => {
         order_wise: 'DESC',
       };
 
+      console.log('payload of job filter...',jobDetailsRequestPayload)
+
       // Call API service with payload
       const response = await getJobListFilterRequestServices(jobDetailsRequestPayload);
 

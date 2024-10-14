@@ -145,6 +145,7 @@ const PropertyList = props => {
         order_col: '1', // Sorting column
         order_wise: 'DESC', // Sort in descending order
       };
+      console.log("payload filter property..",PropertyData)
       const filterData = await getPropertyFilterSevice(PropertyData);
       if (!filterData || filterData.length === 0) {
         throw new Error('No property data found for the selected filter.');

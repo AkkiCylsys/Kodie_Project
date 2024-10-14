@@ -533,7 +533,7 @@ const EditProfile = props => {
                         onChangeText={ (text)=>{isValidFirstName(text)
                           setFirstName(text)}}
                         onBlur={() => isValidFirstName(fullName)}
-                        placeholder="First Name"
+                        placeholder="Enter your first name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}
                       />
@@ -561,7 +561,7 @@ const EditProfile = props => {
                           setLastName(text)
                         }}
                         onBlur={() => isValidLastName(lastName)}
-                        placeholder="Last name"
+                        placeholder="Enter your last name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
                     </View>
@@ -585,7 +585,7 @@ const EditProfile = props => {
                         value={email}
                         onChangeText={text => setEmail(text)}
                         keyboardType="email-address"
-                        placeholder="jason5@gmail.com"
+                        placeholder="Enter your email address"
                         editable={false}
                       />
                     </View>
