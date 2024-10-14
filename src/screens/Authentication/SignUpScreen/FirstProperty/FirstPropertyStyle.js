@@ -133,7 +133,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 36,
   },
   key_feature_Text: {
-    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: _COLORS.Kodie_GrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
@@ -261,6 +261,14 @@ export const FirstPropertyStyle = StyleSheet.create({
   },
   container: {
     // flex: 1,
+    ...Platform.select({
+      android: {
+        flex: 1,  // Only for Android
+      },
+      ios: {
+        flex: undefined,  // No flex for iOS
+      }
+    }),
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   BtnContainer: {

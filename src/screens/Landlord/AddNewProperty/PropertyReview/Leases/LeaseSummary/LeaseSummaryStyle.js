@@ -152,7 +152,7 @@ export const LeaseSummaryStyle = StyleSheet.create({
     color: _COLORS.Kodie_GreenColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
-    alignSelf: "center",
+    alignSelf: "center",marginBottom:2
   },
   rent_received_view: {
     alignSelf: "center",

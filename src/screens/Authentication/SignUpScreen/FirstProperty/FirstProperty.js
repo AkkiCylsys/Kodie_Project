@@ -894,7 +894,6 @@ export default FirstProperty = props => {
           }}
         />
         <View style={[FirstPropertyStyle.container,{
-          flex:IsMap  ? null : 1
         }]}>
           {IsMap ? (
             <View

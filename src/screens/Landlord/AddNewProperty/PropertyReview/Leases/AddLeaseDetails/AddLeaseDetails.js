@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon';
 import moment from 'moment/moment';
 import {SignupLookupDetails} from '../../../../../../APIs/AllApi';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import axiosInstance from '../../../../../../services/axiosInstance';
 const daysOfWeek = [
   {label: 'Monday', value: '1'},
@@ -83,25 +83,44 @@ export default AddLeaseDetails = props => {
   const handleButtonClick = isYes => {
     setIsYesSelected(isYes);
   };
-  useEffect(() => {
-    handle_notification_type();
-    handle_expiry_reminder();
-    handle_payment_reminder();
-    handle_rental_reminder();
-    handle_lease_term();
-    handle_lease_end();
-  }, []);
-  useEffect(() => {
-    if (leaseDataDetails.LEASE_KEY) {
-      updateLeaseData();
-    }
-  }, [leaseDataDetails.LEASE_KEY]);
-  useEffect(() => {
-    if (lease_term_value && isFocus) {
-      handleLeaseTermChange({lookup_key: lease_term_value});
-    }
-  }, [lease_term_value, isFocus]);
-
+  useFocusEffect(
+    useCallback(() => {
+      // Initialize lease details
+      const initializeLeaseDetails = () => {
+        handle_notification_type();
+        handle_expiry_reminder();
+        handle_payment_reminder();
+        handle_rental_reminder();
+        handle_lease_term();
+        handle_lease_end();
+      };
+  
+      initializeLeaseDetails();
+  
+      // Check if lease_end_value.lookup_key is 506 or 507
+      if (
+        lease_end_value.lookup_key === 506 ||
+        lease_end_value.lookup_key === 507
+      ) {
+        updateDateToNextYear(); // Call the update function
+      }
+  
+      // Update lease data if LEASE_KEY is present
+      if (leaseDataDetails?.LEASE_KEY) {
+        updateLeaseData();
+      }
+  
+      // Handle lease term change if lease_term_value is set
+      if (lease_term_value) {
+        handleLeaseTermChange({ lookup_key: lease_term_value });
+      }
+    }, [
+      lease_end_value.lookup_key,
+      selectedDate,
+      leaseDataDetails?.LEASE_KEY,
+      lease_term_value,
+    ]) // Dependencies for the combined effect
+  );
   const updateLeaseData = async () => {
     try {
       setlLease_term_value(
@@ -542,14 +561,7 @@ export default AddLeaseDetails = props => {
       setPaymentDueDay(newDate);
     }
   };
-  useEffect(() => {
-    if (
-      lease_end_value.lookup_key === 506 ||
-      lease_end_value.lookup_key === 507
-    ) {
-      updateDateToNextYear();
-    }
-  }, [lease_end_value.lookup_key, selectedDate]);
+ 
   const calculateLeaseEndDate = (startDate, termKey) => {
     let monthsToAdd;
     switch (termKey) {
