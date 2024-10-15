@@ -25,6 +25,7 @@ const GuestSelectionContent = ({
   handleClosePopup,
   applySelection,
   refRBSheet,
+  mainStyle
 }) => {
   
   return (
@@ -32,7 +33,7 @@ const GuestSelectionContent = ({
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      style={{flex: 1, marginHorizontal: 16}} >
+      style={[{flex: 1, marginHorizontal: 16},mainStyle]} >
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text

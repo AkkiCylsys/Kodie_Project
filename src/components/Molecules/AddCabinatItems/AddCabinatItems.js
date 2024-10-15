@@ -84,17 +84,20 @@ const CreateCabinate = async () => {
   formData.append('TAM_AREA_KEY', AreasKey);
 
   selectedImages.forEach(file => {
-    if (file.path && file.filename && file.mime) {
+    // Check if the file has valid path and mime type
+    if (file.path && file.mime) {
+      const fileName = file.filename || file.path.split('/').pop(); // Derive filename if not available
+      const fileType = file.mime || 'image/jpeg'; // Default to 'image/jpeg' if mime is not available
+      
       formData.append('imagePaths', {
-        uri: file.path, // Ensure this is the correct format for your server
-        name: file.filename,
-        type: file.mime,
+        uri: file.path, // Use the correct file path
+        name: fileName, // Use derived or actual filename
+        type: fileType, // Use the file's mime type
       });
     } else {
       console.warn('Invalid image file:', file); // Log any invalid image file for debugging
     }
   });
-
   console.log('formData', formData); // Log FormData for debugging
 
   const url ='add_cabinets'; // Construct the full URL

@@ -43,6 +43,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AddCustomArea, GetInspectionAreaDetail } from '../../../services/InspectionModuleServices.js/InspectionServices';
 import { log } from 'react-native-reanimated';
 import axiosInstance from '../../../services/axiosInstance';
+import { MapOverlay } from 'react-native-maps';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -943,32 +944,7 @@ const CreateNewInspection = props => {
           />
         </ScrollView>
       </KeyboardAvoidingView>
-      <RBSheet
-        ref={refRBSheet}
-        height={500}
-        openDuration={250}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: CreateNewInspectionStyle.bottomModal_container,
-        }}>
-        <GuestSelectionContent
-          query={query}
-          setQuery={setQuery}
-          results={results}
-          handleSelect={handleSelect}
-          tempSelectedValues={tempSelectedValues}
-          selectedValues={selectedValues}
-          refRBSheet={refRBSheet}
-          applySelection={applySelection}
-          handleClosePopup={handleClosePopup}
-        />
-        {isLoading ? <CommonLoader /> : null}
-      </RBSheet>
+     
       <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}
@@ -1162,6 +1138,36 @@ const CreateNewInspection = props => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+      </RBSheet>
+
+      <RBSheet
+        ref={refRBSheet}
+        height={500}
+        openDuration={250}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: CreateNewInspectionStyle.bottomModal_container,
+        }}>
+          
+        <GuestSelectionContent
+          query={query}
+          setQuery={setQuery}
+          results={results}
+          handleSelect={handleSelect}
+          tempSelectedValues={tempSelectedValues}
+          selectedValues={selectedValues}
+          refRBSheet={refRBSheet}
+          applySelection={applySelection}
+          handleClosePopup={handleClosePopup}
+          mainStyle={{marginVertical:25}}
+        />
+    
+        {isLoading ? <CommonLoader /> : null}
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>

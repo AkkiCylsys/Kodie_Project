@@ -21,38 +21,6 @@ const SearchPlaces = props => {
         placeholder="Enter Location"
         debounce={400}
         onPress={props.onPress}
-        // onPress={(data, details) => {
-        //   // 'details' is provided when fetchDetails = true
-        //   console.log("Selected Place Data:", data);
-        //   if ((details, data)) {
-        //     // Access latitude and longitude from 'details'
-        //     const { lat, lng } = details.geometry.location;
-        //     console.log("Latitude:", lat);
-        //     console.log("Longitude:", lng);
-        //     console.log("description:", data?.description);
-        //     setLatitude(lat);
-        //     setLongitude(lng);
-        //     setDescription(data);
-        //     props.navigation.navigate("SignUpSteps", {
-        //       latitude: latitude,
-        //       longitude: longitude,
-        //       description: description,
-        //     });
-        //   }
-        // }}
-
-        // textInputProps={{
-        //   // Super hacky..
-        //   ref: (textInput) => {
-        //     setTimeout(() => textInput && textInput.focus(), 100);
-        //   },
-        // }}
-        // textInputProps={{
-        //   ref: textInput => {
-
-        //       textInput && textInput.focus();
-
-        //   }
         textInputProps={{
           ref: textInputRef,
           placeholderTextColor: _COLORS.Kodie_BlackColor,

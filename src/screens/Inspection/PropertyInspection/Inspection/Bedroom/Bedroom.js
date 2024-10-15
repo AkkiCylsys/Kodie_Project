@@ -140,7 +140,7 @@ const Bedroom = props => {
       // setIsEditing(!isEditing)
       // getInspectionAreas();
     } catch (error) {
-      Alert.alert('Error', 'Failed to add custom item');
+      // Alert.alert('Error', 'Failed to add custom item');
       console.error('Error adding custom item:', error);
     } finally {
       setIsLoading(false);
@@ -165,8 +165,8 @@ const Bedroom = props => {
       Alert.alert('Success', response?.message);
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
-      // setIsEditing(!isEditing)
-      // handleInspectionuEditItem();
+      setIsEditing(!isEditing)
+      handleInspectionuEditItem();
       // getInspectionAreas();
     } catch (error) {
       // Alert.alert('Error', 'Failed to update custom item');

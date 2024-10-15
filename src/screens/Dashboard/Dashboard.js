@@ -148,7 +148,7 @@ export default Dashboard = props => {
   );
   const token = loginData?.Login_details?.token; // Get this from your login process
   const deviceId = loginData?.Login_details?.device_id; // Get this from device information
-  const deviceType = loginData?.Login_details?.device_os_type;
+  const deviceType = loginData?.Login_details?.device_os_type || loginData?.Login_details?.device_type;
 
   console.log("token..",token)
   console.log("deviceId..",deviceId)

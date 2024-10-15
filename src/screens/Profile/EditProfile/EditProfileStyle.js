@@ -286,12 +286,12 @@ export const EditProfileStyle = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
   locationIconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     marginLeft: 10,
     width: '15%',
     height: 48,
@@ -329,7 +329,7 @@ export const EditProfileStyle = StyleSheet.create({
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
   inputStyle: {
     flex: 1,

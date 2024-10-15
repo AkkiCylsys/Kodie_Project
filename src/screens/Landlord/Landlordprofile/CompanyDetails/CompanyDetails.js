@@ -1079,8 +1079,6 @@ export default CompanyDetails = props => {
       ) : IsSearch ? (
         <SearchPlaces
           onPress={(data, details = null) => {
-            setIsSearch(false);
-            setIsMap(true);
             console.log('LocationData....', details);
             if (tabValue == 'IndividualInProfile') {
               setlatitude(details.geometry.location.lat);
@@ -1089,7 +1087,8 @@ export default CompanyDetails = props => {
               setCompanylatitude(details.geometry.location.lat);
               setCompanylongitude(details.geometry.location.lng);
             }
-
+            setIsSearch(false);
+            setIsMap(true);
             setCurrentLocation(details.formatted_address);
           }}
         />
