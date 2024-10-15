@@ -1085,8 +1085,8 @@ export default Login = props => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
-                // loginWithFacebook()
-                alert("Coming soon")
+                loginWithFacebook()
+                // alert("Coming soon")
               }}
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
