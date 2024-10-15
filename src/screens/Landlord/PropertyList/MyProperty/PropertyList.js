@@ -395,7 +395,7 @@ const PropertyList = props => {
                         <Text
                           style={LABEL_STYLES.commontext}
                           ellipsizeMode="tail"
-                          numberOfLines={0}>
+                          numberOfLines={1}>
                           {item?.City === null ||
                           item?.City === 'null' ||
                           item?.City === ''

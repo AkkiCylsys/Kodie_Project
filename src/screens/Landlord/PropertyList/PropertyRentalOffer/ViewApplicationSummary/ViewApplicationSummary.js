@@ -822,7 +822,7 @@ const ViewApplicationSummary = props => {
                       secondTabLabel={
                         applicationSumAcceptButtonData[1].lookup_description
                       }
-                      width={200}
+                      width={180}
                       firstTabValue={
                         applicationSumAcceptButtonData[0].lookup_key
                       } // This is the value for the first tab
@@ -991,7 +991,7 @@ const ViewApplicationSummary = props => {
                           secondTabLabel={
                             occupantButtonData[1].lookup_description
                           }
-                          width={200}
+                          width={180}
                           firstTabValue={occupantButtonData[0].lookup_key} // This is the value for the first tab
                           secondTabValue={occupantButtonData[1].lookup_key} // This is the value for the second tab
                         />
@@ -1132,7 +1132,7 @@ const ViewApplicationSummary = props => {
                       secondTabLabel={
                         referenceAcceptButtonData[1].lookup_description
                       }
-                      width={200}
+                      width={180}
                       firstTabValue={referenceAcceptButtonData[0].lookup_key} // First tab key
                       secondTabValue={referenceAcceptButtonData[1].lookup_key} // Second tab key
                     />

@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
+import { floor } from 'react-native-reanimated';
 export const ViewApplicationSummaryStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -35,6 +36,7 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     marginVertical: 10,
   },
   toggleButtonView: {
+    flex:1,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },

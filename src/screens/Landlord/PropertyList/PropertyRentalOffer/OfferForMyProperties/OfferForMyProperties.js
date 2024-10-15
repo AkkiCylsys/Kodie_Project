@@ -302,11 +302,14 @@ const OfferForMyProperties = () => {
             </View>
             <View style={{flex: 1, marginLeft: 20}}>
               <View style={OfferForMyPropertiesStyle.apartmentView}>
-                <View style={{flex:1}}>
+                <View style={{flex: 1}}>
                   <Text style={OfferForMyPropertiesStyle.apartmentText}>
                     {item?.property_type}
                   </Text>
-                  <Text style={OfferForMyPropertiesStyle.cityText}>
+                  <Text
+                    style={OfferForMyPropertiesStyle.cityText}
+                    ellipsizeMode="tail"
+                    numberOfLines={1}>
                     {item?.city && item.city !== 'null'
                       ? item.city
                       : item?.state || ''}
