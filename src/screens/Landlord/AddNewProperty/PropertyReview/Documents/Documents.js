@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   PermissionsAndroid,
-  Alert
+  Alert,
 } from 'react-native';
 import {DocumentsStyle} from './DocumentsStyle';
 import {_COLORS, IMAGES} from '../../../../../Themes';
@@ -33,7 +33,7 @@ export default Documents = props => {
     {
       isfocused ? getAllDocuments() : null;
     }
-    getUploadedDocumentsByModule('Property');
+    getUploadedDocumentsByModule('Property_documents');
     getUploadedDocumentsByModule('Lease');
     getUploadedDocumentsByModule('Tenant');
   }, [isfocused]);
@@ -60,7 +60,7 @@ export default Documents = props => {
   const folderData = [
     {
       id: '1',
-      moduleName: 'Property',
+      moduleName: 'Property_documents',
       folderHeading: 'Property documents',
       totalFile: propertyDocBypropertylength,
     },
@@ -101,7 +101,7 @@ export default Documents = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url ='deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axiosInstance
@@ -111,7 +111,7 @@ export default Documents = props => {
       .then(res => {
         console.log('res......', res?.data);
         if (res?.data?.success === true) {
-          Alert.alert("Success",res?.data?.message);
+          Alert.alert('Success', res?.data?.message);
           getAllDocuments();
           closeModal();
         }
@@ -179,7 +179,7 @@ export default Documents = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        Alert.alert("Success",'File downloaded successfully.');
+        Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -252,17 +252,53 @@ export default Documents = props => {
   };
 
   // Api intrigation ......
+  // const getAllDocuments = () => {
+  //   const url = Config.BASE_URL;
+  //   const getDocument_url = `get/document/${property_id}`;
+  //   console.log('Request URL:', getDocument_url);
+  //   setIsLoading(true);
+
+  //   axiosInstance
+  //     .get(getDocument_url)
+  //     .then(response => {
+  //       console.log('API Response getDocuments:', response?.data);
+  //       if (response?.data?.success === true) {
+  //         setUploadDocData(response?.data?.data);
+  //         console.log('getAlluploadDocData..', response?.data?.data);
+  //       } else {
+  //         setUploadDocData([]); // Handle no data scenario
+  //         console.log('No documents found.');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       if (error.response?.status === 404) {
+  //         // Handle the 404 specifically
+  //         setUploadDocData([]); // Set to empty array when no documents exist
+  //         console.log('No documents found (404).');
+  //       } else {
+  //         console.error('API failed AllDocuments', error);
+  //       }
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = `get/document/${property_id}`;
+    const getDocument_url = 'get/documents';
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-  
+
+    const getAllDocPayload = {
+      Module_Name: 'Property',
+      fileReferenceKey: property_id,
+    };
     axiosInstance
-      .get(getDocument_url)
+      .post(getDocument_url, getAllDocPayload)
       .then(response => {
         console.log('API Response getDocuments:', response?.data);
-        if (response?.data?.success === true) {
+        if (response?.data?.status === true) {
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
@@ -283,11 +319,10 @@ export default Documents = props => {
         setIsLoading(false);
       });
   };
-  
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
     // const getDocumentUrl = url + 'tanant_details/get/documents';
-    const getDocumentUrl ='get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -300,7 +335,7 @@ export default Documents = props => {
         console.log(`API Response for ${moduleName}:`, response?.data);
         if (response?.data?.status == true) {
           switch (moduleName) {
-            case 'Property':
+            case 'Property_documents':
               setpropertyDocByproperty(response?.data?.data);
               console.log('Length for property:', response?.data?.data.length);
               setpropertyDocBypropertylength(response?.data?.data.length);

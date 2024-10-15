@@ -7,7 +7,7 @@ import {
   Image,
   TouchableOpacity,
   PermissionsAndroid,
-  Alert
+  Alert,
 } from 'react-native';
 
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -106,7 +106,7 @@ export default JobDocuments = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url ='deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axiosInstance
@@ -116,7 +116,7 @@ export default JobDocuments = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          Alert.alert("Success",res?.data?.message);
+          Alert.alert('Success', res?.data?.message);
           getAllDocuments();
           closeModal();
         }
@@ -184,7 +184,7 @@ export default JobDocuments = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        Alert.alert("Success",'File downloaded successfully.');
+        Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -334,17 +334,50 @@ export default JobDocuments = props => {
   };
 
   // Api intrigation ......
-  const getAllDocuments =async () => {
+  // const getAllDocuments =async () => {
+  //   const url = Config.BASE_URL;
+  //   const getDocument_url =`get/document/${JOB_ID}`;
+  //   // const getDocument_url = url + `tanant_details/get/document/${15}`;
+  //   console.log('Request URL:', getDocument_url);
+  //   setIsLoading(true);
+  //  await axiosInstance
+  //     .get(getDocument_url)
+  //     .then(response => {
+  //       console.log('API Response getDocuments:', response.data);
+  //       if (response?.data?.success === true) {
+  //         // alert(response?.data?.message);
+  //         setUploadDocData(response?.data?.data);
+  //         console.log('getAlluploadDocData..', response?.data?.data);
+  //       } else {
+  //         alert(response?.data?.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('API failed AllDocuments', error);
+  //       setIsLoading(false);
+  //       // alert(error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  const getAllDocuments = async () => {
     const url = Config.BASE_URL;
-    const getDocument_url =`get/document/${JOB_ID}`;
+    const getDocument_url = 'get/documents';
     // const getDocument_url = url + `tanant_details/get/document/${15}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-   await axiosInstance
-      .get(getDocument_url)
+    const getAllDocPayload = {
+      Module_Name: 'Job',
+      fileReferenceKey: JOB_ID,
+    };
+    await axiosInstance
+      .post(getDocument_url, getAllDocPayload)
       .then(response => {
         console.log('API Response getDocuments:', response.data);
-        if (response?.data?.success === true) {
+        if (response?.data?.status === true) {
           // alert(response?.data?.message);
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
@@ -365,7 +398,7 @@ export default JobDocuments = props => {
 
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl ='get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {

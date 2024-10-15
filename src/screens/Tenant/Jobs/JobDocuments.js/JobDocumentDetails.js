@@ -9,7 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
-  Alert
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {JobDocumentDetailStyle} from './JobDocumentDetailStyle';
@@ -30,8 +30,13 @@ import Share from 'react-native-share';
 import FileViewer from 'react-native-file-viewer';
 import {useIsFocused} from '@react-navigation/native';
 import axiosInstance from '../../../../services/axiosInstance';
+import {useSelector} from 'react-redux';
 
 const JobDocumentDetails = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData in Job documents details...', loginData);
+  // console.log("Account id..",loginData?.Login_details?.user_account_id)
+  const user_Account_Id = loginData?.Login_details?.user_account_id;
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
@@ -110,7 +115,7 @@ const JobDocumentDetails = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url =  'deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axiosInstance
@@ -120,7 +125,7 @@ const JobDocumentDetails = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          Alert.alert("Success",res?.data?.message);
+          Alert.alert('Success', res?.data?.message);
           closeModal();
         }
         getUploadedDocumentsByModule();
@@ -132,6 +137,56 @@ const JobDocumentDetails = props => {
         setIsLoading(false);
       });
   };
+  // const uploadDocument = async doc => {
+  //   // alert("upload");
+  //   console.log('uri....', doc[0].uri);
+  //   console.log('name....', doc[0].name.replace(/\s/g, ''));
+  //   console.log('type....', doc[0].type);
+  //   console.log('p_referral_key....', JOB_ID);
+  //   console.log('p_module_name....', moduleName);
+  //   const url = Config.BASE_URL;
+  //   const uploadDoc_url = 'uploadDocument';
+  //   console.log('Request URL:', uploadDoc_url);
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('documents', {
+  //       uri: doc[0].uri,
+  //       name: doc[0].name.replace(/\s/g, ''),
+  //       type: doc[0].type,
+  //     });
+  //     formData.append('p_referral_key', JOB_ID);
+  //     formData.append('p_module_name', moduleName);
+  //     // formData.append("p_sub_module_name", "Property documents");
+
+  //     const response = await axiosInstance.post(uploadDoc_url, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+  //     console.log('API Response uploadDocument:', response.data);
+
+  //     if (response?.data?.status === true) {
+  //       Alert.alert("Success",response?.data?.message);
+  //       // props.navigation.pop();
+  //       getUploadedDocumentsByModule();
+  //     } else {
+  //       alert(response?.data?.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('API failed uploadDocument', error);
+  //     // alert(error);
+  //     // Handle network errors more gracefully
+  //     // if (!error.response) {
+  //     //   alert("Network error. Please check your internet connection.");
+  //     // } else {
+  //     //   alert(error.response?.data?.message);
+  //     // }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
@@ -150,9 +205,12 @@ const JobDocumentDetails = props => {
         name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
+      formData.append('p_account_id', user_Account_Id);
       formData.append('p_referral_key', JOB_ID);
-      formData.append('p_module_name', moduleName);
-      // formData.append("p_sub_module_name", "Property documents");
+      // formData.append('p_module_name', moduleName);
+      formData.append('p_module_name', 'Job');
+      formData.append('p_sub_module_name', moduleName);
+      formData.append('p_document_type', '1');
 
       const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
@@ -162,7 +220,7 @@ const JobDocumentDetails = props => {
       console.log('API Response uploadDocument:', response.data);
 
       if (response?.data?.status === true) {
-        Alert.alert("Success",response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         // props.navigation.pop();
         getUploadedDocumentsByModule();
       } else {
@@ -181,6 +239,7 @@ const JobDocumentDetails = props => {
       setIsLoading(false);
     }
   };
+
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
     const getDocumentUrl = 'get/documents';
@@ -402,7 +461,7 @@ const JobDocumentDetails = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        Alert.alert("Success",'File downloaded successfully.');
+        Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -433,7 +492,7 @@ const JobDocumentDetails = props => {
         style={{
           marginHorizontal: 16,
         }}>
-        <View style={{marginVertical:10}}>
+        <View style={{marginVertical: 10}}>
           <Text style={JobDocumentDetailStyle.upload_doc_text}>
             {'Upload documents'}
           </Text>

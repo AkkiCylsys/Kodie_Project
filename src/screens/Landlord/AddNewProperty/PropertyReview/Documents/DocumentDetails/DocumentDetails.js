@@ -31,10 +31,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RNFetchBlob from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
 import axiosInstance from '../../../../../../services/axiosInstance';
+import { useSelector } from 'react-redux';
 
 const DocumentDetails = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData in Property documents details...', loginData);
+  const user_Account_Id = loginData?.Login_details?.user_account_id;
   const navigation = useNavigation();
-
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
@@ -118,6 +121,49 @@ const DocumentDetails = props => {
       });
   };
   
+  // const uploadDocument = async doc => {
+  //   // alert("upload");
+  //   console.log('uri....', doc[0].uri);
+  //   console.log('name....', doc[0].name.replace(/\s/g, ''));
+  //   console.log('type....', doc[0].type);
+  //   console.log('p_referral_key....', property_id);
+  //   console.log('p_module_name....', moduleName);
+  //   const url = Config.BASE_URL;
+  //   const uploadDoc_url ='uploadDocument';
+  //   console.log('Request URL:', uploadDoc_url);
+  //   setIsLoading(true);
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('documents', {
+  //       uri: doc[0].uri,
+  //       name: doc[0].name.replace(/\s/g, ''),
+  //       type: doc[0].type,
+  //     });
+  //     formData.append('p_referral_key', property_id);
+  //     formData.append('p_module_name', moduleName);
+  //     // formData.append("p_sub_module_name", "Property documents");
+
+  //     const response = await axiosInstance.post(uploadDoc_url, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+
+  //     console.log('API Response uploadDocument:', response?.data);
+
+  //     if (response?.data?.status === true) {
+  //       Alert.alert("Success",response?.data?.message);
+  //       getUploadedDocumentsByModule();
+  //     } else {
+  //       alert(response?.data?.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('API failed uploadDocument', error);
+  //     // alert(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
@@ -136,10 +182,12 @@ const DocumentDetails = props => {
         name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
+      formData.append('p_account_id', user_Account_Id);
       formData.append('p_referral_key', property_id);
-      formData.append('p_module_name', moduleName);
-      // formData.append("p_sub_module_name", "Property documents");
-
+      // formData.append('p_module_name', moduleName);
+      formData.append('p_module_name', 'Property');
+      formData.append('p_sub_module_name', moduleName);
+      formData.append('p_document_type', '1');
       const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
