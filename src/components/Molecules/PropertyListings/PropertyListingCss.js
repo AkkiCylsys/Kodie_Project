@@ -71,7 +71,7 @@ export const PropertyListingCss = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf:'center',
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_LightOrange,
+    borderColor: _COLORS.Kodie_mostLightGreenColor,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
     paddingHorizontal: 8,
