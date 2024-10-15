@@ -140,7 +140,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     paddingHorizontal:10,
     borderColor: _COLORS.Kodie_GrayColor,
     shadowColor: '#000', 
-    shadowOffset: { width: 0, height: 2 },
+    // shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25, 
     shadowRadius: 3.84, 
     elevation: 1, 
