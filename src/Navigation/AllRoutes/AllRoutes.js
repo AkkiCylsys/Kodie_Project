@@ -133,7 +133,7 @@ import Partners from '../../screens/Partners/Partners';
 import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
 import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
 // import {withIAPContext} from 'react-native-iap';
-import DraggableLyrics from '../../screens/Drag'
+import DraggableLyrics from '../../screens/Drag';
 // import {Subscriptions} from '../../screens/Subscription/Subscription';
 import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
 import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
@@ -156,6 +156,10 @@ import ManagingProspectsTenants from '../../screens/TenantManagement/ManagingTen
 import Renthistory from '../../screens/Tenant/Renthistory/Renthistory';
 import PropertyListingDetail from '../../screens/PropertyListings/PropertyListingDetails/PropertyListingDetails';
 import Favourites from '../../screens/Favourites/Favourites/Favourites';
+
+import FacebookEmailVerification from '../../screens/Authentication/FaceBookLogin/Facebookloginwithemail';
+import FacebookEmailVerify from '../../screens/Authentication/FaceBookLogin/FacebookEmailVerify/FacebookEmailVerify';
+
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -173,7 +177,7 @@ const BottomNav = props => {
           borderTopColor: _COLORS.Kodie_LightGrayColor,
           // Adding shadow for iOS
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: 6 },
+          shadowOffset: {width: 0, height: 6},
           shadowOpacity: 1,
           shadowRadius: 6,
           // Adding shadow for Android
@@ -415,7 +419,6 @@ const DrawerNavigatorLeftMenu = props => {
 };
 const AuthStack = createNativeStackNavigator();
 const AuthStackRouts = props => {
-  
   return (
     <AuthStack.Navigator
       screenOptions={{headerShown: false}}
@@ -429,7 +432,7 @@ const AuthStackRouts = props => {
   );
 };
 
-export const navigationRef =React.createRef();;
+export const navigationRef = React.createRef();
 const Stack = createNativeStackNavigator();
 const AllStackRouts = props => {
   const [routeName, setRouteName] = useState();
@@ -440,7 +443,7 @@ const AllStackRouts = props => {
 
   //   if (route === 'PropertyReviewDetails' && id ) {
   //     navigationRef.current?.navigate('PropertyReviewDetails', { propertyid: id });
-  //   } 
+  //   }
   // };
 
   // useEffect(() => {
@@ -1051,7 +1054,7 @@ const AllStackRouts = props => {
           component={ApplePay}
           options={{headerShown: false, gestureEnabled: false}}
         />
-     
+
         <Stack.Screen
           name={'Partners'}
           component={Partners}
@@ -1175,6 +1178,16 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'DraggableLyrics'}
           component={DraggableLyrics}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'FacebookEmailVerification'}
+          component={FacebookEmailVerification}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'FacebookEmailVerify'}
+          component={FacebookEmailVerify}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
