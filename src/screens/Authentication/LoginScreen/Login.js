@@ -50,6 +50,7 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import RNSettings from 'react-native-settings';
 import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
 import { confirmPasswordServices, sendVerificationService, verifyOtpServices } from '../../../services/Authentication/ForgotPasswordServices';
+import { fetchLoginSuccess } from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 export default Login = props => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -185,29 +186,31 @@ export default Login = props => {
         }
         else if (_res?.data?.code == 10) {
           setIsLoading(true)
-          try {
-            let googleSignInPayload = {
+          dispatch(fetchLoginSuccess(_res?.data));
+          props.navigation.navigate('DrawerNavigatorLeftMenu');
+          // try {
+          //   let googleSignInPayload = {
 
-              email: _userInfo?.user?.email,
-              unique_social_id: _userInfo?.user?.id,
-              social_type: "Google",
-              token: _userInfo?.idToken,
-              device_id: deviceId,
-              device_os_type: deviceType,
-              fcm_token: Fcm_token,
-            }
+          //     email: _userInfo?.user?.email,
+          //     unique_social_id: _userInfo?.user?.id,
+          //     social_type: "Google",
+          //     token: _userInfo?.idToken,
+          //     device_id: deviceId,
+          //     device_os_type: deviceType,
+          //     fcm_token: Fcm_token,
+          //   }
 
-            let _socialloginres = await dispatch(googlesocial_loginApi(googleSignInPayload))
-            if (_socialloginres?.data?.success === 'true') {
-              props.navigation.navigate('DrawerNavigatorLeftMenu');
-              setIsLoading(false)
-            }
+          //   let _socialloginres = await dispatch(googlesocial_loginApi(googleSignInPayload))
+          //   if (_socialloginres?.data?.success === 'true') {
+          //     props.navigation.navigate('DrawerNavigatorLeftMenu');
+          //     setIsLoading(false)
+          //   }
 
-          } catch (error) {
-            setIsLoading(false)
-            alert(error)
+          // } catch (error) {
+          //   setIsLoading(false)
+          //   alert(error)
 
-          }
+          // }
 
 
         }
