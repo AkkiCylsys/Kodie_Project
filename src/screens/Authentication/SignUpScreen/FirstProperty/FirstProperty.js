@@ -893,13 +893,13 @@ export default FirstProperty = props => {
             IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
           }}
         />
-        <View style={[FirstPropertyStyle.container,{
-        }]}>
+        <View style={[FirstPropertyStyle.container]}>
           {IsMap ? (
             <View
               style={{
                 flex:1,
                 backgroundColor: 'transparent',
+                marginBottom:Platform.OS === 'ios' ? -80 : 0
               }}>
               <MapScreen
                 style={{

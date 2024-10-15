@@ -260,15 +260,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   container: {
-    // flex: 1,
-    ...Platform.select({
-      android: {
         flex: 1,  // Only for Android
-      },
-      ios: {
-        flex: undefined,  // No flex for iOS
-      }
-    }),
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   BtnContainer: {

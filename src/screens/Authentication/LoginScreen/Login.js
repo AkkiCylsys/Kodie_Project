@@ -962,10 +962,10 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              // onPress={()=>{
-              //   loginWithFacebook();
-              // }}
-              onPress={() => {
+              onPress={()=>{
+                loginWithFacebook();
+              }}
+              // onPress={() => {
               //   LoginManager.logInWithPermissions(["public_profile", "email"]).then(
               //     function (result) {
               //       if (result.isCancelled) {
@@ -982,9 +982,9 @@ export default Login = props => {
               // }
                 //  props.navigation.navigate("PointofInterest")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
-                Alert.alert('Login with Facebook', 'Coming soon')
+                // Alert.alert('Login with Facebook', 'Coming soon')
                 // onFacebookButtonPress()
-              }}
+              // }}
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={'Connect with Facebook'}
