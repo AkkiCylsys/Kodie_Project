@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,33 +13,37 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import { userSubscribedCreator } from '../../redux/Actions/Subscription/SubscriptionApiCreator';
-import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
-import { DashboardStyle } from './DashboardStyle';
+import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
+import {
+  useFocusEffect,
+  useNavigation,
+  useTheme,
+} from '@react-navigation/native';
+import {DashboardStyle} from './DashboardStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
-import { _goBack } from '../../services/CommonServices';
-import { Dropdown } from 'react-native-element-dropdown';
-import { IMAGES, SMALLICON, _COLORS } from '../../Themes/index';
+import {_goBack} from '../../services/CommonServices';
+import {Dropdown} from 'react-native-element-dropdown';
+import {IMAGES, SMALLICON, _COLORS} from '../../Themes/index';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
 import DeshboardNotice from '../../components/Molecules/deshboardNoice/DeshboardNotice';
-import { LineChart } from 'react-native-chart-kit';
-import { Card } from 'react-native-paper';
-import { logos } from '../../Themes/CommonVectors/Images';
+import {LineChart} from 'react-native-chart-kit';
+import {Card} from 'react-native-paper';
+import {logos} from '../../Themes/CommonVectors/Images';
 import CircleProgress from '../../components/Molecules/CircleProgress/CircleProgress';
 import SelectProperties from '../../components/Molecules/SelectProperties/SelectProperties';
 import SelectDate from '../../components/Molecules/SelectDate/SelectDate';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { BackHandler } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {BackHandler} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
-import { Config } from '../../Config';
-import { useIsFocused, CommonActions } from '@react-navigation/native';
-import { onPress } from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
-import { setToken } from '../../services/TokenManagments';
+import {Config} from '../../Config';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
+import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
+import {setToken} from '../../services/TokenManagments';
 import axiosInstance from '../../services/axiosInstance';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 
 const IncomeData = [
   {
@@ -86,9 +90,9 @@ const Notice = [
 ];
 
 const data = [
-  { label: 'India', value: '1' },
-  { label: 'Australia', value: '2' },
-  { label: 'America', value: '3' },
+  {label: 'India', value: '1'},
+  {label: 'Australia', value: '2'},
+  {label: 'America', value: '3'},
 ];
 
 export default Dashboard = props => {
@@ -125,8 +129,8 @@ export default Dashboard = props => {
   );
   useFocusEffect(
     useCallback(() => {
-      fetchData();
-  
+      // fetchData();
+
       const handleBackPress = () => {
         if (navigation.isFocused()) {
           BackHandler.exitApp();
@@ -134,28 +138,39 @@ export default Dashboard = props => {
         }
         return false;
       };
-  
+
       BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-  
+
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
       };
-    }, [navigation])
+    }, [navigation]),
   );
   const token = loginData?.Login_details?.token; // Get this from your login process
   const deviceId = loginData?.Login_details?.device_id; // Get this from device information
   const deviceType = loginData?.Login_details?.device_os_type;
+
+  console.log("token..",token)
+  console.log("deviceId..",deviceId)
+  console.log("deviceType..",deviceType)
+
+  useEffect(() => {
+    if (loginData?.Login_details?.user_id) {
+      fetchData();
+    }
+  }, [loginData?.Login_details?.user_id]);
+
   const fetchData = async () => {
     if (
       loginData?.Login_details?.user_id ||
       loginData?.Login_details?.user_account_id
     ) {
+      await setToken(token, deviceId, deviceType);
       await getPersonalDetails();
       await handleprofileCompletion();
       await check_subscription();
 
       // Save token, device ID, and device type
-      await setToken(token, deviceId, deviceType);
     }
   };
 
@@ -197,7 +212,7 @@ export default Dashboard = props => {
     const res = await dispatch(userSubscribedCreator(check_Subs));
   };
 
-  const Income_render = ({ item, index }) => {
+  const Income_render = ({item, index}) => {
     return (
       <>
         <View style={DashboardStyle.income_Box_View}>
@@ -225,7 +240,7 @@ export default Dashboard = props => {
     return text;
   };
 
-  const NoticeData = ({ item, index }) => {
+  const NoticeData = ({item, index}) => {
     return (
       <>
         <View style={DashboardStyle.pdf_container}>
@@ -257,8 +272,7 @@ export default Dashboard = props => {
   const getPersonalDetails = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const apiUrl =
-      `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
     await axiosInstance
       .get(apiUrl)
@@ -311,11 +325,11 @@ export default Dashboard = props => {
             continue={() => {
               props.navigation.navigate('EditProfile');
             }}
-
           />
           <View style={DashboardStyle.container}>
-            <Text style={DashboardStyle.Name_Text}>{`Hi ${accountDetails?.UAD_FIRST_NAME || ''
-              }! `}</Text>
+            <Text style={DashboardStyle.Name_Text}>{`Hi ${
+              accountDetails?.UAD_FIRST_NAME || ''
+            }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
               style={{
@@ -323,7 +337,7 @@ export default Dashboard = props => {
                 justifyContent: 'space-between',
               }}>
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex: 1 }]}
+                style={[DashboardStyle.dropdown, {flex: 1}]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -342,7 +356,7 @@ export default Dashboard = props => {
               />
 
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex: 1 }]}
+                style={[DashboardStyle.dropdown, {flex: 1}]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
