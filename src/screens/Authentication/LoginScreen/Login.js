@@ -51,6 +51,8 @@ import RNSettings from 'react-native-settings';
 import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
 import { confirmPasswordServices, sendVerificationService, verifyOtpServices } from '../../../services/Authentication/ForgotPasswordServices';
 import { fetchLoginSuccess } from '../../../redux/Actions/Authentication/AuthenticationApiAction';
+
+ 
 export default Login = props => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -140,6 +142,163 @@ export default Login = props => {
       }
     }
   };
+
+  // Connect with facebook...
+
+  const _facebookLoginApi = async (_userProfile,accessToken) => {
+    try {
+      setIsLoading(true)
+      let FacebookSignUPPayload = {
+        email: "",
+        unique_social_id: _userProfile?.userID,
+        social_type: "facebook",
+        is_social_login: 0,
+        token: accessToken,
+        device_id: deviceId,
+        device_os_type: deviceType,
+        fcm_token: Fcm_token,
+      }
+ 
+      let _res = await googleLoginApi(FacebookSignUPPayload)
+      console.log("___facebook..____")
+      console.log(JSON.stringify(_res))
+       alert(_res?.data?.User_Key)
+      if (_res?.data?.success === true) {
+       /// alert(_res?.data?.code)
+        //props.navigation.navigate('SignUpSteps');
+        if (_res?.data?.code == 3 || _res?.data?.code == 16) {
+          
+          const encStr = await encryptPassword(_userProfile?.userID, secretKey);
+          console.log('encryptedpass', encStr);
+          setIsLoading(false)
+          props.navigation.navigate('FacebookEmailVerification', {
+            email: _res?.data?.email,
+            user_facebookProfile:_userProfile,
+            user_facebookToken:accessToken,
+            user_key: _res?.data?.User_Key,
+            device_id: deviceId,
+            device_os_type: deviceType,
+            fcm_token: Fcm_token,
+            //_socialuserInfo: _userInfo,
+            password: encStr, //?
+          });
+        }
+        else if (_res?.data?.code == 6) {
+          const encStr = await encryptPassword(_userProfile?.userID, secretKey);
+          console.log('encryptedpass', encStr);
+          setIsLoading(false)
+          props.navigation.navigate('SignUpSteps', {
+            email: _res?.data?.email,
+            user_key: _res?.data?.User_Key,
+            _FacebookuserInfo: _userProfile,
+            user_facebookProfile:_userProfile,
+            user_facebookToken:accessToken,
+            password: encStr, //?
+          });
+        }
+        else if (_res?.data?.code == 10) {
+          setIsLoading(true)
+ 
+          setIsLoading(true)
+          dispatch(fetchLoginSuccess(_res?.data));
+          props.navigation.navigate('DrawerNavigatorLeftMenu');
+          
+ 
+          
+        }
+        else if(_res?.data?.code == 2){
+      
+          Alert.alert('Account suspension', _res?.data?.message, [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Activate account',
+              onPress: async() => {
+                console.log('activate account');
+                //handleActivateAccount();
+                const url = Config.BASE_URL;
+                const activateAccount = url + 'sendMail';
+                console.log('Request URL:', activateAccount);
+                setIsLoading(true);
+                const activateAccount_Data = {
+                  email: _res?.data?.email,
+                };
+                console.log(activateAccount_Data)
+                await axios
+                  .post(activateAccount, activateAccount_Data)
+                  .then(response => {
+                    console.log('API Response activateAccount..', response?.data);
+                    if (response?.data?.success === true) {
+                      alert(response?.data?.message);
+                    } else {
+                      setIsLoading(false);
+                      alert(response?.data?.message);
+                    }
+                  })
+                  .catch(error => {
+                    console.error('API failed activateAccount', error);
+                    setIsLoading(false);
+                  })
+                  .finally(() => {
+                    setIsLoading(false);
+                  });
+              },
+            },
+          ]);
+        }
+        else {
+          setIsLoading(false)
+          //  alert(_res?.data?.code)
+        }
+ 
+      }
+      else {
+        
+        setIsLoading(false)
+        //alert(_res?.data?.message)
+      }
+    } catch (error) {
+     
+      setIsLoading(false)
+      console.log(error)
+    }
+    //alert(_userInfo?.user?.email)
+ 
+  }
+
+  const loginWithFacebook = async () => {
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+ 
+      if (result.isCancelled) {
+        console.log('Login cancelled');
+      } else {
+        const data = await AccessToken.getCurrentAccessToken();
+        if (!data) {
+          throw new Error('Something went wrong obtaining access token');
+        }
+ 
+        const accessToken = data.accessToken.toString();
+        console.log('Access Token: ', accessToken);
+ 
+        // You can fetch user profile or send token to your server here
+        const userProfile = await Profile.getCurrentProfile();
+        if (userProfile) {
+          console.log('User Profile: ', userProfile);
+          if (userProfile?.userID != null || userProfile?.userID != '' || userProfile?.userID != undefined ||userProfile?.userID !=0) {
+            _facebookLoginApi(userProfile,accessToken)
+ 
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Login fail with error: ', error);
+    }
+  };
+
   const _googleLoginApi = async (_userInfo) => {
     try {
       setIsLoading(true)
@@ -787,46 +946,6 @@ export default Login = props => {
     refRBSheet.current.open();
   };
 
-  const loginWithFacebook = async () => {
-    try {
-      // Request permissions for Facebook login
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-  
-      // Check if the login was cancelled
-      if (result.isCancelled) {
-        console.log('Login cancelled');
-        return; // Early return if login is cancelled
-      }
-  
-      // Get the current access token
-      const data = await AccessToken.getCurrentAccessToken();
-      if (!data) {
-        throw new Error('Something went wrong obtaining access token');
-      }
-  
-      const accessToken = data.accessToken.toString();
-      console.log('Access Token: ', accessToken);
-  
-      // Fetch user profile using the access token
-      const userProfile = await Profile.getCurrentProfile();
-      if (userProfile) {
-        console.log('User Profile: ', userProfile);
-  
-        // Check if user ID is valid
-        if (userProfile.userID) { // Simplified check
-          // _facebookLoginApi(userProfile); // Call your API function
-          // Optionally navigate to the next screen
-          // props.navigation.navigate('SignUpSteps');
-        } else {
-          console.log('User ID is invalid');
-        }
-      } else {
-        console.log('User profile not found');
-      }
-    } catch (error) {
-      console.error('Login failed with error: ', error); // Use console.error for better visibility
-    }
-  };
   
   return (
     <KeyboardAvoidingView
@@ -965,29 +1084,10 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={()=>{
-                loginWithFacebook();
+              onPress={() => {
+                // loginWithFacebook()
+                alert("Coming soon")
               }}
-              // onPress={() => {
-              //   LoginManager.logInWithPermissions(["public_profile", "email"]).then(
-              //     function (result) {
-              //       if (result.isCancelled) {
-              //         alert("Login Cancelled " + JSON.stringify(result))
-              //       } else {
-              //         alert("Login success with  permisssions: " + result.grantedPermissions.toString());
-              //         alert("Login Success " + result.toString());
-              //       }
-              //     },
-              //     function (error) {
-              //       alert("Login failed with error: " + error);
-              //     }
-              //   )
-              // }
-                //  props.navigation.navigate("PointofInterest")
-                // props.navigation.navigate("DrawerNavigatorLeftMenu")
-                // Alert.alert('Login with Facebook', 'Coming soon')
-                // onFacebookButtonPress()
-              // }}
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={'Connect with Facebook'}

@@ -141,9 +141,9 @@ const SignUpSteps = props => {
   };
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
-  console.log(user_key);
   let password = props?.route?.params?.password;
   let _social_userInfo = props?.route?.params?._socialuserInfo;
+  let _facebook_userInfo = props?.route?.params?._FacebookuserInfo;
   console.log('email...', email);
   console.log('user_key...', user_key);
   console.log('countryCode...', country_Code_Get);
@@ -267,8 +267,6 @@ const SignUpSteps = props => {
       return true;
     }
   };
-  
-  
 
   const handleNextBtn = () => {
     const isFirstNameValid = isValidFirstName(firstName);
@@ -312,8 +310,16 @@ const SignUpSteps = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    setFirstName(_social_userInfo?.user?.givenName)
-    setLastName(_social_userInfo?.user?.familyName)
+    setFirstName(
+      _facebook_userInfo?.userID
+        ? _facebook_userInfo?.firstName
+        : _social_userInfo?.user?.givenName,
+    );
+    setLastName(
+      _facebook_userInfo?.userID
+        ? _facebook_userInfo?.lastName
+        : _social_userInfo?.user?.familyName,
+    );
   }, []);
 
   const goBack = () => {
@@ -643,7 +649,11 @@ const SignUpSteps = props => {
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
-            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack(props);
+            IsMap
+              ? setIsMap(false)
+              : IsSearch
+              ? setIsSearch(false)
+              : _goBack(props);
           }}
         />
         <View style={SignUpStepStyle.container}>
@@ -661,14 +671,13 @@ const SignUpSteps = props => {
           )}
           {IsMap ? (
             <GoogleMapScreen
-            onRegionChange={onRegionChange}
-                Maplat={p_latitude}
-                Maplng={p_longitude}
-                openMapandClose={() => openMapandClose()}
-                ConfirmAddress={ConfirmAddress}
-                iscancel={()=>setIsMap(false)}
+              onRegionChange={onRegionChange}
+              Maplat={p_latitude}
+              Maplng={p_longitude}
+              openMapandClose={() => openMapandClose()}
+              ConfirmAddress={ConfirmAddress}
+              iscancel={() => setIsMap(false)}
             />
-           
           ) : IsSearch ? (
             <SearchPlaces
               onPress={(data, details = null) => {
