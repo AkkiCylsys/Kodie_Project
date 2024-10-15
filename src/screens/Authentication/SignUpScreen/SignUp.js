@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -12,23 +12,23 @@ import {
   SafeAreaView,
   Linking,
 } from 'react-native';
-import { BANNERS } from '../../../Themes/CommonVectors/Images';
+import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import BottomTextsButton from '../../../components/Molecules/BottomTextsButton/BottomTextsButton';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import { IMAGES, _COLORS } from '../../../Themes/index';
+import {IMAGES, _COLORS} from '../../../Themes/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { LABEL_STYLES } from '../../../Themes/CommonStyles/CommonStyles';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {LABEL_STYLES} from '../../../Themes/CommonStyles/CommonStyles';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import messaging from '@react-native-firebase/messaging';
 import {
   encryptPassword,
   signup,
 } from '../../../services/Authentication/Authentication';
-import { SignUpStyles } from './SignUpStyle';
+import {SignUpStyles} from './SignUpStyle';
 import DeviceInfo from 'react-native-device-info';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const SignUp = props => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -42,7 +42,7 @@ const SignUp = props => {
   const [googleSignIn, setGoogleSignIn] = useState([]);
 
   const device = DeviceInfo.getUniqueId();
-  const deviceId = device?._z
+  const deviceId = device?._z;
   // const deviceType = DeviceInfo.getDeviceType();
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId, deviceType, 'signup');
@@ -169,13 +169,14 @@ const SignUp = props => {
         'Oh no. The password must be at least 8 characters long!',
       );
     } else if (!term && !privacy) {
-      Alert.alert("Warning",
+      Alert.alert(
+        'Warning',
         'Please read and accept both Terms & Conditions and Privacy Policy!',
       );
     } else if (!term) {
-      Alert.alert("Warning", 'Please read and accept Terms & Conditions!');
+      Alert.alert('Warning', 'Please read and accept Terms & Conditions!');
     } else if (!privacy) {
-      Alert.alert("Warning", 'Please read and accept our Privacy Policy!');
+      Alert.alert('Warning', 'Please read and accept our Privacy Policy!');
     } else {
       handleSignup();
     }
@@ -245,13 +246,14 @@ const SignUp = props => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
         style={SignUpStyles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps="handled">
           <View style={SignUpStyles.logoContainer}>
             <Image
@@ -273,7 +275,7 @@ const SignUp = props => {
             <View style={SignUpStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>
                 Email address
-                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <TextInput
                 style={[
@@ -299,7 +301,7 @@ const SignUp = props => {
             <View style={SignUpStyles.inputContainer}>
               <Text
                 style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
-                Password<Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+                Password<Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <View
                 style={[
