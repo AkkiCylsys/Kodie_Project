@@ -22,6 +22,7 @@ export const CreateGroupStyle = StyleSheet.create({
     marginBottom: 20,
   },
   userItem: {
+    flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
@@ -46,14 +47,25 @@ export const CreateGroupStyle = StyleSheet.create({
   },
   createButton: {
     backgroundColor: _COLORS.Kodie_OrangeColor,
-    padding: 15,
+    // padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
+    // marginTop: 20,
   },
   createButtonText: {
     color: _COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  bottomSheetUserImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+  },
+  bottomSheetUserIcon: {
+    marginRight: 10,
   },
 });

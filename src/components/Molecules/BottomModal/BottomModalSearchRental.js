@@ -154,7 +154,7 @@ const BottomModalSearchRental = props => {
           if (item?.id == '4') {
             navigation.navigate('Chat', {
               data: property_Detail.landlord_details[0],
-                    userid: property_Detail.landlord_id_property,
+                    userid: property_Detail.landlord_user_id,
                     chatname: 'chatname',
             });
             handleClose();

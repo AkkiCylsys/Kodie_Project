@@ -35,8 +35,9 @@ const Chat = props => {
   const chatname = route.params.chatname
   const userid = route.params.userid
   console.log(route.params.data, chatname, 'datadatadatadatadata');
+  console.log(userid, 'userV');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log(loginData.Login_details.user_id);
+  console.log(loginData.Login_details.user_id,"my");
   // console.log('loginResponse.....', loginData);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -470,14 +471,14 @@ const Chat = props => {
           }
           return null;
         }}
-        renderMessageImage={(props) =>
-          props.currentMessage.image ? (
-            <Image
-              source={{ uri: props.currentMessage.image }}
-              style={{ width: 120, height: 120, borderRadius: 10 }}
-            />
-          ) : null
-        }
+        // renderMessageImage={(props) =>
+        //   props.currentMessage.image ? (
+        //     <Image
+        //       source={{ uri: props.currentMessage.image }}
+        //       style={{ width: 120, height: 120, borderRadius: 10 }}
+        //     />
+        //   ) : null
+        // }
         wrapperStyle={{
           left: {
             backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -521,7 +522,7 @@ const Chat = props => {
           setSelectedMessage(props.currentMessage);
           openDeleteModal();
         }}
-        renderAvatar={renderAvatar(props)}
+        renderAvatar={renderAvatar}
       >
         {props.currentMessage?.user?._id !==
           loginData.Login_details.user_id && (
@@ -531,7 +532,7 @@ const Chat = props => {
                 alignItems: 'center',
                 marginLeft: isCurrentUser ? 0 : 8,
               }}>
-              <Image
+              {/* <Image
                 source={IMAGES.userImage}
                 style={{
                   width: 24,
@@ -539,7 +540,7 @@ const Chat = props => {
                   borderRadius: 12,
                   marginRight: 4,
                 }}
-              />
+              /> */}
               <Text
                 style={{
                   color: _COLORS.Kodie_GreenColor,
@@ -559,18 +560,8 @@ const Chat = props => {
     );
   };
 
-  const renderAvatar = props => () => {
-    return (
-      <Image
-        source={{ uri: props.currentMessage?.user?.avatar }}
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          marginRight: 8,
-        }}
-      />
-    );
+  const renderAvatar = () => {
+    return null
   };
   const deleteMessage = async () => {
     const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
@@ -697,9 +688,11 @@ const Chat = props => {
       <GiftedChat
         messages={messageList}
         onSend={onSend}
+        showUserAvatar={false}
+        showAvatarForEveryMessage={false}
         user={{
           _id: loginData.Login_details.user_id,
-          avatar: loginData.Login_details.profile_photo_path,
+          // avatar: loginData.Login_details.profile_photo_path,
         }}
         // renderActions={renderActions}
         // alwaysShowSend

@@ -892,7 +892,7 @@ const fetchData = async () => {
                   setSubmitApplicationBtnId(1);
                   props.navigation.navigate('Chat', {
                     data: property_Detail.landlord_details[0],
-                    userid: property_Detail.landlord_id_property,
+                    userid: property_Detail.landlord_user_id,
                     chatname: 'chatname',
                   });
                   // alert(selectPetFriendlyBtnId)

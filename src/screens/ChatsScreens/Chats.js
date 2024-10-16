@@ -391,7 +391,7 @@ console.log(property,'property');
               // marginBottom:100
             },
           }}>
-          <View style={{marginBottom:100}}> 
+          <View style={{flex:1}}> 
             <View style={ChatsStyle.bottomSheetHeader}>
               <Text style={ChatsStyle.bottomSheetTitle}>Invite Members</Text>
               <TouchableOpacity
@@ -448,6 +448,7 @@ console.log(property,'property');
               )}
               keyExtractor={(item, index) => index.toString()}
             />
+            <View style={{height:30}}/>
           </View>
         </RBSheet>
       </KeyboardAvoidingView>
