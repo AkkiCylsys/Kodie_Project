@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
+import { floor } from 'react-native-reanimated';
 
 export const OfferForMyPropertiesStyle = StyleSheet.create({
   mainContainer: {
@@ -111,12 +112,13 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_GrayColor,
   },
   userName: {
+    // flex:1,
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     alignSelf:"center",
     marginLeft:5,
-    width:80
+    // width:80
   },
   rattingText:{
     fontSize: 11,
@@ -132,7 +134,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     marginTop:5
 
   },
-  userContainer:{flex: 0.5, flexDirection: 'row',justifyContent:"space-between",alignSelf:"center"},
+  userContainer:{flex: 0.5, flexDirection: 'row',alignSelf:"center",},
   ratting:{
     flexDirection: 'row',
     borderWidth: 1,

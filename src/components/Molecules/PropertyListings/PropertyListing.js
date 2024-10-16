@@ -147,7 +147,10 @@ const PropertyListing = props => {
                 <Text style={PropertyListingCss.apartmentText}>
                   {item.property_type}
                 </Text>
-                <Text style={PropertyListingCss.commontext}>
+                <Text
+                  style={PropertyListingCss.commontext}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}>
                   {item.state ? item.state : item.city}
                 </Text>
                 <View style={PropertyListingCss.flat_MainView}>
@@ -283,7 +286,7 @@ const PropertyListing = props => {
           <View style={PropertyListingCss.expandedContent}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.commonMidtext}>
-              Number of days vacant:
+                Number of days vacant:
               </Text>
               <Text style={PropertyListingCss.commonDay}>{`${
                 daysPast || '0'

@@ -71,7 +71,7 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_LightOrange,
+    borderColor: _COLORS.Kodie_LightGrayColor,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 20,
     // paddingVertical: 5,

@@ -43,10 +43,9 @@ export default SignUpVerification = props => {
   // const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
   const device = DeviceInfo.getUniqueId();
-  console.log(device);
-  const deviceId = device?._z
+  const deviceId = device?._z;
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId,deviceType,'Signup_verification');
+  console.log(deviceId, deviceType, 'Signup_verification');
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
@@ -57,10 +56,10 @@ export default SignUpVerification = props => {
     try {
       const SignUpData = {
         email: email,
-        device_id:deviceId,
-      device_os_type:deviceType
+        device_id: deviceId,
+        device_os_type: deviceType,
       };
-      console.log("SignUpData in verfication ..",SignUpData)
+      console.log('SignUpData in verfication ..', SignUpData);
       const response = await signupSendCode(SignUpData);
       // alert(response?.message); // as per manish discussion he said use static alert.
       alert('OTP resent successfully.');
@@ -78,8 +77,8 @@ export default SignUpVerification = props => {
     const data = {
       email: email,
       otp: value,
-      device_id:deviceId,
-      device_os_type:deviceType
+      device_id: deviceId,
+      device_os_type: deviceType,
     };
     SignupVerification(data)
       .then(responseData => {
@@ -145,7 +144,8 @@ export default SignUpVerification = props => {
     <SafeAreaView style={SignUpVerificationStyle.mainContainer}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <TopHeader
           MiddleText={'Verify your email'}
           Text_Color={_COLORS.Kodie_BlackColor}
@@ -183,10 +183,11 @@ export default SignUpVerification = props => {
                     SignUpVerificationStyle.cell,
                     isFocused && SignUpVerificationStyle.focusCell,
                     {
-                      borderColor:valueError ? _COLORS?.Kodie_redColor: _COLORS.Kodie_GrayColor,
-                    }
-                  ]
-                }
+                      borderColor: valueError
+                        ? _COLORS?.Kodie_redColor
+                        : _COLORS.Kodie_GrayColor,
+                    },
+                  ]}
                   onLayout={getCellOnLayoutHandler(index)}>
                   {symbol || (isFocused ? <Cursor /> : null)}
                 </Text>

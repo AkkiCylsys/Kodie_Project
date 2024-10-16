@@ -132,6 +132,6 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf:'center',
-    textAlign:'center'
+    // textAlign:'center'
   },
 });

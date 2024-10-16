@@ -292,7 +292,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = multipleImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -331,7 +331,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = leftImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -369,7 +369,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = rightImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert('The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -511,7 +511,7 @@ const CreateJobSecondScreen = props => {
       console.log('update_uploadJobFilesData....', response?.data);
       if (response?.data?.success === true) {
         setIsLoading(false);
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
           // JobId: JobId > 0 ? JobId : job_id,

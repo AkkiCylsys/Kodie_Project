@@ -34,8 +34,8 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import {BackHandler} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-import { useFocusEffect } from '@react-navigation/native';
-import { getPropertyDetailSevice } from '../../../../services/PropertyModule/PropertyModul';
+import {useFocusEffect} from '@react-navigation/native';
+import {getPropertyDetailSevice} from '../../../../services/PropertyModule/PropertyModul';
 export default PropertyReviewDetails = props => {
   const property_id = props?.route?.params?.property_id;
   const propertyid = props?.route?.params?.propertyid;
@@ -79,18 +79,21 @@ export default PropertyReviewDetails = props => {
       //     const {latitude, longitude} = position.coords;
       //     console.log(latitude, longitude, 'latitude,longitude');
       // alert(property_Detail?.longitude)
-          fetchPointsOfInterest(property_Detail?.latitude, property_Detail?.longitude);
-          // fetchPointsOfInterest("33.8849","151.2052");
-          // fetchPointsOfInterest("27.149994", "79.499901");
+      fetchPointsOfInterest(
+        property_Detail?.latitude,
+        property_Detail?.longitude,
+      );
+      // fetchPointsOfInterest("33.8849","151.2052");
+      // fetchPointsOfInterest("27.149994", "79.499901");
       //   },
       //   error => console.error(error),
       //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
       // );
-  
+
       return () => {
         // Cleanup if necessary when the screen is unfocused
       };
-    }, [property_Detail]) // Add necessary dependencies
+    }, [property_Detail]), // Add necessary dependencies
   );
 
   const fetchPointsOfInterest = async (lat, lng) => {
@@ -238,45 +241,40 @@ export default PropertyReviewDetails = props => {
       </View>
     );
   };
-    // Api intrigation here ....
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const details = await getPropertyDetailSevice(  propertyView || propertyVacantListing ? propertyid : property_id);
-        console.log(details, "detailis");
-        setProperty_Details(details); 
-        if (details?.key_features) {
-          const parsedData = JSON.parse(
-            details?.key_features.replace(
-              /\\/g,
-              '',
-            ),
-          );
-          setDetail(parsedData);
-          console.log('parsedData....', parsedData);
-        }
-        const additionalKeyFeatures =
-        details?.additional_key_features[0];
-        setAdditionalKeyFeaturesString(additionalKeyFeatures);
-      const additionalFeatures_id =
-      details?.additional_features_id;
-    console.log('additionalFeaturesid....', additionalFeatures_id);
-    const additionalFeaturesIds = additionalFeatures_id
-    .split(',')
-    .map(value => value.trim()); // ['1', '1', '1', '0']
-    console.log('is_additionalFeaturesid....', additionalFeaturesIds);
-    setAddtionalFeaturesID(additionalFeaturesIds);
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
-       } finally {
-        setIsLoading(false);
+  // Api intrigation here ....
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const details = await getPropertyDetailSevice(
+        propertyView || propertyVacantListing ? propertyid : property_id,
+      );
+      console.log(details, 'detailis');
+      setProperty_Details(details);
+      if (details?.key_features) {
+        const parsedData = JSON.parse(details?.key_features.replace(/\\/g, ''));
+        setDetail(parsedData);
+        console.log('parsedData....', parsedData);
       }
-    };
+      const additionalKeyFeatures = details?.additional_key_features[0];
+      setAdditionalKeyFeaturesString(additionalKeyFeatures);
+      const additionalFeatures_id = details?.additional_features_id;
+      console.log('additionalFeaturesid....', additionalFeatures_id);
+      const additionalFeaturesIds = additionalFeatures_id
+        .split(',')
+        .map(value => value.trim()); // ['1', '1', '1', '0']
+      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+      setAddtionalFeaturesID(additionalFeaturesIds);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      alert(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     setActiveTab(DocTab ? 'Tab4' : 'Tab1');
-    fetchData();
+    // fetchData();
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
       setAdditionalKeyFeatures(keyFeaturesArray);
@@ -289,6 +287,15 @@ export default PropertyReviewDetails = props => {
 
     return () => clearTimeout(timeout);
   }, [property_id, propertyid, additionalKeyFeaturesString]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if ( propertyView || propertyVacantListing ? propertyid : property_id) {
+        fetchData();
+      }
+    }, [ propertyView || propertyVacantListing ? propertyid : property_id,]),
+  );
+
   useEffect(() => {
     const handleBackButton = () => {
       props.navigation.navigate('Properties');

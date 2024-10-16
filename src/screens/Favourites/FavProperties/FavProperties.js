@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity,Alert} from 'react-native';
 import {BANNERS, IMAGES} from '../../../Themes';
 import {FavPropertyStyle} from './FavPropertiesStyle';
 import {SliderBox} from 'react-native-image-slider-box';
@@ -81,7 +81,7 @@ const FavProperties = () => {
       const response = await FavouriteServices(favourtiesPayload);
       console.log('response in FavouriteServices', response);
       if (response?.success === true) {
-        alert(response?.message);
+        Alert.alert("Success",response?.message);
         handleGetFavouriteItem();
       }
     } catch (error) {

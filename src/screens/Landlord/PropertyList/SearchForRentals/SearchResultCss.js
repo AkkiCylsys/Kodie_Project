@@ -191,7 +191,7 @@ export const SearchResultCss = StyleSheet.create({
     marginLeft: 23,
   },
   availabletext: {
-    fontSize: 12,
+    fontSize: 11,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,9 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { PropertyRentalOfferStyle } from './PropertyRentalOfferStyle';
+import {PropertyRentalOfferStyle} from './PropertyRentalOfferStyle';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
-import { _COLORS, FONTFAMILY, IMAGES, LABEL_STYLES } from '../../../../Themes';
+import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,9 +25,9 @@ import {
   withdowBidServices,
   acceptTenants,
 } from '../../../../services/PropertyRentalOfferApi/PropertyRentalOfferApi';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   useFocusEffect,
   useIsFocused,
@@ -35,13 +35,13 @@ import {
 } from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import { matrixTransform } from 'react-native-svg/lib/typescript/elements/Shape';
-import { fontSize } from '../../../../Themes/FontStyle/FontStyle';
+import {matrixTransform} from 'react-native-svg/lib/typescript/elements/Shape';
+import {fontSize} from '../../../../Themes/FontStyle/FontStyle';
 const PropertyRentalOffer = props => {
-  const { acceptLanlordPassed } = props;
+  const {acceptLanlordPassed} = props;
   console.log('acceptLanlordPassed in offer page...', acceptLanlordPassed);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log("loginData property rental offer...", loginData)
+  console.log('loginData property rental offer...', loginData);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   // const userRole = '2';
 
@@ -167,10 +167,10 @@ const PropertyRentalOffer = props => {
     setSearchQuery(query);
     const filtered = query
       ? saveCurrentOffer.filter(
-        item =>
-          item.property_type &&
-          item.property_type.toLowerCase().includes(query.toLowerCase()),
-      )
+          item =>
+            item.property_type &&
+            item.property_type.toLowerCase().includes(query.toLowerCase()),
+        )
       : saveCurrentOffer;
     setFilteredpropertyData(filtered);
   };
@@ -258,10 +258,10 @@ const PropertyRentalOffer = props => {
       return _COLORS.Kodie_skyBlue; // Color for completed screening text
     } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
       return _COLORS.Kodie_BlueColor;
-    } else if (isScreenProgress) {
-      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
     } else if (screeningStatus === 'REJECT') {
       return _COLORS.Kodie_lightRedColor; // Color for rejected application text
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
     } else if (acceptLandlord === 0) {
       // Color for accepted application text
       return _COLORS.Kodie_DarkGreenColor;
@@ -280,10 +280,10 @@ const PropertyRentalOffer = props => {
       return _COLORS.Kodie_skyBlue; // Color for completed screening icon
     } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
       return _COLORS.Kodie_BlueColor;
-    } else if (isScreenProgress) {
-      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
     } else if (screeningStatus === 'REJECT') {
       return _COLORS.Kodie_lightRedColor; // Color for rejected application icon
+    } else if (isScreenProgress) {
+      return _COLORS.Kodie_textDarkOrange; // Color for rejected application
     } else if (acceptLandlord === 0) {
       // Color for accepted application icon
       return _COLORS.Kodie_DarkGreenColor;
@@ -302,10 +302,10 @@ const PropertyRentalOffer = props => {
       return 'Screening completed';
     } else if (acceptLandlord === 0 && finalLandlordApprove === 0) {
       return 'Application submitted';
-    } else if (isScreenProgress) {
-      return 'Screening in progress'; // Color for rejected application
     } else if (screeningStatus === 'REJECT') {
       return 'Application rejected';
+    } else if (isScreenProgress) {
+      return 'Screening in progress'; // Color for rejected application
     } else if (acceptLandlord === 0) {
       // Message for accepted application
       return 'Application accepted';
@@ -313,7 +313,7 @@ const PropertyRentalOffer = props => {
     return 'Screening in progress';
   };
 
-  const currentOffer_render = ({ item, index }) => {
+  const currentOffer_render = ({item, index}) => {
     const isExpanded = expandedPropertyId === item.property_id;
     const keyFeatures = JSON.parse(item.key_features);
     const parkingSpaceFeature = keyFeatures.find(feature =>
@@ -354,6 +354,7 @@ const PropertyRentalOffer = props => {
     const acceptLandlord = item?.accepting_landlord; // e.g., 0
     const finalLandlordApprove = item?.final_landlord_approve; // e.g., 1
 
+    console.log('screeningStatus...', screeningStatus);
     const backgroundColor = getButtonBackgroundColor(
       isScreenComplet,
       isScreenProgress,
@@ -398,7 +399,7 @@ const PropertyRentalOffer = props => {
               <Text style={PropertyRentalOfferStyle.apartmentText}>
                 {item?.property_type}
               </Text>
-              <Text style={[LABEL_STYLES.commontext, { fontSize: 16 }]}>
+              <Text style={[LABEL_STYLES.commontext, {fontSize: 16}]}>
                 {item?.city ? item?.city : item?.state}
               </Text>
               <View style={PropertyRentalOfferStyle.flat_MainView}>
@@ -406,7 +407,7 @@ const PropertyRentalOffer = props => {
                   name={'map-marker'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
-                  style={{ marginTop: 5 }}
+                  style={{marginTop: 5}}
                 />
                 <Text
                   style={PropertyRentalOfferStyle.locationText}
@@ -420,10 +421,10 @@ const PropertyRentalOffer = props => {
             {item.image_path && item.image_path.length > 0 ? (
               <View style={{}}>
                 <Image
-                  source={{ uri: item.image_path[0] }}
+                  source={{uri: item.image_path[0]}}
                   style={[
                     PropertyRentalOfferStyle.imageStyle,
-                    { width: 90, height: 90 },
+                    {width: 90, height: 90},
                   ]}
                   resizeMode="cover"
                 />
@@ -432,7 +433,7 @@ const PropertyRentalOffer = props => {
               <View
                 style={[
                   PropertyRentalOfferStyle.imageStyle,
-                  { justifyContent: 'center' },
+                  {justifyContent: 'center'},
                 ]}>
                 <Text style={PropertyRentalOfferStyle.Img_found}>
                   {'Image not found'}
@@ -442,21 +443,21 @@ const PropertyRentalOffer = props => {
 
             <View style={PropertyRentalOfferStyle.flexContainer}>
               <View style={PropertyRentalOfferStyle.noteStyle}>
-                <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity onPress={() => {}}>
                   <AntDesign
                     name="sharealt"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ marginHorizontal: 15 }}>
+                <TouchableOpacity style={{marginHorizontal: 15}}>
                   <AntDesign
                     name="hearto"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity onPress={() => {}}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}
                     size={25}
@@ -467,7 +468,7 @@ const PropertyRentalOffer = props => {
               <View
                 style={[
                   PropertyRentalOfferStyle.buttonView,
-                  { backgroundColor, borderColor: border_color },
+                  {backgroundColor, borderColor: border_color},
                 ]}>
                 <Entypo
                   name="dot-single"
@@ -490,7 +491,7 @@ const PropertyRentalOffer = props => {
               </View>
             </View>
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             <DividerIcon
               IsShowIcon
               iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
@@ -552,13 +553,13 @@ const PropertyRentalOffer = props => {
                       ?.Garages || '0'}{' '}
                     m²
                   </Text> */}
-                  <Text style={[PropertyRentalOfferStyle.bedcont, { flex: 1 }]}>
+                  <Text style={[PropertyRentalOfferStyle.bedcont, {flex: 1}]}>
                     {item?.floor_size}
                     m²
                   </Text>
                 </View>
               </View>
-              <View style={{ alignSelf: 'flex-end', marginLeft: 10 }}>
+              <View style={{alignSelf: 'flex-end', marginLeft: 10}}>
                 <Text style={PropertyRentalOfferStyle.listpriceText}>
                   {'Budget'}
                 </Text>
@@ -595,36 +596,39 @@ const PropertyRentalOffer = props => {
               LeftButtonDisabled={isDisabled}
               RightButtonText={
                 showPayNowButton
-                  ? 'Pay Now' // Show 'Pay Now' if conditions are met
+                  ? 'Pay now' // Show 'Pay Now' if conditions are met
                   : acceptLandlord === 0
-                    ? 'Accept offer' // Show 'Accept offer' if only acceptLandlord is 0
-                    : 'Edit offer' // Default to 'Edit offer'
+                  ? 'Accept offer' // Show 'Accept offer' if only acceptLandlord is 0
+                  : 'Edit offer' // Default to 'Edit offer'
               }
               RightButtonbackgroundColor={
                 showPayNowButton
                   ? _COLORS.Kodie_BlackColor // Button is active when showPayNowButton is true
                   : isRightButtonDisabled
-                    ? _COLORS.Kodie_LightGrayColor
-                    : _COLORS.Kodie_BlackColor
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
               }
               RightButtonTextColor={
                 showPayNowButton
                   ? _COLORS.Kodie_WhiteColor // Button text is white when active
                   : isRightButtonDisabled
-                    ? _COLORS.Kodie_ExtraLightGrayColor
-                    : _COLORS.Kodie_WhiteColor
+                  ? _COLORS.Kodie_ExtraLightGrayColor
+                  : _COLORS.Kodie_WhiteColor
               }
               RightButtonborderColor={
                 showPayNowButton
                   ? _COLORS.Kodie_BlackColor
                   : isRightButtonDisabled
-                    ? _COLORS.Kodie_LightGrayColor
-                    : _COLORS.Kodie_BlackColor
+                  ? _COLORS.Kodie_LightGrayColor
+                  : _COLORS.Kodie_BlackColor
               }
               onPressRightButton={() => {
                 if (showPayNowButton) {
                   // Show an alert when Pay Now button is pressed
-                  Alert.alert('Payment', 'The payment feature is currently under development and will be available in Phase 3.');
+                  Alert.alert(
+                    'Payment',
+                    'The payment feature is currently under development and will be available in Phase 3.',
+                  );
                 } else if (!isRightButtonDisabled) {
                   // Handle other cases like 'Accept offer' or 'Edit offer'
                   handlePressRightButton(item);
@@ -715,7 +719,7 @@ const PropertyRentalOffer = props => {
       <View
         style={[
           PropertyRentalOfferStyle.rowButtonView,
-          { marginVertical: 15, marginHorizontal: 16 },
+          {marginVertical: 15, marginHorizontal: 16},
         ]}>
         {renderRowButtons()}
       </View>
