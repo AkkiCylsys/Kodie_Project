@@ -1090,7 +1090,7 @@ console.log('Coming here');
               backgroundColor={_COLORS.Kodie_WhiteColor}
               marginBottom={25}
             />
-            <CustomSingleButton
+            {/* <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
                 loginWithFacebook();
@@ -1101,7 +1101,7 @@ console.log('Coming here');
               _ButtonText={'Connect with Facebook'}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               marginBottom={25}
-            />
+            /> */}
             <BottomTextsButton
               _LeftButtonText={"Don't have an account yet? "}
               _RightButtonText={'Sign up'}
