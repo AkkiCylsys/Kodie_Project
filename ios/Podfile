@@ -13,7 +13,7 @@ setup_permissions([
   "Contacts",
   "FaceID",
   "LocationAccuracy",
-  "LocationAlways",pod 'FBSDKLoginKit'
+  "LocationAlways",
   "LocationWhenInUse",
   "MediaLibrary",
   "Microphone",
@@ -39,7 +39,7 @@ target 'Kodie' do
   pod 'FirebaseFirestore', :modular_headers => true
   pod 'FirebaseStorage', :modular_headers => true
   pod 'FBSDKCoreKit',:modular_headers => true
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKLoginKit',:modular_headers => true
   # Flags change depending on the env values.
   flags = get_default_flags()
  

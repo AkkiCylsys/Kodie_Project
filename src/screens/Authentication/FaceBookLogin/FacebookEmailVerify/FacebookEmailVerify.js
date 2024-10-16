@@ -40,8 +40,9 @@ export default FacebookEmailVerify = props => {
     setValue,
   });
 
-  const deviceId = DeviceInfo.getDeviceId();
-  const deviceType = DeviceInfo.getDeviceType();
+  const device = DeviceInfo.getUniqueId();
+  const deviceId = device?._z;
+  const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
