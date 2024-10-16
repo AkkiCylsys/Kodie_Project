@@ -15,6 +15,7 @@ import {
   PermissionsAndroid,
   Alert,
   StatusBar,
+  SafeAreaView
 } from 'react-native';
 import {
   GoogleSignin,
@@ -956,9 +957,12 @@ alert(JSON.stringify(result))
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={LoginStyles.container}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+      style={LoginStyles.container}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      >
       <StatusBar
         backgroundColor={_COLORS.Kodie_WhiteColor}
         barStyle={'dark-content'}
@@ -1427,5 +1431,6 @@ alert(JSON.stringify(result))
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

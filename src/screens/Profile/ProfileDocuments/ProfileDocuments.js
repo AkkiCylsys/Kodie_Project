@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import ProfileDocumentStyle from './ProfileDocumentStyle';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import {_COLORS, FONTFAMILY} from '../../../Themes';
@@ -9,7 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import ProfileDocumentDetails from '../ProfileDocumentDetails/ProfileDocumentDetails';
 import {Config} from '../../../Config';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import axiosInstance from '../../../services/axiosInstance';
 
@@ -46,22 +46,43 @@ const ProfileDocuments = props => {
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   const roleArray = userRole ? userRole.split(',') : [];
   const hasContractorRole = roleArray.includes('4');
-  useEffect(() => {
-    getUploadedDocumentsByModule('Identity_documents');
-    getUploadedDocumentsByModule('Proof_of_address');
-    getUploadedDocumentsByModule('Banking_documents');
-    getUploadedDocumentsByModule('Employment_documents');
-    getUploadedDocumentsByModule('Screening_documents');
-    getUploadedDocumentsByModule('Other_documents');
-    getUploadedDocumentsByModule('Company_documents');
-    getUploadedDocumentsByModule('Licenses');
-    getUploadedDocumentsByModule('Certifications');
-    getUploadedDocumentsByModule('Insurance_and_indemnity');
-    // getUploadedDocumentsByModule('Other_documents');
-  }, [isfocused]);
+  // useEffect(() => {
+  //   getUploadedDocumentsByModule('Identity_documents');
+  //   getUploadedDocumentsByModule('Proof_of_address');
+  //   getUploadedDocumentsByModule('Banking_documents');
+  //   getUploadedDocumentsByModule('Employment_documents');
+  //   getUploadedDocumentsByModule('Screening_documents');
+  //   getUploadedDocumentsByModule('Other_documents');
+  //   getUploadedDocumentsByModule('Company_documents');
+  //   getUploadedDocumentsByModule('Licenses');
+  //   getUploadedDocumentsByModule('Certifications');
+  //   getUploadedDocumentsByModule('Insurance_and_indemnity');
+  //   // getUploadedDocumentsByModule('Other_documents');
+  // }, [isfocused]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // This code will run when the screen is focused
+      if (loginData.Login_details.user_account_id ||isfocused) {
+        getUploadedDocumentsByModule('Identity_documents');
+        getUploadedDocumentsByModule('Proof_of_address');
+        getUploadedDocumentsByModule('Banking_documents');
+        getUploadedDocumentsByModule('Employment_documents');
+        getUploadedDocumentsByModule('Screening_documents');
+        getUploadedDocumentsByModule('Other_documents');
+        getUploadedDocumentsByModule('Company_documents');
+        getUploadedDocumentsByModule('Licenses');
+        getUploadedDocumentsByModule('Certifications');
+        getUploadedDocumentsByModule('Insurance_and_indemnity');
+      }
+      return () => {
+        // Optional cleanup code when the screen is unfocused
+      };
+    }, [loginData.Login_details.user_account_id || isfocused]), // Empty dependency array ensures this runs only when the screen gains focus
+  );
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl ='get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -341,68 +362,69 @@ const ProfileDocuments = props => {
   };
   return (
     <View style={ProfileDocumentStyle.mainContainer}>
-      {!hasContractorRole?  
-     ( <View style={{flex:1,marginHorizontal:16,marginVertical:10}}> 
-      <CustomSingleButton
-        _ButtonText={'Personal documents'}
-        Text_Color={_COLORS.Kodie_BlackColor}
-        text_Size={14}
-        backgroundColor={_COLORS.Kodie_lightGreenColor}
-        height={40}
-        onPress={() => {}}
-        disabled={ true}
-      />
-      </View>): 
-      (<View style={ProfileDocumentStyle.btnContainer}>
-        <RowButtons
-          LeftButtonText={'Personal documents'}
-          leftButtonbackgroundColor={
-            !selectedTab
-              ? _COLORS.Kodie_lightGreenColor
-              : _COLORS.Kodie_WhiteColor
-          }
-          LeftButtonTextColor={
-            !selectedTab
-              ? _COLORS.Kodie_BlackColor
-              : _COLORS.Kodie_MediumGrayColor
-          }
-          LeftButtonborderColor={
-            !selectedTab
-              ? _COLORS.Kodie_GrayColor
-              : _COLORS.Kodie_LightWhiteColor
-          }
-          onPressLeftButton={() => {
-            setSelectedTab(false);
-            setSelectedTabId(0);
-            setFolderId(null);
-            // alert(selectedTabId);
-          }}
-          RightButtonText={'Company documents'}
-          RightButtonbackgroundColor={
-            selectedTab
-              ? _COLORS.Kodie_lightGreenColor
-              : _COLORS.Kodie_WhiteColor
-          }
-          RightButtonTextColor={
-            selectedTab
-              ? _COLORS.Kodie_BlackColor
-              : _COLORS.Kodie_MediumGrayColor
-          }
-          RightButtonborderColor={
-            selectedTab
-              ? _COLORS.Kodie_GrayColor
-              : _COLORS.Kodie_LightWhiteColor
-          }
-          onPressRightButton={() => {
-            setSelectedTab(true);
-            setSelectedTabId(1);
-            setCompanyDocumentId(null);
-            // alert(selectedTabId);
-          }}
-        />
-      </View>)
+      {!hasContractorRole ? (
+        <View style={{flex: 1, marginHorizontal: 16, marginVertical: 10}}>
+          <CustomSingleButton
+            _ButtonText={'Personal documents'}
+            Text_Color={_COLORS.Kodie_BlackColor}
+            text_Size={14}
+            backgroundColor={_COLORS.Kodie_lightGreenColor}
+            height={40}
+            onPress={() => {}}
+            disabled={true}
+          />
+        </View>
+      ) : (
+        <View style={ProfileDocumentStyle.btnContainer}>
+          <RowButtons
+            LeftButtonText={'Personal documents'}
+            leftButtonbackgroundColor={
+              !selectedTab
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
             }
-                  <DividerIcon borderBottomWidth={6} />
+            LeftButtonTextColor={
+              !selectedTab
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            LeftButtonborderColor={
+              !selectedTab
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressLeftButton={() => {
+              setSelectedTab(false);
+              setSelectedTabId(0);
+              setFolderId(null);
+              // alert(selectedTabId);
+            }}
+            RightButtonText={'Company documents'}
+            RightButtonbackgroundColor={
+              selectedTab
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              selectedTab
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            RightButtonborderColor={
+              selectedTab
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressRightButton={() => {
+              setSelectedTab(true);
+              setSelectedTabId(1);
+              setCompanyDocumentId(null);
+              // alert(selectedTabId);
+            }}
+          />
+        </View>
+      )}
+      <DividerIcon borderBottomWidth={6} />
       {folderId == null && companyDocumentId == null ? (
         <Text style={ProfileDocumentStyle.reacentDocText}>{'All folders'}</Text>
       ) : null}

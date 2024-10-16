@@ -249,7 +249,7 @@ const SignUp = props => {
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
         style={SignUpStyles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <ScrollView
           showsVerticalScrollIndicator={false}
