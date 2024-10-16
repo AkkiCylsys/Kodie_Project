@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, index } from 'react';
+import React, {useState, useRef, useEffect, index} from 'react';
 import {
   View,
   Text,
@@ -8,11 +8,11 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-import { PropertyImagesStyle } from './PropertyImagesStyle';
+import {PropertyImagesStyle} from './PropertyImagesStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-import { _COLORS, LABEL_STYLES, BANNERS } from '../../../../Themes';
-import { SliderBox } from 'react-native-image-slider-box';
+import {_goBack} from '../../../../services/CommonServices';
+import {_COLORS, LABEL_STYLES, BANNERS} from '../../../../Themes';
+import {SliderBox} from 'react-native-image-slider-box';
 import UploadImageBoxes from '../../../../components/Molecules/UploadImageBoxes/UploadImageBoxes';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import UploadMultipleImage from '../../../../components/Molecules/UploadImage/UploadMultipleImage';
@@ -21,10 +21,14 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ImagePicker from 'react-native-image-crop-picker';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import Video from 'react-native-video';
-import { useFocusEffect } from '@react-navigation/native';
-import { getPropertyDetailSevice, savePropertyImageService, updatePropertyImageService } from '../../../../services/PropertyModule/PropertyModul';
+import {useFocusEffect} from '@react-navigation/native';
+import {
+  getPropertyDetailSevice,
+  savePropertyImageService,
+  updatePropertyImageService,
+} from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyImages = props => {
   const refRBSheet = useRef();
@@ -39,14 +43,15 @@ export default PropertyImages = props => {
   useFocusEffect(
     React.useCallback(() => {
       property_id > 0 ? DetailsData() : null;
-    }, [property_id])
-  )
+    }, [property_id]),
+  );
   const DetailsData = async () => {
     setIsLoading(true);
     try {
       const details = await getPropertyDetailSevice(property_id);
-      console.log(details, "detailis");
+      console.log(details, 'detailis');
       setImagePaths(details?.image_path);
+      setSelectedVideos(details?.video_path || []);
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -77,24 +82,38 @@ export default PropertyImages = props => {
       );
       return;
     }
+    // if (selectedVideos && selectedVideos.length > 0) {
+    //   selectedVideos.forEach((videoUri, index) => {
+    //     if (typeof videoUri === 'string') {
+    //       const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
+    //       formData.append(`videos`, {
+    //         uri: videoUri,
+    //         name: videoName,
+    //         type: 'video/mp4',
+    //       });
+    //     } else {
+    //       console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+    //     }
+    //   });
+    // }
+
     if (selectedVideos && selectedVideos.length > 0) {
-      selectedVideos.forEach((videoUri, index) => {
-        if (typeof videoUri === 'string') {
-          const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
-          formData.append(`videos`, {
-            uri: videoUri,
-            name: videoName,
-            type: 'video/mp4',
-          });
-        } else {
-          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
-        }
+      selectedVideos.forEach((videoInfo, index) => {
+        const {path, mime} = videoInfo;
+        const videoName = path.substring(path.lastIndexOf('/') + 1);
+        formData.append(`videos`, {
+          uri: path,
+          name: videoName,
+          type: mime,
+        });
       });
+    } else {
+      console.log('invalid video');
     }
 
     console.log('formData', formData);
     setIsLoading(true);
-    const imageDetail = await savePropertyImageService(formData)
+    const imageDetail = await savePropertyImageService(formData);
     if (imageDetail?.success === true) {
       setIsLoading(false);
       MultiImageName ? refRBSheet.current.close() : null;
@@ -104,8 +123,8 @@ export default PropertyImages = props => {
         selectedVideos: selectedVideos,
       });
       console.log('Save Account Details', imageDetail);
-      setMultiImageName([])
-      setSelectedVideos([])
+      setMultiImageName([]);
+      setSelectedVideos([]);
     } else {
       console.log('Save Account Details error:', imageDetail?.error);
       alert('Oops Somthing went wrong! please try again later.');
@@ -134,37 +153,55 @@ export default PropertyImages = props => {
       return;
     }
     // Append videos
+    // if (selectedVideos && selectedVideos.length > 0) {
+    //   selectedVideos.forEach((videoUri, index) => {
+    //     if (typeof videoUri === 'string') {
+    //       const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
+    //       formData.append(`videos`, {
+    //         uri: videoUri,
+    //         name: videoName,
+    //         type: 'video/mp4', // Set the appropriate video type
+    //       });
+    //     } else {
+    //       console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+    //     }
+    //   });
+    // }
     if (selectedVideos && selectedVideos.length > 0) {
-      selectedVideos.forEach((videoUri, index) => {
-        if (typeof videoUri === 'string') {
-          const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
+      selectedVideos.forEach((videoInfo, index) => {
+        // Validate videoInfo
+        if (videoInfo && videoInfo.path && videoInfo.mime) {
+          const {path, mime} = videoInfo;
+          const videoName = path.substring(path.lastIndexOf('/') + 1);
           formData.append(`videos`, {
-            uri: videoUri,
+            uri: path,
             name: videoName,
-            type: 'video/mp4', // Set the appropriate video type
+            type: mime,
           });
         } else {
-          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+          console.error(`Invalid video at index ${index}:`, videoInfo);
         }
       });
+    } else {
+      console.log('No valid videos to upload.');
     }
     console.log('formData', formData);
     setIsLoading(true);
-const updateImage = await updatePropertyImageService(formData)
-      if (updateImage?.success === true) {
-        setIsLoading(false);
-        props.navigation.navigate('PropertyReview', {
-          property_id: property_id,
-          MultiImageName: MultiImageName,
-          selectedVideos: selectedVideos,
-          editMode: editMode,
-        });
-        setMultiImageName([])
-        setSelectedVideos([])
-      } else {
-        console.error('Save Account Details error:', updateImage?.error);
-        alert('Oops something went wrong! Please try again later.');
-      }
+    const updateImage = await updatePropertyImageService(formData);
+    if (updateImage?.success === true) {
+      setIsLoading(false);
+      props.navigation.navigate('PropertyReview', {
+        property_id: property_id,
+        MultiImageName: MultiImageName,
+        selectedVideos: selectedVideos,
+        editMode: editMode,
+      });
+      setMultiImageName([]);
+      setSelectedVideos([]);
+    } else {
+      console.error('Save Account Details error:', updateImage?.error);
+      alert('Oops something went wrong! Please try again later.');
+    }
   };
 
   const CloseUp = () => {
@@ -187,14 +224,14 @@ const updateImage = await updatePropertyImageService(formData)
           ]);
           console.log('Selected videos:', validVideos);
         } else {
-          Alert.alert("Warning", 'Video size exceeds the limit of 100 MB.');
+          Alert.alert('Warning', 'Video size exceeds the limit of 100 MB.');
         }
       })
       .catch(error => {
         console.error('Error selecting videos:', error);
       });
   };
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -247,23 +284,23 @@ const updateImage = await updatePropertyImageService(formData)
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
+        ? 'Features'
+        : position === 2
+        ? 'Images'
+        : position === 3
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -287,6 +324,21 @@ const updateImage = await updatePropertyImageService(formData)
       </View>
     );
   };
+  const handleLoadStart = index => {
+    setIsLoading(prev => ({...prev, [index]: true}));
+    console.log('Loading video...');
+  };
+
+  const handleLoadEnd = index => {
+    setIsLoading(prev => ({...prev, [index]: false}));
+    console.log('Video loaded.');
+  };
+
+  const handleError = index => {
+    setIsLoading(prev => ({...prev, [index]: false}));
+    console.log('Video load error');
+  };
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -326,7 +378,6 @@ const updateImage = await updatePropertyImageService(formData)
   };
   const imagePaths = MultiImageName.map(image => image.path);
   console.log('lenght images...', imagePaths.length);
-
 
   return (
     <SafeAreaView style={PropertyImagesStyle.mainContainer}>
@@ -384,7 +435,7 @@ const updateImage = await updatePropertyImageService(formData)
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {'Upload images'}
             </Text>
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <UploadImageBoxes
                 Box_Text={'Add Photo'}
                 onPress={() => {
@@ -403,7 +454,7 @@ const updateImage = await updatePropertyImageService(formData)
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {'Upload video'}
             </Text>
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <UploadImageBoxes
                 Box_Text={'Add Video'}
                 onPress={() => {
@@ -411,15 +462,15 @@ const updateImage = await updatePropertyImageService(formData)
                 }}
               />
               {selectedVideos.length > 0 && (
-                <View style={{ marginTop: 10 }}>
+                <View style={{marginTop: 10}}>
                   <FlatList
                     horizontal
                     data={selectedVideos}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                      <>
-                        <Video
-                          source={{ uri: item.path }}
+                    renderItem={({item}) => (
+                      <View key={index}>
+                        {/* <Video
+                          source={{uri: item.path}}
                           style={{
                             width: 310,
                             height: 150,
@@ -427,7 +478,42 @@ const updateImage = await updatePropertyImageService(formData)
                             marginLeft: 5,
                           }}
                           controls={true}
-                        />
+                        /> */}
+                        {typeof item === 'object' && item?.path ? (
+                          <Video
+                            source={{uri: item.path}} // Uploading scenario (item.path)
+                            style={{
+                              width: 310,
+                              height: 150,
+                              borderRadius: 5,
+                              marginLeft: 5,
+                            }}
+                            controls={true}
+                            resizeMode="contain"
+                            // onLoadStart={() => handleLoadStart(index)} // Start loading
+                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
+                            // onError={() => handleError(index)} // Handle error
+                          />
+                        ) : typeof item === 'string' ? (
+                          <Video
+                            source={{uri: item}} // API fetched scenario (just item as URL)
+                            style={{
+                              width: 310,
+                              height: 150,
+                              borderRadius: 5,
+                              marginLeft: 5,
+                            }}
+                            controls={true}
+                            resizeMode="contain"
+                            // onLoadStart={() => handleLoadStart(index)} // Start loading
+                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
+                            // onError={() => handleError(index)} // Handle error
+                          />
+                        ) : (
+                          <Text style={{color: 'red'}}>
+                            Video not available for index {index}
+                          </Text>
+                        )}
                         <TouchableOpacity
                           style={{
                             position: 'absolute',
@@ -450,7 +536,7 @@ const updateImage = await updatePropertyImageService(formData)
                             X
                           </Text>
                         </TouchableOpacity>
-                      </>
+                      </View>
                     )}
                   />
                 </View>
@@ -496,7 +582,6 @@ const updateImage = await updatePropertyImageService(formData)
                 } else {
                   handleSaveImage();
                   // alert('sdee');
-
                 }
               }}
               disabled={isLoading ? true : false}

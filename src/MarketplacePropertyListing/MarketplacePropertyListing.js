@@ -141,6 +141,7 @@ const MarketplacePropertyListing = props => {
 
       const ListingRes = await PropertyListingDetails(PropertyListing_id);
 
+      console.log("ListingRes...marketplace",ListingRes)
       if (ListingRes?.success) {
         setPropertyListingData(ListingRes.property_details); // Set property data
       }
@@ -247,7 +248,7 @@ const MarketplacePropertyListing = props => {
                   style={MarketplacePropertyListingStyle.commontext}
                   ellipsizeMode="tail"
                   numberOfLines={1}>
-                  {item?.state ? item?.state : item?.city}
+                  {item?.city ? item?.city : item?.state}
                 </Text>
                 <View style={MarketplacePropertyListingStyle.flat_MainView}>
                   <MaterialCommunityIcons

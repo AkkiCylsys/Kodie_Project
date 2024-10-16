@@ -46,40 +46,19 @@ const ProfileDocuments = props => {
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   const roleArray = userRole ? userRole.split(',') : [];
   const hasContractorRole = roleArray.includes('4');
-  // useEffect(() => {
-  //   getUploadedDocumentsByModule('Identity_documents');
-  //   getUploadedDocumentsByModule('Proof_of_address');
-  //   getUploadedDocumentsByModule('Banking_documents');
-  //   getUploadedDocumentsByModule('Employment_documents');
-  //   getUploadedDocumentsByModule('Screening_documents');
-  //   getUploadedDocumentsByModule('Other_documents');
-  //   getUploadedDocumentsByModule('Company_documents');
-  //   getUploadedDocumentsByModule('Licenses');
-  //   getUploadedDocumentsByModule('Certifications');
-  //   getUploadedDocumentsByModule('Insurance_and_indemnity');
-  //   // getUploadedDocumentsByModule('Other_documents');
-  // }, [isfocused]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // This code will run when the screen is focused
-      if (loginData.Login_details.user_account_id ||isfocused) {
-        getUploadedDocumentsByModule('Identity_documents');
-        getUploadedDocumentsByModule('Proof_of_address');
-        getUploadedDocumentsByModule('Banking_documents');
-        getUploadedDocumentsByModule('Employment_documents');
-        getUploadedDocumentsByModule('Screening_documents');
-        getUploadedDocumentsByModule('Other_documents');
-        getUploadedDocumentsByModule('Company_documents');
-        getUploadedDocumentsByModule('Licenses');
-        getUploadedDocumentsByModule('Certifications');
-        getUploadedDocumentsByModule('Insurance_and_indemnity');
-      }
-      return () => {
-        // Optional cleanup code when the screen is unfocused
-      };
-    }, [loginData.Login_details.user_account_id || isfocused]), // Empty dependency array ensures this runs only when the screen gains focus
-  );
+  useEffect(() => {
+    getUploadedDocumentsByModule('Identity_documents');
+    getUploadedDocumentsByModule('Proof_of_address');
+    getUploadedDocumentsByModule('Banking_documents');
+    getUploadedDocumentsByModule('Employment_documents');
+    getUploadedDocumentsByModule('Screening_documents');
+    getUploadedDocumentsByModule('Other_documents');
+    getUploadedDocumentsByModule('Company_documents');
+    getUploadedDocumentsByModule('Licenses');
+    getUploadedDocumentsByModule('Certifications');
+    getUploadedDocumentsByModule('Insurance_and_indemnity');
+    // getUploadedDocumentsByModule('Other_documents');
+  }, [isfocused,companyDocumentId,folderId]);
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
     const getDocumentUrl = 'get/documents';
