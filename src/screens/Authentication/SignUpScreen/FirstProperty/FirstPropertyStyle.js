@@ -133,7 +133,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 36,
   },
   key_feature_Text: {
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },

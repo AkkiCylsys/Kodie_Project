@@ -1729,6 +1729,7 @@ export default AboutYou = props => {
                   <View>
                     <Text style={AboutYouStyle.want_Heading}>
                       {'How many properties do you own, manage or rent?'}
+                      <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                     </Text>
                     <FlatList
                       data={manage_property_Data}

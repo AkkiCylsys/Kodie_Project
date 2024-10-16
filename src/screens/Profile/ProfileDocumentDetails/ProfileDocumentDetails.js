@@ -221,13 +221,14 @@ const ProfileDocumentDetails = props => {
     // console.log("p_referral_key....");
     // console.log("p_module_name....",);
     if (doc[0].size === null) {
-      Alert.alert("Warning",
+      Alert.alert(
+        'Warning',
         'The selected document size is null. Please select a valid document.',
       );
       return;
     }
     const url = Config.BASE_URL;
-    const uploadDoc_url ='uploadDocument';
+    const uploadDoc_url = 'uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
 
@@ -250,10 +251,10 @@ const ProfileDocumentDetails = props => {
       });
       console.log('API Response uploadDocument:', response.data);
       if (response?.data?.status === true) {
-        Alert.alert("Success",response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         await getUploadedDocumentsByModule();
       } else {
-        Alert.alert("Warning",response?.data?.message);
+        Alert.alert('Warning', response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
@@ -333,7 +334,7 @@ const ProfileDocumentDetails = props => {
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url ='deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axiosInstance
@@ -343,7 +344,7 @@ const ProfileDocumentDetails = props => {
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
-          Alert.alert("Success",res?.data?.message);
+          Alert.alert('Success', res?.data?.message);
           getUploadedDocumentsByModule();
           closeModal();
         }
@@ -414,7 +415,7 @@ const ProfileDocumentDetails = props => {
         // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        Alert.alert("Success",'File downloaded successfully.');
+        Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
@@ -438,13 +439,13 @@ const ProfileDocumentDetails = props => {
       .then(res => {
         console.log('File downloaded successfully');
         setIsLoading(false);
-        Alert.alert("Success",'Document downloaded successfully.');
+        Alert.alert('Success', 'Document downloaded successfully.');
         closeModal();
       })
       .catch(error => {
         console.error('Error downloading file:', error);
         setIsLoading(false);
-        Alert.alert("Warning",'Failed to download document.');
+        Alert.alert('Warning', 'Failed to download document.');
       });
   };
   const downloadFile = async url => {

@@ -71,4 +71,15 @@ export const PropertyImagesStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+
+
+  videoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 300, // Adjust according to your layout
+      },
+    video: {
+    width: 300,
+    height: 300, // Adjust height based on the aspect ratio
+      },
 });
