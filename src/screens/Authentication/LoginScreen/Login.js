@@ -168,7 +168,7 @@ export default Login = props => {
         device_os_type: deviceType,
         fcm_token: Fcm_token,
       };
-
+console.log(FacebookSignUPPayload,"FacebookSignUPPayload");
       let _res = await googleLoginApi(FacebookSignUPPayload);
       console.log('___facebook..____');
       console.log(JSON.stringify(_res));
@@ -280,11 +280,12 @@ export default Login = props => {
     };
   const loginWithFacebook = async () => {
     try {
+     await LoginManager.logOut();
       const result = await LoginManager.logInWithPermissions([
         'public_profile',
         'email',
       ]);
-alert(JSON.stringify(result))
+      console.log(JSON.stringify(result));
       if (result.isCancelled) {
         console.log('Login cancelled');
       } else {
@@ -293,24 +294,23 @@ alert(JSON.stringify(result))
         if (!data) {
           throw new Error('Something went wrong obtaining access token');
         }
-
+console.log('Coming here');
         const accessToken = data.accessToken.toString();
         console.log('Access Token: ', accessToken);
-        fetchGraphAPI(accessToken);
 
         // You can fetch user profile or send token to your server here
-        // const userProfile = await Profile.getCurrentProfile();
-        // if (userProfile) {
-        //   console.log('User Profile: ', userProfile);
-        //   if (
-        //     userProfile?.userID != null ||
-        //     userProfile?.userID != '' ||
-        //     userProfile?.userID != undefined ||
-        //     userProfile?.userID != 0
-        //   ) {
-        //     _facebookLoginApi(userProfile, accessToken);
-        //   }
-        // }
+        const userProfile = await Profile.getCurrentProfile();
+        if (userProfile) {
+          console.log('User Profile: ', userProfile,accessToken);
+          if (
+            userProfile?.userID != null ||
+            userProfile?.userID != '' ||
+            userProfile?.userID != undefined ||
+            userProfile?.userID != 0
+          ) {
+            _facebookLoginApi(userProfile, accessToken);
+          }
+        }
       }
     } catch (error) {
       console.log('Login fail with error: ', error);

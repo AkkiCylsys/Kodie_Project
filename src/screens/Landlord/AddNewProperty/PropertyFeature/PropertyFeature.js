@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -126,7 +127,7 @@ export default PropertyFeature = props => {
         : setLandArea(details?.land_area);
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
     } finally {
       setIsLoading(false);
     }

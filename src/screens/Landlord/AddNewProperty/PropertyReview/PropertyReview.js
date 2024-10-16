@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import { PropertyReviewStyle } from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -319,7 +320,7 @@ export default PropertyReview = props => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
     } finally {
       setIsLoading(false);
     }

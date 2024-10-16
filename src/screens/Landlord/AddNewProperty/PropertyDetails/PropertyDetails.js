@@ -10,6 +10,7 @@ import {
   Platform,
   SafeAreaView,
   BackHandler,
+  Alert,
 } from 'react-native';
 import {PropertyDetailsStyle} from './PropertyDetailsStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -140,7 +141,7 @@ export default PropertyDetails = props => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
     } finally {
       setIsLoading(false);
     }

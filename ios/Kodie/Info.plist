@@ -18,6 +18,8 @@
   <string>911621744166112</string>
   <key>FacebookDisplayName</key>
   <string>Kodie</string>
+  <key>FacebookClientToken</key>
+  <string>72ffcb389092f52d306614beb574887c</string>
   <key>LSApplicationQueriesSchemes</key>
   <array>
     <string>fbapi</string>

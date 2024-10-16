@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -268,8 +269,8 @@ export default PropertyReviewDetails = props => {
         setIsLoading(false);
       } catch (err) {
         console.log(err);
-        alert(err.message);
-      } finally {
+        Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
+       } finally {
         setIsLoading(false);
       }
     };

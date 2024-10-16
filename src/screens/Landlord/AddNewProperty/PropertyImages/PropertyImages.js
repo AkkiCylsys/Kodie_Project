@@ -50,7 +50,7 @@ export default PropertyImages = props => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      alert(err.message);
+      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
     } finally {
       setIsLoading(false);
     }

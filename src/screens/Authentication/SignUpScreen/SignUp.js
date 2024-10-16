@@ -11,6 +11,7 @@ import {
   Alert,
   SafeAreaView,
   Linking,
+  Keyboard,
 } from 'react-native';
 import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -250,7 +251,7 @@ const SignUp = props => {
       <KeyboardAvoidingView
         style={SignUpStyles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? Keyboard.isVisible ? 0 :  0 : 0}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{flexGrow: 1}}

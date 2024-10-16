@@ -147,20 +147,21 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 }
 
 // Add the Facebook SDK open URL handling method here
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-  [[FBSDKApplicationDelegate sharedInstance] application:application
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+ [[FBSDKApplicationDelegate sharedInstance] application:application
     didFinishLaunchingWithOptions:launchOptions];
-
-- (BOOL)application:(UIApplication *)app
-            openURL:(NSURL *)url
-            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-  return [[FBSDKApplicationDelegate sharedInstance]application:app
-                                                      openURL:url
-                                                      options:options];
+ return YES;
 }
 
-  return YES;
+ - (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(nonnullNSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+BOOL handled = [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                                openURL:url
+                                                                options:options];
+return handled;
+}
+
 
 #endif
 

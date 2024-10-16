@@ -259,7 +259,11 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  container: {
+  Ioscontainer: {
+        height:'100%',
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+  },
+  Androidcontainer: {
         flex: 1,  // Only for Android
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
@@ -271,7 +275,6 @@ export const FirstPropertyStyle = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingVertical: 3,
     borderRadius: 10,
-
     // borderWidth: 1,
     width: '30%',
     height: 50,

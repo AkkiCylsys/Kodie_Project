@@ -43,6 +43,7 @@ export default SignUpVerification = props => {
   // const deviceId = DeviceInfo.getDeviceId();
   // const deviceType = DeviceInfo.getDeviceType();
   const device = DeviceInfo.getUniqueId();
+  console.log(device);
   const deviceId = device?._z
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
   console.log(deviceId,deviceType,'Signup_verification');
