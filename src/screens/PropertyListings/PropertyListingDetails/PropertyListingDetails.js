@@ -238,7 +238,7 @@ const PropertyListingDetail = props => {
     console.log('add market place..', data);
     try {
       const response = await insertMarketDetails(data);
-      Alert.alert('Success', 'Market details have been saved successfully.');
+      Alert.alert('Success', 'Property has been successfully listed on Kodie Marketplace.');
       props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');
@@ -251,7 +251,7 @@ const PropertyListingDetail = props => {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
-      Alert.alert('Error', 'Failed to insert market details.');
+      Alert.alert('Warning', 'Failed to insert market details.');
       setIsLoading(false);
     }
   };

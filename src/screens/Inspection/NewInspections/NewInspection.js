@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useCallback } from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,27 +8,33 @@ import {
   Image,
   SafeAreaView,
   Alert,
-} from "react-native";
+} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../services/CommonServices";
-import { _COLORS, BANNERS, FONTFAMILY, IMAGES } from "../../../Themes";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { Config } from "../../../Config";
-import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../services/CommonServices';
+import {_COLORS, BANNERS, FONTFAMILY, IMAGES} from '../../../Themes';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {Config} from '../../../Config';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {NewInspectionStyle} from '../../Inspection/NewInspections/NewInspectionStyle';
 import moment from 'moment';
 import axiosInstance from '../../../services/axiosInstance';
-const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancelled"];
-export default NewInspection = (props) => {
+const HorizontalData = [
+  'All',
+  'Scheduled',
+  'Progress',
+  'Complete',
+  'Cancelled',
+];
+export default NewInspection = props => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [page, setPage] = useState(1);
@@ -45,18 +51,18 @@ export default NewInspection = (props) => {
   );
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear());
   const [_MONTHS, set_MONTHS] = useState([
-    { id: 1, name: 'January' },
-    { id: 2, name: 'February' },
-    { id: 3, name: 'March' },
-    { id: 4, name: 'April' },
-    { id: 5, name: 'May' },
-    { id: 6, name: 'June' },
-    { id: 7, name: 'July' },
-    { id: 8, name: 'August' },
-    { id: 9, name: 'September' },
-    { id: 10, name: 'October' },
-    { id: 11, name: 'November' },
-    { id: 12, name: 'December' },
+    {id: 1, name: 'January'},
+    {id: 2, name: 'February'},
+    {id: 3, name: 'March'},
+    {id: 4, name: 'April'},
+    {id: 5, name: 'May'},
+    {id: 6, name: 'June'},
+    {id: 7, name: 'July'},
+    {id: 8, name: 'August'},
+    {id: 9, name: 'September'},
+    {id: 10, name: 'October'},
+    {id: 11, name: 'November'},
+    {id: 12, name: 'December'},
   ]);
   const [InspectionDetails, setInspectionDetails] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('All');
@@ -69,14 +75,14 @@ export default NewInspection = (props) => {
       year: _selectedYear,
       page: 1,
       filter: selectedFilter,
-      sortOrder: sortOrder // Latest sortOrder state
+      sortOrder: sortOrder, // Latest sortOrder state
     });
   }, [_selectedMonthId, _selectedYear, selectedFilter, sortOrder]); // Include dependencies
-  
+
   useEffect(() => {
     getInspectionDeatils();
   }, [_selectedMonthId, _selectedYear, selectedFilter, sortOrder]);
- 
+
   useEffect(() => {
     if (isFocused) {
       getInspectionDeatilsByFilter({
@@ -96,22 +102,22 @@ export default NewInspection = (props) => {
       }, delay);
     };
   };
-  
+
   const sortByDate = debounce(() => {
-    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+    setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
   }, 300);
   const searchInspection = query => {
     setSearchQuery(query);
     const filtered = query
       ? InspectionDetails.filter(
-        item =>
-          item.location &&
-          item.location.toLowerCase().includes(query.toLowerCase()),
-      )
+          item =>
+            item.location &&
+            item.location.toLowerCase().includes(query.toLowerCase()),
+        )
       : InspectionDetails;
     console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
-  }
+  };
   const getInspectionDeatilsByFilter = async ({
     monthId,
     year,
@@ -132,7 +138,10 @@ export default NewInspection = (props) => {
         p_page: 1,
       };
       console.log(data);
-      const response = await axiosInstance.post(InspectionDeatilsByFilter_url, data);
+      const response = await axiosInstance.post(
+        InspectionDeatilsByFilter_url,
+        data,
+      );
       if (response?.data?.success === true) {
         setInspectionDetails(response?.data?.data);
         console.log('Updated inspection details:', response?.data?.data);
@@ -141,11 +150,11 @@ export default NewInspection = (props) => {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error.response,'dssad');
+      console.log(error.response, 'dssad');
       if (error.response && error.response.status === 500) {
         Alert.alert(
           'Warning',
-          error.response.data.message || 'Internal server issue'
+          error.response.data.message || 'Internal server issue',
         );
       } else if (error.response.status === 404) {
         setInspectionDetails([]);
@@ -155,7 +164,7 @@ export default NewInspection = (props) => {
     }
   };
 
-  const getInspectionDetails = (id) => {
+  const getInspectionDetails = id => {
     setIsLoading(true);
     const url = Config.BASE_URL;
 
@@ -178,7 +187,7 @@ export default NewInspection = (props) => {
     console.log('Attempting to delete inspection...');
     const url = Config.BASE_URL;
     const deleteUrl = `delete_inspection_details/${Tim_Key}`;
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await axiosInstance.delete(deleteUrl);
       console.log('Response from delete inspection:', response?.data);
@@ -190,8 +199,7 @@ export default NewInspection = (props) => {
           year: _selectedYear,
           filter: selectedFilter,
         });
-        setIsLoading(false)
-
+        setIsLoading(false);
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -200,7 +208,6 @@ export default NewInspection = (props) => {
       console.error('Error:', error.response || error.message);
     }
   };
-
 
   const SubmitInspection = async () => {
     // alert(selectedAddress?.property_id)
@@ -220,15 +227,21 @@ export default NewInspection = (props) => {
         TIM_LOCATION_LATITUDE: parseFloat(
           getinspection.v_TIM_LOCATION_LATITUDE,
         ),
-        TIM_ADD_ATTENDENCE: getinspection.v_TIM_ADD_ATTENDENCE == null ? "":getinspection.v_TIM_ADD_ATTENDENCE,
+        TIM_ADD_ATTENDENCE:
+          getinspection.v_TIM_ADD_ATTENDENCE == null
+            ? ''
+            : getinspection.v_TIM_ADD_ATTENDENCE,
         TIM_IS_FURNISHED: getinspection.v_TIM_IS_FURNISHED,
-        TIM_DESCRIPTION: getinspection.v_TIM_DESCRIPTION == null ? "" : getinspection.v_TIM_DESCRIPTION,
+        TIM_DESCRIPTION:
+          getinspection.v_TIM_DESCRIPTION == null
+            ? ''
+            : getinspection.v_TIM_DESCRIPTION,
         TAM_AREA_KEYS: getinspection.cur_TAM_AREA_KEY,
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
       console.log('inspecdup', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url ='inspection_details/save';
+      const Inspection_Url = 'inspection_details/save';
       console.log('Inspection_Url', Inspection_Url);
       const res = await axiosInstance.post(Inspection_Url, Inspectiondata);
       console.log('scheduule inspection....', res?.data);
@@ -298,8 +311,8 @@ export default NewInspection = (props) => {
     });
   };
 
-  const horizontal_render = ({ item }) => {
-    console.log(item,'itemitemitem');
+  const horizontal_render = ({item}) => {
+    console.log(item, 'itemitemitem');
     return (
       <TouchableOpacity
         style={[
@@ -346,7 +359,10 @@ export default NewInspection = (props) => {
           style={[
             NewInspectionStyle.item_style,
             {
-              color: selectedFilter == item ?  _COLORS?.Kodie_WhiteColor :_COLORS?. Kodie_VeryLightGrayColor,
+              color:
+                selectedFilter == item
+                  ? _COLORS?.Kodie_WhiteColor
+                  : _COLORS?.Kodie_VeryLightGrayColor,
             },
           ]}>
           {item}
@@ -362,7 +378,7 @@ export default NewInspection = (props) => {
     );
   };
 
-  const Inspection_render = ({ item, index }) => {
+  const Inspection_render = ({item, index}) => {
     const getDate = new Date(item.scheduled_date);
     const dayOfMonth = getDate.getDate(); // Extracts the day of the month
     const daysOfWeek = [
@@ -377,123 +393,156 @@ export default NewInspection = (props) => {
     const dayOfWeek = daysOfWeek[getDate.getDay()];
     return (
       <>
-      {item?.inspection_id == null ? null:
-        <>
-        <TouchableOpacity
-          style={NewInspectionStyle.insp_data_View}
-          onPress={() => {
-            props.navigation.navigate('PropertyInspection', {
-              TIM_KEY: item.tim_key,
-              ViewInspection: 'ViewInspection',
-              PropertyId: item?.inspection_id,
-            });
-          }}>
-          <View style={NewInspectionStyle.insp_cld_main_view}>
-            <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
-            <Text
-              style={NewInspectionStyle.insp_cld_Text}
-              ellipsizeMode="tail"
-              numberOfLines={1}>
-              {dayOfWeek}
-            </Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>
-              {item?.scheduled_time}
-            </Text>
-          </View>
-          <View style={{ flex: 0.4 }}>
-            {item.image_path && item.image_path.length > 0 ? (
-              <Image
-                source={{ uri: item?.image_path[0] }}
-                style={NewInspectionStyle.img_Sty}
-              />
-            ) : (
-              <View
-                style={[
-                  NewInspectionStyle.img_Sty,
-                  { justifyContent: 'center' },
-                ]}>
+        {item?.inspection_id == null ? null : (
+          <>
+            <TouchableOpacity
+              style={NewInspectionStyle.insp_data_View}
+              onPress={() => {
+                props.navigation.navigate('PropertyInspection', {
+                  TIM_KEY: item.tim_key,
+                  ViewInspection: 'ViewInspection',
+                  PropertyId: item?.inspection_id,
+                });
+              }}>
+              <View style={NewInspectionStyle.insp_cld_main_view}>
+                <Text style={NewInspectionStyle.insp_cld_date}>
+                  {dayOfMonth}
+                </Text>
                 <Text
-                  style={{
-                    fontSize: 12,
-                    color: _COLORS?.Kodie_BlackColor,
-                    textAlign: 'center',
-                    alignSelf: 'center',
-                  }}>
-                  {'Image not found'}
+                  style={NewInspectionStyle.insp_cld_Text}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}>
+                  {dayOfWeek}
+                </Text>
+                <Text style={NewInspectionStyle.insp_cld_Text}>
+                  {item?.scheduled_time}
                 </Text>
               </View>
-            )}
-          </View>
-          <View style={{ flex: 1, marginLeft: 2 }}>
-            <View style={NewInspectionStyle.location_main_view}>
-              <Entypo
-                name="location-pin"
-                size={18}
-                color={_COLORS.Kodie_GreenColor}
-                style={{marginTop:6 }}
-              />
-              <Text style={NewInspectionStyle.location_text}>
-                {item.location}
-              </Text>
-              <View style={{ margin: 6 }} />
-              <TouchableOpacity
-                onPress={() => {
-                  setTim_key(item?.tim_key);
-                  refRBSheet2.current.open();
-                  getInspectionDetails(item?.tim_key)
-                }}>
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={18}
-                  color={_COLORS.Kodie_GrayColor}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={NewInspectionStyle.user_main_view}>
-              <View style={NewInspectionStyle.user_main_view}>
-                <Image
-                  source={item.userImg}
-                  style={NewInspectionStyle.user_img_sty}
-                />
-                <Text style={NewInspectionStyle.user_name_text}>
-                  {item.userName}
-                </Text>
+              <View style={{flex: 0.4}}>
+                {item.image_path && item.image_path.length > 0 ? (
+                  <Image
+                    source={{uri: item?.image_path[0]}}
+                    style={NewInspectionStyle.img_Sty}
+                  />
+                ) : (
+                  <View
+                    style={[
+                      NewInspectionStyle.img_Sty,
+                      {justifyContent: 'center'},
+                    ]}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: _COLORS?.Kodie_BlackColor,
+                        textAlign: 'center',
+                        alignSelf: 'center',
+                      }}>
+                      {'Image not found'}
+                    </Text>
+                  </View>
+                )}
               </View>
-              <TouchableOpacity style={[NewInspectionStyle.in_progress_view, {
-                backgroundColor: 
-                item.key === 'Complete' ? _COLORS.Kodie_lightGreenColor
-                  :item.key === 'Scheduled' ? '#E7F1FF'
-                    : item.key === 'Progress' ? _COLORS?.Kodie_LightOrange
-                      : '#FFD9D9'
-
-              }]}>
-                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                  <View style={{height:7,width:7,borderRadius:7/2,margin:5,backgroundColor: 
-                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
-                  :item.key === 'Scheduled' ? '#336FC3'
-                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
-                      : _COLORS.Kodie_redColor}}/>
-                <Text style={[NewInspectionStyle.in_progress_txt,{color: 
-                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
-                  :item.key === 'Scheduled' ? '#336FC3'
-                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
-                      : _COLORS.Kodie_redColor
-
-              }]}>
-                  {item.key}
-                </Text>
+              <View style={{flex: 1, marginLeft: 2}}>
+                <View style={NewInspectionStyle.location_main_view}>
+                  <Entypo
+                    name="location-pin"
+                    size={18}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={{marginTop: 6}}
+                  />
+                  <Text
+                    style={NewInspectionStyle.location_text}
+                    ellipsizeMode="tail"
+                    numberOfLines={3}>
+                    {item.location}
+                  </Text>
+                  <View style={{margin: 6}} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      setTim_key(item?.tim_key);
+                      refRBSheet2.current.open();
+                      getInspectionDetails(item?.tim_key);
+                    }}>
+                    <Entypo
+                      name="dots-three-horizontal"
+                      size={18}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
                 </View>
-               
-              </TouchableOpacity>
+                <View style={NewInspectionStyle.user_main_view}>
+                  <View style={NewInspectionStyle.user_main_view}>
+                    <Image
+                      source={item.userImg}
+                      style={NewInspectionStyle.user_img_sty}
+                    />
+                    <Text style={NewInspectionStyle.user_name_text}>
+                      {item.userName}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    style={[
+                      NewInspectionStyle.in_progress_view,
+                      {
+                        backgroundColor:
+                          item.key === 'Complete'
+                            ? _COLORS.Kodie_lightGreenColor
+                            : item.key === 'Scheduled'
+                            ? '#E7F1FF'
+                            : item.key === 'Progress'
+                            ? _COLORS?.Kodie_LightOrange
+                            : '#FFD9D9',
+                      },
+                    ]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <View
+                        style={{
+                          height: 7,
+                          width: 7,
+                          borderRadius: 7 / 2,
+                          margin: 5,
+                          backgroundColor:
+                            item.key === 'Complete'
+                              ? _COLORS.Kodie_ExtraDarkGreen
+                              : item.key === 'Scheduled'
+                              ? '#336FC3'
+                              : item.key === 'Progress'
+                              ? _COLORS?.Kodie_DarkOrange
+                              : _COLORS.Kodie_redColor,
+                        }}
+                      />
+                      <Text
+                        style={[
+                          NewInspectionStyle.in_progress_txt,
+                          {
+                            color:
+                              item.key === 'Complete'
+                                ? _COLORS.Kodie_ExtraDarkGreen
+                                : item.key === 'Scheduled'
+                                ? '#336FC3'
+                                : item.key === 'Progress'
+                                ? _COLORS?.Kodie_DarkOrange
+                                : _COLORS.Kodie_redColor,
+                          },
+                        ]}>
+                        {item.key}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+            <View style={NewInspectionStyle.subContainer}>
+              <DividerIcon />
             </View>
-          </View>
-        </TouchableOpacity>
-        <View style={NewInspectionStyle.subContainer}>
-          <DividerIcon />
-        </View>
+          </>
+        )}
       </>
-      }
-     </>
     );
   };
 
@@ -516,7 +565,10 @@ export default NewInspection = (props) => {
           marginBottom={8}
         />
       </View>
-      <DividerIcon borderBottomWidth={10} color={_COLORS.Kodie_LiteWhiteColor} />
+      <DividerIcon
+        borderBottomWidth={10}
+        color={_COLORS.Kodie_LiteWhiteColor}
+      />
       <SearchBar
         frontSearchIcon
         filterImage={IMAGES.up_down_Arrow}
@@ -571,7 +623,7 @@ export default NewInspection = (props) => {
           renderItem={Inspection_render}
           onEndReached={loadMoreData}
           onEndReachedThreshold={0.5}
-        // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
+          // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
         />
       </ScrollView>
       <RBSheet

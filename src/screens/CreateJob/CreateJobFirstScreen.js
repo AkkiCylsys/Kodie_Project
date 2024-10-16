@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import { CreateJobFirstStyle } from './CreateJobFirstScreenCss';
 import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
@@ -358,7 +359,7 @@ export default CreateJobFirstScreen = props => {
           setMaxBudget(response?.data?.data?.job_max_budget);
           setMinBudget(response?.data?.data?.job_min_budget);
         } else {
-          alert(response?.data?.message);
+          Alert.alert("Warning",response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -400,7 +401,7 @@ export default CreateJobFirstScreen = props => {
       .then(response => {
         console.log('API Response jobCreate..:', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success",response?.data?.message);
           setSaveJobId(response?.data?.job_id);
           // dispatch(fetchCreateJobSuccess(response?.data?.job_id));
           props.navigation.navigate('CreateJobTermsScreen', {
@@ -466,7 +467,7 @@ export default CreateJobFirstScreen = props => {
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success",response?.data?.message);
           props.navigation.navigate('CreateJobTermsScreen', {
             JobId: saveJobId ? saveJobId : JobId,
             editMode: editMode,
@@ -485,12 +486,12 @@ export default CreateJobFirstScreen = props => {
               : 0,
           });
         } else {
-          alert(response?.data?.message);
+          Alert.alert("Warning",response?.data?.message);
         }
       })
       .catch(error => {
         console.error('API failed updateCreateJob', error);
-        alert(error);
+        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);

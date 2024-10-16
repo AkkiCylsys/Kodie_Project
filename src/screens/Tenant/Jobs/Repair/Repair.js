@@ -434,7 +434,7 @@ export default Repair = props => {
                 <View style={[RepairCss.BudgetView]}>
                   <View style={RepairCss.flexContainer}>
                     <Text style={RepairCss.bugetText}>{'Budget'}</Text>
-                    <Text style={RepairCss.spend}>{item.job_max_budget}</Text>
+                    <Text style={RepairCss.spend}>{item.job_max_budget || "$0"}</Text>
                   </View>
                 </View>
               </View>

@@ -358,8 +358,8 @@ const Reviewjobdetails1 = props => {
             </View>
           </View>
         ) : null}
-        {isLoading ? <CommonLoader /> : null}
       </View>
+        {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

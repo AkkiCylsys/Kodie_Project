@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import { CreateJobTermsStyle } from './CreateJobTermsStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -347,7 +348,7 @@ export default CreateJobTermsScreen = props => {
           setHourlyNeedData(response?.data?.lookup_details);
         } else {
           console.error('HourlyNeed_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -375,7 +376,7 @@ export default CreateJobTermsScreen = props => {
           setNeedServicesData(response?.data?.lookup_details);
         } else {
           console.error('Need Services_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -543,7 +544,7 @@ export default CreateJobTermsScreen = props => {
           console.log('min budget..', minBudget);
           setIsLoading(false);
         } else {
-          alert(response?.data?.message);
+          Alert.alert("Warning",response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -589,21 +590,21 @@ export default CreateJobTermsScreen = props => {
       .then(response => {
         console.log('API Response updateCreateJob..:', response?.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success",response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
             JobId: JobId,
             editMode: editMode,
           });
           // setIsLoading(false);
         } else {
-          alert(response?.data?.message);
+          Alert.alert("Warning",response?.data?.message);
           // setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed updateCreateJob', error);
         // setIsLoading(false);
-        alert(error);
+        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);

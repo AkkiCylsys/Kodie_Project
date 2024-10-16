@@ -24,6 +24,7 @@ export const Help_FeedBackCss = StyleSheet.create({
   },
 
   profile_Heading: {
+    flex:1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
@@ -53,7 +54,7 @@ export const Help_FeedBackCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
-    marginTop:10,
+    marginTop:5,
     height: 35,
     padding:7,
   },

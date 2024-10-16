@@ -7,27 +7,27 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TopHeader from '../components/Molecules/Header/Header';
 import DividerIcon from '../components/Atoms/Devider/DividerIcon';
-import { MarketplacePropertyListingStyle } from './MarketplacePropertyListingStyle';
+import {MarketplacePropertyListingStyle} from './MarketplacePropertyListingStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { _COLORS, IMAGES, BANNERS } from '../Themes';
+import {_COLORS, IMAGES, BANNERS} from '../Themes';
 import AddBiddingDetails from '../components/Molecules/AddBiddingDetails/AddBiddingDetails';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { Config } from '../Config';
-import { CommonLoader } from '../components/Molecules/ActiveLoader/ActiveLoader';
+import {Config} from '../Config';
+import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';
 import PropertyModal from '../components/PropertyModal/PropertyModal';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';
-import { _goBack } from '../services/CommonServices';
-import { useIsFocused } from '@react-navigation/native';
+import {_goBack} from '../services/CommonServices';
+import {useIsFocused} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListEmptyComponent from '../components/Molecules/ListEmptyComponent/ListEmptyComponent';
-import { deletePropertySevices } from '../services/PropertyModule/PropertyModul';
-import { PropertyListingDetails } from '../services/PropertyListing/ListingServices';
+import {deletePropertySevices} from '../services/PropertyModule/PropertyModul';
+import {PropertyListingDetails} from '../services/PropertyListing/ListingServices';
 const HorizontalData = [
   'All',
   // 'Recent',
@@ -55,7 +55,7 @@ const MarketplacePropertyListing = props => {
 
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
   const isvisible = useIsFocused();
-  const horizontal_render = ({ item }) => {
+  const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
         style={[
@@ -108,10 +108,10 @@ const MarketplacePropertyListing = props => {
     setSearchQuery(query);
     const filtered = query
       ? PropertyListing_data.filter(
-        item =>
-          item.property_type_text &&
-          item.property_type_text.toLowerCase().includes(query.toLowerCase()),
-      )
+          item =>
+            item.property_type_text &&
+            item.property_type_text.toLowerCase().includes(query.toLowerCase()),
+        )
       : PropertyListing_data;
     console.log('filtered.........', filtered);
     setFilteredMarketPlace(filtered);
@@ -131,10 +131,9 @@ const MarketplacePropertyListing = props => {
   //       }
   // };
 
-
   const get_MarketplacePropertyListing = async () => {
     try {
-      setIsLoading(true);  // Start loading
+      setIsLoading(true); // Start loading
 
       const PropertyListing_id = {
         account_id: loginData?.Login_details?.user_account_id,
@@ -143,14 +142,12 @@ const MarketplacePropertyListing = props => {
       const ListingRes = await PropertyListingDetails(PropertyListing_id);
 
       if (ListingRes?.success) {
-        setPropertyListingData(ListingRes.property_details);  // Set property data
+        setPropertyListingData(ListingRes.property_details); // Set property data
       }
-
     } catch (error) {
       // You can also show a user-friendly error message here if needed
-
     } finally {
-      setIsLoading(false);  // Ensure loading stops whether the request is successful or fails
+      setIsLoading(false); // Ensure loading stops whether the request is successful or fails
     }
   };
 
@@ -165,19 +162,23 @@ const MarketplacePropertyListing = props => {
       }
 
       const propertyIdString = String(propId); // Ensure property ID is a string
-      const data = { property_id: propertyIdString };
+      const data = {property_id: propertyIdString};
       console.log('Data being sent:', data);
       const deletePropertyResponse = await deletePropertySevices(data);
       console.log('API Response:', deletePropertyResponse); // Log the response
 
       Alert.alert(
         'Property deleted',
-        deletePropertyResponse?.message || 'The property was deleted successfully.')
+        deletePropertyResponse?.message ||
+          'The property was deleted successfully.',
+      );
       await get_MarketplacePropertyListing(); // Refresh property details
-
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
-      const errorMessage = error?.response?.data?.message || error.message || 'An error occurred. Please try again.';
+      const errorMessage =
+        error?.response?.data?.message ||
+        error.message ||
+        'An error occurred. Please try again.';
       Alert.alert('Warning', errorMessage);
     } finally {
       setIsLoading(false); // Ensure loading is disabled even after error
@@ -191,18 +192,20 @@ const MarketplacePropertyListing = props => {
 
   const filteredData = searchQuery
     ? filteredMarketPlace.filter(item =>
-      item.property_type_text?.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+        item.property_type_text
+          ?.toLowerCase()
+          .includes(searchQuery.toLowerCase()),
+      )
     : PropertyListing_data.filter(item => {
-      if (selectedFilter === 'All') return true;
-      if (selectedFilter === 'Occupied') return item.isOccupied;
-      if (selectedFilter === 'Vacant') return item.isVacant;
-      if (selectedFilter === 'Rent Pending') return item.isRentPending;
-      if (selectedFilter === 'Rent Received') return item.isRentReceived;
-      return false;
-    });
+        if (selectedFilter === 'All') return true;
+        if (selectedFilter === 'Occupied') return item.isOccupied;
+        if (selectedFilter === 'Vacant') return item.isVacant;
+        if (selectedFilter === 'Rent Pending') return item.isRentPending;
+        if (selectedFilter === 'Rent Received') return item.isRentReceived;
+        return false;
+      });
 
-  const propertyData1_render = ({ item }) => {
+  const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     const calculateDaysPast = dateString => {
       if (!dateString) {
@@ -240,7 +243,10 @@ const MarketplacePropertyListing = props => {
                 <Text style={MarketplacePropertyListingStyle.apartmentText}>
                   {item.property_type_text}
                 </Text>
-                <Text style={MarketplacePropertyListingStyle.commontext}>
+                <Text
+                  style={MarketplacePropertyListingStyle.commontext}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}>
                   {item?.state ? item?.state : item?.city}
                 </Text>
                 <View style={MarketplacePropertyListingStyle.flat_MainView}>
@@ -248,7 +254,7 @@ const MarketplacePropertyListing = props => {
                     name={'map-marker'}
                     size={12}
                     color={_COLORS.Kodie_GreenColor}
-                    style={{ marginTop: 2 }}
+                    style={{marginTop: 2}}
                   />
                   <Text
                     style={MarketplacePropertyListingStyle.locationText}
@@ -260,7 +266,7 @@ const MarketplacePropertyListing = props => {
               </View>
               {item?.image_path && item?.image_path.length > 0 ? (
                 <Image
-                  source={{ uri: item?.image_path[0] }}
+                  source={{uri: item?.image_path[0]}}
                   style={MarketplacePropertyListingStyle.imageStyle}
                   resizeMode="cover"
                 />
@@ -268,9 +274,9 @@ const MarketplacePropertyListing = props => {
                 <View
                   style={[
                     MarketplacePropertyListingStyle.imageStyle,
-                    { justifyContent: 'center' },
+                    {justifyContent: 'center'},
                   ]}>
-                  <View style={[{ flex: 1 }]}>
+                  <View style={[{flex: 1}]}>
                     <Ionicons
                       name="images-outline"
                       size={90}
@@ -320,8 +326,8 @@ const MarketplacePropertyListing = props => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_LightOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_mostLightGreenColor
-                          : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                   onPress={() => {
@@ -334,8 +340,8 @@ const MarketplacePropertyListing = props => {
                         color: item.isRentPanding
                           ? _COLORS.Kodie_DarkOrange
                           : item.isRentReceived
-                            ? _COLORS.Kodie_GreenColor
-                            : _COLORS.Kodie_ExtraminLiteGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_ExtraminLiteGrayColor,
                       },
                     ]}>
                     {'+ Invite Tenant'}
@@ -343,7 +349,7 @@ const MarketplacePropertyListing = props => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{ marginTop: 20 }}>
+            <View style={{marginTop: 20}}>
               <DividerIcon
                 IsShowIcon
                 iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
@@ -391,7 +397,7 @@ const MarketplacePropertyListing = props => {
     );
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() =>
           viewMarketPlace

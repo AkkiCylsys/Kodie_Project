@@ -494,7 +494,7 @@ const fetchData = async () => {
             seeMoreStyle={ViewRentalDetailsStyle.readMore}
             seeLessStyle={ViewRentalDetailsStyle.readMore}
             seeMoreText={'read more'}
-            seeLessText={'read Less'}
+            seeLessText={'read less'}
             numberOfLines={2}
             style={ViewRentalDetailsStyle.textStyle}>
             {property_Detail?.property_description || ''}
