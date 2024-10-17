@@ -253,6 +253,7 @@ const ProfileDocumentDetails = props => {
       if (response?.data?.status === true) {
         Alert.alert('Success', response?.data?.message);
         await getUploadedDocumentsByModule();
+        setDocumentLookupDataValue([])
       } else {
         Alert.alert('Warning', response?.data?.message);
       }
@@ -650,7 +651,7 @@ const ProfileDocumentDetails = props => {
           {'Please select document type.'}
         </Text>
       ) : null}
-      <View style={{marginBottom: 30}}>
+      <View style={{marginBottom: 80}}>
         <CustomSingleButton
           leftImage={IMAGES.uploadIcon}
           isLeftImage={true}
