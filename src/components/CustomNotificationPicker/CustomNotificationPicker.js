@@ -7,7 +7,7 @@ import { MAX_COMPOSER_HEIGHT } from 'react-native-gifted-chat';
 
 const CustomNotificationPicker = (props) => {
   const [selectedValue, setSelectedValue] = useState(1);
-  const [currentUnit, setCurrentUnit] = useState("Days");
+  const [currentUnit, setCurrentUnit] = useState("Minutes");
 
   const generatePickerItems = () => {
     let items = [];
