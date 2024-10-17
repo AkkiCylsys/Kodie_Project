@@ -294,7 +294,7 @@ const MarketplacePropertyListing = props => {
               )}
               <View style={MarketplacePropertyListingStyle.flexContainer}>
                 <View style={MarketplacePropertyListingStyle.noteStyle}>
-                  {/* <TouchableOpacity
+                  <TouchableOpacity
                     onPress={() => {
                       props.navigation.navigate('PropertyDetails', {
                         propertyid: item?.property_id,
@@ -306,7 +306,7 @@ const MarketplacePropertyListing = props => {
                       color={_COLORS.Kodie_LightGrayColor}
                       resizeMode={'contain'}
                     />
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
                       refRBSheet1.current.open();
