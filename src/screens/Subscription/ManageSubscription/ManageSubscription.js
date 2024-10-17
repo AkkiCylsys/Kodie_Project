@@ -309,7 +309,7 @@ const ManageSubscription = props => {
 
           Insertdemodata(response?.data?.data?.id);
           saveSubscriptionData();
-          alert('You have Successfully subscribed .');
+          Alert.alert("Success",'You have successfully subscribed.');
           props.navigation.navigate('Dashboard');
         } else {
           setIsLoading(false);

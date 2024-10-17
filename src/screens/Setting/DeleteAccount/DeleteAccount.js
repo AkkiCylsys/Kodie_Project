@@ -6,6 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
+  Alert
 } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import { DeleteAccountStyle } from './DeleteAccountStyle';
@@ -122,7 +123,7 @@ const DeleteAccount = props => {
       .then(res => {
         console.log('res delete Account......', res);
         if (res?.data?.success === true) {
-          alert(res?.data?.message);
+          Alert.alert("Success",res?.data?.message);
           handleLogout();
         }
       })
