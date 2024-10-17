@@ -119,7 +119,7 @@ const NoticeBottomModal = props => {
       console.log('createNoticeReminder....', response?.data);
       if (response?.data?.status === true) {
         // alert(response?.data?.message);
-        alert("Notices & Reminder duplicate successfully");
+        Alert.alert("Success","Notices & Reminder duplicate successfully.");
         props.onchange();
       }
       // clearState();

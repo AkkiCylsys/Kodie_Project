@@ -395,7 +395,7 @@ const Notices = props => {
       // console.log('API Response:', response.data);
       if (response?.data?.status === true) {
         // Alert.alert("notice Deleted", response?.data?.message);
-        alert(response?.data?.data);
+        Alert.alert("Success",response?.data?.data);
         getNoticesReminderDeatilsByFilter({
           monthId: _selectedMonthId,
           year: _selectedYear,
