@@ -208,12 +208,30 @@ const RentalOffer = props => {
       })
       .catch(error => console.warn(error));
   };
+  // const increaseNumberOccupants = () => {
+  //   setNumberOccupants(prevCount => prevCount + 1);
+  //   setToggleOccupants(true);
+  // };
+
   const increaseNumberOccupants = () => {
-    setNumberOccupants(prevCount => prevCount + 1);
+    if (numberOccupants === 0) {
+      // When the count is 0, set it to 1 and open the toggle
+      setNumberOccupants(1);
+      setToggleOccupants(true);
+    }
     setToggleOccupants(true);
   };
+  // const increaseLeaseHolder = () => {
+  //   setNumberLeaseHolder(prevCount => prevCount + 1);
+  //   setToggleLeaseHolder(true);
+  // };
+
   const increaseLeaseHolder = () => {
-    setNumberLeaseHolder(prevCount => prevCount + 1);
+    if (numberLeaseHolder === 0) {
+      // When the count is 0, set it to 1 and open the toggle
+      setNumberLeaseHolder(1);
+      setToggleLeaseHolder(true);
+    }
     setToggleLeaseHolder(true);
   };
   const decreaseNumberOccupants = () => {

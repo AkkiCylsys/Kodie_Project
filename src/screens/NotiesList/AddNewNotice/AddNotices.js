@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,10 @@ import {
   FlatList,
   Image,
   Keyboard,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
-import { useSelector } from 'react-redux';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {useSelector} from 'react-redux';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import SwitchToggle from 'react-native-switch-toggle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -24,12 +24,12 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AddNewNoticeStyle } from './AddNewNoticeStyle';
+import {AddNewNoticeStyle} from './AddNewNoticeStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import { IMAGES, LABEL_STYLES, _COLORS } from '../../../Themes';
-import { Dropdown } from 'react-native-element-dropdown';
-import { SignupLookupDetails } from '../../../APIs/AllApi';
-import { Divider } from 'react-native-paper';
+import {IMAGES, LABEL_STYLES, _COLORS} from '../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
+import {SignupLookupDetails} from '../../../APIs/AllApi';
+import {Divider} from 'react-native-paper';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -39,13 +39,13 @@ import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import CustomNotificationPicker from '../../../components/CustomNotificationPicker/CustomNotificationPicker';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
-import { debounce } from 'lodash';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {debounce} from 'lodash';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument';
-import { Config } from '../../../Config';
+import {Config} from '../../../Config';
 import moment from 'moment';
-import { _goBack } from '../../../services/CommonServices';
+import {_goBack} from '../../../services/CommonServices';
 import axiosInstance from '../../../services/axiosInstance';
 const AddNotices = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
@@ -97,7 +97,7 @@ const AddNotices = props => {
   const UploadrbSheetRef = useRef();
 
   const handleFileUpload = (fileUri, type) => {
-    const file = { uri: fileUri, type, id: new Date().getTime().toString() };
+    const file = {uri: fileUri, type, id: new Date().getTime().toString()};
     setUploadedFiles(prevFiles => [...prevFiles, file]);
     UploadrbSheetRef.current.close();
   };
@@ -519,10 +519,10 @@ const AddNotices = props => {
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
-      console.log("pdfFile.....", pdfFile);
+      console.log('pdfFile.....', pdfFile);
 
       formData.append('file_name', {
-        uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
+        uri: pdfFile.uri[0].uri, // Assuming PDF file is accessed correctly
         name: pdfFile.uri[0].name,
         type: 'application/pdf',
       });
@@ -531,12 +531,12 @@ const AddNotices = props => {
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
-      console.log("file.....", file.uri);
+      console.log('file.....', file.uri);
       const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
         name: filename,
-        type: 'image/jpeg',  // Adjust MIME type as necessary
+        type: 'image/jpeg', // Adjust MIME type as necessary
       });
     });
     console.log('FormData content:', formData);
@@ -545,15 +545,19 @@ const AddNotices = props => {
     setIsLoading(true);
     try {
       console.log('Request URL:', createNoticeReminder_url);
-      const response = await axiosInstance.post(createNoticeReminder_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+      const response = await axiosInstance.post(
+        createNoticeReminder_url,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      });
+      );
       console.log('hello deependra');
       console.log('createNoticeReminder....', response.data);
       if (response?.data?.status === true) {
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         props.navigation.navigate('Notices');
       }
       clearState();
@@ -597,7 +601,7 @@ const AddNotices = props => {
           setNotes(response?.data?.data.notes);
           setSelectedCustemValue(response?.data?.data?.custom);
           setNoticeAllData(response?.data?.data);
-          setUploadedFiles(response?.data?.data?.image_path)
+          setUploadedFiles(response?.data?.data?.image_path);
         } else {
           // alert(response?.data?.message);
           setIsLoading(false);
@@ -634,10 +638,10 @@ const AddNotices = props => {
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
-      console.log("pdfFile.....", pdfFile);
+      console.log('pdfFile.....', pdfFile);
 
       formData.append('file_name', {
-        uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
+        uri: pdfFile.uri[0].uri, // Assuming PDF file is accessed correctly
         name: pdfFile.uri[0].name,
         type: 'application/pdf',
       });
@@ -646,12 +650,12 @@ const AddNotices = props => {
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
-      console.log("pdfFile.....", file);
+      console.log('pdfFile.....', file);
       const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
         name: filename,
-        type: 'image/jpeg',  // Adjust MIME type as necessary
+        type: 'image/jpeg', // Adjust MIME type as necessary
       });
     });
     console.log('formData vdsfs', formData);
@@ -671,7 +675,7 @@ const AddNotices = props => {
       );
       console.log('update_createNoticeReminderResponse....', response.data);
       if (response?.data?.status === true) {
-        alert(response?.data?.message);
+        Alert.alert("Success",response?.data?.message);
         props.navigation.navigate('Notices');
       }
       clearState();
@@ -784,14 +788,15 @@ const AddNotices = props => {
     );
   };
 
-
   const handleRemoveFile = id => {
     setUploadedFiles(prevFiles => prevFiles.filter(file => file.id !== id));
   };
 
   const isImage = file => {
     if (typeof file === 'string') {
-      return file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png');
+      return (
+        file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')
+      );
     }
     return file.type.startsWith('image');
   };
@@ -808,11 +813,11 @@ const AddNotices = props => {
   const images = uploadedFiles.filter(isImage);
   const documents = uploadedFiles.filter(isDocument);
 
-  const renderImageItem = ({ item, index }) => {
+  const renderImageItem = ({item, index}) => {
     const uri = typeof item === 'string' ? item : item.uri;
     return (
       <View style={AddNewNoticeStyle.uploadedImageContainer}>
-        <Image source={{ uri }} style={AddNewNoticeStyle.uploadedImage} />
+        <Image source={{uri}} style={AddNewNoticeStyle.uploadedImage} />
         <TouchableOpacity
           style={{
             flex: 1,
@@ -841,9 +846,10 @@ const AddNotices = props => {
       </View>
     );
   };
-  const renderDocumentItem = ({ item, index }) => {
+  const renderDocumentItem = ({item, index}) => {
     const uri = typeof item === 'string' ? item : item.uri[0].uri;
-    const name = typeof item === 'string' ? item.split('/').pop() : item.uri[0].name;
+    const name =
+      typeof item === 'string' ? item.split('/').pop() : item.uri[0].name;
     return (
       <View style={AddNewNoticeStyle.container}>
         <View style={AddNewNoticeStyle.pdfInfo}>
@@ -873,17 +879,17 @@ const AddNotices = props => {
           IsMap
             ? setIsMap(false)
             : IsSearch
-              ? setIsSearch(false) :
-              propertyView ?
-                props?.navigation?.navigate('Properties')
-                : _goBack(props)
+            ? setIsSearch(false)
+            : propertyView
+            ? props?.navigation?.navigate('Properties')
+            : _goBack(props)
         }
         MiddleText={
           IsMap || IsSearch
             ? 'Location'
             : editNotice
-              ? 'Edit notice'
-              : 'Add new notice'
+            ? 'Edit notice'
+            : 'Add new notice'
         }
       />
       {IsMap ? (
@@ -904,7 +910,6 @@ const AddNotices = props => {
               marginBottom: 10,
             }}
             iscancel={() => setIsMap(false)}
-
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
@@ -939,7 +944,7 @@ const AddNotices = props => {
           <TouchableOpacity
             style={AddNewNoticeStyle.BtnContainer}
             onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
           </TouchableOpacity>
         </View>
       ) : IsSearch ? (
@@ -963,13 +968,17 @@ const AddNotices = props => {
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {'Select the type of notice you want to create'}
-                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
-                style={[AddNewNoticeStyle.dropdown, {
-                  borderColor: showNoticeTypeError ? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
-
-                }]}
+                style={[
+                  AddNewNoticeStyle.dropdown,
+                  {
+                    borderColor: showNoticeTypeError
+                      ? _COLORS.Kodie_redColor
+                      : _COLORS?.Kodie_GrayColor,
+                  },
+                ]}
                 placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                 selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                 inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -996,14 +1005,19 @@ const AddNotices = props => {
               ) : null}
             </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{'Notice title'}
-                <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Notice title'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <TextInput
-                style={[AddNewNoticeStyle.input, {
-                  borderColor: titleError ? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
-
-                }]}
+                style={[
+                  AddNewNoticeStyle.input,
+                  {
+                    borderColor: titleError
+                      ? _COLORS.Kodie_redColor
+                      : _COLORS?.Kodie_GrayColor,
+                  },
+                ]}
                 value={noticeTittle}
                 onChangeText={validateTitle}
                 onBlur={() => validateTitle(noticeTittle)}
@@ -1021,7 +1035,7 @@ const AddNotices = props => {
                 name="repeat"
                 size={35}
                 color={_COLORS.Kodie_ExtraLiteGrayColor}
-                style={{ alignSelf: 'center' }}
+                style={{alignSelf: 'center'}}
               />
               <Text style={AddNewNoticeStyle.repeattext}>Repeat</Text>
               <View style={AddNewNoticeStyle.noticedropdownview}>
@@ -1032,7 +1046,7 @@ const AddNotices = props => {
                       borderRadius: 8,
                       height: 30,
                       marginLeft: '20%',
-                      marginTop: 0
+                      marginTop: 0,
                     },
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
@@ -1077,14 +1091,12 @@ const AddNotices = props => {
                 backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
                 containerStyle={AddNewNoticeStyle.toggle_con}
                 circleStyle={AddNewNoticeStyle.toggle_circle}
-
               />
             </View>
             <View style={AddNewNoticeStyle.datetimeview}>
               <View style={AddNewNoticeStyle.dateview}>
                 <CalendarModal
                   current={selectedDate}
-
                   // SelectDate={selectedDate ? selectedDate : "Select Date"}
                   SelectDate={
                     selectedDate
@@ -1128,7 +1140,7 @@ const AddNotices = props => {
                     borderWidth: 0,
                     marginTop: 0,
                   }}
-                  timetextStyle={{ textAlign: 'right' }}
+                  timetextStyle={{textAlign: 'right'}}
                   _TextTimeColor={
                     currentfromTime
                       ? _COLORS.Kodie_BlackColor
@@ -1143,10 +1155,14 @@ const AddNotices = props => {
                 />
               </View>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                  }}>
                   <CalendarModal
                     current={selectedToDate}
-
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedToDate
@@ -1190,7 +1206,7 @@ const AddNotices = props => {
                     borderWidth: 0,
                     marginTop: 0,
                   }}
-                  timetextStyle={{ textAlign: 'right' }}
+                  timetextStyle={{textAlign: 'right'}}
                   _TextTimeColor={
                     currentToTime
                       ? _COLORS.Kodie_BlackColor
@@ -1207,7 +1223,7 @@ const AddNotices = props => {
             </View>
 
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {selectedDateError ? (
                 <Text style={[AddNewNoticeStyle.errorText]}>
                   {selectedDateError}
@@ -1215,13 +1231,13 @@ const AddNotices = props => {
               ) : null}
               {selectedFromTimeError ? (
                 <Text
-                  style={[AddNewNoticeStyle.errorText, { textAlign: 'right' }]}>
+                  style={[AddNewNoticeStyle.errorText, {textAlign: 'right'}]}>
                   {selectedFromTimeError}
                 </Text>
               ) : null}
             </View>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {selectedToDateError ? (
                 <Text style={AddNewNoticeStyle.errorText}>
                   {selectedToDateError}
@@ -1238,7 +1254,7 @@ const AddNotices = props => {
               {/* <AddGuest /> */}
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Add guests'}</Text>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
                   <TouchableOpacity
                     style={[
                       AddNewNoticeStyle.input,
@@ -1258,22 +1274,26 @@ const AddNotices = props => {
                       {displaySelectedValues
                         ? displaySelectedValues
                         : NoticeAllData?.guests
-                          ? NoticeAllData?.guests
-                          : 'Add guests'}
+                        ? NoticeAllData?.guests
+                        : 'Add guests'}
                     </Text>
                     <Feather
                       name="user-plus"
                       size={30}
                       color={_COLORS.Kodie_GrayColor}
-                      style={{ alignSelf: 'center', marginHorizontal: 10 }}
+                      style={{alignSelf: 'center', marginHorizontal: 10}}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={AddNewNoticeStyle.chatBtn} onPress={() => props?.navigation?.navigate('Chats', { chats: 'chats' })}>
+                  <TouchableOpacity
+                    style={AddNewNoticeStyle.chatBtn}
+                    onPress={() =>
+                      props?.navigation?.navigate('Chats', {chats: 'chats'})
+                    }>
                     <Ionicons
                       name="chatbubble-ellipses-outline"
                       size={30}
                       color={_COLORS.Kodie_WhiteColor}
-                      style={{ alignSelf: 'center' }}
+                      style={{alignSelf: 'center'}}
                     />
                     <Text style={AddNewNoticeStyle.ChatText}>{'Chat'}</Text>
                   </TouchableOpacity>
@@ -1300,9 +1320,9 @@ const AddNotices = props => {
                   <TouchableOpacity
                     style={AddNewNoticeStyle.locationIconView}
                     onPress={() => {
-                      Platform.OS == 'ios'
-                        ? CheckIOSMapPermission
-                        : checkpermissionlocation();
+                      // Platform.OS == 'ios'
+                      //   ? CheckIOSMapPermission
+                      //   : checkpermissionlocation();
                       setIsMap(true);
                     }}>
                     <Octicons
@@ -1349,7 +1369,7 @@ const AddNotices = props => {
                   Set notification type
                 </Text>
                 <Dropdown
-                  style={[AddNewNoticeStyle.setnotificationdrop, { width: 130 }]}
+                  style={[AddNewNoticeStyle.setnotificationdrop, {width: 130}]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1370,11 +1390,11 @@ const AddNotices = props => {
               {/*nine part start here */}
               <View style={AddNewNoticeStyle.setcustomview}>
                 <Text style={AddNewNoticeStyle.setcustometext}>Set custom</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Text
                     style={[
                       AddNewNoticeStyle.setcustometext,
-                      { marginRight: 15 },
+                      {marginRight: 15},
                     ]}>
                     {selectedCustemValue}
                   </Text>
@@ -1386,7 +1406,7 @@ const AddNotices = props => {
                       name="chevron-small-right"
                       size={22}
                       color={_COLORS.Kodie_GrayColor}
-                      style={{ flex: 1, alignItems: 'center' }}
+                      style={{flex: 1, alignItems: 'center'}}
                     />
                   </TouchableOpacity>
                 </View>
@@ -1396,7 +1416,7 @@ const AddNotices = props => {
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
                 <TextInput
-                  style={[AddNewNoticeStyle.input, { height: 100 }]}
+                  style={[AddNewNoticeStyle.input, {height: 100}]}
                   value={notes}
                   onChangeText={setNotes}
                   placeholder="Add additional notes"

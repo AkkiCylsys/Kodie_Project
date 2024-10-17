@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Image, TouchableOpacity, SafeAreaView} from 'react-native';
+import {View, Text, TextInput, Image, TouchableOpacity, SafeAreaView,Alert} from 'react-native';
 import React, {useState} from 'react';
 import {ContactusStyle} from './ContactusStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -60,10 +60,11 @@ const Contactus = props => {
       .then(response => {
         console.log('API Response contact us:', response.data);
         if (response?.data?.success === true) {
-          alert(response?.data?.message);
+          Alert.alert("Success",response?.data?.message);
           setAboutHelp('');
           setCheck(false)
-          props.navigation.navigate("Help_FeedBack")
+          // props.navigation.navigate("Help_FeedBack")
+          props?.navigation.pop()
         } else {
           alert(response?.data?.message);
           setIsLoading(false);

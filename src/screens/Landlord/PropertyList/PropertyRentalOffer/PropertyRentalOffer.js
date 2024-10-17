@@ -443,20 +443,24 @@ const PropertyRentalOffer = props => {
 
             <View style={PropertyRentalOfferStyle.flexContainer}>
               <View style={PropertyRentalOfferStyle.noteStyle}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                  onPress={() => {}}
+                  style={{marginHorizontal: 15}}>
                   <AntDesign
                     name="sharealt"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={{marginHorizontal: 15}}>
+                {/* We can uncomment this in the future... */}
+
+                {/* <TouchableOpacity style={{marginHorizontal: 15}}>
                   <AntDesign
                     name="hearto"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => {}}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}
