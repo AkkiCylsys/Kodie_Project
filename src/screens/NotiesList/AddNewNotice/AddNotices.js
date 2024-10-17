@@ -1066,7 +1066,7 @@ const AddNotices = props => {
                     {
                       borderRadius: 8,
                       height: 30,
-                      marginLeft: Platform.OS === 'ios' ? '20%' : '15%',
+                      marginLeft: '17%',
                       marginTop: 0,
                     },
                   ]}
@@ -1397,7 +1397,7 @@ const AddNotices = props => {
                 <Dropdown
                   style={[
                     AddNewNoticeStyle.setnotificationdrop,
-                    {width: Platform.OS === 'ios' ? 130 : 180},
+                    {width:  130},
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
