@@ -41,6 +41,7 @@ export default PropertyReviewDetails = props => {
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
   const propertyVacantListing = props?.route?.params?.propertyVacantListing;
+  const propertyListing = props?.route?.params?.propertyListing;
   const backProperty = props?.route?.params?.backProperty;
   const editMode = props?.route?.params?.editMode;
   const DocTab = props?.route?.params?.DocTab;
@@ -686,6 +687,7 @@ export default PropertyReviewDetails = props => {
               </>
             )}
             <View>
+              {propertyVacantListing || propertyListing? null :(
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
@@ -710,6 +712,7 @@ export default PropertyReviewDetails = props => {
                   }}
                 />
               </View>
+              )}
               {propertyView ? null : (
                 <>
                   <TouchableOpacity

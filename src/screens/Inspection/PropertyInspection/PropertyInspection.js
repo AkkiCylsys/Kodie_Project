@@ -131,8 +131,7 @@ const PropertyInspection = props => {
         onPressLeftButton={() => props.navigation.navigate('NewInspection')}
         MiddleText={property_Detail?.location || ''}
       />
-      <View>
-        <View style={PropertyInspectionCSS.slider_view}>
+        {/* <View style={PropertyInspectionCSS.slider_view}> */}
           {property_Detail.image_path &&
           property_Detail.image_path.length != 0 ? (
             <SliderBox
@@ -149,12 +148,13 @@ const PropertyInspection = props => {
               resizeMode={'cover'}
               dotStyle={PropertyInspectionCSS.dotStyle}
               ImageComponentStyle={{
-                flex: 1,
+                // flex: 1,
                 resizeMode: 'cover',
               }}
             />
           ) : null}
-        </View>
+        {/* </View> */}
+              <View style={{flex:1,marginTop:20}}>
         <View style={PropertyInspectionCSS.Container}>
           <Text style={PropertyInspectionCSS.apartment_text}>
             {property_Detail?.property_type}

@@ -34,6 +34,7 @@ const PropertyListing = props => {
   const Closemodal = () => {
     refRBSheet1.current.close();
   };
+  const [auto_List, setAutoList] = useState(0);
   const [expandedItems, setExpandedItems] = useState([]);
   const [sortVacantData, setSortVacantData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -151,7 +152,11 @@ const PropertyListing = props => {
                   style={PropertyListingCss.commontext}
                   ellipsizeMode="tail"
                   numberOfLines={1}>
-                  {item.state ? item.state : item.city}
+                  {item?.City === null ||
+                          item?.City === 'null' ||
+                          item?.City === ''
+                            ? item?.state || ' '
+                            : item?.City || ' '}
                 </Text>
                 <View style={PropertyListingCss.flat_MainView}>
                   <MaterialCommunityIcons
@@ -225,6 +230,7 @@ const PropertyListing = props => {
                       refRBSheet?.current?.open();
                       setAddress(item?.location);
                       setPropId(item?.property_id);
+                      setAutoList(item?.auto_place);
                     }}>
                     <MaterialCommunityIcons
                       name={'dots-horizontal'}
@@ -362,6 +368,7 @@ const PropertyListing = props => {
           onClose={() => {
             refRBSheet.current.close();
           }}
+          autoList={auto_List}
         />
       </RBSheet>
     </>

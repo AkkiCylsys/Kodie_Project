@@ -216,17 +216,26 @@ const Notices = props => {
       selectedFilter: selectedFilter,
     });
   }
-
-  useEffect(() => {
-    if (isFocused) {
+  const fetchNotices = useCallback(() => {
+    if (selectedFilter.length > 0) {
       getNoticesReminderDeatilsByFilter({
         monthId: _selectedMonthId,
         year: _selectedYear,
         selectedFilter: selectedFilter,
       });
     }
-  }, [isFocused, selectedFilter]);
+  }, [selectedFilter, _selectedMonthId, _selectedYear]); // Dependencies
 
+  // Using useFocusEffect to call fetchNotices when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      fetchNotices(); // Fetch notices on screen focus
+    }, [fetchNotices]) // Dependency on fetchNotices
+  );
+
+  const handlePress = (filterId) => {
+    setSelectedFilter([filterId]);
+  };
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
@@ -239,14 +248,7 @@ const Notices = props => {
               : _COLORS?.Kodie_WhiteColor,
           },
         ]}
-        onPress={() => {
-          setSelectedFilter([item.filterId]);
-          getNoticesReminderDeatilsByFilter({
-            monthId: _selectedMonthId,
-            year: _selectedYear,
-            selectedFilter: item.filterId,
-          });
-        }}>
+        onPress={() => handlePress(item.filterId)} >
         {selectedFilter.includes(item.filterId) ? null : (
           <View
             style={[
@@ -346,7 +348,7 @@ const Notices = props => {
       const data = {
         notices_filter: selectedFilter,
         account_id: loginData?.Login_details?.user_account_id,
-        limit: 10,
+        limit: 1000,
         order_wise: 'DESC',
         months: monthId,
         year: year,

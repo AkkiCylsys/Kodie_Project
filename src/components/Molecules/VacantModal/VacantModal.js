@@ -7,11 +7,26 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { BottomModalDataStyle } from '../BottomModal/BottomModalDataStyle'; // Adjust import path as necessary
 import { _COLORS } from '../../../Themes'; // Adjust import path as necessary
+import { UnlistMarketDetails } from '../../../services/PropertyListing/ListingServices';
 
 const VacantModal = (props) => {
-  const { propertyId, onClose, onDeleteData, Address } = props;
+  const { propertyId, onClose, onDeleteData, Address ,autoList} = props;
   const navigation = useNavigation();
-
+  const handleUnList = async () => {
+    const data = {
+      property_id: propertyId,
+    };
+    console.log(data);
+    try {
+      const response = await UnlistMarketDetails(data);
+      Alert.alert('Success', 'Market details have been Unlist successfully.');
+      onClose();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to insert market details.');
+    }
+  };
   const data = [
     {
       id: '1',
@@ -33,7 +48,9 @@ const VacantModal = (props) => {
     },
     {
       id: '2',
-      Data: 'List property on kodie property marketplace',
+      Data: autoList == 0
+      ? 'List property on kodie property marketplace'
+      : 'Unlist property on kodie property marketplace',
       Icon: (
         <MaterialCommunityIcons
           name="alpha-k-box-outline"
@@ -41,10 +58,12 @@ const VacantModal = (props) => {
           color={_COLORS.Kodie_GreenColor}
         />
       ),
-      navigateTo: 'MarketplacePropertyListing',
-      params: {
-        propertyid: propertyId,
-        viewMarketPlace: 'ViewMarketPlace',
+      handleAction: () => { autoList == 0
+      ? navigation.navigate('PropertyListingDetail', {
+          propertyid: propertyId,
+          viewMarketPlace: 'ViewMarketPlace',
+        })
+      : handleUnList()
       },
     },
     {

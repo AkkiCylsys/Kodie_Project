@@ -831,7 +831,7 @@ export default PropertyReview = props => {
           editMode
             ? 'Edit property'
             : propertyListing
-            ? 'View vacant property'
+            ? 'Property Listing'
             : propertyView
             ? property_Detail?.location
             : 'Add new property'

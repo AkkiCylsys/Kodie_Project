@@ -65,7 +65,7 @@ const Inspection = props => {
     navigateToScreen(id, name, TAIM_ITEM_STATUS, items);
   };
   function keyExtractor(item) {
-    return item?.area_key_id.toString(); // Use userId as the key
+    return item?.area_key_id; // Use userId as the key
   }
   async function onReordered(fromIndex: number, toIndex: number) {
     const copy = [...AreaKey]; // Don't modify react data in-place
@@ -484,7 +484,6 @@ const Inspection = props => {
 
   return (
     <>
-      <View style={{ marginBottom: 80 }}>
         <View style={InspectionCss.MainContainer}>
           <View style={InspectionCss.Container}>
             <View style={InspectionCss.mainView}>
@@ -522,7 +521,7 @@ const Inspection = props => {
             />
           </View>
         </View>
-      </View>
+     
       <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}

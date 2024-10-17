@@ -62,7 +62,7 @@ const Bedroom = props => {
   }
   useEffect(() => {
     TAIM_ITEM_STATU === 1 ?
-    handleUpdateItem() : handleAddItem();
+    handleInspectionudateItem(): handleAddItem();
     handleInspectionuEditItem()
     // if (isEditing) { handleInspectionuEditItem() }
     // else { handleInspectionudateItem() }
@@ -149,7 +149,7 @@ const Bedroom = props => {
 
   const handleUpdateItem = async () => {
     setIsLoading(true);
-    const tamAreaKeys = isEditing ? editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItem;
+    const tamAreaKeys =  editGetItem.map(item => item.TAIM_ITEM_KEY).join(',');
     console.log("UpdateItem", tamAreaKeys);
     const data = {
       p_TIM_KEY: Team_Key,
@@ -166,7 +166,7 @@ const Bedroom = props => {
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
       setIsEditing(!isEditing)
-      handleInspectionuEditItem();
+      // handleInspectionuEditItem();
       // getInspectionAreas();
     } catch (error) {
       // Alert.alert('Error', 'Failed to update custom item');

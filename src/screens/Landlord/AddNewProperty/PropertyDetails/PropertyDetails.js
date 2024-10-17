@@ -423,7 +423,7 @@ export default PropertyDetails = props => {
             { 'On-street parking': 0 },
         ],
         additional_features: '0,0,0,0',
-        additional_key_features: 0,
+        additional_key_features: "[]",
         autolist: 0,
         UPD_FLOOR_SIZE: 0,
         UPD_LAND_AREA: 0,

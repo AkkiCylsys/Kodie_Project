@@ -61,7 +61,8 @@ const PropertyListingDetail = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData);
   const propertyid = props?.route?.params?.propertyid;
-  console.log('propertyid', propertyid);
+  const viewMarketPlace = props?.route?.params?.viewMarketPlace;
+  console.log('propertyid', propertyid,viewMarketPlace);
 
   useEffect(() => {
     fetchLeaseOptions();
@@ -270,7 +271,7 @@ const PropertyListingDetail = props => {
   return (
     <SafeAreaView style={DetailsStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate('Properties')}
+        onPressLeftButton={() =>viewMarketPlace ?props.navigation.navigate('VacantPropertiesList'):  props.navigation.navigate('Properties')}
         MiddleText="Property listing details"
       />
 

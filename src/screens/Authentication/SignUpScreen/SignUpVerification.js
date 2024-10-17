@@ -144,7 +144,7 @@ export default SignUpVerification = props => {
     <SafeAreaView style={SignUpVerificationStyle.mainContainer}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+        behavior={Platform.OS === 'ios' ? 'undefined' : 'undefined'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <TopHeader
           MiddleText={'Verify your email'}

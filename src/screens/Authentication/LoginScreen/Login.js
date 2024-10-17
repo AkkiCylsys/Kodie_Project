@@ -210,57 +210,51 @@ console.log(FacebookSignUPPayload,"FacebookSignUPPayload");
           setIsLoading(true);
           dispatch(fetchLoginSuccess(_res?.data));
           props.navigation.navigate('DrawerNavigatorLeftMenu');
-        } else if (_res?.data?.code == 2) {
-          Alert.alert('Account suspension', _res?.data?.message, [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {
-              text: 'Activate account',
-              onPress: async () => {
-                console.log('activate account');
-                //handleActivateAccount();
-                const url = Config.BASE_URL;
-                const activateAccount = url + 'sendMail';
-                console.log('Request URL:', activateAccount);
-                setIsLoading(true);
-                const activateAccount_Data = {
-                  email: _res?.data?.email,
-                };
-                console.log(activateAccount_Data);
-                await axios
-                  .post(activateAccount, activateAccount_Data)
-                  .then(response => {
-                    console.log(
-                      'API Response activateAccount..',
-                      response?.data,
-                    );
-                    if (response?.data?.success === true) {
-                      alert(response?.data?.message);
-                    } else {
-                      setIsLoading(false);
-                      alert(response?.data?.message);
-                    }
-                  })
-                  .catch(error => {
-                    console.error('API failed activateAccount', error);
-                    setIsLoading(false);
-                  })
-                  .finally(() => {
-                    setIsLoading(false);
-                  });
-              },
-            },
-          ]);
-        } else {
-          setIsLoading(false);
-          //  alert(_res?.data?.code)
         }
       } else {
+        Alert.alert('Account suspension', _res?.data?.message, [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Activate',
+            onPress: async () => {
+              console.log('activate account');
+              const url = Config.BASE_URL;
+              const activateAccount = url + 'sendMail';
+              console.log('Request URL:', activateAccount);
+              setIsLoading(true);
+              const activateAccount_Data = {
+                email: _userInfo?.user?.email,
+              };
+              console.log(activateAccount_Data, 'fdf');
+              await axios
+                .post(activateAccount, activateAccount_Data)
+                .then(response => {
+                  console.log(
+                    'API Response activateAccount..',
+                    response?.data,
+                  );
+                  if (response?.data?.success === true) {
+                    alert(response?.data?.message);
+                  } else {
+                    setIsLoading(false);
+                    alert(response?.data?.message);
+                  }
+                })
+                .catch(error => {
+                  console.error('API failed activateAccount', error);
+                  setIsLoading(false);
+                })
+                .finally(() => {
+                  setIsLoading(false);
+                });
+            },
+          },
+        ]);
         setIsLoading(false);
-        //alert(_res?.data?.message)
       }
     } catch (error) {
       setIsLoading(false);
@@ -334,7 +328,7 @@ console.log('Coming here');
 
       let _res = await googleLoginApi(googleSignUPPayload);
       console.log('-+_+_+_+_______+++');
-      console.log(JSON.stringify(_res));
+      console.log(JSON.stringify(_res.data));
       // alert(JSON.stringify(_res));
       if (_res?.data?.success == true) {
         //props.navigation.navigate('SignUpSteps');
@@ -385,57 +379,51 @@ console.log('Coming here');
           //   alert(error)
 
           // }
-        } else if (_res?.data?.code == 2) {
-          Alert.alert('Account suspension', _res?.data?.message, [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            {
-              text: 'Activate account',
-              onPress: async () => {
-                console.log('activate account');
-                //handleActivateAccount();
-                const url = Config.BASE_URL;
-                const activateAccount = url + 'sendMail';
-                console.log('Request URL:', activateAccount);
-                setIsLoading(true);
-                const activateAccount_Data = {
-                  email: _userInfo?.user?.email,
-                };
-                console.log(activateAccount_Data, 'fdf');
-                await axios
-                  .post(activateAccount, activateAccount_Data)
-                  .then(response => {
-                    console.log(
-                      'API Response activateAccount..',
-                      response?.data,
-                    );
-                    if (response?.data?.success === true) {
-                      alert(response?.data?.message);
-                    } else {
-                      setIsLoading(false);
-                      alert(response?.data?.message);
-                    }
-                  })
-                  .catch(error => {
-                    console.error('API failed activateAccount', error);
-                    setIsLoading(false);
-                  })
-                  .finally(() => {
-                    setIsLoading(false);
-                  });
-              },
-            },
-          ]);
-        } else {
-          setIsLoading(false);
-          //  alert(_res?.data?.code)
-        }
+        } 
       } else {
+        Alert.alert('Account suspension', _res?.data?.message, [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Activate',
+            onPress: async () => {
+              console.log('activate account');
+              const url = Config.BASE_URL;
+              const activateAccount = url + 'sendMail';
+              console.log('Request URL:', activateAccount);
+              setIsLoading(true);
+              const activateAccount_Data = {
+                email: _userInfo?.user?.email,
+              };
+              console.log(activateAccount_Data, 'fdf');
+              await axios
+                .post(activateAccount, activateAccount_Data)
+                .then(response => {
+                  console.log(
+                    'API Response activateAccount..',
+                    response?.data,
+                  );
+                  if (response?.data?.success === true) {
+                    alert(response?.data?.message);
+                  } else {
+                    setIsLoading(false);
+                    alert(response?.data?.message);
+                  }
+                })
+                .catch(error => {
+                  console.error('API failed activateAccount', error);
+                  setIsLoading(false);
+                })
+                .finally(() => {
+                  setIsLoading(false);
+                });
+            },
+          },
+        ]);
         setIsLoading(false);
-        alert(_res?.data?.message);
       }
     } catch (error) {
       setIsLoading(false);
@@ -957,9 +945,9 @@ console.log('Coming here');
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1,backgroundColor:_COLORS?.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
+        behavior={Platform.OS === 'ios' ? 'undefined' : 'undefined'}
         style={LoginStyles.container}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
         <StatusBar

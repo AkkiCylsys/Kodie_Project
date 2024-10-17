@@ -57,13 +57,13 @@ const data = [
       />
     ),
   },
-  {
-    id: '5',
-    Data: 'Delete property',
-    Icon: (
-      <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
-    ),
-  },
+  // {
+  //   id: '5',
+  //   Data: 'Delete property',
+  //   Icon: (
+  //     <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
+  //   ),
+  // },
 ];
 const PropertyModal = props => {
   const propertyId = props?.propertyId;

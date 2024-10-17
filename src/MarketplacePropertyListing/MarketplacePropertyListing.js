@@ -294,7 +294,7 @@ const MarketplacePropertyListing = props => {
               )}
               <View style={MarketplacePropertyListingStyle.flexContainer}>
                 <View style={MarketplacePropertyListingStyle.noteStyle}>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => {
                       props.navigation.navigate('PropertyDetails', {
                         propertyid: item?.property_id,
@@ -306,7 +306,7 @@ const MarketplacePropertyListing = props => {
                       color={_COLORS.Kodie_LightGrayColor}
                       resizeMode={'contain'}
                     />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                   <TouchableOpacity
                     onPress={() => {
                       refRBSheet1.current.open();
@@ -445,7 +445,7 @@ const MarketplacePropertyListing = props => {
         ref={refRBSheet1}
         closeOnDragDown={true}
         height={300}
-        closeOnPressMask={false}
+        closeOnPressMask={true}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -458,13 +458,13 @@ const MarketplacePropertyListing = props => {
           },
           container: MarketplacePropertyListingStyle.bottomModal_container,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={MarketplacePropertyListingStyle.crossIcon}
           onPress={() => {
             refRBSheet1.current.close();
           }}>
           <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <PropertyModal
           onClose={CloseUp}
           propertyId={propId}

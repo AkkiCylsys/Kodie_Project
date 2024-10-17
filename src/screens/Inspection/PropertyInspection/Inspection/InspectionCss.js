@@ -2,11 +2,11 @@ import {Platform, StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const InspectionCss = StyleSheet.create({
   MainContainer: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Container: {
-    // flex:1,
+    flex:1,
     marginHorizontal: 16,
     marginVertical: 16,
   },
