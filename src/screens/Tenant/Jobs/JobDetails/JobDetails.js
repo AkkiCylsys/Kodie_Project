@@ -75,7 +75,7 @@ const JobDetails = props => {
   }, [imageFileData]);
   const handleImageFilePath = async imagesFilePath => {
     setImageFileData(imagesFilePath);
-    console.log('imagesFilePath....sdfs.', imagesFilePath);
+    console.log('imagesFilePath....sdfs. video', imagesFilePath);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -265,7 +265,9 @@ const JobDetails = props => {
         imageFileData.image_file_path.length !== 0 ? (
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox
-              images={imageFileData?.image_file_path}
+              images={imageFileData?.image_file_path.filter(url =>
+                url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png')
+              )}
               // images={images}
               sliderBoxHeight={200}
               onCurrentImagePressed={index =>

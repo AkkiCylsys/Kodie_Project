@@ -73,23 +73,26 @@ const CreateJobSecondScreen = props => {
       allImagePaths.length === 0;
 
     const isVideosEmpty = selectedVideos.length === 0;
-    if (isImagesEmpty && isVideosEmpty) {
+    const areAllVideosURLs = selectedVideos.every(video => typeof video === 'string');
+
+    if (isImagesEmpty && (isVideosEmpty || areAllVideosURLs)) {
       props.navigation.navigate('JobDetails', {
         JobId: JobId,
         editMode: editMode,
       });
     } else {
       if (editMode) {
-        if (allImagePaths.length === 0 && isVideosEmpty) {
+        if (allImagePaths.length === 0 && (isVideosEmpty || areAllVideosURLs)) {
           props.navigation.navigate('JobDetails', {
             JobId: JobId,
             editMode: editMode,
           });
+          setSelectedVideos([])
         } else {
           handleUpdateAndNavigate();
         }
       } else if (!isImagesEmpty || !isVideosEmpty) {
-        handleUploadAndNavigate();
+        handleUploadAndNavigate(); 
       }
     }
   };
@@ -253,29 +256,54 @@ const CreateJobSecondScreen = props => {
   // };
 
 
+  // const openVideoPicker = () => {
+  //   ImagePicker.openPicker({
+  //     mediaType: 'video',
+  //     multiple: false, // Disable multiple selection
+  //   })
+  //     .then(video => {
+  //       if (video) {
+  //         // Check if the video size is less than or equal to 100 MB (100 * 1024 * 1024 bytes)
+  //         const maxSize = 100 * 1024 * 1024; // 100 MB
+  //         if (video.size <= maxSize) {
+  //           setSelectedVideos([video]); // Set only one video
+  //           console.log('Video selected:', video);
+  //         } else {
+  //           Alert.alert("Warning", 'Video size exceeds the limit of 100 MB.');
+  //         }
+  //       } else {
+  //         console.log('No video selected.');
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error selecting video:', error);
+  //     });
+  // };
+
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: false, // Disable multiple selection
+      multiple: true, // Allow multiple selection
     })
-      .then(video => {
-        if (video) {
-          // Check if the video size is less than or equal to 100 MB (100 * 1024 * 1024 bytes)
-          const maxSize = 100 * 1024 * 1024; // 100 MB
-          if (video.size <= maxSize) {
-            setSelectedVideos([video]); // Set only one video
-            console.log('Video selected:', video);
-          } else {
-            Alert.alert("Warning", 'Video size exceeds the limit of 100 MB.');
-          }
+      .then(videos => {
+        const maxSize = 100 * 1024 * 1024; // 100 MB
+        const validVideos = videos.filter(video => video.size <= maxSize);
+
+        if (validVideos.length > 0) {
+          setSelectedVideos(prevSelectedVideos => [
+            ...prevSelectedVideos,
+            ...validVideos,
+          ]);
+          console.log('Selected videos:', validVideos);
         } else {
-          console.log('No video selected.');
+          Alert.alert('Warning', 'Video size exceeds the limit of 100 MB.');
         }
       })
       .catch(error => {
-        console.error('Error selecting video:', error);
+        console.error('Error selecting videos:', error);
       });
   };
+  
 
   console.log('selectedVideos .....', selectedVideos);
 
@@ -415,8 +443,16 @@ const CreateJobSecondScreen = props => {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData_term....', response?.data?.data);
           const images = response?.data?.data?.image_file_path || [];
-          setUpdateAllImage(images);
-          console.log('updateAllImage.....', images);
+          const imgUrls = images.filter(url =>
+            url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png')
+          );
+          const vidUrls = images.filter(url =>
+            url.endsWith('.mp4') || url.endsWith('.hevc') || url.endsWith('.mkv')
+          );
+          setUpdateAllImage(imgUrls);
+          setSelectedVideos(vidUrls);
+          console.log('updateAllImage.....', imgUrls);
+          console.log('updateAllVideo.....', vidUrls);
         } else {
           setIsLoading(false);
         }
@@ -483,18 +519,36 @@ const CreateJobSecondScreen = props => {
       console.error('rightImage is not defined or not an array:', rightImage);
       return;
     }
+    // if (selectedVideos && selectedVideos.length > 0) {
+    //   selectedVideos.forEach((videoInfo, index) => {
+    //     const { path, mime } = videoInfo;
+    //     const videoName = path.substring(path.lastIndexOf('/') + 1);
+    //     formData.append(`video`, {
+    //       uri: path,
+    //       name: videoName,
+    //       type: mime,
+    //     });
+    //   });
+    // } else {
+    //   console.log('invalid video');
+    // }
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
-        const { path, mime } = videoInfo;
-        const videoName = path.substring(path.lastIndexOf('/') + 1);
-        formData.append(`video`, {
-          uri: path,
-          name: videoName,
-          type: mime,
-        });
+        // Validate videoInfo
+        if (videoInfo && videoInfo.path && videoInfo.mime) {
+          const {path, mime} = videoInfo;
+          const videoName = path.substring(path.lastIndexOf('/') + 1);
+          formData.append(`video`, {
+            uri: path,
+            name: videoName,
+            type: mime,
+          });
+        } else {
+          console.error(`Invalid video at index ${index}:`, videoInfo);
+        }
       });
     } else {
-      console.log('invalid video');
+      console.log('No valid videos to upload.');
     }
 
     // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
@@ -592,17 +646,23 @@ const CreateJobSecondScreen = props => {
       // Append videos
       if (selectedVideos && selectedVideos.length > 0) {
         selectedVideos.forEach((videoInfo, index) => {
-          const { path, mime } = videoInfo;
-          const videoName = path.substring(path.lastIndexOf('/') + 1);
-          formData.append(`video`, {
-            uri: path,
-            name: videoName,
-            type: mime,
-          });
+          // Validate videoInfo
+          if (videoInfo && videoInfo.path && videoInfo.mime) {
+            const {path, mime} = videoInfo;
+            const videoName = path.substring(path.lastIndexOf('/') + 1);
+            formData.append(`video`, {
+              uri: path,
+              name: videoName,
+              type: mime,
+            });
+          } else {
+            console.error(`Invalid video at index ${index}:`, videoInfo);
+          }
         });
       } else {
-        console.log('invalid video');
+        console.log('No valid videos to upload.');
       }
+  
       console.log('formData', formData);
       const url = Config.BASE_URL;
       const uploadFile_url = url + 'job/uploadJobFiles';
@@ -786,9 +846,9 @@ const CreateJobSecondScreen = props => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
                   <View>
-                    <Video
+                    {/* <Video
                       ref={videoRef}
-                      source={{ uri: item.path }}
+                      source={{ uri: item? item : item.path }}
                       style={{
                         flex: 1,
                         width: 325,
@@ -799,7 +859,42 @@ const CreateJobSecondScreen = props => {
                         marginTop: 10,
                       }}
                       controls={true}
-                    />
+                    /> */}
+                       {typeof item === 'object' && item?.path ? (
+                          <Video
+                            source={{uri: item.path}} // Uploading scenario (item.path)
+                            style={{
+                              width: 310,
+                              height: 150,
+                              borderRadius: 5,
+                              marginLeft: 5,
+                            }}
+                            controls={true}
+                            resizeMode="contain"
+                            // onLoadStart={() => handleLoadStart(index)} // Start loading
+                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
+                            // onError={() => handleError(index)} // Handle error
+                          />
+                        ) : typeof item === 'string' ? (
+                          <Video
+                            source={{uri: item}} // API fetched scenario (just item as URL)
+                            style={{
+                              width: 310,
+                              height: 150,
+                              borderRadius: 5,
+                              marginLeft: 5,
+                            }}
+                            controls={true}
+                            resizeMode="contain"
+                            // onLoadStart={() => handleLoadStart(index)} // Start loading
+                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
+                            // onError={() => handleError(index)} // Handle error
+                          />
+                        ) : (
+                          <Text style={{color: 'red'}}>
+                            Video not available for index {index}
+                          </Text>
+                        )}
                     <TouchableOpacity
                       style={{
                         position: 'absolute',

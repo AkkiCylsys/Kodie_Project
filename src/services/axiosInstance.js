@@ -43,14 +43,9 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
         // If token is expired, handle token refresh logic (optional)
         if (error.response && error.response.status === 401) {
-            // Example: Refresh token logic here (if applicable)
-            // const newToken = await refreshToken();
-            // Set the new token for future requests
-            // originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            // return axiosInstance(originalRequest);
-            // Otherwise, navigate to login screen
             console.log('Token expired or unauthorized. Redirecting to login...');
             // e.g., navigate to login screen
+            
         }
         return Promise.reject(error);
     }

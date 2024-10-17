@@ -70,7 +70,7 @@ export const savePropertyImageService = async (formData) => {
     });
     return response.data; // Response ko return karein
   } catch (error) {
-    console.error('Error save data:', error);
+    console.error('Error save data:', error.response.data);
     throw error; // Error ko handle karein
   }
 };

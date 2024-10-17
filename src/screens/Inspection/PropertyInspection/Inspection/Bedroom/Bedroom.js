@@ -61,7 +61,7 @@ const Bedroom = props => {
     setEditGetItem(copy);
   }
   useEffect(() => {
-    TAIM_ITEM_STATU === 1 ?
+    TAIM_ITEM_STATU === 1 || TAIM_ITEM_STATUS == 1 ?
     handleInspectionudateItem(): handleAddItem();
     handleInspectionuEditItem()
     // if (isEditing) { handleInspectionuEditItem() }
@@ -130,7 +130,7 @@ const Bedroom = props => {
       updKey: PropertyId,
       tiimCreatedBy: Created_Id.toString()
     };
-    console.log("Item", data);
+    console.log("Item Add", data);
 
     try {
       const response = await InspectionAddItem(data);
@@ -149,7 +149,7 @@ const Bedroom = props => {
 
   const handleUpdateItem = async () => {
     setIsLoading(true);
-    const tamAreaKeys =  editGetItem.map(item => item.TAIM_ITEM_KEY).join(',');
+    const tamAreaKeys = isEditing?  editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : null;
     console.log("UpdateItem", tamAreaKeys);
     const data = {
       p_TIM_KEY: Team_Key,
@@ -285,6 +285,7 @@ const Bedroom = props => {
                     fontSize: 13,
                     alignSelf: 'center',
                     marginBottom:3,
+                    marginRight:2,
                     fontFamily: FONTFAMILY.K_Regular,
                   }}>
                   {item.TIMC_COMMENTS ? '1' : '0'}

@@ -6,9 +6,9 @@ export const InspectionCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Container: {
-    flex:1,
+    // flex:1,
     marginHorizontal: 16,
-    marginVertical: 16,
+    marginTop: 16,
   },
   mainView: {
     flexDirection: 'row',
@@ -96,7 +96,7 @@ export const InspectionCss = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    marginVertical: 25,
+    marginBottom: 25,
     marginHorizontal:16
   },
   itemView: {

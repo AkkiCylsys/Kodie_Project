@@ -71,7 +71,8 @@ export const BedroomCss = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 0.5,
-    alignSelf:'center'
+    alignSelf:'center',
+    marginRight:5
   },
   YText: {
     fontSize: 14,

@@ -289,7 +289,9 @@ const JobReviewDetails = props => {
           imageFileData.image_file_path.length != 0 ? (
             <View style={JobDetailsStyle.slider_view}>
               <SliderBox
-                images={imageFileData?.image_file_path}
+                images={imageFileData?.image_file_path.filter(url =>
+                  url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png')
+                )}
                 sliderBoxHeight={200}
                 onCurrentImagePressed={index =>
                   console.log(`image ${index} pressed`)

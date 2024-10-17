@@ -99,16 +99,21 @@ export default PropertyImages = props => {
 
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
-        const {path, mime} = videoInfo;
-        const videoName = path.substring(path.lastIndexOf('/') + 1);
-        formData.append(`videos`, {
-          uri: path,
-          name: videoName,
-          type: mime,
-        });
+        // Validate videoInfo
+        if (videoInfo && videoInfo.path && videoInfo.mime) {
+          const {path, mime} = videoInfo;
+          const videoName = path.substring(path.lastIndexOf('/') + 1);
+          formData.append(`videos`, {
+            uri: path,
+            name: videoName,
+            type: mime,
+          });
+        } else {
+          console.error(`Invalid video at index ${index}:`, videoInfo);
+        }
       });
     } else {
-      console.log('invalid video');
+      console.log('No valid videos to upload.');
     }
 
     console.log('formData', formData);

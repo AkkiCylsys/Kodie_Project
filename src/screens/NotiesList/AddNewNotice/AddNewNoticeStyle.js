@@ -218,6 +218,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginVertical: 12,
   },
   dropdown: {
+    flex:1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,

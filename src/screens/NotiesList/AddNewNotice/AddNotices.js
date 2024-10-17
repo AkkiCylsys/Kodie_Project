@@ -12,6 +12,7 @@ import {
   Image,
   Keyboard,
   PermissionsAndroid,
+  BackHandler,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -47,6 +48,7 @@ import {Config} from '../../../Config';
 import moment from 'moment';
 import {_goBack} from '../../../services/CommonServices';
 import axiosInstance from '../../../services/axiosInstance';
+import { useFocusEffect } from '@react-navigation/native';
 const AddNotices = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -101,6 +103,24 @@ const AddNotices = props => {
     setUploadedFiles(prevFiles => [...prevFiles, file]);
     UploadrbSheetRef.current.close();
   };
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [IsMap, IsSearch]),
+  );
   console.log('uploadedFiles', JSON.stringify(uploadedFiles));
   // For map screen.....
   const ConfirmAddress = () => {
@@ -872,6 +892,7 @@ const AddNotices = props => {
     );
   };
 
+  
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
@@ -1050,7 +1071,12 @@ const AddNotices = props => {
                     },
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
-                  selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
+                  selectedTextStyle={[
+                    AddNewNoticeStyle.selectedTextStyle,
+                    { 
+                      width:'100%'
+                    },
+                  ]}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
                   iconStyle={AddNewNoticeStyle.iconStyle}
                   data={repeatData}

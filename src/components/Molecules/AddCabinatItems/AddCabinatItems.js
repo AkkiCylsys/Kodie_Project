@@ -167,9 +167,17 @@ const handleImageSelect = (images) => {
   // Combine the new images with the already selected images
   const updatedImages = [...selectedImages, ...images];
 
-  setSelectedImages(updatedImages);
-  setImageError(false); // Clear the error when an image is selected
-  refRBSheet.current.close();
+  if (updatedImages.length > 4) {
+    // If the combined image count is greater than 4, show an error
+    alert('You can only select up to 4 images.'); // Display the error
+    console.error("You can only select up to 4 images.");
+    refRBSheet.current.close();
+  } else {
+    // If 4 or fewer images, update the selected images
+    setSelectedImages(updatedImages);
+    setImageError(false); // Clear the error if any
+    refRBSheet.current.close(); // Close the sheet after images are selected
+  }
 };
   const handle_Status = async () => {
     // setIsLoading(true);
@@ -226,13 +234,13 @@ const handleImageSelect = (images) => {
   return (
     <>
     <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'undefined' : 'undefined'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
         style={{ flex: 1 }}
       >
     <ScrollView 
-    nestedScrollEnabled={true}
-    contentContainerStyle={{marginBottom:80,flexGrow:1}} 
+  contentContainerStyle={{flexGrow: 1}} // This makes the scroll view content take full height
+  keyboardShouldPersistTaps="handled"
     >
       <View style={BedroomCss.secondModal}>
         <View style={BedroomCss.ModalContainer}>
@@ -292,7 +300,7 @@ const handleImageSelect = (images) => {
                   inputSearchStyle={BedroomCss.inputSearchStyle}
                   iconStyle={BedroomCss.iconStyle}
                   data={statusData}
-                  search
+                  // search
                   maxHeight={300}
                   labelField="lookup_description"
                   valueField="lookup_key"
@@ -367,8 +375,7 @@ const handleImageSelect = (images) => {
         />
         
       </View>
-      </ScrollView>
-      <View style={BedroomCss.ButtonView}>
+       <View style={BedroomCss.ButtonView}>
           <TouchableOpacity style={BedroomCss.cancelView} onPress={props.onCabinateClose}>
             <Text style={[BedroomCss.cancelText]}>Cancel</Text>
           </TouchableOpacity>
@@ -376,6 +383,8 @@ const handleImageSelect = (images) => {
             <Text style={BedroomCss.DoneText}>Done</Text>
           </TouchableOpacity>
         </View>
+      </ScrollView>
+     
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}

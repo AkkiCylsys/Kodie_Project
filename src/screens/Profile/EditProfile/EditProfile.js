@@ -11,6 +11,7 @@ import {
   Alert,
   Platform,
   SafeAreaView,
+  BackHandler,
 } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
@@ -49,6 +50,7 @@ import styles from 'rn-range-slider/styles';
 import ServicesBox from '../../../components/Molecules/ServicesBox/ServicesBox';
 import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 import axiosInstance from '../../../services/axiosInstance';
+import { useFocusEffect } from '@react-navigation/native';
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -114,6 +116,24 @@ const EditProfile = props => {
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
   console.log('longitude....', longitude);
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [IsMap, IsSearch]),
+  );
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
