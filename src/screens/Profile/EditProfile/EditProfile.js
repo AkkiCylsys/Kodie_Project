@@ -65,6 +65,12 @@ const data = [
 const EditProfile = props => {
   const dispatch = useDispatch();
   const loginData = useSelector(state => state.authenticationReducer.data);
+  const userRole = loginData?.Account_details?.[0]?.user_role_id;
+  // const userRole = '3,4';
+  const roleArray = userRole ? userRole.split(',') : [];
+  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
+  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
+  const hasContractorRoleTab = roleArray.includes('4'); // Contractor role (4)
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
@@ -105,12 +111,18 @@ const EditProfile = props => {
   const [accountDetails, setAccountDetails] = useState(null);
   const [country_Code_Get, setCountry_Code_Get] = useState('');
   console.log(selectedServices, 'selectedServices');
-  const hasTenantRole = selectedServices.includes(2);
-  const hasLandlordRole = selectedServices.includes(3);
+  // const hasTenantRole = selectedServices.includes(2);
+  // const hasLandlordRole = selectedServices.includes(3);
   const hasPropertyRole = selectedServices.includes(10);
   const hanContractorRole = selectedServices.includes(4);
   const shouldShowCompanyDetailsTab = hanContractorRole;
 
+  console.log(
+    'hasLandlordRole ,hasTenantRole',
+    hasLandlordRole,
+    hasTenantRole,
+    hanContractorRole,
+  );
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
   console.log('longitude....', longitude);
@@ -150,7 +162,6 @@ const EditProfile = props => {
     }
   };
 
-
   const handlevalidUpdation = () => {
     const isFirstNameValid = isValidFirstName(fullName);
     if (!isFirstNameValid) {
@@ -162,7 +173,7 @@ const EditProfile = props => {
       return;
     }
 
-    if (isFirstNameValid && isLastNameValid ) {
+    if (isFirstNameValid && isLastNameValid) {
       Updateprofile();
     }
   };
@@ -184,14 +195,13 @@ const EditProfile = props => {
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
-    const apiUrl =
-      `getAccount_details/${loginData.Login_details.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData.Login_details.user_account_id}`;
     console.log(apiUrl, 'apiUrl');
     // Make a GET request using Axios
     axiosInstance
       .get(apiUrl)
       .then(response => {
-        // console.log('API Response:', response?.data?.data[0]);
+        console.log('API Response:', response?.data?.data[0]);
         // dispatch(fetchLoginSuccess(response?.data?.data[0]));
         setAccountDetails(response?.data?.data[0]);
         setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
@@ -222,9 +232,17 @@ const EditProfile = props => {
     });
     getPersonalDetails();
     console.log('companyPhysicaladdress', companyPhysicaladdress);
-    setActiveTab(profileDoc ? 'Tab3' : 'Tab1');
+    setActiveTab(
+      profileDoc && hasContractorRoleTab // Check if profileDoc exists and either service 4 is included or selectedServices is empty
+        ? 'Tab3' // Set to Tab3
+        : profileDoc && (hasTenantRole || hasLandlordRole) // If profileDoc exists and either service 3 or 2 is included
+        ? 'Tab2' // Set to Tab2
+        : 'Tab1', // If neither condition is met, set to Tab1
+    );
+
     handle_describe_yourself();
   }, []);
+
   // describe your self Api call code here .....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
@@ -366,10 +384,10 @@ const EditProfile = props => {
   const updateUserData = async () => {
     setIsLoading(true); // Start loading indicator
     const userId = uuid.v4(); // Generate a unique user ID
-  
+
     try {
       let downloadURL = ''; // Initialize the download URL
-  
+
       // Check if an image is provided
       if (ImageName && ImageName.path) {
         const storageRef = storage().ref(`user_images/${userId}`); // Create a reference in storage
@@ -377,10 +395,13 @@ const EditProfile = props => {
         downloadURL = await storageRef.getDownloadURL(); // Get the download URL
       } else {
         // If no new image is provided, keep the existing image URL
-        const userDoc = await firestore().collection('Users').doc(auth().currentUser.uid).get();
+        const userDoc = await firestore()
+          .collection('Users')
+          .doc(auth().currentUser.uid)
+          .get();
         downloadURL = userDoc.data().image; // Get the current image URL from Firestore
       }
-  
+
       // Update the user's data in Firestore
       await firestore()
         .collection('Users')
@@ -392,7 +413,7 @@ const EditProfile = props => {
           user_key: String(loginData?.Login_details?.user_id),
           image: downloadURL,
         });
-  
+
       console.log('User data updated in AsyncStorage');
     } catch (error) {
       console.error('Error updating user:', error); // Log any errors
@@ -449,7 +470,7 @@ const EditProfile = props => {
       console.log('updateprofile....', response.data);
       if (response?.data?.success === true) {
         alert(response?.data?.message);
-        updateUserData()
+        updateUserData();
         // dispatch(fetchLoginSuccess(response?.data?.data?.[0]));
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');
@@ -523,15 +544,21 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       First name
                     </Text>
-                    <View style={[EditProfileStyle.simpleinputview,
-                      {
-                        borderColor: fullNameError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                      }
-                    ]}>
+                    <View
+                      style={[
+                        EditProfileStyle.simpleinputview,
+                        {
+                          borderColor: fullNameError
+                            ? _COLORS?.Kodie_redColor
+                            : _COLORS?.Kodie_LightGrayColor,
+                        },
+                      ]}>
                       <TextInput
                         value={fullName}
-                        onChangeText={ (text)=>{isValidFirstName(text)
-                          setFirstName(text)}}
+                        onChangeText={text => {
+                          isValidFirstName(text);
+                          setFirstName(text);
+                        }}
                         onBlur={() => isValidFirstName(fullName)}
                         placeholder="Enter your first name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -548,17 +575,21 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Last name
                     </Text>
-                    <View style={[EditProfileStyle.simpleinputview,
-                      {
-                        borderColor: lastNameError ? _COLORS?.Kodie_redColor : _COLORS?.Kodie_LightGrayColor
-                      }
-                    ]}>
+                    <View
+                      style={[
+                        EditProfileStyle.simpleinputview,
+                        {
+                          borderColor: lastNameError
+                            ? _COLORS?.Kodie_redColor
+                            : _COLORS?.Kodie_LightGrayColor,
+                        },
+                      ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={lastName}
-                        onChangeText={(text)=>{
-                          isValidLastName(text)
-                          setLastName(text)
+                        onChangeText={text => {
+                          isValidLastName(text);
+                          setLastName(text);
                         }}
                         onBlur={() => isValidLastName(lastName)}
                         placeholder="Enter your last name"
@@ -601,9 +632,12 @@ const EditProfile = props => {
                       ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
-                        value={`${accountDetails?.UAD_COUNTRY_CODE == "null" || accountDetails?.UAD_COUNTRY_CODE == null ? '+61' : accountDetails?.UAD_COUNTRY_CODE} ${
-                          accountDetails?.UAD_PHONE_NO || ''
-                        }`}
+                        value={`${
+                          accountDetails?.UAD_COUNTRY_CODE == 'null' ||
+                          accountDetails?.UAD_COUNTRY_CODE == null
+                            ? '+61'
+                            : accountDetails?.UAD_COUNTRY_CODE
+                        } ${accountDetails?.UAD_PHONE_NO || ''}`}
                         editable={false}
                       />
                     </View>
@@ -686,12 +720,17 @@ const EditProfile = props => {
       case 'Tab2':
         return (
           <>
-           {shouldShowCompanyDetailsTab ? 
-            <CompanyDetails /> : <ProfileDocuments />}
+            {shouldShowCompanyDetailsTab ? (
+              <CompanyDetails />
+            ) : (
+              <ProfileDocuments />
+            )}
           </>
         );
       case 'Tab3':
-        return <ProfileDocuments shouldShowCompanyDetailsTab={selectedServices}/>;
+        return (
+          <ProfileDocuments shouldShowCompanyDetailsTab={selectedServices} />
+        );
     }
   };
   return (
@@ -720,8 +759,7 @@ const EditProfile = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
-
+            iscancel={() => setIsMap(false)}
             onRegionChange={onRegionChange}
             Maplat={activeTab === 'Tab1' ? latitude : company_latitude}
             Maplng={activeTab === 'Tab1' ? longitude : company_longitude}

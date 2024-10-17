@@ -557,7 +557,7 @@ const AddNotices = props => {
       console.log('hello deependra');
       console.log('createNoticeReminder....', response.data);
       if (response?.data?.status === true) {
-        Alert.alert("Success",response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         props.navigation.navigate('Notices');
       }
       clearState();
@@ -675,7 +675,7 @@ const AddNotices = props => {
       );
       console.log('update_createNoticeReminderResponse....', response.data);
       if (response?.data?.status === true) {
-        Alert.alert("Success",response?.data?.message);
+        Alert.alert('Success', response?.data?.message);
         props.navigation.navigate('Notices');
       }
       clearState();
@@ -1045,7 +1045,7 @@ const AddNotices = props => {
                     {
                       borderRadius: 8,
                       height: 30,
-                      marginLeft: '20%',
+                      marginLeft: Platform.OS === 'ios' ? '20%' : '15%',
                       marginTop: 0,
                     },
                   ]}
@@ -1369,7 +1369,10 @@ const AddNotices = props => {
                   Set notification type
                 </Text>
                 <Dropdown
-                  style={[AddNewNoticeStyle.setnotificationdrop, {width: 130}]}
+                  style={[
+                    AddNewNoticeStyle.setnotificationdrop,
+                    {width: Platform.OS === 'ios' ? 130 : 180},
+                  ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
