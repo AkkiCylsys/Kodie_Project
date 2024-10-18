@@ -1064,7 +1064,7 @@ const CreateNewInspection = props => {
               maxHeight={300}
               labelField="TAM_AREA_NAME"
               valueField="TAM_AREA_KEY"
-              placeholder="Enter address manually"
+              placeholder="Please select custom area"
               searchPlaceholder="Search ..."
               value={customeAreavalue}
               onChange={item => {
