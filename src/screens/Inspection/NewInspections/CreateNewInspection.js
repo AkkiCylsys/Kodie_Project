@@ -106,7 +106,7 @@ const CreateNewInspection = props => {
     const data = {
       custom_area_name: customAreaName,
       is_standard_check_inspection: selectedButtonStandardId,
-      area_similar: customeAreavalue,
+      area_similar: selectedButtonStandardId == 0 ? 0 :customeAreavalue,
       area_future_inspection: selectedButtonFutueId,
       property_id: 0,
       inspection_id: 0,
@@ -117,6 +117,8 @@ const CreateNewInspection = props => {
   Alert.alert('Success',response?.message)
     console.log('handleAddCustomArea',response?.message);
     Area_key(); // Refresh the area list
+    setSelectedButtonStandardId(1);
+        setSelectedButtonFutueId(1);
     setCustomeAreaValue([]);
     setCustomAreaName('')
   };
@@ -132,7 +134,7 @@ const CreateNewInspection = props => {
   if (customAreaName.trim() === '') {
       // Alert.alert('Validation', 'Custom area name cannot be empty.');
       setShowcustomAreaNameError('Custom area name cannot be empty!')
-    }else if (customeAreavalue ==''){
+    }else if (selectedButtonStandardId !== 0 && customeAreavalue ==''){
       setErrorSimiarArea(true);
     }else{
       handleAddCustomArea();
@@ -1044,41 +1046,44 @@ const CreateNewInspection = props => {
               }
             />
           </View>
-          <View style={{ marginBottom: 15,marginTop:5 }}>
-            <Text style={CreateNewInspectionStyle.cancelText}>
-              {' Select the area most similar to your custom area:'}
-              <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
-            </Text>
-            <Dropdown
-              style={[CreateNewInspectionStyle.dropdown,
-                {
-                  borderColor:errorSimiarArea? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
-                }
-              ]}
-              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-              iconStyle={CreateNewInspectionStyle.iconStyle}
-              data={AreaKey}
-              search
-              maxHeight={300}
-              labelField="TAM_AREA_NAME"
-              valueField="TAM_AREA_KEY"
-              placeholder="Please select custom area"
-              searchPlaceholder="Search ..."
-              value={customeAreavalue}
-              onChange={item => {
-                setCustomeAreaValue(item.TAM_AREA_KEY);
-                setErrorSimiarArea(false)
-              }}
-              renderItem={Customarea_render}
-            />
- {errorSimiarArea ? (
-            <Text style={CreateNewInspectionStyle.errorText}>
-              {'Please select a most similar to your custom area!'}
-            </Text>
-          ) : null}
-          </View>
+          {selectedButtonStandardId == 0 ? null :(
+ <View style={{ marginBottom: 15,marginTop:5 }}>
+ <Text style={CreateNewInspectionStyle.cancelText}>
+   {' Select the area most similar to your custom area:'}
+   <Text style={{ color: _COLORS?.Kodie_redColor }}>*</Text>
+ </Text>
+ <Dropdown
+   style={[CreateNewInspectionStyle.dropdown,
+     {
+       borderColor:errorSimiarArea? _COLORS.Kodie_redColor : _COLORS?.Kodie_GrayColor
+     }
+   ]}
+   placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+   selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+   inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+   iconStyle={CreateNewInspectionStyle.iconStyle}
+   data={AreaKey}
+   search
+   maxHeight={300}
+   labelField="TAM_AREA_NAME"
+   valueField="TAM_AREA_KEY"
+   placeholder="Please select custom area"
+   searchPlaceholder="Search ..."
+   value={customeAreavalue}
+   onChange={item => {
+     setCustomeAreaValue(item.TAM_AREA_KEY);
+     setErrorSimiarArea(false)
+   }}
+   renderItem={Customarea_render}
+ />
+{errorSimiarArea ? (
+ <Text style={CreateNewInspectionStyle.errorText}>
+   {'Please select a most similar to your custom area!'}
+ </Text>
+) : null}
+</View>
+          )}
+         
           <Text style={[CreateNewInspectionStyle.cancelText,{marginBottom:8}]}>
             {'Make this a standard area for future inspections?'}
           </Text>
@@ -1124,7 +1129,9 @@ const CreateNewInspection = props => {
                 : _COLORS.Kodie_LightWhiteColor
             }
           />
-          <View style={CreateNewInspectionStyle.ButtonView}>
+        
+        </ScrollView>
+        <View style={CreateNewInspectionStyle.ButtonView}>
             <TouchableOpacity
               style={CreateNewInspectionStyle.cancelView}
               onPress={handleClosePopup}>
@@ -1137,7 +1144,6 @@ const CreateNewInspection = props => {
               <Text style={CreateNewInspectionStyle.DoneText}>Done</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
       </RBSheet>
 
       <RBSheet

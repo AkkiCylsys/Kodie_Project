@@ -210,7 +210,7 @@ const Inspection = props => {
     const InspectionData = {
       custom_area_name: email,
       is_standard_check_inspection: selectedButtonStandardId,
-      area_similar: customeAreavalue,
+      area_similar: selectedButtonStandardId == 0 ? 0 :customeAreavalue,
       area_future_inspection: selectedButtonFutueId,
       property_id: PropertyId,
       inspection_id: TIM_KEY,
@@ -361,7 +361,7 @@ const Inspection = props => {
   const SubmitCustomArea = () => {
     if (email.trim() === '') {
       setShowcustomAreaNameError('Custom area name cannot be empty!')
-    } else if (customeAreavalue == '') {
+    } else if (selectedButtonStandardId !== 0 && customeAreavalue == '') {
       setErrorSimiarArea(true);
     } else {
       handleDone();
@@ -610,6 +610,7 @@ const Inspection = props => {
             />
 
             {/* Similar Area Selection */}
+            {selectedButtonStandardId == 0 ? null :(
             <View style={{ marginVertical: 12 }}>
               <Text style={[InspectionCss.cancelText, { marginBottom: 12 }]}>
                 {'Select the area most similar to your custom area:'}
@@ -641,7 +642,7 @@ const Inspection = props => {
                 </Text>
               )}
             </View>
-
+            )}
             {/* Future Standard Area */}
             <Text style={InspectionCss.cancelText}>
               {'Make this a standard area for future inspections?'}
