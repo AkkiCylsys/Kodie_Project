@@ -457,8 +457,8 @@ export default CreateJobFirstScreen = props => {
       job_time: currentTime ? currentTime : 0,
       job_hourly: hourlyNeedValue ? hourlyNeedValue : 0,
       job_often_need_service: needServicesValue ? needServicesValue : 0,
-      job_min_budget: '',
-      job_max_budget: '',
+      job_min_budget: jobDetailsData?.job_min_budget,
+      job_max_budget: jobDetailsData?.job_max_budget,
       job_payment_by: selectedButtonResponsible == true ? 260 : 259,
       job_booking_insurance: null,
     };
