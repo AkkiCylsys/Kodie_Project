@@ -90,10 +90,10 @@ const CreateNewInspection = props => {
   const InspectionView = props?.route?.params?.InspectionView;
   const Ins_editMode = props?.route?.params?.Ins_editMode;
   console.log(InspectionView, Ins_editMode, TIM_KEY);
-  const Area_key = async () => {
+  const Area_key = async (shouldSetNegativeKey = false) => {
     setIsLoading(true);
     const AreaData = {
-      p_TIM_KEY: 0,
+      p_TIM_KEY: shouldSetNegativeKey ? -1 : 0,
       p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
     };
     const response = await GetInspectionAreaDetail(AreaData);
@@ -116,7 +116,7 @@ const CreateNewInspection = props => {
     const response = await AddCustomArea(data);
   Alert.alert('Success',response?.message)
     console.log('handleAddCustomArea',response?.message);
-    Area_key(); // Refresh the area list
+    Area_key(true); // Refresh the area list
     setSelectedButtonStandardId(1);
         setSelectedButtonFutueId(1);
     setCustomeAreaValue([]);

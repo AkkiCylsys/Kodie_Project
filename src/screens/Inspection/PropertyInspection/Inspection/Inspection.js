@@ -61,7 +61,23 @@ const Inspection = props => {
   const TIM_KEY = props?.TIM_KEY;
   const PropertyId = props.PropertyId;
   const onNavigateAndUpdate = async (id, name, TAIM_ITEM_STATUS) => {
-    const items = await handleInspectionudateItem(id);
+    console.log(id, 'iddd');
+    console.log(getCustomeArea, "areaareaareaareaareaareaarea");
+  
+    // Find the area where TAM_SIMILAR_AREA_KEY matches the given id
+    const area = getCustomeArea.find(item => item.TAM_AREA_KEY === id);
+  console.log(area,"vvvvvvvv");
+    // If id is greater than 9 and area is found, use TAM_SIMILAR_AREA_KEY, otherwise use id
+    const TAM_AREA_TYPE = id > 9 && area && area.TAM_SIMILAR_AREA_KEY !== '0' 
+    ? area.TAM_SIMILAR_AREA_KEY 
+    : id;
+    // Log the TAM_AREA_TYPE for debugging purposes
+    console.log(TAM_AREA_TYPE, 'TAM_AREA_TYPE');
+  
+    // Call handleInspectionudateItem with TAM_AREA_TYPE
+    const items = await handleInspectionudateItem(TAM_AREA_TYPE);
+  
+    // Navigate to the screen with relevant parameters
     navigateToScreen(id, name, TAIM_ITEM_STATUS, items);
   };
   function keyExtractor(item) {
@@ -76,6 +92,7 @@ const Inspection = props => {
 
   const handleInspectionudateItem = async (id) => {
     setIsLoading(true);
+  
     const data = {
       p_TAM_AREA_KEY: id,
       p_TIM_KEY: TIM_KEY,
@@ -95,7 +112,9 @@ const Inspection = props => {
   };
 
   const navigateToScreen = (id, name, TAIM_ITEM_STATUS, getItems) => {
-    console.log(TAIM_ITEM_STATUS, 'TAIM_ITEM_STATUS');
+    console.log(id, 'TAIM_ITEM_STATUS');
+   
+
     navigation.navigate('Bedroom', {
       TeamAreaKey: id,
       AreaName: name,
@@ -125,7 +144,7 @@ const Inspection = props => {
   const getInspectionCustomeAreas = async () => {
     const url = Config.BASE_URL;
     const AreaData = {
-      p_TIM_KEY: 0,
+      p_TIM_KEY: TIM_KEY,
       p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
     };
     const AreaGetUrl = `get_inspection_area`;
@@ -449,12 +468,12 @@ const Inspection = props => {
           </View>
           {!isEditing ? (
             <TouchableOpacity
-              onPress={() =>
+              onPress={() =>{
                 onNavigateAndUpdate(
                   item.area_key_id,
                   item?.area_name,
                   item?.TAIM_ITEM_STATUS,
-                )
+                )}
               }
               style={InspectionCss.rightIcon}>
               <Feather

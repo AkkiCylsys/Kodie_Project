@@ -50,7 +50,7 @@ const Bedroom = props => {
   const PropertyId = props.route.params.PropertyId;
   const getItem = props.route.params.getItems;
   const TAIM_ITEM_STATU = props.route.params.TAIM_ITEM_STATUS;
-  console.log(TAIM_ITEM_STATU,'TAIM_ITEM_STATU');
+  console.log(getItem,'TAIM_ITEM_STATU');
   function keyExtractor(item) {
     return item?.TAIM_ITEM_KEY.toString(); // Use userId as the key
   }
@@ -149,7 +149,7 @@ const Bedroom = props => {
 
   const handleUpdateItem = async () => {
     setIsLoading(true);
-    const tamAreaKeys = isEditing?  editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : null;
+    const tamAreaKeys = isEditing?  editGetItem.map(item => item.TAIM_ITEM_KEY).join(',') : getItems.map(item => item.TAIM_ITEM_KEY).join(',');
     console.log("UpdateItem", tamAreaKeys);
     const data = {
       p_TIM_KEY: Team_Key,
@@ -165,7 +165,7 @@ const Bedroom = props => {
       Alert.alert('Success', response?.message);
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
-      setIsEditing(!isEditing)
+      // setIsEditing(!isEditing)
       // handleInspectionuEditItem();
       // getInspectionAreas();
     } catch (error) {
