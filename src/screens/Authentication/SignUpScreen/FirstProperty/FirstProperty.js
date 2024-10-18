@@ -886,7 +886,7 @@ export default FirstProperty = props => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}>
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
@@ -928,7 +928,6 @@ export default FirstProperty = props => {
                 <TextInput
                   style={{
                     backgroundColor: 'transparent',
-
                     width: '90%',
                     height: 45,
                     alignSelf: 'center',

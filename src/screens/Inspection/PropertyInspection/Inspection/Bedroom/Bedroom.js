@@ -424,9 +424,7 @@ const Bedroom = props => {
                 disabled={isLoading ? true : false}
               />
               <TouchableOpacity style={BedroomCss.goBack_View}
-              onPress={() => {
-                props.navigation.navigate('PropertyInspection');
-              }}>
+              onPress={() => _goBack(props)}>
                 <View style={BedroomCss.backIcon}>
                   <Feather
                     name="chevron-left"

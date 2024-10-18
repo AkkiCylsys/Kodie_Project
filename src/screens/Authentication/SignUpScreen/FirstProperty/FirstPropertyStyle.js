@@ -260,7 +260,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   Ioscontainer: {
-        height:'100%',
+        height:'90%',
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Androidcontainer: {
