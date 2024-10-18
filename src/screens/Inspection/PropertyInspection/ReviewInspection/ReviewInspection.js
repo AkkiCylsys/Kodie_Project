@@ -67,7 +67,7 @@ const ReviewInspection = (props) => {
     try {
       const payload = { P_TIM_KEY: TIM_KEY };
       const data = await GetInspectioncabinateDetail(payload);
-      console.log(data[0]?.DAMAGED_ITEMS);
+      console.log(data,'cabinate');
       setDamaged_ItemStatus(data[0]?.DAMAGED_ITEMS);
       setUrgent_ItemStatus(data[0]?.URGENT_ITEMS);
       setIsLoading(false)

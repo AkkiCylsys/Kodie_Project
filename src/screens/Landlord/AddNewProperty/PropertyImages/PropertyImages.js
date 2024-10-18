@@ -216,26 +216,24 @@ export default PropertyImages = props => {
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: true, // Allow multiple selection
+      multiple: false, // Set to false for single video selection
     })
-      .then(videos => {
-        const maxSize = 100 * 1024 * 1024; // 100 MB
-        const validVideos = videos.filter(video => video.size <= maxSize);
+      .then(video => {
+        const maxSize = 100 * 1024 * 1024; // 100 MB limit
 
-        if (validVideos.length > 0) {
-          setSelectedVideos(prevSelectedVideos => [
-            ...prevSelectedVideos,
-            ...validVideos,
-          ]);
-          console.log('Selected videos:', validVideos);
+        // No need to filter for multiple videos, just check the single video size
+        if (video.size <= maxSize) {
+          setSelectedVideos([video]); // Directly set the single selected video
+          console.log('Selected video:', video);
         } else {
           Alert.alert('Warning', 'Video size exceeds the limit of 100 MB.');
         }
       })
       .catch(error => {
-        console.error('Error selecting videos:', error);
+        console.error('Error selecting video:', error);
       });
   };
+
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
@@ -460,92 +458,51 @@ export default PropertyImages = props => {
               {'Upload video'}
             </Text>
             <View style={{flex: 1}}>
+            {selectedVideos && selectedVideos.length > 0 ? null : (
               <UploadImageBoxes
                 Box_Text={'Add Video'}
                 onPress={() => {
                   openVideoPicker();
                 }}
               />
-              {selectedVideos.length > 0 && (
-                <View style={{marginTop: 10}}>
-                  <FlatList
-                    horizontal
-                    data={selectedVideos}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({item}) => (
-                      <View key={index}>
-                        {/* <Video
-                          source={{uri: item.path}}
-                          style={{
-                            width: 310,
-                            height: 150,
-                            borderRadius: 5,
-                            marginLeft: 5,
-                          }}
-                          controls={true}
-                        /> */}
-                        {typeof item === 'object' && item?.path ? (
-                          <Video
-                            source={{uri: item.path}} // Uploading scenario (item.path)
-                            style={{
-                              width: 310,
-                              height: 150,
-                              borderRadius: 5,
-                              marginLeft: 5,
-                            }}
-                            controls={true}
-                            resizeMode="contain"
-                            // onLoadStart={() => handleLoadStart(index)} // Start loading
-                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
-                            // onError={() => handleError(index)} // Handle error
-                          />
-                        ) : typeof item === 'string' ? (
-                          <Video
-                            source={{uri: item}} // API fetched scenario (just item as URL)
-                            style={{
-                              width: 310,
-                              height: 150,
-                              borderRadius: 5,
-                              marginLeft: 5,
-                            }}
-                            controls={true}
-                            resizeMode="contain"
-                            // onLoadStart={() => handleLoadStart(index)} // Start loading
-                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
-                            // onError={() => handleError(index)} // Handle error
-                          />
-                        ) : (
-                          <Text style={{color: 'red'}}>
-                            Video not available for index {index}
-                          </Text>
-                        )}
-                        <TouchableOpacity
-                          style={{
-                            position: 'absolute',
-                            // top: 2,
-                            right: 5,
-                            backgroundColor: 'rgba(255,255,255,0.7)',
-                            height: '20%',
-                            width: '12%',
-                            borderRadius: 8,
-                            // padding: 3,
-                            justifyContent: 'center',
-                          }}
-                          onPress={() => removeVideo(index)}>
-                          <Text
-                            style={{
-                              color: 'black',
-                              fontWeight: 'bold',
-                              alignSelf: 'center',
-                            }}>
-                            X
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
+            )}
+             {selectedVideos && selectedVideos.length > 0 && (
+            <View style={{ marginTop: 10 }}>
+              <View>
+                {typeof selectedVideos[0] === 'object' && selectedVideos[0]?.path ? (
+                  <Video
+                    source={{ uri: selectedVideos[0].path }} // Local video URI
+                    style={{
+                      width: '100%',
+                      height: 150,
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: _COLORS.Kodie_GrayColor,
+                      marginTop: 10,
+                    }}
+                    controls={true}
+                    resizeMode="contain"
                   />
-                </View>
-              )}
+                ) : typeof selectedVideos[0] === 'string' ? (
+                  <Video
+                    source={{ uri: selectedVideos[0] }} // If it's a remote URL
+                    style={{
+                      width: '100%',
+                      height: 150,
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: _COLORS.Kodie_GrayColor,
+                      marginTop: 10,
+                    }}
+                    controls={true}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Text style={{ color: 'red' }}>No video available</Text>
+                )}
+              </View>
+            </View>
+          )}
               <Text style={PropertyImagesStyle.formatted_property_text}>
                 {
                   'Videos should be formatted .mp4, HEVC, MKV. Size per video should not exceed 100 MB.'

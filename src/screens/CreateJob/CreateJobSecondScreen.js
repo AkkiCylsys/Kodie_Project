@@ -92,7 +92,7 @@ const CreateJobSecondScreen = props => {
           handleUpdateAndNavigate();
         }
       } else if (!isImagesEmpty || !isVideosEmpty) {
-        handleUploadAndNavigate(); 
+        handleUploadAndNavigate();
       }
     }
   };
@@ -279,31 +279,27 @@ const CreateJobSecondScreen = props => {
   //       console.error('Error selecting video:', error);
   //     });
   // };
-
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: true, // Allow multiple selection
+      multiple: false, // Set to false for single video selection
     })
-      .then(videos => {
-        const maxSize = 100 * 1024 * 1024; // 100 MB
-        const validVideos = videos.filter(video => video.size <= maxSize);
+      .then(video => {
+        const maxSize = 100 * 1024 * 1024; // 100 MB limit
 
-        if (validVideos.length > 0) {
-          setSelectedVideos(prevSelectedVideos => [
-            ...prevSelectedVideos,
-            ...validVideos,
-          ]);
-          console.log('Selected videos:', validVideos);
+        // No need to filter for multiple videos, just check the single video size
+        if (video.size <= maxSize) {
+          setSelectedVideos([video]); // Directly set the single selected video
+          console.log('Selected video:', video);
         } else {
           Alert.alert('Warning', 'Video size exceeds the limit of 100 MB.');
         }
       })
       .catch(error => {
-        console.error('Error selecting videos:', error);
+        console.error('Error selecting video:', error);
       });
   };
-  
+
 
   console.log('selectedVideos .....', selectedVideos);
 
@@ -320,7 +316,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = multipleImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning", 'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -359,7 +355,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = leftImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning", 'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -397,7 +393,7 @@ const CreateJobSecondScreen = props => {
     const oversizedImage = rightImages.find(image => image.size > MAX_FILE_SIZE);
 
     if (oversizedImage) {
-      Alert.alert("Warning",'The uploaded image must be less than 5 MB in size.');
+      Alert.alert("Warning", 'The uploaded image must be less than 5 MB in size.');
       refRBSheet.current.close();
       return;
     }
@@ -536,7 +532,7 @@ const CreateJobSecondScreen = props => {
       selectedVideos.forEach((videoInfo, index) => {
         // Validate videoInfo
         if (videoInfo && videoInfo.path && videoInfo.mime) {
-          const {path, mime} = videoInfo;
+          const { path, mime } = videoInfo;
           const videoName = path.substring(path.lastIndexOf('/') + 1);
           formData.append(`video`, {
             uri: path,
@@ -565,7 +561,7 @@ const CreateJobSecondScreen = props => {
       console.log('update_uploadJobFilesData....', response?.data);
       if (response?.data?.success === true) {
         setIsLoading(false);
-        Alert.alert("Success",response?.data?.message);
+        Alert.alert("Success", response?.data?.message);
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
           // JobId: JobId > 0 ? JobId : job_id,
@@ -648,7 +644,7 @@ const CreateJobSecondScreen = props => {
         selectedVideos.forEach((videoInfo, index) => {
           // Validate videoInfo
           if (videoInfo && videoInfo.path && videoInfo.mime) {
-            const {path, mime} = videoInfo;
+            const { path, mime } = videoInfo;
             const videoName = path.substring(path.lastIndexOf('/') + 1);
             formData.append(`video`, {
               uri: path,
@@ -662,7 +658,7 @@ const CreateJobSecondScreen = props => {
       } else {
         console.log('No valid videos to upload.');
       }
-  
+
       console.log('formData', formData);
       const url = Config.BASE_URL;
       const uploadFile_url = url + 'job/uploadJobFiles';
@@ -700,7 +696,15 @@ const CreateJobSecondScreen = props => {
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    // Check if videos are available
+    if (selectedVideos && selectedVideos.length > 0) {
+      // Simulate loading time (if needed) and set loading to false
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [selectedVideos]);
   return (
     <SafeAreaView style={CreateJobSecondStyle.container}>
       <TopHeader
@@ -832,93 +836,50 @@ const CreateJobSecondScreen = props => {
               color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
-          <UploadImageBoxes
-            Box_Text={'Add Video'}
-            onPress={() => {
-              openVideoPicker();
-            }}
-          />
-          {selectedVideos.length > 0 && (
+          {selectedVideos && selectedVideos.length > 0 ? null : (
+            <UploadImageBoxes
+              Box_Text={'Add Video'}
+              onPress={() => {
+                openVideoPicker();
+              }}
+            />
+          )}
+
+          {selectedVideos && selectedVideos.length > 0 && (
             <View style={{ marginTop: 10 }}>
-              <FlatList
-                horizontal
-                data={selectedVideos}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                  <View>
-                    {/* <Video
-                      ref={videoRef}
-                      source={{ uri: item? item : item.path }}
-                      style={{
-                        flex: 1,
-                        width: 325,
-                        height: 150,
-                        borderRadius: 5,
-                        borderWidth: 1,
-                        borderColor: _COLORS.Kodie_GrayColor,
-                        marginTop: 10,
-                      }}
-                      controls={true}
-                    /> */}
-                       {typeof item === 'object' && item?.path ? (
-                          <Video
-                            source={{uri: item.path}} // Uploading scenario (item.path)
-                            style={{
-                              width: 310,
-                              height: 150,
-                              borderRadius: 5,
-                              marginLeft: 5,
-                            }}
-                            controls={true}
-                            resizeMode="contain"
-                            // onLoadStart={() => handleLoadStart(index)} // Start loading
-                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
-                            // onError={() => handleError(index)} // Handle error
-                          />
-                        ) : typeof item === 'string' ? (
-                          <Video
-                            source={{uri: item}} // API fetched scenario (just item as URL)
-                            style={{
-                              width: 310,
-                              height: 150,
-                              borderRadius: 5,
-                              marginLeft: 5,
-                            }}
-                            controls={true}
-                            resizeMode="contain"
-                            // onLoadStart={() => handleLoadStart(index)} // Start loading
-                            // onLoad={() => handleLoadEnd(index)} // Loaded successfully
-                            // onError={() => handleError(index)} // Handle error
-                          />
-                        ) : (
-                          <Text style={{color: 'red'}}>
-                            Video not available for index {index}
-                          </Text>
-                        )}
-                    <TouchableOpacity
-                      style={{
-                        position: 'absolute',
-                        top: 15,
-                        right: 5,
-                        backgroundColor: 'rgba(255,255,255,0.7)',
-                        borderRadius: 15,
-                        justifyContent: 'center',
-                        width: '12%',
-                        height: '20%',
-                      }}
-                      onPress={() => removeVideo(index)}>
-                      <Entypo
-                        name="cross"
-                        size={20}
-                        color={_COLORS.Kodie_BlackColor}
-                        style={{
-                          alignSelf: 'center',
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
+              <View>
+                {typeof selectedVideos[0] === 'object' && selectedVideos[0]?.path ? (
+                  <Video
+                    source={{ uri: selectedVideos[0].path }} // Local video URI
+                    style={{
+                      width: '100%',
+                      height: 150,
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: _COLORS.Kodie_GrayColor,
+                      marginTop: 10,
+                    }}
+                    controls={true}
+                    resizeMode="contain"
+                  />
+                ) : typeof selectedVideos[0] === 'string' ? (
+                  <Video
+                    source={{ uri: selectedVideos[0] }} // If it's a remote URL
+                    style={{
+                      width: '100%',
+                      height: 150,
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      borderColor: _COLORS.Kodie_GrayColor,
+                      marginTop: 10,
+                    }}
+                    controls={true}
+                    resizeMode="contain"
+                  />
+                ) : (
+                  <Text style={{ color: 'red' }}>No video available</Text>
                 )}
-              />
+              </View>
             </View>
           )}
           <View style={CreateJobSecondStyle.next_Btn}>
