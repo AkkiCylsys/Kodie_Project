@@ -22,6 +22,8 @@ const withNetworkConnectivity = WrappedComponent => {
             'You have lost your internet connection. Please check your network settings.',
             [{text: 'OK'}],
           );
+        } else {
+          setIsConnected(state.isConnected && isInternetReachable);
         }
         // setIsConnected(state.isConnected);
         // setIsReachable(state.isInternetReachable);
