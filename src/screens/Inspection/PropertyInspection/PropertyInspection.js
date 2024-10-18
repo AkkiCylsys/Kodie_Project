@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, Image, ScrollView, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  SafeAreaView,
+  BackHandler,
+} from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
@@ -14,6 +21,7 @@ import Schedule from './Schedule/Schedule';
 import {Config} from '../../../Config';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axiosInstance from '../../../services/axiosInstance';
+import {useFocusEffect} from '@react-navigation/native';
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -35,6 +43,24 @@ const PropertyInspection = props => {
     fetchPropertyData();
   }, []);
   const refRBSheet = useRef();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        props.navigation.navigate('NewInspection');
+        return true; // Indicating that the back action is handled
+      };
+
+      // Adding the event listener for hardware back press
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      // Cleanup the event listener when component unmounts
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [props.navigation]), // Added props.navigation as a dependency
+  );
+
   const fetchPropertyData = async () => {
     try {
       // Fetch property details
@@ -43,7 +69,7 @@ const PropertyInspection = props => {
       };
       // alert(JSON.stringify(detailData))
       const url = Config.BASE_URL;
-      const property_Detailss ='get_property_details';
+      const property_Detailss = 'get_property_details';
 
       console.log('url..', property_Detailss);
       setIsLoading(true);
@@ -68,7 +94,7 @@ const PropertyInspection = props => {
         TIM_KEY: TIM_KEY,
       };
       const url = Config.BASE_URL;
-      const Cancel_Inspection ='inspection_details/cancel';
+      const Cancel_Inspection = 'inspection_details/cancel';
 
       console.log('url..', Cancel_Inspection);
       setIsLoading(true);
@@ -115,7 +141,7 @@ const PropertyInspection = props => {
         return (
           <ReviewInspection
             ViewApplication={() => props.navigation.navigate('ViewApplication')}
-            TIM_KEY={TIM_KEY} 
+            TIM_KEY={TIM_KEY}
             PropertyId={PropertyId}
           />
         );
@@ -131,30 +157,29 @@ const PropertyInspection = props => {
         onPressLeftButton={() => props.navigation.navigate('NewInspection')}
         MiddleText={property_Detail?.location || ''}
       />
-        {/* <View style={PropertyInspectionCSS.slider_view}> */}
-          {property_Detail.image_path &&
-          property_Detail.image_path.length != 0 ? (
-            <SliderBox
-              images={property_Detail.image_path}
-              sliderBoxHeight={200}
-              onCurrentImagePressed={index =>
-                console.warn(`image ${index} pressed`)
-              }
-              inactiveDotColor={_COLORS.Kodie_GrayColor}
-              dotColor={_COLORS.Kodie_GreenColor}
-              // autoplay
-              // circleLoop
-              resizeMethod={'resize'}
-              resizeMode={'cover'}
-              dotStyle={PropertyInspectionCSS.dotStyle}
-              ImageComponentStyle={{
-                // flex: 1,
-                resizeMode: 'cover',
-              }}
-            />
-          ) : null}
-        {/* </View> */}
-              <View style={{flex:1,marginTop:20}}>
+      {/* <View style={PropertyInspectionCSS.slider_view}> */}
+      {property_Detail.image_path && property_Detail.image_path.length != 0 ? (
+        <SliderBox
+          images={property_Detail.image_path}
+          sliderBoxHeight={200}
+          onCurrentImagePressed={index =>
+            console.warn(`image ${index} pressed`)
+          }
+          inactiveDotColor={_COLORS.Kodie_GrayColor}
+          dotColor={_COLORS.Kodie_GreenColor}
+          // autoplay
+          // circleLoop
+          resizeMethod={'resize'}
+          resizeMode={'cover'}
+          dotStyle={PropertyInspectionCSS.dotStyle}
+          ImageComponentStyle={{
+            // flex: 1,
+            resizeMode: 'cover',
+          }}
+        />
+      ) : null}
+      {/* </View> */}
+      <View style={{flex: 1, marginTop: 20}}>
         <View style={PropertyInspectionCSS.Container}>
           <Text style={PropertyInspectionCSS.apartment_text}>
             {property_Detail?.property_type}

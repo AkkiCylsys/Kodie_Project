@@ -152,6 +152,7 @@ export const NoticesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     alignItem: 'center',
     justifyContent: 'center',
+    marginLeft:5
   },
   addressviewbind: {
     // flex: 1,

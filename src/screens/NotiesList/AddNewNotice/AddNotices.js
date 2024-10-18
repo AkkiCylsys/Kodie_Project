@@ -1248,8 +1248,8 @@ const AddNotices = props => {
               </View>
             </View>
 
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            {/* <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
               {selectedDateError ? (
                 <Text style={[AddNewNoticeStyle.errorText]}>
                   {selectedDateError}
@@ -1257,13 +1257,13 @@ const AddNotices = props => {
               ) : null}
               {selectedFromTimeError ? (
                 <Text
-                  style={[AddNewNoticeStyle.errorText, {textAlign: 'right'}]}>
+                  style={[AddNewNoticeStyle.errorText,]}>
                   {selectedFromTimeError}
                 </Text>
               ) : null}
-            </View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            {/* </View> */}
+            {/* <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
               {selectedToDateError ? (
                 <Text style={AddNewNoticeStyle.errorText}>
                   {selectedToDateError}
@@ -1274,7 +1274,7 @@ const AddNotices = props => {
                   {selectedToTimeError}
                 </Text>
               ) : null}
-            </View>
+            {/* </View> */}
             <Divider style={AddNewNoticeStyle.dividerthird} />
             <View style={AddNewNoticeStyle.secondmainview}>
               {/* <AddGuest /> */}
