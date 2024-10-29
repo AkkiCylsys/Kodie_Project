@@ -7,7 +7,7 @@ const BottomTextsButton = (props) => {
     return (
         <View style={BottomTextsStyles.mainView}>
             <Text style={[BottomTextsStyles.leftButtonText, { color: props.LeftText_Color }]}>{props._LeftButtonText}</Text>
-            <Text onPress={props.onPress} style={[BottomTextsStyles.rightButtonText, { color: props.RightText_Color }]}>{props._RightButtonText}</Text>
+            <Text onPress={props.onPress} testID={props.testID} style={[BottomTextsStyles.rightButtonText, { color: props.RightText_Color }]}>{props._RightButtonText}</Text>
         </View>
     );
 };

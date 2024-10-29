@@ -558,7 +558,7 @@ const fetchData = async () => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
-                props.navigation.navigate('CreateNewInspection');
+                props.navigation.navigate('AppCalender');
               }}
               disabled={isLoading ? true : false}
             />

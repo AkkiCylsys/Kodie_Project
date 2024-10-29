@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const DividerIcon = props => {
   return (
     <>
-      <View style={Dividerstyles.mainView}>
+      <View style={Dividerstyles.mainView} testID={props?.testID}>
         <View
           style={{
             borderBottomWidth: props.borderBottomWidth

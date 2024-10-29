@@ -159,7 +159,7 @@ import Favourites from '../../screens/Favourites/Favourites/Favourites';
 
 import FacebookEmailVerification from '../../screens/Authentication/FaceBookLogin/Facebookloginwithemail';
 import FacebookEmailVerify from '../../screens/Authentication/FaceBookLogin/FacebookEmailVerify/FacebookEmailVerify';
-
+import AppCalender from '../../screens/AddCalender/AddCalender';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1188,6 +1188,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'FacebookEmailVerify'}
           component={FacebookEmailVerify}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'AppCalender'}
+          component={AppCalender}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

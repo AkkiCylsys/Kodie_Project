@@ -945,468 +945,460 @@ console.log('Coming here');
   };
 
   return (
-    <SafeAreaView style={{flex: 1,backgroundColor:_COLORS?.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1,backgroundColor:_COLORS?.Kodie_WhiteColor}}  testID="safeAreaView">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'undefined' : 'undefined'}
         style={LoginStyles.container}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        testID="keyboardAvoidingView">
         <StatusBar
           backgroundColor={_COLORS.Kodie_WhiteColor}
           barStyle={'dark-content'}
+          testID="statusBar"
         />
-        <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={LoginStyles.logoContainer}>
-            <Image source={logos.mainLogo} style={LoginStyles.logo} />
-          </View>
-          {/* ------ login code start  here ........... */}
-          <View style={LoginStyles.formContainer}>
-            <Text style={LoginStyles.title}>Login</Text>
-            <View style={LoginStyles.card}>
-              <View style={[LoginStyles.inputContainer]}>
-                <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
-                <TextInput
-                  style={[
-                    LoginStyles.input,
-                    {
-                      borderColor: emailError
-                        ? _COLORS.Kodie_lightRedColor
-                        : _COLORS.Kodie_GrayColor,
-                    },
-                  ]}
-                  value={email}
-                  onChangeText={setEmail}
-                  onBlur={() => handleEmailChange(email)}
-                  placeholder="Your email address"
-                  placeholderTextColor="#999"
-                  // maxLength={30}
-                  autoCapitalize={'none'}
-                  // returnKeyType='done'
-                  // keyboardType={'default'}
-                  textContentType="oneTimeCode"
-                />
-                {emailError ? (
-                  <Text style={LoginStyles.error_text}>{emailError}</Text>
-                ) : null}
-              </View>
-              <View style={[LoginStyles.inputContainer]}>
-                <Text style={LABEL_STYLES._texinputLabel}> Password</Text>
-                <View
-                  style={[
-                    LoginStyles.passwordContainer,
-                    {
-                      borderColor: passwordError
-                        ? _COLORS.Kodie_lightRedColor
-                        : _COLORS.Kodie_GrayColor,
-                    },
-                  ]}>
-                  <TextInput
-                    style={[
-                      LoginStyles.passwordInput,
-                      {
-                        borderColor: passwordError
-                          ? _COLORS.Kodie_lightRedColor
-                          : _COLORS.Kodie_GrayColor,
-                      },
-                    ]}
-                    value={password}
-                    onChangeText={setPassword}
-                    onBlur={() => handleLoginPassword(password)}
-                    placeholder="Enter password"
-                    placeholderTextColor="#999"
-                    secureTextEntry={!showPassword}
-                  />
-                  <TouchableOpacity onPress={handleTogglePassword}>
-                    <MaterialCommunityIcons
-                      name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                      size={20}
-                      color={
-                        passwordError
-                          ? _COLORS.Kodie_lightRedColor
-                          : _COLORS.Kodie_BlackColor
-                      }
-                      style={LoginStyles.eyeIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {passwordError ? (
-                  <Text style={LoginStyles.error_text}>{passwordError}</Text>
-                ) : null}
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    openSheetWithHeight(550);
-                    refRBSheet.current.open();
-                    setIsClick(0);
-                    setResetEmail('');
-                    setVerificationcode('');
-                    setVerificationcodeError('');
-                    setNewPassword('');
-                    setPasswordError('');
-                    setConfirmPassword('');
-                    setConfirmPasswordError('');
-                    setResetEmailError('');
-                  }}
-                  style={{flex: 0.5}}>
-                  <Text style={LoginStyles.forgot}>Forgot password?</Text>
-                </TouchableOpacity>
-                <View style={{flex: 0.9}} />
-              </View>
+      <ScrollView >
+  <View style={LoginStyles.logoContainer} testID="logoContainer">
+    <Image source={logos.mainLogo} style={LoginStyles.logo} testID="mainLogo" />
+  </View>
 
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                onPress={isConnected ? handleSubmit : null}
-                _ButtonText={'Login'}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                marginTop={20}
-                testID={'xyz123'} // Add testID here
-              />
-              {/* <View style={LoginStyles.loderview}></View> */}
-              <DividerIcon
-                DeviderText={'or'}
-                style={{marginTop: 32, marginBottom: 30}}
-              />
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                onPress={() => {
-                  // props.navigation.navigate("ContractorSignUpFirstScreen");
-                  // props.navigation.navigate("SignUpSteps");
-                  // props.navigation.navigate("Account");
-                  // Alert.alert('Login with Google', 'Coming soon');
-                  signIn();
-                }}
-                leftImage={IMAGES.GoogleIcon}
-                isLeftImage={true}
-                _ButtonText={'Login with Google'}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                marginBottom={25}
-              />
-              {/* <CustomSingleButton
-                disabled={isLoading ? true : false}
-                onPress={() => {
-                  loginWithFacebook();
-                  // alert("Coming soon")
-                }}
-                leftImage={IMAGES.FacebookIcon}
-                isLeftImage={true}
-                _ButtonText={'Connect with Facebook'}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                marginBottom={25}
-              /> */}
-              <BottomTextsButton
-                _LeftButtonText={"Don't have an account yet? "}
-                _RightButtonText={'Sign up'}
-                onPress={() => {
-                  // props.navigation.navigate("SearchJobResult");
-                  props.navigation.navigate('SignUp');
-                }}
-              />
-            </View>
-          </View>
-        </ScrollView>
+  {/* ------ login code start  here ........... */}
+  <View style={LoginStyles.formContainer} testID="formContainer">
+    <Text style={LoginStyles.title} testID="loginTitle">Login</Text>
+
+    <View style={LoginStyles.card} testID="loginCard">
+      <View style={[LoginStyles.inputContainer]} testID="emailInputContainer">
+        <Text style={LABEL_STYLES._texinputLabel} testID="emailLabel">Email</Text>
+        <TextInput
+          style={[
+            LoginStyles.input,
+            {
+              borderColor: emailError ? _COLORS.Kodie_lightRedColor : _COLORS.Kodie_GrayColor,
+            },
+          ]}
+          value={email}
+          onChangeText={setEmail}
+          onBlur={() => handleEmailChange(email)}
+          placeholder="Your email address"
+          placeholderTextColor="#999"
+          autoCapitalize="none"
+          textContentType="oneTimeCode"
+          testID="emailInput"
+        />
+        {emailError ? (
+          <Text style={LoginStyles.error_text} testID="emailErrorText">{emailError}</Text>
+        ) : null}
+      </View>
+
+      <View style={[LoginStyles.inputContainer]} testID="passwordInputContainer">
+        <Text style={LABEL_STYLES._texinputLabel} testID="passwordLabel">Password</Text>
+        <View
+          style={[
+            LoginStyles.passwordContainer,
+            {
+              borderColor: passwordError ? _COLORS.Kodie_lightRedColor : _COLORS.Kodie_GrayColor,
+            },
+          ]}
+          testID="passwordContainer"
+        >
+          <TextInput
+            style={[
+              LoginStyles.passwordInput,
+              {
+                borderColor: passwordError ? _COLORS.Kodie_lightRedColor : _COLORS.Kodie_GrayColor,
+              },
+            ]}
+            value={password}
+            onChangeText={setPassword}
+            onBlur={() => handleLoginPassword(password)}
+            placeholder="Enter password"
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            testID="passwordInput"
+          />
+          <TouchableOpacity onPress={handleTogglePassword} testID="togglePasswordVisibility">
+            <MaterialCommunityIcons
+              name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+              size={20}
+              color={passwordError ? _COLORS.Kodie_lightRedColor : _COLORS.Kodie_BlackColor}
+              style={LoginStyles.eyeIcon}
+              testID="passwordEyeIcon"
+            />
+          </TouchableOpacity>
+        </View>
+        {passwordError ? (
+          <Text style={LoginStyles.error_text} testID="passwordErrorText">{passwordError}</Text>
+        ) : null}
+      </View>
+
+      <View style={{ flexDirection: 'row' }} testID="forgotPasswordContainer">
+        <TouchableOpacity
+          onPress={() => {
+            openSheetWithHeight(550);
+            refRBSheet.current.open();
+            setIsClick(0);
+            setResetEmail('');
+            setVerificationcode('');
+            setVerificationcodeError('');
+            setNewPassword('');
+            setPasswordError('');
+            setConfirmPassword('');
+            setConfirmPasswordError('');
+            setResetEmailError('');
+          }}
+          style={{ flex: 0.5 }}
+          testID="forgotPasswordButton"
+        >
+          <Text style={LoginStyles.forgot}>Forgot password?</Text>
+        </TouchableOpacity>
+      </View>
+
+      <CustomSingleButton
+        disabled={isLoading ? true : false}
+        onPress={isConnected ? handleSubmit : null}
+        _ButtonText="Login"
+        Text_Color={_COLORS.Kodie_WhiteColor}
+        marginTop={20}
+        testID="loginButton"
+      />
+
+      <DividerIcon
+        DeviderText="or"
+        style={{ marginTop: 32, marginBottom: 30 }}
+        testID="dividerIcon"
+      />
+
+      <CustomSingleButton
+        disabled={isLoading ? true : false}
+        onPress={signIn}
+        leftImage={IMAGES.GoogleIcon}
+        isLeftImage
+        _ButtonText="Login with Google"
+        backgroundColor={_COLORS.Kodie_WhiteColor}
+        marginBottom={25}
+        testID="googleLoginButton"
+      />
+
+      <BottomTextsButton
+        _LeftButtonText="Don't have an account yet? "
+        _RightButtonText="Sign up"
+        onPress={() => props.navigation.navigate('SignUp')}
+        testID="signUpButton"
+      />
+    </View>
+  </View>
+</ScrollView>
+
 
         {/* ------ Rest password code start  here ........... */}
         <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          height={IsSusscessPasswordScreen}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: LoginStyles.bottomModal_container,
-          }}>
-          <View style={LoginStyles.ModalMainView}>
-            <Text style={LoginStyles.Modaltitle}>Reset password</Text>
+  ref={refRBSheet}
+  closeOnDragDown={true}
+  closeOnPressMask={false}
+  height={IsSusscessPasswordScreen}
+  customStyles={{
+    wrapper: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    draggableIcon: {
+      backgroundColor: _COLORS.Kodie_LightGrayColor,
+    },
+    container: LoginStyles.bottomModal_container,
+  }}
+  testID="resetPasswordRBSheet"
+>
+  <View style={LoginStyles.ModalMainView} testID="modalMainView">
+    <Text style={LoginStyles.Modaltitle} testID="resetPasswordTitle">
+      Reset password
+    </Text>
+    <TouchableOpacity
+      onPress={() => {
+        refRBSheet.current.close();
+        setIsSusscessPasswordScreen(550);
+        setIsClick(0);
+        setResetEmail('');
+        setVerificationcode('');
+        setVerificationcodeError('');
+        setNewPassword('');
+        setPasswordError('');
+        setConfirmPassword('');
+        setConfirmPasswordError('');
+        setResetEmailError('');
+      }}
+      testID="closeButton"
+    >
+      <Entypo
+        name="cross"
+        size={20}
+        color={_COLORS.Kodie_BlackColor}
+        style={LoginStyles.crossIconStyle}
+        testID="closeIcon"
+      />
+    </TouchableOpacity>
+  </View>
+
+  <View style={LoginStyles.card} testID="cardContainer">
+    {isClick === 0 && (
+      <>
+        <View style={LoginStyles.inputContainer} testID="emailInputContainer">
+          <Text style={LABEL_STYLES._texinputLabel} testID="emailLabel">
+            Enter your email address
+          </Text>
+          <TextInput
+            style={[
+              LoginStyles.input,
+              {
+                borderColor: resetEmailError
+                  ? _COLORS.Kodie_lightRedColor
+                  : _COLORS.Kodie_GrayColor,
+              },
+            ]}
+            value={resetEmail}
+            onChangeText={setResetEmail}
+            onBlur={() => handleResetEmailChange(resetEmail)}
+            placeholder="Your email address"
+            placeholderTextColor="#999"
+            textContentType="oneTimeCode"
+            autoCapitalize={'none'}
+            editable={!isLoading}
+            testID="emailInput"
+          />
+          {resetEmailError ? (
+            <Text style={LoginStyles.error_text} testID="emailError">
+              {resetEmailError}
+            </Text>
+          ) : null}
+        </View>
+      </>
+    )}
+
+    {isClick === 1 && (
+      <>
+        <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]} testID="verifyCodeEmailContainer">
+          <Text style={LABEL_STYLES._texinputLabel} testID="emailLabelVerify">
+            Email
+          </Text>
+          <TextInput
+            style={[
+              LoginStyles.input,
+              { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+            ]}
+            value={resetEmail}
+            placeholder="Your Email Address"
+            placeholderTextColor="#999"
+            editable={false}
+            keyboardType={'email-address'}
+            textContentType="oneTimeCode"
+            testID="emailInputVerify"
+          />
+        </View>
+        <View style={LoginStyles.varifycode} testID="verifyCodeContainer">
+          <View style={{ flex: 1 }}>
+            <Text style={LABEL_STYLES._texinputLabel} testID="verifyCodeLabel">
+              Verification code
+            </Text>
+            <TextInput
+              style={[
+                LoginStyles.input,
+                {
+                  borderColor: verificationcodeError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },
+              ]}
+              value={verificationcode}
+              onChangeText={handleverificationCode}
+              onBlur={() => handleverificationCode(verificationcode)}
+              placeholder="Code"
+              returnKeyType="done"
+              placeholderTextColor="#999"
+              keyboardType="number-pad"
+              maxLength={6}
+              testID="verificationCodeInput"
+            />
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              if (!isTimeron) {
+                setIsTimeron(true);
+                send_verification_code();
+              }
+            }}
+            style={LoginStyles.getButtonView}
+            disabled={isTimeron}
+            testID="resendCodeButton"
+          >
+            {isTimeron ? (
+              <CountdownCircleTimer
+                isPlaying
+                trailColor={_COLORS.Kodie_lightGreenColor}
+                duration={50}
+                size={45}
+                colors={_COLORS.Kodie_lightGreenColor}
+                onComplete={() => {
+                  setIsTimeron(false);
+                  return [false];
+                }}
+                testID="countdownTimer"
+              >
+                {({ remainingTime }) => (
+                  <Text
+                    style={{
+                      color: _COLORS.Kodie_WhiteColor,
+                      fontSize: 14,
+                      fontFamily: FONTFAMILY.K_Bold,
+                    }}
+                  >
+                    {remainingTime}s
+                  </Text>
+                )}
+              </CountdownCircleTimer>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  if (!isTimeron) {
+                    setIsTimeron(true);
+                    send_verification_code();
+                  }
+                }}
+                disabled={isTimeron}
+                testID="resendButton"
+              >
+                <Text style={LoginStyles.getButton} testID="resendButtonText">
+                  {'Resend'}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        {verificationcodeError ? (
+          <Text style={LoginStyles.error_text} testID="verificationCodeError">
+            {verificationcodeError}
+          </Text>
+        ) : null}
+      </>
+    )}
+
+    {isClick === 2 && (
+      <ScrollView
+        contentContainerStyle={{ marginBottom: 90 }}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        testID="resetPasswordScroll"
+      >
+        <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]}>
+          <Text style={LABEL_STYLES._texinputLabel} testID="newPasswordLabel">
+            New password
+          </Text>
+          <View
+            style={[
+              LoginStyles.passwordContainer,
+              {
+                borderColor: newpasswordError
+                  ? _COLORS.Kodie_lightRedColor
+                  : _COLORS.Kodie_GrayColor,
+              },
+            ]}
+          >
+            <TextInput
+              style={LoginStyles.passwordInput}
+              value={newpassword}
+              onChangeText={handleNewPassword}
+              onBlur={() => handleNewPassword(newpassword)}
+              placeholder="Enter new password"
+              placeholderTextColor="#999"
+              secureTextEntry={!showNewPassword}
+              testID="newPasswordInput"
+            />
             <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.close();
-                setIsSusscessPasswordScreen(550);
-                setIsClick(0);
-                setResetEmail('');
-                setVerificationcode('');
-                setVerificationcodeError('');
-                setNewPassword('');
-                setPasswordError('');
-                setConfirmPassword('');
-                setConfirmPasswordError('');
-                setResetEmailError('');
-              }}>
-              <Entypo
-                name="cross"
+              onPress={handleToggleNewPassword}
+              testID="newPasswordEyeIcon"
+            >
+              <MaterialCommunityIcons
+                name={showNewPassword ? 'eye-outline' : 'eye-off-outline'}
                 size={20}
                 color={_COLORS.Kodie_BlackColor}
-                style={LoginStyles.crossIconStyle}
               />
             </TouchableOpacity>
           </View>
-          <View style={LoginStyles.card}>
-            {/* ------ Reset passowrd 0 section start code  here ........... */}
-            {isClick === 0 && (
-              <>
-                <View style={LoginStyles.inputContainer}>
-                  <Text style={LABEL_STYLES._texinputLabel}>
-                    Enter your email address
-                  </Text>
-                  <TextInput
-                    style={[
-                      LoginStyles.input,
-                      {
-                        borderColor: resetEmailError
-                          ? _COLORS.Kodie_lightRedColor
-                          : _COLORS.Kodie_GrayColor,
-                      },
-                    ]}
-                    value={resetEmail}
-                    onChangeText={setResetEmail}
-                    onBlur={() => handleResetEmailChange(resetEmail)}
-                    placeholder="Your email address"
-                    placeholderTextColor="#999"
-                    // maxLength={30}
-                    textContentType="oneTimeCode"
-                    autoCapitalize={'none'}
-                    editable={isLoading ? false : true}
-                  />
-                  {resetEmailError ? (
-                    <Text style={LoginStyles.error_text}>
-                      {resetEmailError}
-                    </Text>
-                  ) : null}
-                </View>
-              </>
-            )}
 
-            {/* ------ Reset passowrd 1 section start code  here ........... */}
-            {isClick === 1 && (
-              <>
-                <View style={[LoginStyles.inputContainer, {marginBottom: 25}]}>
-                  <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
-                  <TextInput
-                    style={[
-                      LoginStyles.input,
-                      {backgroundColor: _COLORS?.Kodie_LightGrayLineColor},
-                    ]}
-                    value={resetEmail}
-                    placeholder="Your Email Address"
-                    placeholderTextColor="#999"
-                    editable={false}
-                    keyboardType={'email-address'}
-                    textContentType="oneTimeCode"
-                  />
-                </View>
-                <View style={LoginStyles.varifycode}>
-                  <View style={{flex: 1}}>
-                    <Text style={LABEL_STYLES._texinputLabel}>
-                      Verification code
-                    </Text>
-                    <TextInput
-                      style={[
-                        LoginStyles.input,
-                        {
-                          borderColor: verificationcodeError
-                            ? _COLORS.Kodie_lightRedColor
-                            : _COLORS.Kodie_GrayColor,
-                        },
-                      ]}
-                      value={verificationcode}
-                      onChangeText={handleverificationCode}
-                      onBlur={() => handleverificationCode(verificationcode)}
-                      placeholder="Code"
-                      returnKeyType="done"
-                      placeholderTextColor="#999"
-                      keyboardType="number-pad"
-                      maxLength={6}
-                    />
-                  </View>
-                  <View style={LoginStyles.codeMargin} />
+          {newpasswordError ? (
+            <Text style={LoginStyles.error_text} testID="newPasswordError">
+              {newpasswordError}
+            </Text>
+          ) : null}
+        </View>
 
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (!isTimeron) {
-                        setIsTimeron(true);
-                        send_verification_code();
-                      }
-                    }}
-                    style={LoginStyles.getButtonView}
-                    disabled={isTimeron} // Disable the button when the timer is active
-                  >
-                    {isTimeron ? (
-                      <CountdownCircleTimer
-                        isPlaying
-                        trailColor={_COLORS.Kodie_lightGreenColor}
-                        duration={50}
-                        size={45}
-                        colors={_COLORS.Kodie_lightGreenColor}
-                        onComplete={() => {
-                          setIsTimeron(false); // Reset timer state
-                          return [false]; // Stop the timer
-                        }}>
-                        {({remainingTime}) => (
-                          <Text
-                            style={{
-                              color: _COLORS.Kodie_WhiteColor,
-                              fontSize: 14,
-                              fontFamily: FONTFAMILY.K_Bold,
-                            }}>
-                            {remainingTime}s
-                          </Text>
-                        )}
-                      </CountdownCircleTimer>
-                    ) : (
-                      <TouchableOpacity
-                        onPress={() => {
-                          if (!isTimeron) {
-                            setIsTimeron(true);
-                            send_verification_code();
-                          }
-                        }}
-                        disabled={isTimeron}>
-                        <Text style={LoginStyles.getButton}>{'Resend'}</Text>
-                      </TouchableOpacity>
-                    )}
-                  </TouchableOpacity>
-                </View>
-                {verificationcodeError ? (
-                  <Text style={LoginStyles.error_text}>
-                    {verificationcodeError}
-                  </Text>
-                ) : null}
-              </>
-            )}
-
-            {/* ------ Reset passowrd 2 section start code  here ........... */}
-            {isClick === 2 && (
-              <ScrollView
-                contentContainerStyle={{marginBottom: 90}}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="handled">
-                <View style={[LoginStyles.inputContainer, {marginBottom: 25}]}>
-                  <Text
-                    style={[
-                      LABEL_STYLES._texinputLabel,
-                      LoginStyles.cardHeight,
-                    ]}>
-                    New password
-                  </Text>
-                  <View
-                    style={[
-                      LoginStyles.passwordContainer,
-                      {
-                        borderColor: newpasswordError
-                          ? _COLORS.Kodie_lightRedColor
-                          : _COLORS.Kodie_GrayColor,
-                      },
-                    ]}>
-                    <TextInput
-                      style={LoginStyles.passwordInput}
-                      value={newpassword}
-                      onChangeText={handleNewPassword}
-                      onBlur={() => handleNewPassword(newpassword)}
-                      placeholder=" Enter new password"
-                      placeholderTextColor="#999"
-                      secureTextEntry={!showNewPassword}
-                    />
-                    <TouchableOpacity onPress={handleToggleNewPassword}>
-                      <MaterialCommunityIcons
-                        name={
-                          showNewPassword ? 'eye-outline' : 'eye-off-outline'
-                        }
-                        size={20}
-                        color={_COLORS.Kodie_BlackColor}
-                        style={LoginStyles.eyeIcon}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {newpasswordError ? (
-                    <Text style={LoginStyles.error_text}>
-                      {newpasswordError}
-                    </Text>
-                  ) : null}
-                </View>
-                <View style={LoginStyles.inputContainer}>
-                  <Text
-                    style={[
-                      LABEL_STYLES._texinputLabel,
-                      LoginStyles.cardHeight,
-                    ]}>
-                    Confirm password
-                  </Text>
-                  <View
-                    style={[
-                      LoginStyles.passwordContainer,
-                      {
-                        borderColor: confirmPasswordError
-                          ? _COLORS.Kodie_lightRedColor
-                          : _COLORS.Kodie_GrayColor,
-                      },
-                    ]}>
-                    <TextInput
-                      style={LoginStyles.passwordInput}
-                      value={confirmPassword}
-                      onChangeText={handleConfirmpassword}
-                      onBlur={() => handleConfirmpassword(confirmPassword)}
-                      placeholder=" Enter confirm password"
-                      placeholderTextColor="#999"
-                      secureTextEntry={!showResetPassword}
-                    />
-                    <TouchableOpacity onPress={handleToggleResetPassword}>
-                      <MaterialCommunityIcons
-                        name={
-                          showResetPassword ? 'eye-outline' : 'eye-off-outline'
-                        }
-                        size={20}
-                        color={_COLORS.Kodie_BlackColor}
-                        style={LoginStyles.eyeIcon}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  {confirmPasswordError ? (
-                    <Text style={LoginStyles.error_text}>
-                      {confirmPasswordError}
-                    </Text>
-                  ) : null}
-                </View>
-              </ScrollView>
-            )}
-
-            {/* ------ Reset passowrd 3 section start code  here ........... */}
-            {isClick === 3 && (
-              <>
-                <View style={LoginStyles.inputContainer}>
-                  <Text
-                    style={[
-                      LABEL_STYLES._texinputLabel,
-                      LoginStyles.passchange,
-                    ]}>
-                    {'Password successfully updated'}
-                  </Text>
-                  <Image
-                    source={IMAGES.CheckIcon}
-                    style={LoginStyles.checkicon}
-                    resizeMode={'contain'}
-                  />
-                </View>
-                {/* <CustomSingleButton
-                _ButtonText={'Back to login'}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => refRBSheet.current.close()}
-              /> */}
-              </>
-            )}
-
-            {/* ------ Loder section start code  here ........... */}
-            {isLoading && (
-              <View style={LoginStyles.secondloder}>
-                <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
-              </View>
-            )}
-
-            {/* ------ Next button section start code  here ........... */}
+        <View style={LoginStyles.inputContainer}>
+          <Text style={LABEL_STYLES._texinputLabel} testID="confirmPasswordLabel">
+            Confirm password
+          </Text>
+          <View
+            style={[
+              LoginStyles.passwordContainer,
+              {
+                borderColor: confirmPasswordError
+                  ? _COLORS.Kodie_lightRedColor
+                  : _COLORS.Kodie_GrayColor,
+              },
+            ]}
+          >
+            <TextInput
+              style={LoginStyles.passwordInput}
+              value={confirmPassword}
+              onChangeText={handleConfirmpassword}
+              onBlur={() => handleConfirmpassword(confirmPassword)}
+              placeholder="Enter confirm password"
+              placeholderTextColor="#999"
+              secureTextEntry={!showResetPassword}
+              testID="confirmPasswordInput"
+            />
+            <TouchableOpacity
+              onPress={handleToggleResetPassword}
+              testID="confirmPasswordEyeIcon"
+            >
+              <MaterialCommunityIcons
+                name={showResetPassword ? 'eye-outline' : 'eye-off-outline'}
+                size={20}
+                color={_COLORS.Kodie_BlackColor}
+              />
+            </TouchableOpacity>
           </View>
+
+          {confirmPasswordError ? (
+            <Text style={LoginStyles.error_text} testID="confirmPasswordError">
+              {confirmPasswordError}
+            </Text>
+          ) : null}
+        </View>
+      </ScrollView>
+    )}
+
+    {isClick === 3 && (
+      <>
+        <View style={LoginStyles.inputContainer} testID="passwordSuccessContainer">
+          <Text style={[LABEL_STYLES._texinputLabel, LoginStyles.passchange]} testID="passwordSuccessText">
+            {'Password successfully updated'}
+          </Text>
+          <Image
+            source={IMAGES.CheckIcon}
+            style={LoginStyles.checkicon}
+            resizeMode={'contain'}
+            testID="passwordSuccessIcon"
+          />
+        </View>
+        
+      </>
+    )}
+
+    {isLoading && (
+      <View style={LoginStyles.secondloder} testID="loadingIndicator">
+        <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
+      </View>
+    )}
+  </View>
+        {/* ------ Next button section start code  here ........... */}
           <View
             style={[
               {
@@ -1428,9 +1420,11 @@ console.log('Coming here');
               _ButtonText={buttonLabels[isClick]}
               Text_Color={_COLORS.Kodie_WhiteColor}
               marginBottom={30}
+              testID="forgetButton"
             />
           </View>
-        </RBSheet>
+</RBSheet>
+
         {isLoading ? <CommonLoader /> : null}
       </KeyboardAvoidingView>
     </SafeAreaView>
