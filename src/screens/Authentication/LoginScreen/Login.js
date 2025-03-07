@@ -1,5 +1,4 @@
-// Screen 2,3,4,5,6
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   BackHandler,
@@ -12,7 +11,6 @@ import {
   Platform,
   Keyboard,
   KeyboardAvoidingView,
-  PermissionsAndroid,
   Alert,
   StatusBar,
   SafeAreaView,
@@ -21,9 +19,8 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {LoginManager, AccessToken, Profile} from 'react-native-fbsdk-next';
-import {logos} from '../../../Themes/CommonVectors/Images';
-import {LoginStyles} from './LoginCss';
+import { logos } from '../../../Themes/CommonVectors/Images';
+import { LoginStyles } from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -36,30 +33,26 @@ import {
   _COLORS,
   FONTFAMILY,
 } from './../../../Themes/index';
-import {useFocusEffect} from '@react-navigation/native';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
-import {useDispatch} from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
 import {
   loginApiActionCreator,
   googleLoginApi,
-  googlesocial_loginApi,
 } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
-import Geolocation from '@react-native-community/geolocation';
-import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import RNSettings from 'react-native-settings';
 import useNetworkStatus from '../../../services/useNetworkConnection/UseNetworkConnection';
 import {
   confirmPasswordServices,
   sendVerificationService,
   verifyOtpServices,
 } from '../../../services/Authentication/ForgotPasswordServices';
-import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
+import { fetchLoginSuccess } from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 
 export default Login = props => {
   const dispatch = useDispatch();
@@ -83,27 +76,19 @@ export default Login = props => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(false);
-
   const device = DeviceInfo.getUniqueId();
   const deviceId = device?._z;
-  // const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
-  const [googleSignIn, setGoogleSignIn] = useState([]);
   const [isScreenFocused, setIsScreenFocused] = useState(false);
+  const { isConnected, isInternetReachable } = useNetworkStatus(isScreenFocused);
 
-  // Use useFocusEffect to detect screen focus
   useFocusEffect(
     useCallback(() => {
-      setIsScreenFocused(true); // Set focus state to true when the screen is focused
-      return () => setIsScreenFocused(false); // Set it back to false when the screen is unfocused
+      setIsScreenFocused(true);
+      return () => setIsScreenFocused(false);
     }, []),
   );
-
-  const {isConnected, isInternetReachable} = useNetworkStatus(isScreenFocused);
-
-  // Login with google here ......
   useEffect(() => {
-    handlemessage();
     requestUserPermission();
     const configureGoogleSignIn = () => {
       GoogleSignin.configure({
@@ -120,198 +105,23 @@ export default Login = props => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('userInfo....', userInfo);
-      setGoogleSignIn(userInfo);
-      //alert(userInfo?.idToken)
-      console.log(userInfo?.user?.email);
-      console.log(userInfo?.user?.name);
       if (
         userInfo?.user?.email != null ||
         userInfo?.user?.email != '' ||
         userInfo?.user?.email != undefined
       ) {
         _googleLoginApi(userInfo);
-        //props.navigation.navigate('SignUpSteps');
       }
-
-      // props.navigation.navigate('SignUpSteps');
     } catch (error) {
       console.log('Error during signIn:', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('SIGN_IN_CANCELLED');
-        // alert('SIGN_IN_CANCELLED')
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('IN_PROGRESS');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('PLAY_SERVICES_NOT_AVAILABLE');
         alert('PLAY_SERVICES_NOT_AVAILABLE');
       } else {
-        // alert(error.message)
-        console.log('Error occurred:', error.message);
-        console.log('Error stack trace:', error.stack);
-        console.log('Full error object:', error);
       }
     }
   };
-
-  // Connect with facebook...
-
-  const _facebookLoginApi = async (_userProfile, accessToken) => {
-    try {
-      setIsLoading(true);
-      let FacebookSignUPPayload = {
-        email: '',
-        unique_social_id: _userProfile?.userID,
-        social_type: 'facebook',
-        is_social_login: 0,
-        token: accessToken,
-        device_id: deviceId,
-        device_os_type: deviceType,
-        fcm_token: Fcm_token,
-      };
-console.log(FacebookSignUPPayload,"FacebookSignUPPayload");
-      let _res = await googleLoginApi(FacebookSignUPPayload);
-      console.log('___facebook..____');
-      console.log(JSON.stringify(_res));
-      // alert(_res?.data?.User_Key);
-      if (_res?.data?.success === true) {
-        /// alert(_res?.data?.code)
-        //props.navigation.navigate('SignUpSteps');
-        if (_res?.data?.code == 3 || _res?.data?.code == 16) {
-          const encStr = await encryptPassword(_userProfile?.userID, secretKey);
-          console.log('encryptedpass', encStr);
-          setIsLoading(false);
-          props.navigation.navigate('FacebookEmailVerification', {
-            email: _res?.data?.email,
-            user_facebookProfile: _userProfile,
-            user_facebookToken: accessToken,
-            user_key: _res?.data?.User_Key,
-            device_id: deviceId,
-            device_os_type: deviceType,
-            fcm_token: Fcm_token,
-            //_socialuserInfo: _userInfo,
-            password: encStr, //?
-          });
-        } else if (_res?.data?.code == 6) {
-          const encStr = await encryptPassword(_userProfile?.userID, secretKey);
-          console.log('encryptedpass', encStr);
-          setIsLoading(false);
-          props.navigation.navigate('SignUpSteps', {
-            email: _res?.data?.email,
-            user_key: _res?.data?.User_Key,
-            _FacebookuserInfo: _userProfile,
-            user_facebookProfile: _userProfile,
-            user_facebookToken: accessToken,
-            password: encStr, //?
-          });
-        } else if (_res?.data?.code == 10) {
-          setIsLoading(true);
-
-          setIsLoading(true);
-          dispatch(fetchLoginSuccess(_res?.data));
-          props.navigation.navigate('DrawerNavigatorLeftMenu');
-        }
-      } else {
-        Alert.alert('Account suspension', _res?.data?.message, [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {
-            text: 'Activate',
-            onPress: async () => {
-              console.log('activate account');
-              const url = Config.BASE_URL;
-              const activateAccount = url + 'sendMail';
-              console.log('Request URL:', activateAccount);
-              setIsLoading(true);
-              const activateAccount_Data = {
-                email: _userInfo?.user?.email,
-              };
-              console.log(activateAccount_Data, 'fdf');
-              await axios
-                .post(activateAccount, activateAccount_Data)
-                .then(response => {
-                  console.log(
-                    'API Response activateAccount..',
-                    response?.data,
-                  );
-                  if (response?.data?.success === true) {
-                    alert(response?.data?.message);
-                  } else {
-                    setIsLoading(false);
-                    alert(response?.data?.message);
-                  }
-                })
-                .catch(error => {
-                  console.error('API failed activateAccount', error);
-                  setIsLoading(false);
-                })
-                .finally(() => {
-                  setIsLoading(false);
-                });
-            },
-          },
-        ]);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-    }
-    //alert(_userInfo?.user?.email)
-  };
-  const fetchGraphAPI = accessToken => {
-    fetch(
-      `https://graph.facebook.com/me?access_token=${accessToken}&fields=id,name,email`,
-    )
-      .then(response => response.json())
-      .then(data => {
-        console.log('User Data: ', data);
-      })
-      .catch(error => {
-        console.log('Error fetching Graph API: ', error);
-      });
-  };
-  const loginWithFacebook = async () => {
-    try {
-     await LoginManager.logOut();
-      const result = await LoginManager.logInWithPermissions([
-        'public_profile',
-        'email',
-      ]);
-      console.log(JSON.stringify(result));
-      if (result.isCancelled) {
-        console.log('Login cancelled');
-      } else {
-        const data = await AccessToken.getCurrentAccessToken();
-        if (!data) {
-          throw new Error('Something went wrong obtaining access token');
-        }
-console.log('Coming here');
-        const accessToken = data.accessToken.toString();
-        console.log('Access Token: ', accessToken);
-
-        // You can fetch user profile or send token to your server here
-        const userProfile = await Profile.getCurrentProfile();
-        if (userProfile) {
-          console.log('User Profile: ', userProfile,accessToken);
-          if (
-            userProfile?.userID != null ||
-            userProfile?.userID != '' ||
-            userProfile?.userID != undefined ||
-            userProfile?.userID != 0
-          ) {
-            _facebookLoginApi(userProfile, accessToken);
-          }
-        }
-      }
-    } catch (error) {
-      console.log('Login fail with error: ', error);
-    }
-  };
-
   const _googleLoginApi = async _userInfo => {
     try {
       setIsLoading(true);
@@ -327,14 +137,9 @@ console.log('Coming here');
       };
 
       let _res = await googleLoginApi(googleSignUPPayload);
-      console.log('-+_+_+_+_______+++');
-      console.log(JSON.stringify(_res.data));
-      // alert(JSON.stringify(_res));
       if (_res?.data?.success == true) {
-        //props.navigation.navigate('SignUpSteps');
         if (_res?.data?.code == 3) {
           const encStr = await encryptPassword(_userInfo?.user?.id, secretKey);
-          console.log('encryptedpass', encStr);
           setIsLoading(false);
           props.navigation.navigate('SignUpSteps', {
             email: _userInfo?.user?.email,
@@ -356,30 +161,7 @@ console.log('Coming here');
           setIsLoading(true);
           dispatch(fetchLoginSuccess(_res?.data));
           props.navigation.navigate('DrawerNavigatorLeftMenu');
-          // try {
-          //   let googleSignInPayload = {
-
-          //     email: _userInfo?.user?.email,
-          //     unique_social_id: _userInfo?.user?.id,
-          //     social_type: "Google",
-          //     token: _userInfo?.idToken,
-          //     device_id: deviceId,
-          //     device_os_type: deviceType,
-          //     fcm_token: Fcm_token,
-          //   }
-
-          //   let _socialloginres = await dispatch(googlesocial_loginApi(googleSignInPayload))
-          //   if (_socialloginres?.data?.success === 'true') {
-          //     props.navigation.navigate('DrawerNavigatorLeftMenu');
-          //     setIsLoading(false)
-          //   }
-
-          // } catch (error) {
-          //   setIsLoading(false)
-          //   alert(error)
-
-          // }
-        } 
+        }
       } else {
         Alert.alert('Account suspension', _res?.data?.message, [
           {
@@ -390,22 +172,15 @@ console.log('Coming here');
           {
             text: 'Activate',
             onPress: async () => {
-              console.log('activate account');
               const url = Config.BASE_URL;
               const activateAccount = url + 'sendMail';
-              console.log('Request URL:', activateAccount);
               setIsLoading(true);
               const activateAccount_Data = {
                 email: _userInfo?.user?.email,
               };
-              console.log(activateAccount_Data, 'fdf');
               await axios
                 .post(activateAccount, activateAccount_Data)
                 .then(response => {
-                  console.log(
-                    'API Response activateAccount..',
-                    response?.data,
-                  );
                   if (response?.data?.success === true) {
                     alert(response?.data?.message);
                   } else {
@@ -414,7 +189,6 @@ console.log('Coming here');
                   }
                 })
                 .catch(error => {
-                  console.error('API failed activateAccount', error);
                   setIsLoading(false);
                 })
                 .finally(() => {
@@ -429,7 +203,6 @@ console.log('Coming here');
       setIsLoading(false);
       console.log(error);
     }
-    //alert(_userInfo?.user?.email)
   };
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
@@ -451,40 +224,13 @@ console.log('Coming here');
       getTocken();
     }
   }
-  const handlemessage = async () => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification casued app to open from background state :',
-        remoteMessage.notification,
-      );
-    });
-    messaging().onMessage(async remoteMessage => {
-      console.log('Message handled in the foreground!', remoteMessage);
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification casued app to open from quit state.',
-            remoteMessage.notification,
-          );
-        }
-      });
-  };
-
   const getTocken = async () => {
     const token = await messaging().getToken();
-    console.log(token, 'token');
     setFcm_token(token);
   };
-
-  // Activate account Api  ...
   const handleActivateAccount = async () => {
     const url = Config.BASE_URL;
     const activateAccount = url + 'sendMail';
-    console.log('Request URL:', activateAccount);
     setIsLoading(true);
     const trimmedEmail = email.trim();
     const activateAccount_Data = {
@@ -493,7 +239,6 @@ console.log('Coming here');
     await axios
       .post(activateAccount, activateAccount_Data)
       .then(response => {
-        console.log('API Response activateAccount..', response?.data);
         if (response?.data?.success === true) {
           alert(response?.data?.message);
         } else {
@@ -502,7 +247,6 @@ console.log('Coming here');
         }
       })
       .catch(error => {
-        console.error('API failed activateAccount', error);
         setIsLoading(false);
       })
       .finally(() => {
@@ -532,7 +276,6 @@ console.log('Coming here');
     setShowResetPassword(prevShowPassword => !prevShowPassword);
   };
 
-  // Reset validation email..
   const handleforgetValidation = () => {
     if (resetEmail.trim() === '') {
       setResetEmailError('Email is required!');
@@ -545,15 +288,12 @@ console.log('Coming here');
     }
   };
 
-  //... Regex login email validation
   const validateResetEmail = resetEmail => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    // Trim the email to remove spaces from the start or end
     return emailPattern.test(resetEmail.trim());
   };
 
-  //... inner reset password email variable define here
   const handleResetEmailChange = text => {
     setResetEmail(text);
     if (text.trim() === '') {
@@ -567,7 +307,6 @@ console.log('Coming here');
     }
   };
 
-  //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === '') {
       setVerificationcodeError('Verification code is required!');
@@ -576,7 +315,6 @@ console.log('Coming here');
     }
   };
 
-  //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === '') {
       setNewPasswordError('Please enter a new password!');
@@ -598,7 +336,6 @@ console.log('Coming here');
     }
   };
 
-  //... inner reset password Next Button code define here
   const handleButtonPress = () => {
     if (isClick === 3) {
       openSheetWithHeight(550);
@@ -613,14 +350,12 @@ console.log('Coming here');
       setIsClick(isClick + 1);
     }
   };
-  //... inner reset password rejex variable define here
   const validateEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email.trim());
   };
 
-  //... inner  email variable define here
   const handleEmailChange = text => {
     setEmail(text);
     if (text.trim() === '') {
@@ -645,8 +380,6 @@ console.log('Coming here');
       setNewPasswordError('');
     }
   };
-
-  //... inner reset password confirm password variable define here
   const handleConfirmpassword = text => {
     setConfirmPassword(text);
     if (text.trim() === '') {
@@ -661,10 +394,7 @@ console.log('Coming here');
       setConfirmPasswordError(''); // Clear the error message
     }
   };
-
-  //... inner reset password submit button variable define here
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId, deviceType, 'login');
   const handleSubmit = async () => {
     const encryptedPassword = await encryptPassword(newpassword, secretKey);
     const trimmedEmail = email.trim();
@@ -723,7 +453,6 @@ console.log('Coming here');
           },
         ]);
       } else if (res?.data?.success == 'true') {
-        //  alert("Login successful");
         setIsLoading(false);
         if (res.data.code == 6) {
           alert(res.data.message);
@@ -736,10 +465,7 @@ console.log('Coming here');
           alert(res.data.message);
         } else {
           props.navigation.navigate('DrawerNavigatorLeftMenu');
-          // alert(JSON.stringify(res.data))
         }
-
-        // alert(JSON.stringify(res))
         setEmail('');
         setPassword('');
       } else {
@@ -748,12 +474,8 @@ console.log('Coming here');
           'Hmm, it seems like the credentials you entered are invalid. Please try again!',
         );
       }
-      // }
     }
-    // Keyboard.dismiss();
   };
-
-  //...  verification variable define here
   const handleverificationCode = text => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
@@ -765,37 +487,22 @@ console.log('Coming here');
       setVerificationcodeError('');
     }
   };
-
-  //send_verification_code Api code here....
   const send_verification_code = async () => {
-    const url = Config.BASE_URL;
-    // const verification_code_url = url + "user_reset_password_email_verify";
     const trimmedEmail = resetEmail.trim();
-
-    // const url = "https://e3.cylsys.com/api/v1/SendOTP";
-    // const verification_code_url = url + 'SendOTP_Forget_password';
-    // console.log('Request URL:', verification_code_url);
-
     setIsLoading(true);
-
     const sendVerificationPayload = {
       email: trimmedEmail,
       device_id: deviceId,
       device_os_type: deviceType,
     };
-
     sendVerificationService(sendVerificationPayload)
       .then(response => {
-        console.log('API Response send otp:', response);
-
-        // Check if the response code indicates success
         if (response?.code === 22) {
           if (isClick === 1) {
             Alert.alert('Success', 'OTP resent successfully.');
           } else {
             Alert.alert('Success', 'OTP sent successfully.');
           }
-
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
@@ -804,41 +511,26 @@ console.log('Coming here');
             setIsClick(isClick + 1);
           }
         } else {
-          // Handle error case from response, if applicable
           alert(response?.message);
         }
       })
       .catch(error => {
-        // Alert the error message from the service
-        Alert.alert('Warning', error.message); // Display the error message from the service
-        console.log('error in send ...', error);
-
-        // Additional error handling based on status code
+        Alert.alert('Warning', error.message);
         if (error?.response?.status === 500) {
           Alert.alert(
             'Warning',
             'Failed to send OTP via email. Please try again later.',
           );
         } else {
-          console.log('error in send verification:', error);
         }
-
-        console.error('sendotp error:', error);
         setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-
-  //verify_otp Api code here.....
   const verify_Otp = () => {
-    // const url = Config.BASE_URL;
-    // const verify_Otp_url = url + 'verifyotp';
     const trimmedEmail = resetEmail.trim();
-
-    // console.log('Request URL:', verify_Otp_url);
-
     const verifyOtpPayload = {
       email: trimmedEmail,
       otp: verificationcode,
@@ -846,10 +538,8 @@ console.log('Coming here');
       device_os_type: deviceType,
     };
     setIsLoading(true);
-
     verifyOtpServices(verifyOtpPayload)
       .then(response => {
-        console.log('API Response verify otp:', response?.data);
         if (response?.data?.success === true) {
           Alert.alert('Success', response?.data?.message);
           setIsClick(isClick + 1);
@@ -865,7 +555,6 @@ console.log('Coming here');
       })
       .catch(error => {
         if (error?.response && error?.response?.status === 404) {
-          // alert('Incorrect OTP. Please try again.');
           setVerificationcodeError('The verification code is incorrect!');
         } else if (error?.response && error?.response?.status === 401) {
           alert(error?.response?.message || 'User Unauthorized');
@@ -879,7 +568,6 @@ console.log('Coming here');
         setIsLoading(false);
       });
   };
-
   const secretKey = 'XkhZG4fW2t2W';
   const encryptPassword = (password, secretKey) => {
     return new Promise((resolve, reject) => {
@@ -887,7 +575,7 @@ console.log('Coming here');
         const key = secretKey;
         const keyutf = CryptoJS.enc.Utf8.parse(key);
         const iv = CryptoJS.enc.Utf8.parse('XkhZG4fW2t2W');
-        const enc = CryptoJS.AES.encrypt(password, keyutf, {iv: iv});
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
         const encStr = enc.toString();
         console.log('Encrypted Password:', encStr);
         resolve(encStr);
@@ -896,7 +584,6 @@ console.log('Coming here');
       }
     });
   };
-  //...... password validation define here
   const handleLoginPassword = text => {
     setPassword(text);
     if (text.trim() === '') {
@@ -908,19 +595,13 @@ console.log('Coming here');
   const create_password = async () => {
     try {
       const encryptedPassword = await encryptPassword(newpassword, secretKey);
-      console.log('encryptedPassword', encryptedPassword);
-      // const url = Config.BASE_URL;
-      // const create_password_url = url + 'forgetpassword';
-      // console.log('Request URL:', create_password_url);
       const trimmedEmail = resetEmail.trim();
-
       const confirmPassWordPayload = {
         email: trimmedEmail,
         password: encryptedPassword,
       };
       setIsLoading(true);
       const response = await confirmPasswordServices(confirmPassWordPayload);
-      console.log('response in confirm password ', response);
       if (response?.data?.success === true) {
         if (response?.data?.code == 21) {
           Alert.alert('Warning', response?.data?.message);
@@ -933,7 +614,6 @@ console.log('Coming here');
         Alert.alert('Warning', 'Password not created.');
       }
     } catch (error) {
-      console.error('API failed create_password', error);
       alert(error?.message || 'An error occurred during the API call');
     } finally {
       setIsLoading(false);
@@ -945,7 +625,7 @@ console.log('Coming here');
   };
 
   return (
-    <SafeAreaView style={{flex: 1,backgroundColor:_COLORS?.Kodie_WhiteColor}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'undefined' : 'undefined'}
         style={LoginStyles.container}
@@ -958,7 +638,6 @@ console.log('Coming here');
           <View style={LoginStyles.logoContainer}>
             <Image source={logos.mainLogo} style={LoginStyles.logo} />
           </View>
-          {/* ------ login code start  here ........... */}
           <View style={LoginStyles.formContainer}>
             <Text style={LoginStyles.title}>Login</Text>
             <View style={LoginStyles.card}>
@@ -978,10 +657,7 @@ console.log('Coming here');
                   onBlur={() => handleEmailChange(email)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
-                  // maxLength={30}
                   autoCapitalize={'none'}
-                  // returnKeyType='done'
-                  // keyboardType={'default'}
                   textContentType="oneTimeCode"
                 />
                 {emailError ? (
@@ -1032,7 +708,7 @@ console.log('Coming here');
                   <Text style={LoginStyles.error_text}>{passwordError}</Text>
                 ) : null}
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   onPress={() => {
                     openSheetWithHeight(550);
@@ -1047,10 +723,10 @@ console.log('Coming here');
                     setConfirmPasswordError('');
                     setResetEmailError('');
                   }}
-                  style={{flex: 0.5}}>
+                  style={{ flex: 0.5 }}>
                   <Text style={LoginStyles.forgot}>Forgot password?</Text>
                 </TouchableOpacity>
-                <View style={{flex: 0.9}} />
+                <View style={{ flex: 0.9 }} />
               </View>
 
               <CustomSingleButton
@@ -1059,20 +735,15 @@ console.log('Coming here');
                 _ButtonText={'Login'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 marginTop={20}
-                testID={'xyz123'} // Add testID here
+                testID={'xyz123'}
               />
-              {/* <View style={LoginStyles.loderview}></View> */}
               <DividerIcon
                 DeviderText={'or'}
-                style={{marginTop: 32, marginBottom: 30}}
+                style={{ marginTop: 32, marginBottom: 30 }}
               />
               <CustomSingleButton
                 disabled={isLoading ? true : false}
                 onPress={() => {
-                  // props.navigation.navigate("ContractorSignUpFirstScreen");
-                  // props.navigation.navigate("SignUpSteps");
-                  // props.navigation.navigate("Account");
-                  // Alert.alert('Login with Google', 'Coming soon');
                   signIn();
                 }}
                 leftImage={IMAGES.GoogleIcon}
@@ -1081,31 +752,16 @@ console.log('Coming here');
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 marginBottom={25}
               />
-              {/* <CustomSingleButton
-                disabled={isLoading ? true : false}
-                onPress={() => {
-                  loginWithFacebook();
-                  // alert("Coming soon")
-                }}
-                leftImage={IMAGES.FacebookIcon}
-                isLeftImage={true}
-                _ButtonText={'Connect with Facebook'}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                marginBottom={25}
-              /> */}
               <BottomTextsButton
                 _LeftButtonText={"Don't have an account yet? "}
                 _RightButtonText={'Sign up'}
                 onPress={() => {
-                  // props.navigation.navigate("SearchJobResult");
                   props.navigation.navigate('SignUp');
                 }}
               />
             </View>
           </View>
         </ScrollView>
-
-        {/* ------ Rest password code start  here ........... */}
         <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}
@@ -1145,7 +801,6 @@ console.log('Coming here');
             </TouchableOpacity>
           </View>
           <View style={LoginStyles.card}>
-            {/* ------ Reset passowrd 0 section start code  here ........... */}
             {isClick === 0 && (
               <>
                 <View style={LoginStyles.inputContainer}>
@@ -1166,7 +821,6 @@ console.log('Coming here');
                     onBlur={() => handleResetEmailChange(resetEmail)}
                     placeholder="Your email address"
                     placeholderTextColor="#999"
-                    // maxLength={30}
                     textContentType="oneTimeCode"
                     autoCapitalize={'none'}
                     editable={isLoading ? false : true}
@@ -1179,16 +833,14 @@ console.log('Coming here');
                 </View>
               </>
             )}
-
-            {/* ------ Reset passowrd 1 section start code  here ........... */}
             {isClick === 1 && (
               <>
-                <View style={[LoginStyles.inputContainer, {marginBottom: 25}]}>
+                <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                   <TextInput
                     style={[
                       LoginStyles.input,
-                      {backgroundColor: _COLORS?.Kodie_LightGrayLineColor},
+                      { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                     ]}
                     value={resetEmail}
                     placeholder="Your Email Address"
@@ -1199,7 +851,7 @@ console.log('Coming here');
                   />
                 </View>
                 <View style={LoginStyles.varifycode}>
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <Text style={LABEL_STYLES._texinputLabel}>
                       Verification code
                     </Text>
@@ -1245,7 +897,7 @@ console.log('Coming here');
                           setIsTimeron(false); // Reset timer state
                           return [false]; // Stop the timer
                         }}>
-                        {({remainingTime}) => (
+                        {({ remainingTime }) => (
                           <Text
                             style={{
                               color: _COLORS.Kodie_WhiteColor,
@@ -1277,14 +929,12 @@ console.log('Coming here');
                 ) : null}
               </>
             )}
-
-            {/* ------ Reset passowrd 2 section start code  here ........... */}
             {isClick === 2 && (
               <ScrollView
-                contentContainerStyle={{marginBottom: 90}}
+                contentContainerStyle={{ marginBottom: 90 }}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled">
-                <View style={[LoginStyles.inputContainer, {marginBottom: 25}]}>
+                <View style={[LoginStyles.inputContainer, { marginBottom: 25 }]}>
                   <Text
                     style={[
                       LABEL_STYLES._texinputLabel,
@@ -1372,8 +1022,6 @@ console.log('Coming here');
                 </View>
               </ScrollView>
             )}
-
-            {/* ------ Reset passowrd 3 section start code  here ........... */}
             {isClick === 3 && (
               <>
                 <View style={LoginStyles.inputContainer}>
@@ -1390,22 +1038,13 @@ console.log('Coming here');
                     resizeMode={'contain'}
                   />
                 </View>
-                {/* <CustomSingleButton
-                _ButtonText={'Back to login'}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => refRBSheet.current.close()}
-              /> */}
               </>
             )}
-
-            {/* ------ Loder section start code  here ........... */}
             {isLoading && (
               <View style={LoginStyles.secondloder}>
                 <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
               </View>
             )}
-
-            {/* ------ Next button section start code  here ........... */}
           </View>
           <View
             style={[
@@ -1417,9 +1056,6 @@ console.log('Coming here');
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                // marginBottom: -150,
-                // marginTop:
-                //   isClick === 1 || isClick === 2 || isClick === 90 ? 10 : 180,
               },
             ]}>
             <CustomSingleButton

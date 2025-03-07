@@ -2,6 +2,7 @@ package com.kodie;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
@@ -15,6 +16,8 @@ import com.facebook.soloader.SoLoader;
 import com.kodie.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.facebook.FacebookSdk;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -55,10 +58,23 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-    // If you opted-in for the New Architecture, we enable the TurboModule system
-    ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
-    SoLoader.init(this, /* native exopackage */ false);
-    // initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    try {
+      // Initialize the Facebook SDK before any other Facebook-related operations
+      FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
+      FacebookSdk.sdkInitialize(getApplicationContext());
+      FacebookSdk.setAutoInitEnabled(true);
+      FacebookSdk.setAutoLogAppEventsEnabled(true);
+      FacebookSdk.fullyInitialize();
+
+      // If you opted-in for the New Architecture, we enable the TurboModule system
+      ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+      SoLoader.init(this, /* native exopackage */ false);
+      initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    } catch (Exception e) {
+      // Log the error for debugging purposes
+      Log.e("MainApplication", "Error initializing Facebook SDK: " + e.getMessage());
+      e.printStackTrace();
+    }
   }
 
   /**
