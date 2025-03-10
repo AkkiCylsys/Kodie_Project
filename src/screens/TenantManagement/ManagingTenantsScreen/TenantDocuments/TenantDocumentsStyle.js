@@ -20,7 +20,6 @@ export const TenantDocumentsStyle = StyleSheet.create({
     marginHorizontal: 30,
   },
   flat_MainView: {
-    // flex: 1,
     flexDirection: 'row',
   },
   locationText: {
@@ -31,9 +30,7 @@ export const TenantDocumentsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     marginTop:5
   },
-//   Documents...
 recentDocView:{
-    // flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 16,
@@ -71,10 +68,8 @@ recentDocView:{
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: "column",
     marginLeft: 10,
-    // borderWidth:1
   },
 
   pdfInfo: {

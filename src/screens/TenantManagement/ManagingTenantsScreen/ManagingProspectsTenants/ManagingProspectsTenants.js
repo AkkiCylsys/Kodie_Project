@@ -11,18 +11,15 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import {ManagingProspectsTenantsStyle} from './ManagingProspectsTenantsStyle';
-import ManagingTenant from '../../../../components/Molecules/ManagingTenant/ManagingTenant';
 import TenantData from '../../../../components/TenantScreen/TenantData';
 export default ManagingProspectsTenants = ({TenantAllDetails}) => {
   console.log('TenantAllDetails in prospects:', TenantAllDetails);
 
   const navigation = useNavigation();
-  const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [tenantAllDetailsItem, setTenantAllDetailsItem] = useState({});
   const refRBSheet = useRef();
 
-  const searchInviteTenant = () => {};
   const tenantAllDetailRender = ({item}) => {
     const accountDetails = item?.account_details?.[0] || {};
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;

@@ -15,12 +15,10 @@ import {ManagingPreviousTenantsStyle} from './ManagingPreviousTenantStyle';
 const ManagingPreviousTenant = ({TenantAllDetails}) => {
   console.log('TenantAllDetails in Previous:', TenantAllDetails);
   const navigation = useNavigation();
-  const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [tenantAllDetailsItem, setTenantAllDetailsItem] = useState({});
   const refRBSheet = useRef();
 
-  const searchInviteTenant = () => {};
   const tenantAllDetailRender = ({item}) => {
     const accountDetails = item?.account_details?.[0] || {};
     const {UAD_FIRST_NAME, UAD_PROFILE_PHOTO_PATH} = accountDetails;
@@ -128,8 +126,8 @@ const ManagingPreviousTenant = ({TenantAllDetails}) => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={item => item?.property_id?.toString()}
           renderItem={tenantAllDetailRender}
-          ListEmptyComponent={()=>{
-            <ListEmptyComponent EmptyText={"You don't have any Data."} />
+          ListEmptyComponent={() => {
+            <ListEmptyComponent EmptyText={"You don't have any Data."} />;
           }}
         />
       ) : (

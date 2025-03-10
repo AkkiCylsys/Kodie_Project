@@ -7,12 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TenantDocumentsFolder from '../TenantDocumentsFolder/TenantDocumentsFolder';
 import TopHeader from '../../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../../services/CommonServices';
 import {TenantAllDocumentsFolderStyle} from './TenantAllDocumentsFolderStyle';
 import {_COLORS} from '../../../../../Themes';
-import {Config} from '../../../../../Config';
 import axiosInstance from '../../../../../services/axiosInstance';
 
 const TenantAllDocumentsFolder = props => {

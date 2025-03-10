@@ -5,7 +5,6 @@ export const PreScreeningQuestinnaireStyle = StyleSheet.create({
 backgroundColor:_COLORS.Kodie_WhiteColor
   },
     flat_MainView: {
-        // flex: 1,
         flexDirection: 'row',
       },
       locationText: {
@@ -35,7 +34,7 @@ backgroundColor:_COLORS.Kodie_WhiteColor
       readMoreTextContainer: {
         borderBottomWidth: 1,
         borderColor: _COLORS.Kodie_GreenColor,
-        alignSelf: 'flex-start', // This makes the border span only the width of the text
+        alignSelf: 'flex-start',
         marginTop: 16,
       },
       readMoreText: {

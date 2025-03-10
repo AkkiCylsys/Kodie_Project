@@ -25,7 +25,6 @@ import axiosInstance from '../../../../../services/axiosInstance';
 const TenantDocumentsDetails = props => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
-  //   const folderId = props.route.params?.folderId;
   const moduleName = props.route.params?.moduleName;
   const property_id = props.route.params?.property_id;
   const folderHeading = props.route.params?.folderHeading;
@@ -60,13 +59,13 @@ const TenantDocumentsDetails = props => {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url ='deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
 
     axiosInstance
       .delete(delete_url, {
-        data: dataToSend, // Send data as part of the config object
+        data: dataToSend,
       })
       .then(res => {
         console.log('res......', res);
@@ -159,14 +158,13 @@ const TenantDocumentsDetails = props => {
     }
   };
   const uploadDocument = async doc => {
-    // alert("upload");
     console.log('uri....', doc[0].uri);
     console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
     console.log('p_referral_key....', property_id);
     console.log('p_module_name....', moduleName);
     const url = Config.BASE_URL;
-    const uploadDoc_url ='uploadDocument';
+    const uploadDoc_url = 'uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
     try {
@@ -178,7 +176,6 @@ const TenantDocumentsDetails = props => {
       });
       formData.append('p_referral_key', property_id);
       formData.append('p_module_name', moduleName);
-      // formData.append("p_sub_module_name", "Property documents");
 
       const response = await axiosInstance.post(uploadDoc_url, formData, {
         headers: {
@@ -196,14 +193,13 @@ const TenantDocumentsDetails = props => {
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
-      // alert(error);
     } finally {
       setIsLoading(false);
     }
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl ='get/documents';
+    const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -240,8 +236,6 @@ const TenantDocumentsDetails = props => {
               <Text style={TenantDocumentsDetailsStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              {/* <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity

@@ -26,10 +26,8 @@ export const TenantDocumentsDetailsStyle = StyleSheet.create({
       },
     
       textContainer: {
-        // flex:1,
         flexDirection: "column",
         marginLeft: 10,
-        // borderWidth:1
       },
     
       pdfInfo: {

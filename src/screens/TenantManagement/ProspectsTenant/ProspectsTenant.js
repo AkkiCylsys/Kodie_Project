@@ -9,7 +9,6 @@ import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import TenantData from '../../../components/TenantScreen/TenantData';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 
@@ -164,7 +163,6 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           TenantAllDetails={tenantAllDetailsItem}
         />
       </RBSheet>
-      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

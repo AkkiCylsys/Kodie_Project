@@ -16,7 +16,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {_goBack} from '../../../../services/CommonServices';
 const PreScreeningQuestinnaire = props => {
   const TenantAllDetails = props?.route?.params?.TenantAllDetails;
-  console.log('TenantAllDetails in screening...', JSON.stringify(TenantAllDetails));
+  console.log(
+    'TenantAllDetails in screening...',
+    JSON.stringify(TenantAllDetails),
+  );
   const [isLoading, setIsLoading] = useState(false);
   return (
     <SafeAreaView style={PreScreeningQuestinnaireStyle.mainContainer}>
@@ -25,7 +28,9 @@ const PreScreeningQuestinnaire = props => {
         MiddleText={'View application'}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <UserDetails tenantAccountDetails={TenantAllDetails?.account_details?.[0]}/>
+        <UserDetails
+          tenantAccountDetails={TenantAllDetails?.account_details?.[0]}
+        />
         <DividerIcon />
         <View style={PreScreeningQuestinnaireStyle.ApartmentMainView}>
           <Text style={PreScreeningQuestinnaireStyle.apartmentText}>
@@ -51,14 +56,7 @@ const PreScreeningQuestinnaire = props => {
             {'Pre-rental questionnaire'}
           </Text>
         </View>
-        {/* <PreRentalQuestionnaire
-        accountId={loginData?.Login_details?.user_account_id}
-        propertyId={propertyId}
-        bid_id={bid_id}
-        tenant_id={tenant_id}
-        landlord_id={landlord_id}
-        acceptBiddingData={acceptBiddingData}
-      /> */}
+
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
     </SafeAreaView>

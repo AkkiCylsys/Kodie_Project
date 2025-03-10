@@ -86,14 +86,13 @@ const TenantDocuments = props => {
         });
     }, 300);
   };
-  // delete Document...
   const deleteHandler = fileKey => {
     console.log('filekeyIn_delete....', fileKey);
     const dataToSend = {
       fileId: fileKey,
     };
     const url = Config.BASE_URL;
-    const delete_url ='deletedocument';
+    const delete_url = 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axiosInstance
@@ -115,7 +114,6 @@ const TenantDocuments = props => {
         setIsLoading(false);
       });
   };
-  // Download documents...
   const REMOTE_PATH = filePath;
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
@@ -131,14 +129,13 @@ const TenantDocuments = props => {
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          setUploadDocData([]); // Handle no data scenario
+          setUploadDocData([]);
           console.log('No documents found.');
         }
       })
       .catch(error => {
         if (error.response?.status === 404) {
-          // Handle the 404 specifically
-          setUploadDocData([]); // Set to empty array when no documents exist
+          setUploadDocData([]);
           console.log('No documents found (404).');
         } else {
           console.error('API failed AllDocuments', error);
@@ -295,8 +292,6 @@ const TenantDocuments = props => {
               <Text style={TenantDocumentsStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              {/* <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity

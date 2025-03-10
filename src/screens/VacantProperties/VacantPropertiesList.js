@@ -33,58 +33,59 @@ const VacantPropertiesList = props => {
   }, []);
 
   const swipeVacantList = () => {
-    // Reverse the entire list
     const reversedData = [...vacantData].reverse();
-    
-    // Update the state with the reversed list
+
     setVacantData(reversedData);
     setFilteredUsers(reversedData);
   };
-  
+
   const toggleSortOrder = () => {
-    // Toggle the sort order between ascending and descending
     const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(newOrder);
-  
-    // Reverse the list when toggling
+
     swipeVacantList();
   };
-  
+
   const searchVacantProperty = query => {
     setSearchQuery(query);
-  
+
     const filtered = query
       ? vacantData.filter(item => {
           const propertyTypeMatch =
             item.property_type &&
             item.property_type.toLowerCase().includes(query.toLowerCase());
-  
+
           const cityMatch =
             item.City && item.City.toLowerCase().includes(query.toLowerCase());
-  
+
           const stateMatch =
-            item.state && item.state.toLowerCase().includes(query.toLowerCase());
-  
+            item.state &&
+            item.state.toLowerCase().includes(query.toLowerCase());
+
           const countryMatch =
-            item.country && item.country.toLowerCase().includes(query.toLowerCase());
-  
+            item.country &&
+            item.country.toLowerCase().includes(query.toLowerCase());
+
           const locationMatch =
             item.location &&
             item.location.toLowerCase().includes(query.toLowerCase());
-  
-          // Return true if any of the fields match the query
+
           return (
-            propertyTypeMatch || cityMatch || stateMatch || countryMatch || locationMatch
+            propertyTypeMatch ||
+            cityMatch ||
+            stateMatch ||
+            countryMatch ||
+            locationMatch
           );
         })
       : vacantData;
-  
+
     setFilteredUsers(filtered);
   };
   const get_Vacant_Details = async () => {
     try {
       const url = Config.BASE_URL;
-      const Vacant_Details_url ='get_vacant_property_list';
+      const Vacant_Details_url = 'get_vacant_property_list';
       setIsLoading(true);
       const data = {
         account_id: accountId,
@@ -94,7 +95,7 @@ const VacantPropertiesList = props => {
         const data = response?.data?.property_details || [];
         console.log('vacant DataList..', data);
         setVacantData(data);
-        setFilteredUsers(data); // Initialize filteredUsers with fetched data
+        setFilteredUsers(data);
       } else {
         alert(response?.data?.message);
       }
@@ -104,8 +105,6 @@ const VacantPropertiesList = props => {
       setIsLoading(false);
     }
   };
-
-  
 
   return (
     <SafeAreaView style={VacantPropertiesListStyle.maincontainer}>

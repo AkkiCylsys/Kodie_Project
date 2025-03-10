@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../Themes";
+import { _COLORS } from "../../Themes";
 
 export const VacantPropertiesListStyle = StyleSheet.create({
   maincontainer:{

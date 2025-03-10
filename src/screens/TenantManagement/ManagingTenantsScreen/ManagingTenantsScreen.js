@@ -5,8 +5,6 @@ import {_COLORS, IMAGES} from '../../../Themes';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CurrentTenant from '../../Tenant/CurrentTenant/CurrentTenant';
-import ProspectsTenant from '../ProspectsTenant/ProspectsTenant';
-import PreviousTenant from '../../Tenant/PreviousTenant/PreviousTenant';
 import {getTenantAllDetailsService} from '../../../services/TenantManagementsServices/TenantScreeningServices/TenantScreeningServices';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
@@ -16,7 +14,7 @@ import {useSelector} from 'react-redux';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ManagingProspectsTenants from './ManagingProspectsTenants/ManagingProspectsTenants';
 import ManagingPreviousTenant from './ManagingPreviousTenant/ManagingPreviousTenant';
-import { _goBack } from '../../../services/CommonServices';
+import {_goBack} from '../../../services/CommonServices';
 
 const ManagingTenantsScreen = props => {
   const navigation = useNavigation();
@@ -90,8 +88,6 @@ const ManagingTenantsScreen = props => {
         return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       case 'Tab2':
         return <ManagingPreviousTenant TenantAllDetails={dataToPass} />;
-      // case 'Tab3':
-      //   return <ManagingProspectsTenants TenantAllDetails={dataToPass} />;
       default:
         return <CurrentTenant TenantAllDetails={dataToPass} />;
     }
@@ -101,8 +97,7 @@ const ManagingTenantsScreen = props => {
     <SafeAreaView style={ManagingTenantsScreenStyle.Container}>
       <TopHeader
         onPressLeftButton={() => {
-          _goBack(props)
-          // props.navigation.navigate('Dashboard');
+          _goBack(props);
         }}
         MiddleText={'Tenants'}
       />
@@ -114,8 +109,6 @@ const ManagingTenantsScreen = props => {
         Tab3={'Prospects'}
         onPressTab1={() => setActiveTab('Tab1')}
         onPressTab2={() => setActiveTab('Tab2')}
-        // onPressTab3={() => setActiveTab('Tab3')}
-        // TAB3
         colorTab1={
           activeTab === 'Tab1'
             ? _COLORS.Kodie_BlackColor
