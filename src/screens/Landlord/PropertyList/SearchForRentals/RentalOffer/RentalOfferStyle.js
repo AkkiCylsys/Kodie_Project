@@ -17,7 +17,6 @@ export const RentalOfferStyle = StyleSheet.create({
     marginHorizontal: 16,
   },
   userNameView: {
-    // alignSelf: 'center',
     marginLeft: 10,
   },
   username: {
@@ -147,7 +146,6 @@ export const RentalOfferStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   commontext: {
-    // flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -164,7 +162,6 @@ export const RentalOfferStyle = StyleSheet.create({
     marginBottom: 80,
   },
   commontext: {
-    // flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -192,7 +189,6 @@ export const RentalOfferStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   jobDetailsView: {
@@ -340,10 +336,8 @@ export const RentalOfferStyle = StyleSheet.create({
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: 'column',
     marginLeft: 10,
-    // borderWidth:1
   },
 
   pdfInfo: {
@@ -384,7 +378,6 @@ export const RentalOfferStyle = StyleSheet.create({
     marginTop: 20,
   },
   key_feature_Text_view: {
-    // flex: 1,
     alignSelf:"center"
   },
   key_feature_Text: {
@@ -517,10 +510,8 @@ export const RentalOfferStyle = StyleSheet.create({
     marginVertical:10,
   },
   textContainer: {
-    // flex:1,
     flexDirection: "column",
     marginLeft: 10,
-    // borderWidth:1
   },
   pdfInfo: {
     flex:1,

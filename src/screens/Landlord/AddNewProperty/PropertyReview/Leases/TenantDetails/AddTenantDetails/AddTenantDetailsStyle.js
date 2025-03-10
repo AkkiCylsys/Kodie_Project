@@ -20,10 +20,7 @@ export const AddTenantDetailsStyle = StyleSheet.create({
   btn_main_view: {
     flexDirection: "row",
     marginLeft: 10,
-    // marginTop: 10,
     borderWidth: 1,
-    // paddingHorizontal: 8,
-    // paddingVertical: 5,
     padding: 5,
     marginRight: 150,
     borderRadius: 10,

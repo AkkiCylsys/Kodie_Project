@@ -6,7 +6,6 @@ import {Config} from '../../../Config';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useNavigation} from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import ContractorCurrent from '../../../components/Molecules/Contractors/ContractorsImage/ContractorsImage'; // Update the import path if needed
 import {_COLORS} from '../../../Themes';
 import {PreviousContractorStyle} from './PreviousContractorStyle';
 import ContractorPrevious from '../../../components/Molecules/Contractors/ContractorPreviousTab/ContractorPrevious';

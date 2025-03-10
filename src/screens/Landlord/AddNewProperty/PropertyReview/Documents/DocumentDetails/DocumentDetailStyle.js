@@ -57,7 +57,6 @@ export const DocumentDetailStyle = StyleSheet.create({
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: "column",
     marginLeft: 10,
   },

@@ -16,15 +16,11 @@ import { Config } from '../../Config';
 import axiosInstance from '../../services/axiosInstance';
 const SubscriptionScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
 
   const customerID = props.route.params.customerID;
   console.log('customerID in subscription screen...', customerID);
 
-  // console.log(
-  //   'loginResponse.....',
-  //   loginData?.Account_details[0]?.UAD_FIRST_NAME,
-  // );
+
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -52,8 +48,7 @@ const SubscriptionScreen = props => {
   };
 
   const getClientSecret = () => {
-    // const url = 'https://kodieapis.cylsys.com/api/v1/payment_intent';
-    // const url = 'https://kodietestapi.cylsys.com/api/v1/payment_intent';
+
     const baseUrl = Config?.BASE_URL
     const url = `payment_intent`
     console.log('Request URL:', url);
@@ -72,7 +67,7 @@ const SubscriptionScreen = props => {
             response?.data?.message?.client_secret,
           );
           setClientSecretKey(response?.data?.message?.client_secret);
-          // alert(JSON.stringify(response?.data?.lookup_details));
+       
         } else {
           setIsLoading(false);
         }
@@ -80,7 +75,6 @@ const SubscriptionScreen = props => {
       .catch(error => {
         console.error('API failed client_data', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -94,7 +88,6 @@ const SubscriptionScreen = props => {
       email: loginData?.Login_details?.email,
     };
     try {
-      // console.log("clientSecret data....", clintsecretkey);
       let confirmPaymentIntent = await confirmPayment(clientSecretKey, {
         paymentMethodType: 'Card',
         paymentMethodData: {
@@ -108,7 +101,6 @@ const SubscriptionScreen = props => {
           confirmPaymentIntent.paymentIntent.status,
         );
         setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
-        // alert(confirmPaymentIntent.paymentIntent.status);
         await subscribeCustomer(paymentMethodId);
         Alert.alert('Success', 'Payment successful. Subscription created.');
       }
@@ -119,15 +111,13 @@ const SubscriptionScreen = props => {
     }
   };
   const subscribeCustomer = () => {
-    // const url = 'https://kodieapis.cylsys.com/api/v1/create_subscription';
-    // const url = 'https://kodietestapi.cylsys.com/api/v1/create_subscription';
+
     const baseUrl = Config?.BASE_URL
     const url = `create_subscription`
     console.log('Request URL:', url);
     setIsLoading(true);
     console.log('customer id inside..', customerID);
     const subscribeCustomer_data = {
-      // customer_id: customerID,
       customer_id: 'cus_PenbsmBdrGURhV',
       price: 'price_1Oqa9iKIJa7H9ZVBdnDQYQg9',
     };
@@ -158,8 +148,8 @@ const SubscriptionScreen = props => {
       <View style={{justifyContent: 'flex-start'}}>
         <StripeProvider
           publishableKey={publishableKey}
-          urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-          merchantIdentifier="merchant.com.kodie" // required for Apple Pay
+          urlScheme="your-url-scheme"
+          merchantIdentifier="merchant.com.kodie"
         >
           <View style={{}}>
             <CardField

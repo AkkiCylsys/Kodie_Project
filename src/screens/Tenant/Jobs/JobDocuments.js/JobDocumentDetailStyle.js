@@ -57,7 +57,6 @@ export const JobDocumentDetailStyle = StyleSheet.create({
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: "column",
     marginLeft: 10,
   },

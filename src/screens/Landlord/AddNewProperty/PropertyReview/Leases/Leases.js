@@ -13,7 +13,6 @@ import CustomSingleButton from '../../../../../components/Atoms/CustomButton/Cus
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AddLeaseDetails from './AddLeaseDetails/AddLeaseDetails';
 import {LeaseSummaryStyle} from './LeaseSummary/LeaseSummaryStyle';
-import {Config} from '../../../../../Config';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import moment from 'moment';
@@ -204,12 +203,8 @@ const Leases = props => {
                           name="edit"
                           size={25}
                           color={_COLORS.Kodie_GrayColor}
-                          // style={LeaseSummaryStyle.note_b_img_sty}
                         />
                       </TouchableOpacity>
-                      {/* <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
-                        <Entypo name="dots-three-horizontal" size={20} color={_COLORS.Kodie_GrayColor} />
-                      </TouchableOpacity> */}
                     </View>
                   </View>
                 </View>
@@ -235,7 +230,7 @@ const Leases = props => {
                     </View>
                     <View>
                       <Text style={LeaseSummaryStyle.lease_term_Text}>
-                        Rent  remaining due
+                        Rent remaining due
                       </Text>
                       <Text
                         style={[

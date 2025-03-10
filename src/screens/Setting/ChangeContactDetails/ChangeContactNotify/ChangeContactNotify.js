@@ -19,15 +19,10 @@ const ChangeContactNotify = props => {
   const [notify, setNotify] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
 
-  // console.log('loginResponse.....', loginData);
   let oldPhoneNumber = props?.route?.params?.oldnewPhoneNumber;
   let PhoneNumber = props?.route?.params?.newnewPhoneNumber;
   let countryCode = props?.route?.params?.countryCode;
   const newPhoneNumber = PhoneNumber.substring(3);
-  console.log('oldPhoneNumber....', oldPhoneNumber);
-  // console.log('newPhoneNumber....', newPhoneNumber);
-  console.log('newPhoneNumber....', PhoneNumber);
-  console.log('PhoneNumber...', PhoneNumber);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -38,12 +33,10 @@ const ChangeContactNotify = props => {
       await getPersonalDetails();
     }
   };
-  // Api intrigation...
   const getPersonalDetails = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-    const apiUrl =
-      `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
     await axiosInstance
       .get(apiUrl)
@@ -55,8 +48,6 @@ const ChangeContactNotify = props => {
           response?.data?.data?.length > 0
         ) {
           setAccountDetails(response?.data?.data[0]);
-          console.log('AccountDetails....', accountDetails);
-          // console.log("countryCode..",accountDetails?.UAD_COUNTRY_CODE)
         } else {
           console.error('Invalid response data format:', response?.data);
         }
@@ -75,10 +66,9 @@ const ChangeContactNotify = props => {
       uad_key: loginData?.Login_details?.user_account_id,
       country_code: countryCode,
       old_phone_number: oldPhoneNumber,
-      // new_phone_number: newPhoneNumber,
       new_phone_number: PhoneNumber,
     };
-    console.log("dataToSend ....",dataToSend);
+    console.log('dataToSend ....', dataToSend);
     setIsLoading(true);
     axiosInstance
       .put(updateContactDetailUrl, dataToSend)
@@ -120,13 +110,12 @@ const ChangeContactNotify = props => {
             </Text>
             <Text style={ChangeNotifyStyle.totext}> to </Text>
             <Text style={ChangeNotifyStyle.secondnumbertext}>
-              {/* {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`} */}
               {`${countryCode}${PhoneNumber}`}
             </Text>
           </View>
         </View>
-<DividerIcon marginBottom={35} marginTop={35}/>
-       
+        <DividerIcon marginBottom={35} marginTop={35} />
+
         <View>
           <View style={ChangeNotifyStyle.notifyview}>
             <Text style={ChangeNotifyStyle.notifytext}>Notify others</Text>
@@ -145,7 +134,7 @@ const ChangeContactNotify = props => {
           </View>
         </View>
 
-        <DividerIcon marginBottom={35} marginTop={35}/>
+        <DividerIcon marginBottom={35} marginTop={35} />
 
         <View style={ChangeNotifyStyle.buttonview}>
           <CustomSingleButton

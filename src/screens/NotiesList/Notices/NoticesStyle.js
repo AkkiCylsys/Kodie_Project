@@ -7,7 +7,6 @@ export const NoticesStyle = StyleSheet.create({
     height: '100%',
   },
   scrollContainer: {
-    // marginHorizontal:15
   },
   btnview: {
     marginHorizontal: 15,
@@ -89,13 +88,11 @@ export const NoticesStyle = StyleSheet.create({
   componentview: {
     marginTop: 10,
   },
-  // noticestyle...
 
   mainContainer: {
     flex: 1,
     flexDirection: 'row',
     marginTop: 10,
-    // width:'100%',
     marginHorizontal: 16,
     marginBottom:8
   },
@@ -121,19 +118,16 @@ export const NoticesStyle = StyleSheet.create({
     marginLeft: 10,
     borderWidth: 0.4,
     width: '85%',
-    // height: 90,
     borderRadius: 4,
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
-    // padding: 15,
     
   },
   bindview: {
     flexDirection: 'row',
   },
   headinglineview: {
-    // flexDirection:'row',
     marginHorizontal: 10,
     alignSelf: 'center',
     justifyContent: 'center',
@@ -144,7 +138,6 @@ export const NoticesStyle = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    // marginTop: 10,
   },
   headintext: {
     fontSize: 12,
@@ -155,7 +148,6 @@ export const NoticesStyle = StyleSheet.create({
     marginLeft:5
   },
   addressviewbind: {
-    // flex: 1,
     flexDirection: 'row',
     marginTop: 3,
     alignSelf: 'center',
@@ -184,7 +176,6 @@ export const NoticesStyle = StyleSheet.create({
   flatlistView: {
     flex: 1,
     flexDirection: 'row',
-    // alignItems: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 10,

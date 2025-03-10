@@ -95,7 +95,6 @@ export const PropertyFeatureStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 13,
   },
   inputSearchStyle: {
@@ -258,7 +257,6 @@ export const PropertyFeatureStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   textDropdown: {
-    // marginLeft: 20,
   },
   dropdownMenu: {
     flex: 1,

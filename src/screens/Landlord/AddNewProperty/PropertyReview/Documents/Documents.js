@@ -18,7 +18,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../../../../Config';
 import EditDocumentsModal from '../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFetchBlob from 'rn-fetch-blob';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useIsFocused} from '@react-navigation/native';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
@@ -82,7 +81,6 @@ export default Documents = props => {
   const closeModal = () => {
     refRBSheet.current.close();
   };
-  // share doc....
   const shareDocFile = async () => {
     setTimeout(() => {
       Share.open({url: filePath})
@@ -94,7 +92,6 @@ export default Documents = props => {
         });
     }, 300);
   };
-  // delete Document...
   const deleteHandler = fileKey => {
     console.log('filekeyIn_delete....', fileKey);
     const dataToSend = {
@@ -123,7 +120,6 @@ export default Documents = props => {
         setIsLoading(false);
       });
   };
-  // Download documents...
   const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
@@ -139,15 +135,12 @@ export default Documents = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
           downloadImage();
         } else {
-          // If permission denied then show alert
           alert('Storage Permission Not Granted');
         }
       } catch (err) {
-        // To handle permission related exception
         console.warn(err);
       }
     }
@@ -158,7 +151,6 @@ export default Documents = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -176,9 +168,7 @@ export default Documents = props => {
     config(options)
       .fetch('GET', image_URL)
       .then(res => {
-        // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        // alert("Image Downloaded Successfully.");
         Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
@@ -203,8 +193,6 @@ export default Documents = props => {
             />
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
-              {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              {/* <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -251,39 +239,6 @@ export default Documents = props => {
     );
   };
 
-  // Api intrigation ......
-  // const getAllDocuments = () => {
-  //   const url = Config.BASE_URL;
-  //   const getDocument_url = `get/document/${property_id}`;
-  //   console.log('Request URL:', getDocument_url);
-  //   setIsLoading(true);
-
-  //   axiosInstance
-  //     .get(getDocument_url)
-  //     .then(response => {
-  //       console.log('API Response getDocuments:', response?.data);
-  //       if (response?.data?.success === true) {
-  //         setUploadDocData(response?.data?.data);
-  //         console.log('getAlluploadDocData..', response?.data?.data);
-  //       } else {
-  //         setUploadDocData([]); // Handle no data scenario
-  //         console.log('No documents found.');
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.response?.status === 404) {
-  //         // Handle the 404 specifically
-  //         setUploadDocData([]); // Set to empty array when no documents exist
-  //         console.log('No documents found (404).');
-  //       } else {
-  //         console.error('API failed AllDocuments', error);
-  //       }
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
     const getDocument_url = 'get/documents';
@@ -302,14 +257,13 @@ export default Documents = props => {
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          setUploadDocData([]); // Handle no data scenario
+          setUploadDocData([]);
           console.log('No documents found.');
         }
       })
       .catch(error => {
         if (error.response?.status === 404) {
-          // Handle the 404 specifically
-          setUploadDocData([]); // Set to empty array when no documents exist
+          setUploadDocData([]);
           console.log('No documents found (404).');
         } else {
           console.error('API failed AllDocuments', error);
@@ -321,7 +275,6 @@ export default Documents = props => {
   };
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    // const getDocumentUrl = url + 'tanant_details/get/documents';
     const getDocumentUrl = 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
@@ -418,7 +371,6 @@ export default Documents = props => {
       if (isIOS) {
         FileViewer.open(res.data, {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -428,7 +380,6 @@ export default Documents = props => {
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -505,21 +456,16 @@ export default Documents = props => {
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
-            // // downloadFile={downloadFile}
             downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              // navigation.navigate('ViewDocument', {
-              //   filePath: filePath,
-              // });
               downloadviewFile();
             }}
           />
         </RBSheet>
       </ScrollView>
-      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

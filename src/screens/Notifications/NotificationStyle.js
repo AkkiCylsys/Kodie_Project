@@ -11,7 +11,6 @@ export const NotificationStyle = StyleSheet.create({
   },
 
   flatlistView: {
-    // flex: 1,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,

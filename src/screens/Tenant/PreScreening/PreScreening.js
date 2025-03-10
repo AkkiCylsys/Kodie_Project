@@ -49,19 +49,13 @@ const renderDataItem = item => {
       <Text style={PreScreeningStyle.selectedTextStyle}>
         {item.lookup_description}
       </Text>
-      {/* <AntDesign
-          style={PropertyFeatureStyle.icon}
-          color={_COLORS.Kodie_BlackColor}
-          name="check"
-          size={20}
-        /> */}
     </View>
   );
 };
 
 const PreScreening = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginData', loginData);
+
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [RentalDetails, setRentalDetails] = useState(false);
@@ -114,9 +108,7 @@ const PreScreening = props => {
     setPreferences(!Preferences);
   };
 
-  // API bind Add PreScreening code here.....
   const PreScreeninghandle = () => {
-    // const formattedPets = JSON.stringify(pets);
     console.log(
       selectedDate,
       RentalLeasevalue,
@@ -134,47 +126,27 @@ const PreScreening = props => {
       JSON.stringify(pets),
     );
 
-    const PreScreeningData =
-      //   {
-      //     uad_key: 4,
-      //     tpq_move_date: "2023-11-29",
-      //     tpq_lease_term: null,
-      //     tpq_staying_person: 2,
-      //     tpq_rental_budget: 1500,
-      //     tpq_paying_rent: 1,
-      //     tpq_employment_status: 1,
-      //     tpq_employment_year: "4 Year",
-      //     tpq_weekly_income: 500,
-      //     tpq_end_date: "2024-06-31",
-      //     tpq_broken_rental_agreement: 1,
-      //     tpq_previous_rental: 1,
-      //     tpq_smoking: 0,
-      //     tpq_any_pets: 1,
-      //     tpq_type_pets: "[1,2,3]",
-      //     tpq_is_active: 1,
-      //     tpq_created_by: "admin123"
-      // }
-      {
-        uad_key: loginData?.Login_details?.user_account_id,
-        tpq_move_date: selectedDate,
-        tpq_lease_term: RentalLeasevalue,
-        tpq_staying_person: valueStying,
-        tpq_rental_budget: jobDetails,
-        tpq_paying_rent: selected_Paying_Id,
-        tpq_employment_status: EmployeeValue,
-        tpq_employment_year: roomnumberOfYear,
-        tpq_weekly_income: weeklyIncome,
-        tpq_end_date: numberOfYear,
-        tpq_broken_rental_agreement: selected_Agreement_Id,
-        tpq_previous_rental: selected_Previous_Id,
-        tpq_smoking: selected_Smoking_Id,
-        tpq_any_pets: selected_Pets_Id,
-        tpq_type_pets: JSON.stringify(pets),
-        tpq_is_active: 1,
-        tpq_created_by: 'admin123',
-      };
+    const PreScreeningData = {
+      uad_key: loginData?.Login_details?.user_account_id,
+      tpq_move_date: selectedDate,
+      tpq_lease_term: RentalLeasevalue,
+      tpq_staying_person: valueStying,
+      tpq_rental_budget: jobDetails,
+      tpq_paying_rent: selected_Paying_Id,
+      tpq_employment_status: EmployeeValue,
+      tpq_employment_year: roomnumberOfYear,
+      tpq_weekly_income: weeklyIncome,
+      tpq_end_date: numberOfYear,
+      tpq_broken_rental_agreement: selected_Agreement_Id,
+      tpq_previous_rental: selected_Previous_Id,
+      tpq_smoking: selected_Smoking_Id,
+      tpq_any_pets: selected_Pets_Id,
+      tpq_type_pets: JSON.stringify(pets),
+      tpq_is_active: 1,
+      tpq_created_by: 'admin123',
+    };
     const url = Config.BASE_URL;
-    const PreScreeningUrl ='add_tenant_questionarie/create';
+    const PreScreeningUrl = 'add_tenant_questionarie/create';
     console.log('Request URL:', PreScreeningUrl);
     setIsLoading(true);
 
@@ -434,7 +406,6 @@ const PreScreening = props => {
                 <View style={PreScreeningStyle.datePickerView}>
                   <CalendarModal
                     current={selectedDate}
-
                     SelectDate={selectedDate ? selectedDate : 'Start Date'}
                     _textInputStyle={{
                       color: selectedDate
@@ -550,7 +521,6 @@ const PreScreening = props => {
                     onPressLeftButton={() => {
                       setSelected_Paying_Button(false);
                       setSelected_Paying_Id(1);
-                      // alert(selectedButtonId)
                     }}
                     RightButtonText={'Monthly'}
                     RightButtonbackgroundColor={
@@ -702,7 +672,6 @@ const PreScreening = props => {
 
                 <View
                   style={[
-                    // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
                   ]}>
@@ -729,7 +698,6 @@ const PreScreening = props => {
                     onPressLeftButton={() => {
                       setSelected_Rental_Agreement(false);
                       setSelected_Agreement_Id(1);
-                      // alert(selectedButtonId)
                     }}
                     RightButtonText={'No'}
                     RightButtonbackgroundColor={
@@ -756,7 +724,6 @@ const PreScreening = props => {
 
                 <View
                   style={[
-                    // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
                   ]}>
@@ -783,7 +750,6 @@ const PreScreening = props => {
                     onPressLeftButton={() => {
                       setSelected_Previous_Rental(false);
                       setSelected_Previous_Id(1);
-                      // alert(selectedButtonId)
                     }}
                     RightButtonText={'No'}
                     RightButtonbackgroundColor={
@@ -830,7 +796,6 @@ const PreScreening = props => {
               <View>
                 <View
                   style={[
-                    // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
                   ]}>
@@ -857,7 +822,6 @@ const PreScreening = props => {
                     onPressLeftButton={() => {
                       setSelected_Smoking(false);
                       setSelected_Smoking_Id(1);
-                      // alert(selectedButtonId)
                     }}
                     RightButtonText={'Non-smoking'}
                     RightButtonbackgroundColor={
@@ -884,7 +848,6 @@ const PreScreening = props => {
 
                 <View
                   style={[
-                    // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
                   ]}>
@@ -911,7 +874,6 @@ const PreScreening = props => {
                     onPressLeftButton={() => {
                       setSelected_Pets(false);
                       setSelected_Pets_Id(1);
-                      // alert(selectedButtonId)
                     }}
                     RightButtonText={'No'}
                     RightButtonbackgroundColor={
@@ -1014,7 +976,3 @@ const PreScreening = props => {
 };
 
 export default PreScreening;
-
-//   onPress={() => {
-//     refRBSheet.current.open();
-//   }}

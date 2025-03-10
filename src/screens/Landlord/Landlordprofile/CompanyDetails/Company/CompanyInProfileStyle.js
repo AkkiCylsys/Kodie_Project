@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import CompanyInProfile from './CompanyInProfile';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 
 export default CompanyInProfileStyle = StyleSheet.create({
@@ -12,8 +11,6 @@ export default CompanyInProfileStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    // marginBottom: 50,
-    // marginBottom: 250,
   },
   input: {
     height: 45,
@@ -53,7 +50,6 @@ export default CompanyInProfileStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
-    // margin: 10,
     marginVertical: 8,
     marginHorizontal: 5,
   },
@@ -65,21 +61,17 @@ export default CompanyInProfileStyle = StyleSheet.create({
   },
   simpleinputview: {
     flex: 1,
-    // height: 50,
     borderWidth: 1,
-    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: 'row',
     alignItems: 'center',
-    // width: "100%",
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginTop: 15,
   },
   box_Text_Style: {color: _COLORS.Kodie_MediumGrayColor},
-  //   Dropdown Style..
   dropdown: {
     borderWidth: 1,
     height: 50,
@@ -103,14 +95,12 @@ export default CompanyInProfileStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  //   ........
   locationConView: {
     flex: 1,
     flexDirection: 'row',

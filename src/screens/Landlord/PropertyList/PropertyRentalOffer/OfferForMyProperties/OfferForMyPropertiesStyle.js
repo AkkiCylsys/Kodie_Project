@@ -1,11 +1,9 @@
-import {StyleSheet} from 'react-native';
-import {_COLORS, FONTFAMILY} from '../../../../../Themes';
-import { floor } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
+import { _COLORS, FONTFAMILY } from '../../../../../Themes';
 
 export const OfferForMyPropertiesStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // marginHorizontal:16
   },
   selectPropertyText: {
     fontSize: 20,
@@ -66,11 +64,10 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     alignSelf: 'center',
   },
   SubContainer: {
-    flex:1,
+    flex: 1,
     flexDirection: 'row',
   },
   flat_MainView: {
-    // flex: 1,
     flexDirection: 'row',
   },
   locationText: {
@@ -79,13 +76,11 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     marginLeft: 5,
     fontFamily: FONTFAMILY.K_Bold,
-    marginTop:5
+    marginTop: 5
   },
   apartmentView: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginLeft: 15,
   },
   apartmentText: {
     fontSize: 13.48,
@@ -93,7 +88,7 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   cityText: {
-    flex:1,
+    flex: 1,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
@@ -112,41 +107,38 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_GrayColor,
   },
   userName: {
-    // flex:1,
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf:"center",
-    marginLeft:5,
-    // width:80
+    alignSelf: "center",
+    marginLeft: 5,
   },
-  rattingText:{
+  rattingText: {
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf:"center",
-    marginLeft:5,
+    alignSelf: "center",
+    marginLeft: 5,
   },
-  userMainCon:{
+  userMainCon: {
     flex: 0.3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop:5
+    marginTop: 5
 
   },
-  userContainer:{flex: 0.5, flexDirection: 'row',alignSelf:"center",},
-  ratting:{
+  userContainer: { flex: 0.5, flexDirection: 'row', alignSelf: "center", },
+  ratting: {
     flexDirection: 'row',
     borderWidth: 1,
     borderRadius: 30,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     borderColor: _COLORS.Kodie_GrayColor,
-    shadowColor: '#000', 
-    // shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25, 
-    shadowRadius: 3.84, 
-    elevation: 1, 
-    backgroundColor: 'white', 
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+    backgroundColor: 'white',
   },
   Img_found: {
     fontSize: 12,

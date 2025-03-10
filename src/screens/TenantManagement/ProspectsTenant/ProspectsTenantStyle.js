@@ -50,7 +50,6 @@ export const ProspectsTenantStyle = StyleSheet.create({
   },
   flexRowView:{flexDirection: 'row'},
   subContainer:{
-    // flex: 1,
     marginHorizontal: 16,
     marginVertical:11
   },

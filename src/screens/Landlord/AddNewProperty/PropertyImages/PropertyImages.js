@@ -82,24 +82,9 @@ export default PropertyImages = props => {
       );
       return;
     }
-    // if (selectedVideos && selectedVideos.length > 0) {
-    //   selectedVideos.forEach((videoUri, index) => {
-    //     if (typeof videoUri === 'string') {
-    //       const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
-    //       formData.append(`videos`, {
-    //         uri: videoUri,
-    //         name: videoName,
-    //         type: 'video/mp4',
-    //       });
-    //     } else {
-    //       console.error(`Invalid video URI at index ${index}: ${videoUri}`);
-    //     }
-    //   });
-    // }
-
+    
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
-        // Validate videoInfo
         if (videoInfo && videoInfo.path && videoInfo.mime) {
           const {path, mime} = videoInfo;
           const videoName = path.substring(path.lastIndexOf('/') + 1);
@@ -157,24 +142,9 @@ export default PropertyImages = props => {
       );
       return;
     }
-    // Append videos
-    // if (selectedVideos && selectedVideos.length > 0) {
-    //   selectedVideos.forEach((videoUri, index) => {
-    //     if (typeof videoUri === 'string') {
-    //       const videoName = videoUri.substring(videoUri.lastIndexOf('/') + 1);
-    //       formData.append(`videos`, {
-    //         uri: videoUri,
-    //         name: videoName,
-    //         type: 'video/mp4', // Set the appropriate video type
-    //       });
-    //     } else {
-    //       console.error(`Invalid video URI at index ${index}: ${videoUri}`);
-    //     }
-    //   });
-    // }
+
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
-        // Validate videoInfo
         if (videoInfo && videoInfo.path && videoInfo.mime) {
           const {path, mime} = videoInfo;
           const videoName = path.substring(path.lastIndexOf('/') + 1);
@@ -216,14 +186,13 @@ export default PropertyImages = props => {
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: 'video',
-      multiple: false, // Set to false for single video selection
+      multiple: false,
     })
       .then(video => {
-        const maxSize = 100 * 1024 * 1024; // 100 MB limit
+        const maxSize = 100 * 1024 * 1024;
 
-        // No need to filter for multiple videos, just check the single video size
         if (video.size <= maxSize) {
-          setSelectedVideos([video]); // Directly set the single selected video
+          setSelectedVideos([video]); 
           console.log('Selected video:', video);
         } else {
           Alert.alert('Warning', 'Video size exceeds the limit of 100 MB.');
@@ -346,7 +315,7 @@ export default PropertyImages = props => {
     props.navigation.pop();
   };
   const handleImageNameChange = multipleImages => {
-    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
     const oversizedImage = multipleImages.find(
       image => image.size > MAX_FILE_SIZE,
     );
@@ -430,7 +399,6 @@ export default PropertyImages = props => {
                   resizeMode: 'cover',
                   borderRadius: 15,
                   width: '90%',
-                  // position: "relative",
                 }}
               />
               {/* )} */}
@@ -471,7 +439,7 @@ export default PropertyImages = props => {
               <View>
                 {typeof selectedVideos[0] === 'object' && selectedVideos[0]?.path ? (
                   <Video
-                    source={{ uri: selectedVideos[0].path }} // Local video URI
+                    source={{ uri: selectedVideos[0].path }}
                     style={{
                       width: '100%',
                       height: 150,
@@ -485,7 +453,7 @@ export default PropertyImages = props => {
                   />
                 ) : typeof selectedVideos[0] === 'string' ? (
                   <Video
-                    source={{ uri: selectedVideos[0] }} // If it's a remote URL
+                    source={{ uri: selectedVideos[0] }}
                     style={{
                       width: '100%',
                       height: 150,
@@ -540,10 +508,8 @@ export default PropertyImages = props => {
               onPress={() => {
                 if (editMode) {
                   handleSaveUpdateImage();
-                  // alert('sdv');
                 } else {
                   handleSaveImage();
-                  // alert('sdee');
                 }
               }}
               disabled={isLoading ? true : false}

@@ -16,7 +16,6 @@ import TopHeader from '../../../components/Molecules/Header/Header';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, FONTFAMILY} from '../../../Themes';
 import {_goBack} from '../../../services/CommonServices';

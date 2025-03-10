@@ -160,7 +160,6 @@ export const LeaseSummaryStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_minDarkGreenColor,
     paddingHorizontal: 10,
     borderRadius: 15,
-    // marginTop:20,
   },
   account_view: { flexDirection: "row", justifyContent: "space-between" },
   paidDate_subView: {

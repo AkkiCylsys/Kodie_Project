@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, Image, TouchableOpacity, FlatList, SafeAreaView} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import {Help_FeedBackCss} from './Help_FeedBackCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {IMAGES, _COLORS} from '../../../Themes/index';
@@ -16,7 +23,6 @@ const feedbackData = [
   {
     id: '1',
     Heading: 'Help Center',
-    // img: IMAGES.helpCenter,
     icon: (
       <AntDesign
         name="questioncircleo"
@@ -29,7 +35,6 @@ const feedbackData = [
   {
     id: '2',
     Heading: 'Contact Us',
-    // img: IMAGES.contactus,
     icon: (
       <MaterialIcons
         name="perm-contact-cal"
@@ -42,7 +47,6 @@ const feedbackData = [
   {
     id: '3',
     Heading: 'Terms & Privacy Policy',
-    // img: IMAGES.TermPrivacy,
     icon: (
       <Fontisto
         name="file-1"
@@ -55,7 +59,6 @@ const feedbackData = [
   {
     id: '4',
     Heading: 'App Info',
-    // img: IMAGES.AppInfo,
     icon: (
       <Feather
         name="info"
@@ -73,29 +76,21 @@ const Help_FeedBack = props => {
       <TouchableOpacity
         onPress={() => {
           if (item.id === '1') {
-            //---- Navigate to OtherScreen when Contact Us is clicked
-            // navigation.navigate("OtherScreen");
             alert('Coming soon');
           }
           if (item.id === '2') {
-            //---- Navigate to OtherScreen when Contact Us is clicked
             navigation.navigate('Contactus');
           }
 
           if (item.id === '3') {
-            //---- Navigate to OtherScreen when Contact Us is clicked
-            // navigation.navigate("OtherScreen");
             alert('Coming soon');
           }
           if (item.id === '4') {
-            //----- Navigate to OtherScreen when AppInfo is clicked
             navigation.navigate('AppInfo');
-            // alert('')
           }
         }}>
         <View style={Help_FeedBackCss.container}>
           <View style={Help_FeedBackCss.profileView}>
-            {/* <Image source={item.img} style={Help_FeedBackCss.profileIcon} /> */}
             <Text style={Help_FeedBackCss.IconView}>{item.icon}</Text>
             <Text style={Help_FeedBackCss.profile_Heading}>{item.Heading}</Text>
           </View>

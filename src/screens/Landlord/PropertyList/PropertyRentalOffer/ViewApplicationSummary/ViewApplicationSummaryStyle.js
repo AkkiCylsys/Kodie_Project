@@ -1,11 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
-import { floor } from 'react-native-reanimated';
 export const ViewApplicationSummaryStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     marginBottom: 200,
-    // marginHorizontal: 16,
     marginTop: 15,
   },
   applicationSumDet: {
@@ -16,8 +14,6 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
   applicationSum_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginVertical: 10,
-    // marginTop: 15,
   },
   rowStyle: {
     flexDirection: 'row',
@@ -36,7 +32,7 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     marginVertical: 10,
   },
   toggleButtonView: {
-    flex:1,
+    flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
@@ -92,10 +88,8 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     marginVertical: 10,
   },
   textContainer: {
-    // flex:1,
     flexDirection: 'column',
     marginLeft: 10,
-    // borderWidth:1
   },
   pdfInfo: {
     flex: 1,
@@ -153,6 +147,6 @@ export const ViewApplicationSummaryStyle = StyleSheet.create({
     fontSize: 18,
     color: _COLORS?.Kodie_WhiteColor,
     fontFamily: FONTFAMILY?.K_Bold,
-    lineHeight: 22, // Line height set kiya
+    lineHeight: 22,
   },
 });

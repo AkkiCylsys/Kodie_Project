@@ -5,7 +5,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
 import {AddExpensesDetailsStyle} from './AddExpensesDetailsStyle';
 import {_COLORS} from '../../../../../../Themes';
@@ -19,8 +19,6 @@ import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/
 import {Config} from '../../../../../../Config';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-import {color} from 'react-native-reanimated';
-import { matrixTransform } from 'react-native-svg/lib/typescript/elements/Shape';
 import axiosInstance from '../../../../../../services/axiosInstance';
 
 const data = [
@@ -29,7 +27,6 @@ const data = [
   {label: '12-month', value: '3'},
 ];
 export default AddExpensesDetails = props => {
-  //  alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
   console.log('property_id in Add details..', property_id);
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -68,31 +65,6 @@ export default AddExpensesDetails = props => {
   const [lease_end_value, setlLease_end_value] = useState('');
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
   const [leaseSummaryData, setLeaseSummaryData] = useState([]);
-  // Calculate and Update Account Excl. and Tax based on user input
-  //  useEffect(() => {
-  //   if (accountXcl && tax) {
-  //     const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
-  //     const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
-  //     const calculatedTotalAmount = (parsedAccountXcl * (1 + (parsedTax / 100))).toFixed(2);
-  //     setTotalAmount(formatCurrency(calculatedTotalAmount));
-  //     setAccountXcl(formatCurrency(parsedAccountXcl));
-  //   }
-  // }, [accountXcl, tax]);
-  // useEffect(() => {
-  //   if (totalAmount && accountXcl && !tax) {
-  //     // Calculate Tax %
-  //     const parsedTotalAmount = parseFloat(totalAmount.replace(/[^0-9.-]/g, ''));
-  //     const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
-  //     const calculatedTax = ((parsedTotalAmount - parsedAccountXcl) / parsedAccountXcl) * 100;
-  //     setTax(calculatedTax.toFixed(2));
-  //   } else if (totalAmount && !accountXcl && tax) {
-  //     // Calculate Total Amount (excl. tax)
-  //     const parsedTotalAmount = parseFloat(totalAmount.replace(/[^0-9.-]/g, ''));
-  //     const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
-  //     const calculatedAccountXcl = (parsedTotalAmount / (1 + (parsedTax / 100))).toFixed(2);
-  //     setAccountXcl(formatCurrency(calculatedAccountXcl));
-  //   }
-  // }, [totalAmount, accountXcl, tax]);
 
   const formatCurrency = value => {
     return (
@@ -125,21 +97,11 @@ export default AddExpensesDetails = props => {
   };
 
   const handleAccountXclChange = text => {
-    // Remove non-numeric and non-decimal characters except the first minus sign if present
-    // let formattedValue = text.replace(/[^0-9.-]/g, '');
-    // if (formattedValue && formattedValue.charAt(0) === '-') {
-    //   formattedValue = '-' + formattedValue.slice(1).replace(/(\..*)\./g, '$1');
-    // } else {
-    //   formattedValue = formattedValue.replace(/(\..*)\./g, '$1');
-    // }
-    // formattedValue = '$'+ ' ' + formattedValue;
     setAccountXcl(totalAmount);
   };
   const handleTaxChange = text => {
-    // Remove all non-numeric characters except the first decimal point
     let formattedValue = text.replace(/[^\d.]/g, '');
 
-    // If there are more than two decimal places, truncate it
     if (formattedValue.includes('.')) {
       const parts = formattedValue.split('.');
       if (parts[1].length > 2) {
@@ -148,7 +110,6 @@ export default AddExpensesDetails = props => {
       formattedValue = parts.join('.');
     }
 
-    // Update the state with the formatted tax value
     setTax(formattedValue);
   };
   const handleOptionClick = option => {
@@ -233,7 +194,6 @@ export default AddExpensesDetails = props => {
           setIsLoading(false);
           console.log('Expence Category....', response?.data?.lookup_details);
           setExpenceCategoryData(response?.data?.lookup_details);
-          // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error('Expence_Category_error:', response?.data?.error);
           setIsLoading(false);
@@ -241,7 +201,6 @@ export default AddExpensesDetails = props => {
       })
       .catch(error => {
         console.error('Expence Category error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -269,7 +228,6 @@ export default AddExpensesDetails = props => {
       </ScrollView>
     );
   };
-  // API bind Responsible Lookup key code here.....
   const handleResponsible = () => {
     const propertyData = {
       P_PARENT_CODE: 'RESPONSIBLE FOR PAYING',
@@ -301,7 +259,6 @@ export default AddExpensesDetails = props => {
       });
   };
 
-  // API bind Add Expense code here.....
   const Expencehandle = () => {
     console.log(
       totalAmount,
@@ -326,14 +283,13 @@ export default AddExpensesDetails = props => {
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
-      paid: selectedButtonDepositId ,
+      paid: selectedButtonDepositId,
       start_date: selectedPaidDate ? selectedPaidDate : null,
       is_active: 1,
     };
-    console.log(ExpenceData,'ExpenceData.......');
+    console.log(ExpenceData, 'ExpenceData.......');
     const url = Config.BASE_URL;
-    // const ExpenceUrl = url + 'property_expenses_details/create';
-    const ExpenceUrl ='create/expenses';
+    const ExpenceUrl = 'create/expenses';
     console.log('Request URL:', ExpenceUrl);
     setIsLoading(true);
 
@@ -343,7 +299,7 @@ export default AddExpensesDetails = props => {
         setExpenceResponse(response?.data);
         console.log('Expence Details_data response', response?.data);
         if (response?.data?.success === true) {
-          Alert.alert("Success",response?.data?.message);
+          Alert.alert('Success', response?.data?.message);
           setTotalAmount('');
           setAccountXcl('');
           setTax('');
@@ -380,11 +336,7 @@ export default AddExpensesDetails = props => {
       setlLease_end_valueError(true);
     } else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError('Please select an option.');
-    }
-    // else if (selectedPaidDate.trim() === "") {
-    //   setSelectedPaidDateError("Paid date is required!");
-    // }
-    else if (!selectedButtonDeposit && selectedPaidDate.trim() === '') {
+    } else if (!selectedButtonDeposit && selectedPaidDate.trim() === '') {
       setSelectedPaidDateError('Paid date is required!');
     } else {
       Expencehandle();
@@ -409,7 +361,6 @@ export default AddExpensesDetails = props => {
         console.log('API Response rental lease terms:', response?.data);
         if (response?.data?.status === true) {
           setLease_end_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -418,7 +369,6 @@ export default AddExpensesDetails = props => {
       .catch(error => {
         console.error('API failed lease_term', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -429,9 +379,7 @@ export default AddExpensesDetails = props => {
     handleResponsible();
     handle_lease_end();
     fetchLeaseSummary();
-        // Expencehandle();
   }, []);
-  // dropDownRender
   const expenseCategory_render = item => {
     return (
       <View
@@ -482,8 +430,9 @@ export default AddExpensesDetails = props => {
       <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Total amount'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Total amount'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
@@ -493,7 +442,6 @@ export default AddExpensesDetails = props => {
               placeholder="Enter the total amount of the expense"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
-              // maxLength={5}
             />
             <Text style={AddExpensesDetailsStyle.errorText}>
               {totalAmountError}
@@ -536,8 +484,9 @@ export default AddExpensesDetails = props => {
           </View>
           <View
             style={[AddExpensesDetailsStyle.inputContainer, {marginTop: 14}]}>
-            <Text style={LABEL_STYLES.commontext}>{'Invoice due date'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Invoice due date'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
@@ -551,7 +500,6 @@ export default AddExpensesDetails = props => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={toggleModal}
-                // onDayPress={handleDayPress}
                 onDayPress={day => handleduedate(day.dateString)}
                 onChangeText={() => handleduedate(selectedDate)}
                 Visible={isModalVisible}
@@ -573,8 +521,9 @@ export default AddExpensesDetails = props => {
           </View>
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={[LABEL_STYLES.commontext,{marginBottom:5}]}>{'Repeating expense?'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={[LABEL_STYLES.commontext, {marginBottom: 5}]}>
+              {'Repeating expense?'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <RowButtons
               LeftButtonText={'Yes'}
@@ -652,7 +601,6 @@ export default AddExpensesDetails = props => {
                   onChange={item => {
                     setlLease_end_value(item.lookup_key);
                     setlLease_end_valueError(false);
-                    // alert(item.lookup_key);
                   }}
                   renderItem={lease_end_render}
                 />
@@ -665,7 +613,11 @@ export default AddExpensesDetails = props => {
             </Text>
           ) : null}
           <View style={AddExpensesDetailsStyle.additiontext}>
-            <Text style={[LABEL_STYLES.commontext,{marginBottom:5,marginTop:10}]}>
+            <Text
+              style={[
+                LABEL_STYLES.commontext,
+                {marginBottom: 5, marginTop: 10},
+              ]}>
               {'Who is responsible for paying for this?'}
             </Text>
             <RowButtons
@@ -723,8 +675,9 @@ export default AddExpensesDetails = props => {
             </Text>
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Expense category'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Expense category'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={[AddExpensesDetailsStyle.dropdown, {marginTop: 14}]}
@@ -840,8 +793,9 @@ export default AddExpensesDetails = props => {
           </View>
           {!selectedButtonDeposit ? (
             <View style={{marginTop: 10, marginBottom: 5}}>
-              <Text style={LABEL_STYLES.commontext}>{'Paid date'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Paid date'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
@@ -855,7 +809,6 @@ export default AddExpensesDetails = props => {
                       : _COLORS.Kodie_GrayColor,
                   }}
                   calenderIcon={togglePaidModal}
-                  // onDayPress={handlePaidDatePress}
                   onDayPress={paidDate => handledpaiddate(paidDate.dateString)}
                   onChangeText={() => handledpaiddate(selectedPaidDate)}
                   Visible={isPaidModalVisible}

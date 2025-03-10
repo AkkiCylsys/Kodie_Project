@@ -20,7 +20,6 @@ import Details from './Details/Details';
 import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import {Config} from '../../../../Config';
 import axios from 'axios';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,7 +27,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -38,7 +36,6 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import {useDispatch, useSelector} from 'react-redux';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import Geolocation from '@react-native-community/geolocation';
 import {getPropertyDetailSevice} from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
@@ -107,8 +104,8 @@ export default PropertyReview = props => {
       console.error('Error parsing additional_key_features:', error);
     }
     const timeout = setTimeout(() => {
-      setNumColumns(2); // Change to the desired number of columns
-    }, 2000); // Change this delay as needed
+      setNumColumns(2);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [property_id, propertyid, additionalKeyFeaturesString]);
@@ -135,7 +132,7 @@ export default PropertyReview = props => {
     };
     places.forEach(place => {
       const {name, vicinity} = place;
-      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`;
       if (
         place.types.includes('school') ||
         place.types.includes('university')
@@ -185,7 +182,7 @@ export default PropertyReview = props => {
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
-        <Text style={DetailsStyle.itemName}>----</Text> // Display hyphen if no items
+        <Text style={DetailsStyle.itemName}>----</Text>
       )}
     </View>
   );
@@ -199,7 +196,7 @@ export default PropertyReview = props => {
         },
       });
       setGenerateLink(link);
-      console.log('Generated Link:', link); // For debugging
+      console.log('Generated Link:', link);
     } catch (error) {
       console.error('Failed to build dynamic link:', error);
     }
@@ -327,13 +324,16 @@ export default PropertyReview = props => {
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const additionalFeaturesIds = additionalFeatures_id
         .split(',')
-        .map(value => value.trim()); // ['1', '1', '1', '0']
+        .map(value => value.trim());
       console.log('is_additionalFeaturesid....', additionalFeaturesIds);
       setAddtionalFeaturesID(additionalFeaturesIds);
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
+      Alert.alert(
+        'Request timed out',
+        'The request took too long to complete. Please try again later.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -474,7 +474,7 @@ export default PropertyReview = props => {
                   style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
                   {'Additional key features'}
                 </Text>
-                {/* // )} */}
+
                 <View style={{marginHorizontal: '10%'}}>
                   <FlatList
                     data={additionalKeyFeatures}
@@ -485,7 +485,6 @@ export default PropertyReview = props => {
                   />
                 </View>
 
-                {/* {property_Detail?.additional_key_features_id === '[]' ? null : ( */}
                 <DividerIcon
                   borderBottomWidth={1}
                   color={_COLORS.Kodie_GrayColor}
@@ -877,7 +876,6 @@ export default PropertyReview = props => {
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
               autoplay
-              // circleLoop
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={PropertyReviewStyle.dotStyle}

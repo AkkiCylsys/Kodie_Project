@@ -9,7 +9,6 @@ import {
 import {FONTFAMILY, _COLORS} from '../../../../Themes';
 import {PreScreeningQuestinnaireStyle} from './PreScreeningQuesionnaireStyle';
 import UserDetails from '../../../../components/PropertyViewApplication/UserDetails/UserDetails';
-import PreRentalQuestionnaire from '../../../../components/PropertyViewApplication/UserDetails/PreRentalQuestionnaire/PreRentalQuestionnaire';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

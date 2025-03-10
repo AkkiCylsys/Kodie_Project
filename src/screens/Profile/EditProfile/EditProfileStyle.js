@@ -27,13 +27,9 @@ export const EditProfileStyle = StyleSheet.create({
     top: 100,
     right: 10,
     backgroundColor: '#F5F5F5',
-    // borderRadius: 12,
-    // padding: 10,
     width: 35,
     height: 35,
-    // borderWidth:1,
     borderRadius: 35 / 2,
-    // alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -76,7 +72,6 @@ export const EditProfileStyle = StyleSheet.create({
     marginHorizontal: 16,
   },
 
-  // input filed style here
   inputmainview: {
     marginTop: 20,
   },
@@ -94,31 +89,23 @@ export const EditProfileStyle = StyleSheet.create({
   simpleinputview: {
     height: 50,
     borderWidth: 1,
-    // borderColor: _COLORS.Kodie_DarkGreenColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: 'row',
     alignItems: 'center',
-    // width: "90%",
     justifyContent: 'space-between',
     marginHorizontal: 15,
     paddingHorizontal: 10,
   },
   phoneinputview: {
     height: 60,
-    // borderWidth: 1,
-    // borderColor: _COLORS.Kodie_GrayColor,
-    // borderRadius: 8,
-    // fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 15,
   },
-  phoneinputbindview: {
-    // width: "100%",
-  },
+  phoneinputbindview: {},
   bindnumberview: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -136,31 +123,12 @@ export const EditProfileStyle = StyleSheet.create({
     marginHorizontal: 15,
     paddingHorizontal: 10,
   },
-  // simpleinputphysical: {
-  //   height: 50,
-  //   borderWidth: 1,
-  //   borderRadius: 8,
-  //   borderColor: _COLORS.Kodie_ExtraLightGrayColor,
-  //   marginTop: 1,
-  //   fontFamily: FONTFAMILY.K_SemiBold,
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   width: "90%",
-  //   justifyContent: "space-between",
-  //   paddingHorizontal: 10,
-  //   marginHorizontal: 15,
-  // },
+
   physicalsecondview: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 5,
   },
-  // numbercode: {
-  //   color: _COLORS.Kodie_BlackColor,
-  //   fontSize: 13,
-  //   fontWeight: "400",
-  //   fontFamily: FONTFAMILY.K_SemiBold,
-  // },
   downarrowimg: {
     width: 12,
     height: 6,
@@ -221,7 +189,6 @@ export const EditProfileStyle = StyleSheet.create({
   },
   secondview: {
     marginHorizontal: 10,
-    // marginBottom: 10,
   },
 
   textContainer: {
@@ -303,7 +270,6 @@ export const EditProfileStyle = StyleSheet.create({
   logo: {
     width: 110,
     height: 110,
-    // resizeMode: "cover",
   },
   upload_View: {
     flexDirection: 'row',
@@ -335,19 +301,17 @@ export const EditProfileStyle = StyleSheet.create({
     flex: 1,
     color: _COLORS.Kodie_BlackColor,
   },
-  errorText: {color: 'red', marginLeft: 25,marginTop:5},
+  errorText: {color: 'red', marginLeft: 25, marginTop: 5},
   c_locationBtn: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // alignSelf: "flex-end",
     paddingVertical: 3,
     borderRadius: 10,
     width: '25%',
     height: 60,
     bottom: 0,
-    // right: 20,
     left: 20,
     marginBottom: 30,
     position: 'absolute',

@@ -35,8 +35,11 @@ import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
-import { SavePropertyDetailSevices, getPropertyDetailSevice, updatePropertyDetailSevices } from '../../../../services/PropertyModule/PropertyModul';
+import {
+  SavePropertyDetailSevices,
+  getPropertyDetailSevice,
+  updatePropertyDetailSevices,
+} from '../../../../services/PropertyModule/PropertyModul';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const addPropertySecondStepData = useSelector(
@@ -71,15 +74,20 @@ export default PropertyDetails = props => {
   useEffect(() => {
     if (!addressComponents) return;
     function getAddressComponent(addressComponents, type) {
-      return addressComponents.find(component => component.types.includes(type))?.long_name || '';
+      return (
+        addressComponents.find(component => component.types.includes(type))
+          ?.long_name || ''
+      );
     }
     const selected_city = getAddressComponent(addressComponents, 'locality');
-    const selected_state = getAddressComponent(addressComponents, 'administrative_area_level_1');
+    const selected_state = getAddressComponent(
+      addressComponents,
+      'administrative_area_level_1',
+    );
     const selected_country = getAddressComponent(addressComponents, 'country');
     setCity(selected_city);
     setState(selected_state);
     setCountry(selected_country);
-  
   }, [addressComponents]);
   const handleTextInputFocus = () => {
     if (error) {
@@ -110,9 +118,9 @@ export default PropertyDetails = props => {
   useFocusEffect(
     React.useCallback(() => {
       if (savePropertyId || propertyid) {
-        DetailsData(); 
+        DetailsData();
       }
-    }, [savePropertyId,propertyid]),
+    }, [savePropertyId, propertyid]),
   );
 
   useEffect(() => {
@@ -127,8 +135,10 @@ export default PropertyDetails = props => {
   const DetailsData = async () => {
     setIsLoading(true);
     try {
-      const details = await getPropertyDetailSevice(savePropertyId || propertyid);
-      console.log(details,"detailis");
+      const details = await getPropertyDetailSevice(
+        savePropertyId || propertyid,
+      );
+      console.log(details, 'detailis');
       setProperty_Details(details);
       setLocation(details?.location);
       setlongitude(details?.longitude);
@@ -141,13 +151,16 @@ export default PropertyDetails = props => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
+      Alert.alert(
+        'Request timed out',
+        'The request took too long to complete. Please try again later.',
+      );
     } finally {
       setIsLoading(false);
     }
   };
-    console.log(property_Detail, 'property_Detail?.key_features');
-  const updatePropertyDetails = async() => {
+  console.log(property_Detail, 'property_Detail?.key_features');
+  const updatePropertyDetails = async () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
       user_account_details_id: loginData?.Login_details?.user_account_id,
@@ -169,28 +182,27 @@ export default PropertyDetails = props => {
       p_country: country,
     };
     console.log('updateData', updateData);
- const response = await updatePropertyDetailSevices(updateData)
- console.log(response,'updateProperty');
-        if (response?.success === true) {
-          setIsLoading(false);
-          props.navigation.navigate('PropertyFeature', {
-            location: location,
-            property_value: property_value,
-            propertyDesc: propertyDesc,
-            selectedButtonId: 0,
-            latitude: latitude,
-            longitude: longitude,
-            city: city,
-            state: state,
-            country: country,
-            propertyid:savePropertyId ?savePropertyId: propertyid,
-            editMode: editMode,
-          });
-        } else {
-          console.error('update_property_detailserror:', response?.data?.error);
-          setIsLoading(false);
-        }
-      
+    const response = await updatePropertyDetailSevices(updateData);
+    console.log(response, 'updateProperty');
+    if (response?.success === true) {
+      setIsLoading(false);
+      props.navigation.navigate('PropertyFeature', {
+        location: location,
+        property_value: property_value,
+        propertyDesc: propertyDesc,
+        selectedButtonId: 0,
+        latitude: latitude,
+        longitude: longitude,
+        city: city,
+        state: state,
+        country: country,
+        propertyid: savePropertyId ? savePropertyId : propertyid,
+        editMode: editMode,
+      });
+    } else {
+      console.error('update_property_detailserror:', response?.data?.error);
+      setIsLoading(false);
+    }
   };
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
@@ -405,59 +417,59 @@ export default PropertyDetails = props => {
     props.navigation.pop();
   };
   const property_details = async () => {
-    setIsLoading(true); 
+    setIsLoading(true);
     const addPropertyPayload = {
-        user: loginData?.Login_details?.user_id,
-        user_account_details_id: loginData?.Login_details?.user_account_id,
-        location,
-        location_longitude: longitude,
-        location_latitude: latitude,
-        islocation: 1,
-        property_description: propertyDesc,
-        property_type: property_value > 0 ? property_value : 0,
-        key_features: [
-            { Bedrooms: 0 },
-            { Bathrooms: 0 },
-            { 'Reception rooms': 0 },
-            { 'Parking / garage spaces': 0 },
-            { 'On-street parking': 0 },
-        ],
-        additional_features: '0,0,0,0',
-        additional_key_features: "[]",
-        autolist: 0,
-        UPD_FLOOR_SIZE: 0,
-        UPD_LAND_AREA: 0,
-        p_city: city,
-        p_state: state,
-        p_country: country,
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value > 0 ? property_value : 0,
+      key_features: [
+        {Bedrooms: 0},
+        {Bathrooms: 0},
+        {'Reception rooms': 0},
+        {'Parking / garage spaces': 0},
+        {'On-street parking': 0},
+      ],
+      additional_features: '0,0,0,0',
+      additional_key_features: '[]',
+      autolist: 0,
+      UPD_FLOOR_SIZE: 0,
+      UPD_LAND_AREA: 0,
+      p_city: city,
+      p_state: state,
+      p_country: country,
     };
     try {
-        const response = await SavePropertyDetailSevices(addPropertyPayload);
-        if (response?.success) {
-            setSavePropertyId(response?.Property_id);
-            console.log('Property ID:', response?.Property_id);
-            props.navigation.navigate('PropertyFeature', {
-                location,
-                property_value,
-                propertyDesc,
-                selectedButtonId: 0,
-                latitude,
-                longitude,
-                city,
-                state,
-                country,
-                editMode,
-                propertyid: response?.Property_id,
-            });
-        } else {
-            console.error('Error in property details:', response?.error);
-        }
+      const response = await SavePropertyDetailSevices(addPropertyPayload);
+      if (response?.success) {
+        setSavePropertyId(response?.Property_id);
+        console.log('Property ID:', response?.Property_id);
+        props.navigation.navigate('PropertyFeature', {
+          location,
+          property_value,
+          propertyDesc,
+          selectedButtonId: 0,
+          latitude,
+          longitude,
+          city,
+          state,
+          country,
+          editMode,
+          propertyid: response?.Property_id,
+        });
+      } else {
+        console.error('Error in property details:', response?.error);
+      }
     } catch (error) {
-        console.error('Error while saving property details:', error);
+      console.error('Error while saving property details:', error);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
   return (
     <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
       <TopHeader
@@ -513,8 +525,6 @@ export default PropertyDetails = props => {
               Maplat={latitude}
               Maplng={longitude}
               iscancel={() => setIsMap(false)}
-              // Maplat={getLat}
-              // Maplng={getLong}
             />
             <View
               style={{
@@ -597,7 +607,7 @@ export default PropertyDetails = props => {
                       onChangeText={text => {
                         setLocation(text);
                         if (text && error) setError('');
-                        handleTextInputFocus(); // Clear error message if location is being filled
+                        handleTextInputFocus();
                       }}
                       onFocus={() => {
                         handleTextInputFocus();

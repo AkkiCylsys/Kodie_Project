@@ -35,7 +35,6 @@ export const TenantDetailsStyle = StyleSheet.create({
   starStyle: {
     flex: 1,
     marginTop: 13,
-    // marginLeft: 60,
     alignSelf: "center",
     alignItems: "center",
   },

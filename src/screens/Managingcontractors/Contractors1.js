@@ -39,7 +39,6 @@ const Contractors1 = (props) => {
       <TopHeader
         IsNotification={true}
         isprofileImage={true}
-        // RightUserProfile={IMAGES.Landlordprofile}
         MiddleText={"Contractors"}
         leftImage={"menu"}
         onPressLeftButton={() => props.navigation.openDrawer()}

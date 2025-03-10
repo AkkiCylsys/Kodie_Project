@@ -89,7 +89,6 @@ export const JobDocumentsStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     marginLeft: 5,
-    // borderWidth:1
   },
 
   pdfInfo: {
@@ -146,7 +145,6 @@ export const JobDocumentsStyle = StyleSheet.create({
   },
   folderView: {
     borderWidth: 1,
-    // marginLeft: 20,
     marginHorizontal: 10,
     marginTop: 10,
     borderRadius: 15,

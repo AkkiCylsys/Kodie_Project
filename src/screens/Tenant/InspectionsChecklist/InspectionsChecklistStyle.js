@@ -30,13 +30,9 @@ export const InspectionsChecklistStyle = StyleSheet.create({
     fontFamily:FONTFAMILY.K_SemiBold
   },
   buttonView: {
-    // marginTop: 10,
     borderWidth: 1,
-    // width: 48,
-    // height: 19,
     borderRadius:21,
     borderColor: _COLORS.Kodie_LightGrayColor,
-    // padding:15
     paddingHorizontal:30,
     paddingVertical:10
   },

@@ -27,7 +27,11 @@ import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListEmptyComponent from '../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import DeviceInfo from 'react-native-device-info';
-import { archiveSevices, deletePropertySevices, getPropertyFilterSevice } from '../../../../services/PropertyModule/PropertyModul';
+import {
+  archiveSevices,
+  deletePropertySevices,
+  getPropertyFilterSevice,
+} from '../../../../services/PropertyModule/PropertyModul';
 const HorizontalData = [
   'All',
   'Recent',
@@ -41,12 +45,11 @@ const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
   console.log(loginData, 'loginData');
-  // const userRole = '3,2';
   const roleArray = userRole ? userRole.split(',') : [];
   const device = DeviceInfo.getUniqueId();
-  const deviceId = device?._z
+  const deviceId = device?._z;
   const deviceType = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  console.log(deviceId,deviceType,'propperty');
+  console.log(deviceId, deviceType, 'propperty');
   const hasTenantRole = roleArray.includes('2');
   const hasLandlordRole = roleArray.includes('3');
   const hasContractor = roleArray.includes('4');
@@ -81,10 +84,9 @@ const PropertyList = props => {
 
   const closeSwipeable = index => {
     if (swipeableRef.current[index] && swipeableRef.current[index].close) {
-      swipeableRef.current[index].close(); // Close the swipeable at the given index
+      swipeableRef.current[index].close();
     }
   };
-  // search propertyList....
   const searchPropertyList = query => {
     setSearchQuery(query);
     const filtered = query
@@ -103,8 +105,8 @@ const PropertyList = props => {
     try {
       const data = {
         property_id: id,
-      }
-      const archiveData = await archiveSevices(data)
+      };
+      const archiveData = await archiveSevices(data);
       setPropertyData(prevData =>
         prevData.map(item =>
           item.property_id === id ? {...item, isArchived: true} : item,
@@ -112,7 +114,6 @@ const PropertyList = props => {
       );
       setTimeout(() => {
         if (archiveData?.success === true) {
-          // alert(archiveData?.message)
           getPropertyDetailsByFilter(selectedFilter);
           swipeableRef.current[id]?.close();
         } else {
@@ -125,27 +126,25 @@ const PropertyList = props => {
         }
       }, 200);
     } catch (error) {
-      alert(error)
-      // Alert.alert('Error', 'An error occurred while archiving the property.');
+      alert(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getPropertyDetailsByFilter = async (filter) => {
-    setIsLoading(true); // Start loading
-  
+  const getPropertyDetailsByFilter = async filter => {
+    setIsLoading(true);
+
     try {
-      // Construct the data for the API call
       const PropertyData = {
         property_filter: filter,
         user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
-        limit: filter === 'Recent' ? 5 : 1000, // Adjust limit based on filter type
-        order_col: '1', // Sorting column
-        order_wise: 'DESC', // Sort in descending order
+        limit: filter === 'Recent' ? 5 : 1000,
+        order_col: '1',
+        order_wise: 'DESC',
       };
-      console.log("payload filter property..",PropertyData)
+      console.log('payload filter property..', PropertyData);
       const filterData = await getPropertyFilterSevice(PropertyData);
       if (!filterData || filterData.length === 0) {
         throw new Error('No property data found for the selected filter.');
@@ -183,7 +182,7 @@ const PropertyList = props => {
           style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton]}
           onPress={() => {
             archiveProperty(id);
-            swipeableRef.current[index]?.close(); // Close the specific swipeable
+            swipeableRef.current[index]?.close();
           }}>
           <MaterialCommunityIcons name="archive" size={24} color="white" />
           <Text style={PropertyListCSS.actionText}>
@@ -196,10 +195,8 @@ const PropertyList = props => {
 
   useFocusEffect(
     useCallback(() => {
-      // Fetch property details whenever the screen is focused
       getPropertyDetailsByFilter(selectedFilter);
-  
-    }, [selectedFilter])
+    }, [selectedFilter]),
   );
   const handleEndReached = () => {
     if (!isLoading) {
@@ -214,32 +211,36 @@ const PropertyList = props => {
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
-  
+
     try {
       if (!propertyDelId) {
         throw new Error('Invalid property ID. Please try again.');
       }
-  
-      const propertyIdString = String(propertyDelId); // Ensure property ID is a string
-      const data = { property_id: propertyIdString };
+
+      const propertyIdString = String(propertyDelId);
+      const data = {property_id: propertyIdString};
       console.log('Data being sent:', data);
       const deletePropertyResponse = await deletePropertySevices(data);
-      console.log('API Response:', deletePropertyResponse); // Log the response
-  
-        Alert.alert(
-          'Property deleted',
-          deletePropertyResponse?.message || 'The property was deleted successfully.')
-        await getPropertyDetailsByFilter(selectedFilter); // Refresh property details
-  
+      console.log('API Response:', deletePropertyResponse);
+
+      Alert.alert(
+        'Property deleted',
+        deletePropertyResponse?.message ||
+          'The property was deleted successfully.',
+      );
+      await getPropertyDetailsByFilter(selectedFilter);
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
-      const errorMessage = error?.response?.data?.message || error.message || 'An error occurred. Please try again.';
+      const errorMessage =
+        error?.response?.data?.message ||
+        error.message ||
+        'An error occurred. Please try again.';
       Alert.alert('Warning', errorMessage);
     } finally {
-      setIsLoading(false); // Ensure loading is disabled even after error
+      setIsLoading(false);
     }
   };
-  
+
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -298,16 +299,13 @@ const PropertyList = props => {
         overshootRight={false}
         friction={2}
         onSwipeableWillOpen={() => {
-          // Close the currently open swipeable (if any)
           if (openSwipeableIndex !== null && openSwipeableIndex !== index) {
             closeSwipeable(openSwipeableIndex);
           }
 
-          // Set the new swipeable as open
           setOpenSwipeableIndex(index);
         }}
         onSwipeableWillClose={() => {
-          // Clear the open swipeable index when it's closed
           if (openSwipeableIndex === index) {
             setOpenSwipeableIndex(null);
           }
@@ -322,7 +320,7 @@ const PropertyList = props => {
               backgroundColor: item.isArchived
                 ? _COLORS.Kodie_GreenColor
                 : _COLORS.Kodie_WhiteColor,
-            }, // Apply green background if archived
+            },
           ]}
           onPress={() => {
             props?.onPropertyView?.({
@@ -338,7 +336,6 @@ const PropertyList = props => {
                     marginRight: '65%',
                     marginLeft: '6.6%',
                     backgroundColor: _COLORS.Kodie_GreenColor,
-                    // paddingVertical: 2,
                     paddingBottom: 4,
                     borderBottomEndRadius: 8,
                     borderBottomStartRadius: 8,
@@ -459,19 +456,13 @@ const PropertyList = props => {
                               color={_COLORS.Kodie_ExtraminLiteGrayColor}
                               resizeMode={'contain'}
                             />
-                            {/* <Image
-                    source={IMAGES.noteBook}
-                    style={PropertyListCSS.noteIcon}
-                  /> */}
                           </TouchableOpacity>
                           <View style={{margin: 3}} />
                           <TouchableOpacity
                             style={{}}
                             onPress={() => {
-                              // refRBSheetDelete.current.open();
                               setIsDeleteBottomSheetVisible(true);
                               setPropertyDelId(item.property_id);
-                              // alert(propertyDelId);
                               setAddress(item?.location);
                               setPropId(item?.property_id);
                               setAutoList(item?.auto_list);
@@ -716,11 +707,6 @@ const PropertyList = props => {
   };
 
   const renderRowButtons = () => {
-    // const roleArray = userRole ? userRole.split(',') : [];
-
-    // const hasTenantRole = roleArray.includes('2');
-    // const hasLandlordRole = roleArray.includes('3');
-    // const hasContractor = roleArray.includes('4');
     const renderSingleButton = buttonText => (
       <CustomSingleButton
         _ButtonText={buttonText}
@@ -743,7 +729,6 @@ const PropertyList = props => {
       return (
         <RowButtons
           LeftButtonText={'Properties I own'}
-          // leftButtonHeight={40}
           leftButtonbackgroundColor={
             activeScreen
               ? _COLORS.Kodie_WhiteColor
@@ -767,7 +752,6 @@ const PropertyList = props => {
           RightButtonTextColor={
             activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
           }
-          // RightButtonHeight={40}
           onPressLeftButton={() => setActiveScreen(false)}
           onPressRightButton={() => {
             setActiveScreen(true);
@@ -804,23 +788,9 @@ const PropertyList = props => {
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
-            // marginTop={1}
           />
         )}
-        {/* {userRole == '4' || userRole == '2' ? null : (
-          <View style={PropertyListCSS.Container}>
-            <CustomSingleButton
-              _ButtonText={'+ Add New Property'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              text_Size={14}
-              backgroundColor={_COLORS.Kodie_BlackColor}
-              height={40}
-              marginTop={3}
-              onPress={props.propertyDetail}
-              disabled={isLoading ? true : false}
-            />
-          </View>
-        )} */}
+
         {hasLandlordRole ? (
           <View style={PropertyListCSS.Container}>
             <CustomSingleButton
@@ -839,7 +809,6 @@ const PropertyList = props => {
           <DividerIcon
             borderBottomWidth={9}
             color={_COLORS.Kodie_LiteWhiteColor}
-            // marginTop={1}
           />
         )}
         <View style={{marginTop: userRole == '4' ? 15 : 0}}>
@@ -853,30 +822,7 @@ const PropertyList = props => {
           />
         </View>
         {activeScreen ? (
-          <>
-            {/* for static that by its hide.... */}
-            {/* <DividerIcon /> */}
-
-            {/* <FlatList data={property_List2} renderItem={propertyData2_render} /> */}
-            {/* <View style={PropertyListCSS.propertyRentMainView}>
-              <View style={PropertyListCSS.LeftTextView}>
-                <Text style={PropertyListCSS.LeftText}>
-                  Your rent is due. You have not selected autopay as a payment
-                  option.
-                </Text>
-                <Text style={PropertyListCSS.LeftTextRentText}>
-                  Would you like to pay your rent now?
-                </Text>
-              </View>
-              <View style={PropertyListCSS.payButtonMainView}>
-                <TouchableOpacity style={PropertyListCSS.payButtonView}>
-                  <Text style={PropertyListCSS.payButtonText}>
-                    Pay $850 now
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View> */}
-          </>
+          <></>
         ) : (
           <>
             <View style={PropertyListCSS.Container}>

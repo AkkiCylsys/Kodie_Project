@@ -4,9 +4,7 @@ import {TenantScreeningStyle} from './TenantScreeningStyle';
 import {_COLORS, IMAGES} from '../../../Themes';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import CurrentTenant from '../../Tenant/CurrentTenant/CurrentTenant';
 import ProspectsTenant from '../ProspectsTenant/ProspectsTenant';
-import PreviousTenant from '../../Tenant/PreviousTenant/PreviousTenant';
 import {getTenantAllDetailsService} from '../../../services/TenantManagementsServices/TenantScreeningServices/TenantScreeningServices';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
@@ -56,7 +54,7 @@ const TenantScreening = props => {
           JSON.stringify(response?.data),
         );
         setTenantAllDetails(response?.data);
-        setSearchTenantList(response?.data); // Initialize search list with the full data set
+        setSearchTenantList(response?.data);
       }
     } catch (error) {
       console.error('Error fetching TenantAllDetails:', error);
@@ -90,8 +88,6 @@ const TenantScreening = props => {
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
       case 'Tab2':
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
-      // case 'Tab3':
-      //   return <ProspectsTenant TenantAllDetails={dataToPass} />;
       default:
         return <ProspectsTenant TenantAllDetails={dataToPass} />;
     }
@@ -102,7 +98,6 @@ const TenantScreening = props => {
       <TopHeader
         onPressLeftButton={() =>{
           _goBack(props)
-          // props.navigation.navigate('Dashboard')
         } 
       }
         MiddleText={'Tenants'}
@@ -112,8 +107,6 @@ const TenantScreening = props => {
         setActiveTab={setActiveTab}
         Tab1={'Current'}
         Tab2={'Previous'}
-        // Tab3={'Prospects'}
-        // TAB3
         onPressTab1={() => setActiveTab('Tab1')}
         onPressTab2={() => setActiveTab('Tab2')}
         onPressTab3={() => setActiveTab('Tab3')}

@@ -1,23 +1,29 @@
-import { View, Text, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 // Screen n0: 197
-import React, { useState } from "react";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import { GeneralSettingsStyle } from "./GeneralSettingsStyle";
-import GeneralSetting from "../../../../components/Molecules/GeneralSetting/GeneralSetting";
-import { IMAGES } from "../../../../Themes";
-import { Dropdown } from "react-native-element-dropdown";
+import React, {useState} from 'react';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {GeneralSettingsStyle} from './GeneralSettingsStyle';
+import GeneralSetting from '../../../../components/Molecules/GeneralSetting/GeneralSetting';
+import {IMAGES} from '../../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
 const data = [
-  { label: "None", value: "1" },
-  { label: "Aus $", value: "2" },
+  {label: 'None', value: '1'},
+  {label: 'Aus $', value: '2'},
 ];
-const GeneralSettings = (props) => {
+const GeneralSettings = props => {
   const [value, setValue] = useState(null);
   return (
     <SafeAreaView>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"General settings"}
+        MiddleText={'General settings'}
       />
 
       <View style={GeneralSettingsStyle.mainContainer}>
@@ -33,7 +39,11 @@ const GeneralSettings = (props) => {
               description="Select the currency symbol to display"
             />
           </View>
-          <View style={[GeneralSettingsStyle.dropdownview,{alignItems:'center',flex:0.3,justifyContent:'center'}]}>
+          <View
+            style={[
+              GeneralSettingsStyle.dropdownview,
+              {alignItems: 'center', flex: 0.3, justifyContent: 'center'},
+            ]}>
             <Dropdown
               style={GeneralSettingsStyle.dropdown}
               placeholderStyle={GeneralSettingsStyle.placeholderStyle}
@@ -41,14 +51,12 @@ const GeneralSettings = (props) => {
               inputSearchStyle={GeneralSettingsStyle.inputSearchStyle}
               iconStyle={GeneralSettingsStyle.iconStyle}
               data={data}
-              // search
               maxHeight={300}
               labelField="label"
               valueField="value"
               placeholder="Aus $"
-              // searchPlaceholder="Search..."
               value={value}
-              onChange={(item) => {
+              onChange={item => {
                 setValue(item.value);
               }}
             />
@@ -68,8 +76,9 @@ const GeneralSettings = (props) => {
           </View>
         </View>
 
-        <TouchableOpacity style={GeneralSettingsStyle.calenderview}
-         onPress={() => props.navigation.navigate("GeneralSetting")}>
+        <TouchableOpacity
+          style={GeneralSettingsStyle.calenderview}
+          onPress={() => props.navigation.navigate('GeneralSetting')}>
           <GeneralSetting
             heading="Calendar settings"
             imageSource={IMAGES.Calendar}
@@ -77,17 +86,6 @@ const GeneralSettings = (props) => {
             leftarrowimg={IMAGES.rightarrow}
           />
         </TouchableOpacity>
-
-        {/* <TouchableOpacity style={GeneralSettingsStyle.origanisationview}
-          onPress={() => props.navigation.navigate("AccountStep")}>
-          <GeneralSetting
-            heading="Organisation profile"
-            imageSource={IMAGES.Group}
-            description="Your organisation details will be used in 
-            correspondence and also invoices  "
-            leftarrowimg={IMAGES.rightarrow}
-          />
-        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );

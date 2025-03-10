@@ -11,11 +11,9 @@ import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
 import {IMAGES, FONTFAMILY, _COLORS} from '../../../Themes/index';
-import RangeSlider from '../../../components/Molecules/RangeSlider/RangeSlider';
 import {_goBack} from '../../../services/CommonServices/CommonMethods';
 import SwitchButton from '../../../components/Molecules/SwitchButton/SwitchButton';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
-import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {FlatList} from 'react-native-gesture-handler';
 
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
@@ -83,7 +81,6 @@ const subscriptionData = [
 ];
 const ManageSubscription = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [priceRanges, setPriceRanges] = useState(0);
   const [max, setMax] = useState(0);
@@ -97,7 +94,6 @@ const ManageSubscription = props => {
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
-    // Do something with the price range in the parent component
   };
   const handlemaxRange = high => {
     console.log('High Range in Parent Component:', high);
@@ -138,15 +134,9 @@ const ManageSubscription = props => {
       } else if (item.id === 3) {
         selectedPriceId = 'price_1Ot4ufKIJa7H9ZVBM0ihuIVb';
       }
-      // Add any other conditions as needed
       {
         Platform.OS == 'ios'
-          ? props.navigation.navigate(
-              'Subscriptions',
-              // , {
-              //     productId: selectedPriceId,
-              //   }
-            )
+          ? props.navigation.navigate('Subscriptions')
           : demoSubscription(selectedPriceId);
       }
     };
@@ -205,8 +195,8 @@ const ManageSubscription = props => {
               RightButtonborderColor={_COLORS.Kodie_BlackColor}
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
-              onPressLeftButton={() =>
-                props.navigation.navigate("Contactus")
+              onPressLeftButton={
+                () => props.navigation.navigate('Contactus')
                 // alert('Coming soon')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
@@ -224,10 +214,7 @@ const ManageSubscription = props => {
               RightButtonborderColor={_COLORS.Kodie_BlackColor}
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
-              onPressLeftButton={() =>
-                props.navigation.navigate("Contactus")
-                // alert('Contact us pressed')
-              }
+              onPressLeftButton={() => props.navigation.navigate('Contactus')}
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}
             />
@@ -238,27 +225,23 @@ const ManageSubscription = props => {
   };
   useEffect(() => {
     createCustomer();
-    // checkSubscribedCustomer();
   }, []);
   useEffect(() => {
-    // createCustomer();
     checkSubscribedCustomer();
   }, []);
 
   const checkSubscribedCustomer = async () => {
     let check_Subs = {
-      // account_id:711
       account_id: loginData?.Login_details?.user_account_id,
     };
     const res = await dispatch(userSubscribedCreator(check_Subs));
     console.log('000000000', JSON.stringify(res?.data?.data?.plan));
-    //alert(JSON.stringify((res?.data?.data?.plan?.amount)/100))
     setSubscriptionStatus(res?.data?.data?.status);
     setsetSubscribedPLan(res?.data?.data?.plan?.amount / 100);
   };
   const createCustomer = () => {
     const baseUrl = Config.BASE_URL;
-    const url =  'create_customer';
+    const url = 'create_customer';
     console.log('Request URL:', loginData?.Login_details?.email);
     setIsLoading(true);
     const createCustomer_data = {
@@ -272,9 +255,6 @@ const ManageSubscription = props => {
         if (response?.data?.success === true) {
           console.log('customer ID ....', response?.data?.data.id);
           setCustomerID(response?.data?.data.id);
-          // props.navigation.navigate('SubscriptionScreen', {
-          //   customerID: response?.data?.data.id,
-          // });
         } else {
           setIsLoading(false);
         }
@@ -282,7 +262,6 @@ const ManageSubscription = props => {
       .catch(error => {
         console.error('API failed createCustomer', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -290,7 +269,7 @@ const ManageSubscription = props => {
   };
   const demoSubscription = priceId => {
     const baseUrl = Config.BASE_URL;
-    const url ='demo';
+    const url = 'demo';
     console.log('Request URL:', url);
     console.log(customerID);
     setIsLoading(true);
@@ -309,7 +288,7 @@ const ManageSubscription = props => {
 
           Insertdemodata(response?.data?.data?.id);
           saveSubscriptionData();
-          Alert.alert("Success",'You have successfully subscribed.');
+          Alert.alert('Success', 'You have successfully subscribed.');
           props.navigation.navigate('Dashboard');
         } else {
           setIsLoading(false);
@@ -318,7 +297,6 @@ const ManageSubscription = props => {
       .catch(error => {
         console.error('API failed createSubscription_data', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -333,9 +311,8 @@ const ManageSubscription = props => {
 
   const Insertdemodata = _Subscrip_id => {
     const baseUrl = Config.BASE_URL;
-    const url ='insert_subscription';
+    const url = 'insert_subscription';
     console.log('Request URL:', url);
-    // console.log(id);
     setIsLoading(true);
     const Insert_data = {
       user_id: loginData.Login_details?.user_id,
@@ -360,7 +337,6 @@ const ManageSubscription = props => {
       .catch(error => {
         console.error('API failed createSubscription_data', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -426,15 +402,6 @@ const ManageSubscription = props => {
                 <SwitchButton leftBtnText={'Monthly'} rightBtnText={'Yearly'} />
               </View>
             )}
-
-            {/* <RangeSlider
-              from={1}
-              to={20}
-              onPriceRangeChange={handlePriceRangeChange}
-              onHighRange={handlemaxRange}
-              onLowRange={handleminRange}
-              onLowrange={2}
-            /> */}
           </View>
           <FlatList
             horizontal={true}
@@ -442,14 +409,6 @@ const ManageSubscription = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={subscriptionCardRender}
           />
-          {/* <View style={{marginBottom: 10}}>
-            <CustomSingleButton
-              onPress={() => props.navigation.navigate('BottomNav')}
-              _ButtonText={'Subscribe for only $69 / month'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
-            />
-          </View> */}
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </SafeAreaView>

@@ -21,7 +21,6 @@ import {_COLORS, LABEL_STYLES} from '../../../../Themes';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
 import axios from 'axios';
 import {Config} from '../../../../Config';
-// import {MultiSelect} from 'react-native-element-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import Geocoder from 'react-native-geocoding';
@@ -40,7 +39,6 @@ import {
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
 import axiosInstance from '../../../../services/axiosInstance';
-import {floor} from 'react-native-reanimated';
 
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
@@ -149,13 +147,11 @@ export default CompanyDetails = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('kodie_describeYouself_Data error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -328,7 +324,6 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -391,7 +386,6 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -450,14 +444,12 @@ export default CompanyDetails = props => {
     }
 
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        // setLocation(json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
         let MainFullAddress =
@@ -561,44 +553,23 @@ export default CompanyDetails = props => {
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails C:', error);
       });
   };
   const UpdateCompanyData = async () => {
     const formData = new FormData();
 
-    // const fileUri = ImageName.path;
-    // const fileName = fileUri
-    //   ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
-    //   : null;
-    // const fileType = ImageName.mime;
-
-    // console.log('fileUri....', fileUri);
-    // console.log('fileName....', fileName);
-    // console.log('fileType....', fileType);
-
-    // if (!fileUri || !fileName || !fileType) {
-    //   console.error('Invalid image data:', ImageName);
-    // } else {
-    //   formData.append('company_logo', {
-    //     uri: fileUri,
-    //     name: fileName,
-    //     type: fileType,
-    //   });
-    // }
     const fileUri =
       ImageName?.path || accountDetails?.business_data?.company_logo[0];
     const fileName = fileUri
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
-    const fileType = ImageName?.mime || 'image/jpeg'; // Default MIME type if it's not provided
+    const fileType = ImageName?.mime || 'image/jpeg';
 
     console.log('fileUri....', fileUri);
     console.log('fileName....', fileName);
     console.log('fileType....', fileType);
 
-    // Append the image only if the fileUri exists
     if (fileUri && fileName && fileType) {
       formData.append('company_logo', {
         uri: fileUri,
@@ -711,7 +682,6 @@ export default CompanyDetails = props => {
                     searchInputPlaceholderText="Search Items..."
                     onChangeInput={item => {
                       console.warn(item);
-                      // setAdditionalFeaturesKeyValue(item)
                     }}
                     tagBorderColor={_COLORS.Kodie_BlackColor}
                     selectedItemTextColor={_COLORS.Kodie_GreenColor}
@@ -743,29 +713,6 @@ export default CompanyDetails = props => {
                       IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
                     }
                   />
-                  {/* <MultiSelect
-                    style={[IndividualProfileStyle.dropdown]}
-                    placeholderStyle={IndividualProfileStyle.placeholderStyle}
-                    selectedTextStyle={IndividualProfileStyle.selectedTextStyle}
-                    inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
-                    iconStyle={IndividualProfileStyle.iconStyle}
-                    search
-                    activeColor={_COLORS.Kodie_MidLightGreenColor}
-                    data={filteredIndiservicesData}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="Select item"
-                    searchPlaceholder="Search..."
-                    value={IndiservicesValue}
-                    onChange={selectedItems => {
-                      setIndiservicesValue(selectedItems);
-                    }}
-                    selectedStyle={{
-                      backgroundColor: _COLORS.Kodie_BlackColor,
-                      borderRadius: 20,
-                      alignSelf: 'center',
-                    }}
-                  /> */}
                 </View>
               )}
               <View style={IndividualProfileStyle.inputContainer}>
@@ -898,7 +845,6 @@ export default CompanyDetails = props => {
                     searchInputPlaceholderText="Search Items..."
                     onChangeInput={item => {
                       console.warn(item);
-                      // setAdditionalFeaturesKeyValue(item)
                     }}
                     tagBorderColor={_COLORS.Kodie_BlackColor}
                     selectedItemTextColor={_COLORS.Kodie_GreenColor}
@@ -928,29 +874,6 @@ export default CompanyDetails = props => {
                       servicesValue.length > 0 ? 'Done' : 'Cancel'
                     }
                   />
-                  {/* <MultiSelect
-                    style={[CompanyInProfileStyle.dropdown]}
-                    placeholderStyle={CompanyInProfileStyle.placeholderStyle}
-                    selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
-                    inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
-                    iconStyle={CompanyInProfileStyle.iconStyle}
-                    search
-                    activeColor={_COLORS.Kodie_MidLightGreenColor}
-                    data={filteredCompservicesData}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="Select item"
-                    searchPlaceholder="Search..."
-                    value={servicesValue}
-                    onChange={selectedItems => {
-                      setservicesValue(selectedItems);
-                    }}
-                    selectedStyle={{
-                      backgroundColor: _COLORS.Kodie_BlackColor,
-                      borderRadius: 20,
-                      alignSelf: 'center',
-                    }}
-                  /> */}
                 </View>
               )}
               <View style={CompanyInProfileStyle.inputContainer}>
@@ -1207,9 +1130,7 @@ export default CompanyDetails = props => {
               </View>
 
               {checkTabs()}
-              {/* {Platform.OS == 'ios' ? (
-                <View style={{height: IsHeeight ? 120 : 0}}></View>
-              ) : null} */}
+
               <View style={CompanyDetailsStyle.saveBackButton}>
                 <View style={CompanyDetailsStyle.secondview}>
                   <CustomSingleButton

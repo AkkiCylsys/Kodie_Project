@@ -85,7 +85,6 @@ export default AddLeaseDetails = props => {
   };
   useFocusEffect(
     useCallback(() => {
-      // Initialize lease details
       const initializeLeaseDetails = () => {
         handle_notification_type();
         handle_expiry_reminder();
@@ -94,32 +93,29 @@ export default AddLeaseDetails = props => {
         handle_lease_term();
         handle_lease_end();
       };
-  
+
       initializeLeaseDetails();
-  
-      // Check if lease_end_value.lookup_key is 506 or 507
+
       if (
         lease_end_value.lookup_key === 506 ||
         lease_end_value.lookup_key === 507
       ) {
-        updateDateToNextYear(); // Call the update function
+        updateDateToNextYear();
       }
-  
-      // Update lease data if LEASE_KEY is present
+
       if (leaseDataDetails?.LEASE_KEY) {
         updateLeaseData();
       }
-  
-      // Handle lease term change if lease_term_value is set
+
       if (lease_term_value) {
-        handleLeaseTermChange({ lookup_key: lease_term_value });
+        handleLeaseTermChange({lookup_key: lease_term_value});
       }
     }, [
       lease_end_value.lookup_key,
       selectedDate,
       leaseDataDetails?.LEASE_KEY,
       lease_term_value,
-    ]) // Dependencies for the combined effect
+    ]),
   );
   const updateLeaseData = async () => {
     try {
@@ -164,7 +160,6 @@ export default AddLeaseDetails = props => {
     setModalVisible(!isModalVisible);
   };
   const toggleModalEndDate = item => {
-    // alert(lease_term_value)
     if (lease_term_value === 546) {
       setModalVisibleEndDate(!isModalVisibleEndDate);
     }
@@ -242,7 +237,7 @@ export default AddLeaseDetails = props => {
   };
   const handle_add_Lease = () => {
     const url = Config.BASE_URL;
-    const add_Lease_url ='create/lease';
+    const add_Lease_url = 'create/lease';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
@@ -290,7 +285,6 @@ export default AddLeaseDetails = props => {
         }
         console.error('API failed add_Lease', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -299,7 +293,7 @@ export default AddLeaseDetails = props => {
   const handle_update_Lease = () => {
     console.log('paymentDueDay....', paymentDueDay);
     const url = Config.BASE_URL;
-    const add_Lease_url ='updateLeasePropertyDetails';
+    const add_Lease_url = 'updateLeasePropertyDetails';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
@@ -344,7 +338,6 @@ export default AddLeaseDetails = props => {
       .catch(error => {
         console.error('API failed add_Lease', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -438,32 +431,26 @@ export default AddLeaseDetails = props => {
       setlease_term_valueError(false);
       let newFrequencies = [];
       if (item.lookup_key === 79) {
-        // 2 - Month
         newFrequencies = lease_end_Data.filter(freq =>
           [500, 501, 502, 503].includes(freq.lookup_key),
         );
       } else if (item.lookup_key === 80) {
-        // 6 - Month
         newFrequencies = lease_end_Data.filter(freq =>
           [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
         );
       } else if (item.lookup_key === 81) {
-        // 8 - Month
         newFrequencies = lease_end_Data.filter(freq =>
           [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
         );
       } else if (item.lookup_key === 82) {
-        // 10 - Month
         newFrequencies = lease_end_Data.filter(freq =>
           [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
         );
       } else if (item.lookup_key === 83) {
-        // 1 - year
         newFrequencies = lease_end_Data.filter(freq =>
           [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key),
         );
       } else if (item.lookup_key === 546) {
-        // other
         newFrequencies = lease_end_Data.filter(freq =>
           [507].includes(freq.lookup_key),
         );
@@ -561,7 +548,7 @@ export default AddLeaseDetails = props => {
       setPaymentDueDay(newDate);
     }
   };
- 
+
   const calculateLeaseEndDate = (startDate, termKey) => {
     let monthsToAdd;
     switch (termKey) {
@@ -594,9 +581,7 @@ export default AddLeaseDetails = props => {
     }
   };
   const disableOutOfRangeDates = day => {
-    return (
-      day.dateString < selectedDate || day.dateString > selectedEndDate
-    );
+    return day.dateString < selectedDate || day.dateString > selectedEndDate;
   };
   const renderPaymentDueDayPicker = () => {
     switch (lease_end_value.lookup_key) {
@@ -788,7 +773,6 @@ export default AddLeaseDetails = props => {
         return (
           <View style={{flex: 1}}>
             <CalendarModal
-              // current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }
@@ -845,8 +829,9 @@ export default AddLeaseDetails = props => {
       </View>
       <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
-          <Text style={[LABEL_STYLES.commontext]}>{'Commencement date'}
-          <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+          <Text style={[LABEL_STYLES.commontext]}>
+            {'Commencement date'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
@@ -864,7 +849,7 @@ export default AddLeaseDetails = props => {
                 setSelectedDate(selected);
                 handleRequestDate(day.dateString);
                 if (lease_term_value) {
-                  calculateLeaseEndDate(selected, lease_term_value); // Recalculate end date if lease term is already selected
+                  calculateLeaseEndDate(selected, lease_term_value);
                 }
               }}
               onChangeText={() => handleRequestDate(selectedDate)}
@@ -886,8 +871,9 @@ export default AddLeaseDetails = props => {
             <Text style={AddLeaseDetailsStyle.error}>{selectedDateError}</Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental lease term'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Rental lease term'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={[
@@ -952,8 +938,9 @@ export default AddLeaseDetails = props => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment frequency'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Payment frequency'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={[
@@ -979,7 +966,6 @@ export default AddLeaseDetails = props => {
                   lookup_description: item?.lookup_description,
                 });
                 setlLease_end_valueError(false);
-                // alert(item.lookup_key);
               }}
               renderItem={lease_end_render}
             />
@@ -990,8 +976,9 @@ export default AddLeaseDetails = props => {
             </Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental amount'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Rental amount'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={AddLeaseDetailsStyle.input}
@@ -1001,7 +988,6 @@ export default AddLeaseDetails = props => {
               placeholder="Enter the rental amount"
               placeholderTextColor="#999"
               keyboardType="number-pad"
-              // maxLength={5}
             />
           </View>
           {rentalAmountError ? (
@@ -1009,8 +995,9 @@ export default AddLeaseDetails = props => {
           ) : null}
           {lease_end_value.lookup_key ? (
             <View style={AddLeaseDetailsStyle.inputContainer}>
-              <Text style={LABEL_STYLES.commontext}>{'Payment due day'}
-              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Payment due day'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               {renderPaymentDueDayPicker()}
             </View>
@@ -1112,7 +1099,7 @@ export default AddLeaseDetails = props => {
               Enter extra information about your lease
             </Text>
           </View>
-          <DividerIcon marginBottom={8}/>
+          <DividerIcon marginBottom={8} />
           {showLeaseDetailsData ? (
             <View>
               <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -1129,10 +1116,8 @@ export default AddLeaseDetails = props => {
                 <Text style={LABEL_STYLES.commontext}>{'Rental deposit'}</Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  // value={rentalDeposit}
                   value={rentalBond}
                   onChangeText={setRentalBond}
-                  // onChangeText={setRentalDeposit}
                   placeholder="Enter the rental deposit amount"
                   keyboardType="number-pad"
                 />
@@ -1143,10 +1128,8 @@ export default AddLeaseDetails = props => {
                 </Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  // value={rentalEscalation}
                   value={rentalBond}
                   onChangeText={setRentalBond}
-                  // onChangeText={setRentalEscalation}
                   placeholder="Period rent escalation %"
                   keyboardType="number-pad"
                 />
@@ -1187,9 +1170,6 @@ export default AddLeaseDetails = props => {
           {showNotificationData ? (
             <View>
               <View style={AddLeaseDetailsStyle.inputContainer}>
-                {/* <Text style={LABEL_STYLES.commontext}>
-              {"Set property notifications"}
-            </Text> */}
                 <View style={AddLeaseDetailsStyle.notification_view}>
                   <Text
                     style={[
@@ -1218,7 +1198,6 @@ export default AddLeaseDetails = props => {
                     value={notification_type_value}
                     onChange={item => {
                       setNotification_type_value(item.lookup_key);
-                      // alert(item.lookup_key);
                     }}
                     renderItem={notification_render}
                   />
@@ -1230,7 +1209,6 @@ export default AddLeaseDetails = props => {
                   onPress={() => {
                     setToggle_expiry(!toggle_expiry);
                     setToggle_lease_expire(toggle_expiry ? 0 : 1);
-                    // alert(toggle_lease_expire);
                   }}
                   circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
                   circleColorOn={_COLORS.Kodie_GreenColor}
@@ -1264,7 +1242,6 @@ export default AddLeaseDetails = props => {
                     value={expiry_reminder_value}
                     onChange={item => {
                       setExpiry_reminder_value(item.lookup_key);
-                      // alert(item.lookup_key)
                     }}
                   />
                   <Text style={AddLeaseDetailsStyle.before}>{'before'}</Text>

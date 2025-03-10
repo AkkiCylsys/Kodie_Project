@@ -27,10 +27,8 @@ const TenantList = props => {
   };
   return (
     <SafeAreaView style={TenantListStyle.Container}>
-      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
 
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate('Dashboard')}
         MiddleText={'Tenants'}
       />

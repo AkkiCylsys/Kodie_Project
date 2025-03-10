@@ -26,14 +26,12 @@ import DropdownField from '../../../components/Molecules/DropdownField/DropdownF
 import InputField from '../../../components/Molecules/InputField/InputField';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import ToggleButton from '../../../components/Molecules/ToggleButton/ToggleButton';
-import {Divider} from 'react-native-paper';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {
   AddBidDetails,
   insertMarketDetails,
 } from '../../../services/PropertyListing/ListingServices';
 import {useSelector} from 'react-redux';
-import {Config} from '../../../Config';
 
 const PropertyListingDetail = props => {
   const [propertyDetailsVisible, setPropertyDetailsVisible] = useState(true);
@@ -62,7 +60,7 @@ const PropertyListingDetail = props => {
   console.log('loginData', loginData);
   const propertyid = props?.route?.params?.propertyid;
   const viewMarketPlace = props?.route?.params?.viewMarketPlace;
-  console.log('propertyid', propertyid,viewMarketPlace);
+  console.log('propertyid', propertyid, viewMarketPlace);
 
   useEffect(() => {
     fetchLeaseOptions();
@@ -114,22 +112,12 @@ const PropertyListingDetail = props => {
       setSelectedDateError('');
     }
   };
-  // const handleListPriceChange = text => {
-  //   setListPrice(text);
-  //   if (text.trim() === '') {
-  //     setListPriceError('List price is required.');
-  //   } else {
-  //     setListPriceError('');
-  //   }
-  // };
+
   const handleListPriceChange = text => {
-    // Remove non-numeric characters to keep only the numbers
     const numericText = text.replace(/[^0-9]/g, '');
 
-    // Set the numeric value without the dollar sign in the state
     setListPrice(numericText);
 
-    // Validation: if the input is empty, show an error message
     if (numericText.trim() === '') {
       setListPriceError('List price is required.');
     } else {
@@ -215,7 +203,6 @@ const PropertyListingDetail = props => {
       setIsLoading(false);
     } catch (error) {
       console.log(error, 'fkdd');
-      // Alert.alert('Error', 'Failed to insert market details.');
       setIsLoading(false);
     }
   };
@@ -239,7 +226,10 @@ const PropertyListingDetail = props => {
     console.log('add market place..', data);
     try {
       const response = await insertMarketDetails(data);
-      Alert.alert('Success', 'Property has been successfully listed on Kodie Marketplace.');
+      Alert.alert(
+        'Success',
+        'Property has been successfully listed on Kodie Marketplace.',
+      );
       props.navigation.navigate('Properties');
       setLeaseEndValue('');
       setLeaseTermValue('');
@@ -271,7 +261,11 @@ const PropertyListingDetail = props => {
   return (
     <SafeAreaView style={DetailsStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() =>viewMarketPlace ?props.navigation.navigate('VacantPropertiesList'):  props.navigation.navigate('Properties')}
+        onPressLeftButton={() =>
+          viewMarketPlace
+            ? props.navigation.navigate('VacantPropertiesList')
+            : props.navigation.navigate('Properties')
+        }
         MiddleText="Property listing details"
       />
 
@@ -283,7 +277,6 @@ const PropertyListingDetail = props => {
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={DetailsStyle.subContainer}>
-          {/* Property Details Section */}
           <SectionToggle
             titleStyle={{
               color: allPropertyFilled
@@ -395,7 +388,6 @@ const PropertyListingDetail = props => {
             <InputField
               label="List price"
               placeholder="Enter the rental amount"
-              // value={ListPrice}
               value={ListPrice ? `$${ListPrice}` : ''}
               Starpoint={'*'}
               onChangeText={handleListPriceChange}
@@ -423,7 +415,6 @@ const PropertyListingDetail = props => {
             <DividerIcon />
           </SectionToggle>
 
-          {/* Preferences Section */}
           <SectionToggle
             titleStyle={{
               color: allPreferencesFilled

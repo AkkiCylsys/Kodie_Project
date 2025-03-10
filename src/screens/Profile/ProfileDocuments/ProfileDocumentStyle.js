@@ -17,7 +17,6 @@ export default ProfileDocumentStyle = StyleSheet.create({
   },
   folderView: {
     borderWidth: 2,
-    // marginLeft: 20,
     marginHorizontal: 10,
     marginTop: 10,
     borderRadius: 15,

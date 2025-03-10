@@ -32,7 +32,6 @@ const BidforJob = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const refRBSheet = useRef();
   console.log(SearchJobId, BidJobId);
   const handleRequestDate = text => {
@@ -85,7 +84,6 @@ const BidforJob = props => {
       .catch(error => {
         console.error('API failed JobDetails', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -126,7 +124,6 @@ const BidforJob = props => {
       .catch(error => {
         console.error('API failed', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -242,7 +239,6 @@ const BidforJob = props => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={toggleModal}
-                // onDayPress={handleDayPress}
                 onDayPress={day => handleRequestDate(day.dateString)}
                 onChangeText={() => handleRequestDate(selectedDate)}
                 Visible={isModalVisible}
@@ -336,7 +332,6 @@ const BidforJob = props => {
       <RBSheet
         ref={refRBSheet}
         height={500}
-        // closeOnDragDown={true}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',

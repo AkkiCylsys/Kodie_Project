@@ -1,11 +1,17 @@
-import {View, Text, TextInput, Image, TouchableOpacity, SafeAreaView,Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Alert,
+} from 'react-native';
 import React, {useState} from 'react';
 import {ContactusStyle} from './ContactusStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import {CustomButtonstyles} from '../../../components/Atoms/CustomButton/CustomButtonCss';
 import {_COLORS, LABEL_STYLES} from '../../../Themes';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {_goBack} from '../../../services/CommonServices';
 import DeviceInfo from 'react-native-device-info';
@@ -26,7 +32,6 @@ const Contactus = props => {
   const handleCheck = () => {
     setCheck(!check);
   };
-  // validation...
 
   const handleAbouthelp = text => {
     setAboutHelp(text);
@@ -47,7 +52,7 @@ const Contactus = props => {
   // Api intrigation ....
   const handleContactus = () => {
     const url = Config.BASE_URL;
-    const contactUsUrl ='Contact_Us';
+    const contactUsUrl = 'Contact_Us';
     console.log('Request URL:', contactUsUrl);
     setIsLoading(true);
     const contactus_data = {
@@ -60,11 +65,10 @@ const Contactus = props => {
       .then(response => {
         console.log('API Response contact us:', response.data);
         if (response?.data?.success === true) {
-          Alert.alert("Success",response?.data?.message);
+          Alert.alert('Success', response?.data?.message);
           setAboutHelp('');
-          setCheck(false)
-          // props.navigation.navigate("Help_FeedBack")
-          props?.navigation.pop()
+          setCheck(false);
+          props?.navigation.pop();
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -73,7 +77,6 @@ const Contactus = props => {
       .catch(error => {
         console.error('API failed contact us', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -81,17 +84,18 @@ const Contactus = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1,  backgroundColor:_COLORS?.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS?.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Contact us'}
       />
       <View style={ContactusStyle.inputContainer}>
-        <Text style={LABEL_STYLES.commontext}>{'Tell us how we can help'}
-        <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+        <Text style={LABEL_STYLES.commontext}>
+          {'Tell us how we can help'}
+          <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
         </Text>
         <TextInput
-          style={[ContactusStyle.input, {height: 119,}]}
+          style={[ContactusStyle.input, {height: 119}]}
           value={aboutHelp}
           onChangeText={text => {
             handleAbouthelp(text);

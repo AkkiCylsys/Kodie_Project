@@ -34,7 +34,6 @@ export const AppInfoStyle = StyleSheet.create({
 
   timedurationview: {
     alignItems: "center",
-    // marginVertical:50
   },
 
   timedurationtext: {

@@ -13,7 +13,6 @@ export const AddContractorstyle = StyleSheet.create({
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginTop: 10,
     marginHorizontal: 16,
   },
   btn_main_view: {

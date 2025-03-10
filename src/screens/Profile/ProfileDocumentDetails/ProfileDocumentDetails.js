@@ -69,18 +69,13 @@ const ProfileDocumentDetails = props => {
 
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
-  // console.log("user_account_id..", loginData?.Login_details?.user_account_id);
   const user_account_id = loginData?.Login_details?.user_account_id;
   console.log('Documents lookupId ....', props.documentLookUpType);
   console.log('Documents moduleName ....', props.ModuleName);
   const moduleName = props.ModuleName;
   const D_file_name = props.headingDocument;
   const folderId = props.folderId;
-  // console.log("folderId in personalDocDetails...", folderId);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadDocData, setUploadDocData] = useState([]);
-  const [uploadDocValue, setUploadDocValue] = useState('');
   const [selectFile, setSelectFile] = useState([]);
   const [documentLookupData, setDocumentLookupData] = useState([]);
   const [documentLookupDataValue, setDocumentLookupDataValue] = useState([]);
@@ -96,34 +91,19 @@ const ProfileDocumentDetails = props => {
   };
   useEffect(() => {
     handleDocumentsLookup();
-    // getUploadedDocumentsByModule();
-    // fetchData()
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      getUploadedDocumentsByModule(); // Fetch documents when the screen is focused
+      getUploadedDocumentsByModule();
     }, [moduleName]),
   );
-  // upload Document...
   const selectDoc = async () => {
     try {
       const doc = await DocumentPicker.pick({
-        type: [
-          DocumentPicker.types.pdf,
-          // DocumentPicker.types.doc,
-          // DocumentPicker.types.docx,
-          // DocumentPicker.types.images,
-        ],
-        // allowMultiSelection: true,
+        type: [DocumentPicker.types.pdf],
       });
-      //   const doc = await DocumentPicker.pickSingle({
-      //     type: [
-      //       DocumentPicker.types.pdf,
-      //       DocumentPicker.types.doc,
-      //       DocumentPicker.types.docx,
-      //     ],
-      //   });
+
       console.log('doc......', doc);
       setSelectFile(doc);
       await uploadDocument(doc);
@@ -136,8 +116,6 @@ const ProfileDocumentDetails = props => {
     }
   };
 
-  // validation .....
-
   const handleUploadDocument = () => {
     if (documentLookupDataValue == '') {
       setDocumentLookupDataValueError(true);
@@ -145,16 +123,12 @@ const ProfileDocumentDetails = props => {
       selectDoc();
     }
   };
-  // renderItem....
   const DocumentsData = ({item, index}) => {
-    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.image_paths);
-    // setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
         <View style={ProfileDocumentDetailStyle.container}>
           <View style={ProfileDocumentDetailStyle.pdfInfo}>
-            {/* <Image source={IMAGES.document} style={ProfileDocumentDetailStyle.pdfIcon} /> */}
             <FontAwesome
               name="file-pdf-o"
               size={35}
@@ -165,11 +139,7 @@ const ProfileDocumentDetails = props => {
               <Text style={ProfileDocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              {/* <Text style={ProfileDocumentDetailStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={ProfileDocumentDetailStyle.pdfSize}>
-                {' '}
-                {/* {'4.5 MB'} */}
-              </Text>
+              <Text style={ProfileDocumentDetailStyle.pdfSize}> </Text>
             </View>
           </View>
           <TouchableOpacity
@@ -212,14 +182,10 @@ const ProfileDocumentDetails = props => {
       </View>
     );
   };
-  // Api intrigation...
   const uploadDocument = async doc => {
-    // alert("upload");
     console.log('uri....', doc[0].uri);
     console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
-    // console.log("p_referral_key....");
-    // console.log("p_module_name....",);
     if (doc[0].size === null) {
       Alert.alert(
         'Warning',
@@ -253,13 +219,12 @@ const ProfileDocumentDetails = props => {
       if (response?.data?.status === true) {
         Alert.alert('Success', response?.data?.message);
         await getUploadedDocumentsByModule();
-        setDocumentLookupDataValue([])
+        setDocumentLookupDataValue([]);
       } else {
         Alert.alert('Warning', response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
-      // alert(error);
     } finally {
       setIsLoading(false);
     }
@@ -287,13 +252,11 @@ const ProfileDocumentDetails = props => {
           setDocumentLookupData(response?.data?.lookup_details);
         } else {
           console.error('Document dropDown..._error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Document dropDown Type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -309,16 +272,11 @@ const ProfileDocumentDetails = props => {
 
     console.log('documentModuleData....', JSON.stringify(documentModuleData));
     axiosInstance
-      .post(
-        getDocumentUrl,
-        // params: documentModuleData,
-        documentModuleData,
-      )
+      .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response.data);
         if (response?.data?.status == true) {
           setDocumentdataByModulename(response?.data?.data);
-          // getUploadedDocumentsByModule();
         }
       })
       .catch(error => {
@@ -333,7 +291,6 @@ const ProfileDocumentDetails = props => {
     const dataToSend = {
       fileId: fileKey,
     };
-    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
     const delete_url = 'deletedocument';
     console.log('url...', delete_url);
@@ -361,8 +318,6 @@ const ProfileDocumentDetails = props => {
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {
-      // downloadImage();
-      // downloadDocumentIOs();
       downloadFile(REMOTE_PATH).then(res => {
         RNFetchBlob.ios.previewDocument(res.path());
       });
@@ -376,15 +331,12 @@ const ProfileDocumentDetails = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
           downloadImage();
         } else {
-          // If permission denied then show alert
           alert('Storage Permission Not Granted');
         }
       } catch (err) {
-        // To handle permission related exception
         console.warn(err);
       }
     }
@@ -413,9 +365,7 @@ const ProfileDocumentDetails = props => {
     config(options)
       .fetch('GET', image_URL)
       .then(res => {
-        // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        // alert("Image Downloaded Successfully.");
         Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
@@ -450,16 +400,13 @@ const ProfileDocumentDetails = props => {
       });
   };
   const downloadFile = async url => {
-    // Get the app's cache directory
     console.log('start. doc....');
     const {config, fs} = RNFetchBlob;
     const cacheDir = fs.dirs.DownloadDir;
-    // Generate a unique filename for the downloaded image
     const filename = url.split('/').pop();
     const imagePath = `${cacheDir}/${filename}`;
 
     try {
-      // Download the file and save it to the cache directory
       const configOptions = Platform.select({
         ios: {
           fileCache: true,
@@ -472,14 +419,12 @@ const ProfileDocumentDetails = props => {
         url,
       );
 
-      // Return the path to the downloaded file
       return response;
     } catch (error) {
       console.error(error);
       return null;
     }
   };
-  // share doc....
   const shareDocFile = async () => {
     setTimeout(() => {
       Share.open({url: filePath})
@@ -492,36 +437,15 @@ const ProfileDocumentDetails = props => {
     }, 300);
   };
   const getExtention = fileName => {
-    // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
   const dest = `${RNFS.DocumentDirectoryPath}/${filePath}`;
 
   const viewPdf = async () => {
-    // console.log("path..",filePath)
-
-    // try {
-    //   await RNFileViewer.open(filePath);
-    // } catch (error) {
-    //   console.error('Error viewing PDF:', error);
-    // }
-
-    // RNFS.copyFileAssets(filePath, dest)
-    //   .then(() => FileViewer.open(dest))
-    //   .then(() => {
-    //     // success
-    //   })
-    //   .catch(error => {
-    //     /* */
-    //     console.log("error doc....",error)
-    //   });
-    const path = FileViewer.open(filePath, {showOpenWithDialog: true}) // absolute-path-to-my-local-file.
-      .then(() => {
-        // success
-      })
+    const path = FileViewer.open(filePath, {showOpenWithDialog: true})
+      .then(() => {})
       .catch(error => {
-        // error
         console.log('error doc....', error);
       });
   };
@@ -563,7 +487,6 @@ const ProfileDocumentDetails = props => {
       if (isIOS) {
         FileViewer.open(res.data, {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -573,7 +496,6 @@ const ProfileDocumentDetails = props => {
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -631,16 +553,13 @@ const ProfileDocumentDetails = props => {
           inputSearchStyle={ProfileDocumentDetailStyle.inputSearchStyle}
           iconStyle={ProfileDocumentDetailStyle.iconStyle}
           data={documentLookupData}
-          // search
           maxHeight={300}
           labelField="lookup_description"
           valueField="lookup_key"
           placeholder="Select document"
-          // searchPlaceholder="Search..."
           value={documentLookupDataValue}
           onChange={item => {
             setDocumentLookupDataValue(item.lookup_key);
-            // alert(item.lookup_key)
             setDocumentLookupDataValueError(false);
           }}
           renderItem={documentDataRender}
@@ -694,11 +613,6 @@ const ProfileDocumentDetails = props => {
           shareDocFile={shareDocFile}
           fileKey={fileKey}
           onpress={() => {
-            // navigation.navigate('ViewDocument', {
-            //   filePath: filePath,
-            // });
-            // alert('hello profile');
-            // downloadviewFile();
             downloadviewFile();
           }}
         />

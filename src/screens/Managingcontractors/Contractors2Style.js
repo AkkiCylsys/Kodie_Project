@@ -6,7 +6,6 @@ export const Contractors2Style = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_ExtraLiteWhiteColor,
   },
   container: {
-    // marginHorizontal: 16,
   },
   activeTab: {
     backgroundColor: "white",

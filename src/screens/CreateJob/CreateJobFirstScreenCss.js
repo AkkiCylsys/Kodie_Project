@@ -48,7 +48,6 @@ export const CreateJobFirstStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -235,13 +234,11 @@ export const CreateJobFirstStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // alignSelf: "flex-end",
     paddingVertical: 3,
     borderRadius: 10,
     width: '25%',
     height: 60,
     bottom: 0,
-    // right: 20,
     left: 20,
     marginBottom: 30,
     position: 'absolute',

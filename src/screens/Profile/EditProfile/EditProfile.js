@@ -21,36 +21,27 @@ import React, {useState, useRef, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {EditProfileStyle} from './EditProfileStyle';
 import {Divider} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
-import {CreateJobFirstStyle} from '../../CreateJob/CreateJobFirstScreenCss';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, IMAGES, FONTFAMILY, LABEL_STYLES} from '../../../Themes';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {_goBack} from '../../../services/CommonServices';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import UploadImageData from '../../../components/Molecules/UploadImage/UploadImage';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import CompanyDetails from '../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails';
 import ProfileDocuments from '../ProfileDocuments/ProfileDocuments';
-import PersonalDetails from '../PersonalDetails/PersonalDetails';
-import PhoneInput from 'react-native-phone-number-input';
-import styles from 'rn-range-slider/styles';
 import ServicesBox from '../../../components/Molecules/ServicesBox/ServicesBox';
-import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 import axiosInstance from '../../../services/axiosInstance';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -68,11 +59,10 @@ const EditProfile = props => {
   const dispatch = useDispatch();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3,4';
   const roleArray = userRole ? userRole.split(',') : [];
-  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
-  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
-  const hasContractorRoleTab = roleArray.includes('4'); // Contractor role (4)
+  const hasTenantRole = roleArray.includes('2');
+  const hasLandlordRole = roleArray.includes('3');
+  const hasContractorRoleTab = roleArray.includes('4');
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
@@ -113,8 +103,6 @@ const EditProfile = props => {
   const [accountDetails, setAccountDetails] = useState(null);
   const [country_Code_Get, setCountry_Code_Get] = useState('');
   console.log(selectedServices, 'selectedServices');
-  // const hasTenantRole = selectedServices.includes(2);
-  // const hasLandlordRole = selectedServices.includes(3);
   const hasPropertyRole = selectedServices.includes(10);
   const hanContractorRole = selectedServices.includes(4);
   const shouldShowCompanyDetailsTab = hanContractorRole;
@@ -201,8 +189,8 @@ const EditProfile = props => {
   const phoneNumberParts = formatNumber.match(/^(\+\d{1,2})(\d+)$/);
 
   if (phoneNumberParts) {
-    const countryCode = phoneNumberParts[1]; // Extracted country code
-    const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+    const countryCode = phoneNumberParts[1];
+    const remainingNumber = phoneNumberParts[2];
 
     console.log('CountryCode:', countryCode);
     setCountry_Code_Get(countryCode);
@@ -217,12 +205,10 @@ const EditProfile = props => {
     setIsLoading(true);
     const apiUrl = `getAccount_details/${loginData.Login_details.user_account_id}`;
     console.log(apiUrl, 'apiUrl');
-    // Make a GET request using Axios
     axiosInstance
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]);
-        // dispatch(fetchLoginSuccess(response?.data?.data[0]));
         setAccountDetails(response?.data?.data[0]);
         setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
@@ -241,7 +227,6 @@ const EditProfile = props => {
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails EP:', error);
         setIsLoading(false);
       });
@@ -253,17 +238,16 @@ const EditProfile = props => {
     getPersonalDetails();
     console.log('companyPhysicaladdress', companyPhysicaladdress);
     setActiveTab(
-      profileDoc && hasContractorRoleTab // Check if profileDoc exists and either service 4 is included or selectedServices is empty
-        ? 'Tab3' // Set to Tab3
-        : profileDoc && (hasTenantRole || hasLandlordRole) // If profileDoc exists and either service 3 or 2 is included
-        ? 'Tab2' // Set to Tab2
-        : 'Tab1', // If neither condition is met, set to Tab1
+      profileDoc && hasContractorRoleTab
+        ? 'Tab3'
+        : profileDoc && (hasTenantRole || hasLandlordRole)
+        ? 'Tab2'
+        : 'Tab1',
     );
 
     handle_describe_yourself();
   }, []);
 
-  // describe your self Api call code here .....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
       P_PARENT_CODE: 'TEN_DESC',
@@ -276,7 +260,6 @@ const EditProfile = props => {
     axios
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
-        // console.log('kodie_describeYouself_Data', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
@@ -289,7 +272,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          // alert('Oops something went wrong! Please try again later.');
+
           setIsLoading(false);
         }
       })
@@ -301,12 +284,10 @@ const EditProfile = props => {
   };
   const toggleSelection = lookup_key => {
     if (selectedServices.includes(lookup_key)) {
-      // Item is already selected, remove it
       setSelectedServices(prevSelected =>
         prevSelected.filter(item => item !== lookup_key),
       );
     } else {
-      // Item is not selected, add it
       setSelectedServices(prevSelected => [...prevSelected, lookup_key]);
     }
   };
@@ -326,8 +307,6 @@ const EditProfile = props => {
       textColor={[EditProfileStyle.box_Text_Style]}
       onPress={() => {
         toggleSelection(item.lookup_key);
-        // setKodieDescribeYourselfDataId(item.lookup_key);
-        // alert(item.lookup_key);
       }}
     />
   );
@@ -348,7 +327,6 @@ const EditProfile = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
     if (activeTab === 'Tab1') {
       setlatitude(Region.latitude);
     } else {
@@ -391,7 +369,7 @@ const EditProfile = props => {
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
+
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
       })
@@ -402,30 +380,27 @@ const EditProfile = props => {
     setVisible(!visible);
   };
   const updateUserData = async () => {
-    setIsLoading(true); // Start loading indicator
-    const userId = uuid.v4(); // Generate a unique user ID
+    setIsLoading(true);
+    const userId = uuid.v4();
 
     try {
-      let downloadURL = ''; // Initialize the download URL
+      let downloadURL = '';
 
-      // Check if an image is provided
       if (ImageName && ImageName.path) {
-        const storageRef = storage().ref(`user_images/${userId}`); // Create a reference in storage
-        await storageRef.putFile(ImageName.path); // Upload the image
-        downloadURL = await storageRef.getDownloadURL(); // Get the download URL
+        const storageRef = storage().ref(`user_images/${userId}`);
+        await storageRef.putFile(ImageName.path);
+        downloadURL = await storageRef.getDownloadURL();
       } else {
-        // If no new image is provided, keep the existing image URL
         const userDoc = await firestore()
           .collection('Users')
           .doc(auth().currentUser.uid)
           .get();
-        downloadURL = userDoc.data().image; // Get the current image URL from Firestore
+        downloadURL = userDoc.data().image;
       }
 
-      // Update the user's data in Firestore
       await firestore()
         .collection('Users')
-        .doc(auth().currentUser.uid) // Use the current user's UID
+        .doc(auth().currentUser.uid)
         .update({
           name: `${fullName} ${lastName}`,
           email: email,
@@ -436,16 +411,15 @@ const EditProfile = props => {
 
       console.log('User data updated in AsyncStorage');
     } catch (error) {
-      console.error('Error updating user:', error); // Log any errors
+      console.error('Error updating user:', error);
     } finally {
-      setIsLoading(false); // Stop loading indicator
+      setIsLoading(false);
     }
   };
 
-  // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
-    const fileUri = ImageName?.path; // Use optional chaining to avoid errors if ImageName is undefined
+    const fileUri = ImageName?.path;
     const fileName = fileUri
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
@@ -457,8 +431,6 @@ const EditProfile = props => {
 
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
-
-      // Handle invalid image data
     } else {
       formData.append('profile_photo', {
         uri: fileUri,
@@ -491,12 +463,10 @@ const EditProfile = props => {
       if (response?.data?.success === true) {
         alert(response?.data?.message);
         updateUserData();
-        // dispatch(fetchLoginSuccess(response?.data?.data?.[0]));
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');
       }
     } catch (error) {
-      // alert(error);
       console.log('update_error...', error);
     } finally {
       setIsLoading(false);
@@ -549,7 +519,6 @@ const EditProfile = props => {
                         color={_COLORS.Kodie_GreenColor}
                         size={15}
                         style={{alignItems: 'center'}}
-                        // resizeMode="center"
                       />
                     </View>
                   </TouchableOpacity>
@@ -773,7 +742,6 @@ const EditProfile = props => {
           }}>
           <MapScreen
             style={{
-              // flex:0.5,
               height: '100%',
               width: '100%',
               alignSelf: 'center',

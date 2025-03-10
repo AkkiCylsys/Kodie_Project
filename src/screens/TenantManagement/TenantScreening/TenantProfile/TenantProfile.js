@@ -3,7 +3,6 @@ import {View, Text, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {TenantProfileStyle} from './TenantProfileStyle';
-import UserDetails from '../../../../components/PropertyViewApplication/UserDetails/UserDetails';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {_COLORS, FONTFAMILY, IMAGES} from '../../../../Themes';

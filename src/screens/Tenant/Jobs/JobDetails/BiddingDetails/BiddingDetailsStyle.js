@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-// import { _COLORS ,FONTFAMILY} from "../../Themes";
 import { _COLORS, FONTFAMILY } from "../../../../../Themes";
 export const BiddingDetailsStyle = StyleSheet.create({
   mainContainer: {
@@ -7,7 +6,6 @@ export const BiddingDetailsStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_ExtraLiteWhiteColor,
   },
   container: {
-    // marginHorizontal: 16,
   },
   activeTab: {
     backgroundColor: "white",

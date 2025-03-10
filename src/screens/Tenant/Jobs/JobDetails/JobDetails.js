@@ -4,9 +4,6 @@ import {
   View,
   Text,
   ScrollView,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
   SafeAreaView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
@@ -16,15 +13,8 @@ import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
 import {BANNERS, _COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import {Dropdown} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
-import Entypo from 'react-native-vector-icons/Entypo';
 import StepIndicator from 'react-native-step-indicator';
-import BiddingDetails from './BiddingDetails/Biddingdetails';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AddJobDetails from '../AddJobDetails';
 import Reviewjobdetails1 from '../../../CreateJob/ReviewJobDetails/Reviewjobdetails1';
 import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails';
 import JobDocuments from '../JobDocuments.js/JobDocuments';
@@ -33,12 +23,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchCreateJobSuccess} from '../../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
-// const images = [
-//   BANNERS.previewImage,
-//   BANNERS.Apartment,
-//   BANNERS.BannerSecond,
-//   BANNERS.BannerFirst,
-// ];
 const images = [
   'https://kodieapis.cylsys.com/upload/images/image.jpg',
   'https://kodieapis.cylsys.com/upload/images/left_image.jpg',
@@ -55,7 +39,8 @@ const Apartment_data = [
 const JobDetails = props => {
   const dispatch = useDispatch();
   const isFocued = useIsFocused();
-  const {JobId, editMode,View_Job_Details,job_id,jobDocTab,JOB_ID} = props?.route?.params;
+  const {JobId, editMode, View_Job_Details, job_id, jobDocTab, JOB_ID} =
+    props?.route?.params;
   const SearchJobId = props.route.params.SearchJobId;
   const searchView = props.route.params.searchView;
   console.log('SearchJobId...', SearchJobId, searchView);
@@ -81,7 +66,6 @@ const JobDetails = props => {
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -133,10 +117,9 @@ const JobDetails = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -181,9 +164,6 @@ const JobDetails = props => {
             SearchJobId={SearchJobId}
             searchView={searchView}
             JobId={JobId}
-            // job_id={job_id}
-            // JOB_ID={JOB_ID}
-            // update_JOB_ID={update_JOB_ID}
             editMode={editMode}
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
@@ -234,8 +214,6 @@ const JobDetails = props => {
   return (
     <SafeAreaView style={JobDetailsStyle.container}>
       <TopHeader
-        // isprofileImage
-        // IsNotification
         onPressLeftButton={() =>
           View_Job_Details
             ? props.navigation.navigate('Jobs', {
@@ -250,7 +228,6 @@ const JobDetails = props => {
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={3}
-            // onPress={onStepPress}
             renderStepIndicator={renderStepIndicator}
             labels={stepLabels}
             stepCount={4}
@@ -260,23 +237,22 @@ const JobDetails = props => {
       </View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
-        {/* <ImageBackground> */}
         {imageFileData.image_file_path &&
         imageFileData.image_file_path.length !== 0 ? (
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox
-              images={imageFileData?.image_file_path.filter(url =>
-                url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png')
+              images={imageFileData?.image_file_path.filter(
+                url =>
+                  url.endsWith('.jpg') ||
+                  url.endsWith('.jpeg') ||
+                  url.endsWith('.png'),
               )}
-              // images={images}
               sliderBoxHeight={200}
               onCurrentImagePressed={index =>
                 console.warn(`image ${index} pressed`)
               }
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
-              // autoplay
-              // circleLoop
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={JobDetailsStyle.dotStyle}
@@ -287,13 +263,6 @@ const JobDetails = props => {
             />
           </View>
         ) : null}
-        {/* {imageFileData.image_file_path &&
-          imageFileData.image_file_path.length != 0 ? (
-            <View style={JobDetailsStyle.bidsview}>
-              <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
-            </View>
-          ) : null} */}
-        {/* </ImageBackground> */}
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>
             {imageFileData.job_type}
@@ -379,161 +348,6 @@ const JobDetails = props => {
           />
         </View>
         {checkTabs()}
-
-        {/* <View style={JobDetailsStyle.headingview}>
-          <Text style={JobDetailsStyle.uploadtext}>Upload documents</Text>
-          <Text style={JobDetailsStyle.filenametext}>
-            Documents should be formatted .pdf or .jpg or .png Size per file
-            should not exceed 5 MB
-          </Text>
-        </View> */}
-
-        {/* <View style={JobDetailsStyle.dropdownmainview}>
-          <Text style={JobDetailsStyle.dropdownheading}>
-            Select type of document
-          </Text>
-          <View>
-            <Dropdown
-              style={JobDetailsStyle.dropdown}
-              placeholderStyle={[
-                JobDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_BlackColor },
-              ]}
-              selectedTextStyle={JobDetailsStyle.selectedTextStyle}
-              inputSearchStyle={JobDetailsStyle.inputSearchStyle}
-              iconStyle={JobDetailsStyle.iconStyle}
-              data={Apartment_data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Job proposal"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
-          </View>
-
-          <View>
-            <Dropdown
-              style={JobDetailsStyle.dropdown}
-              placeholderStyle={[
-                JobDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_BlackColor },
-              ]}
-              selectedTextStyle={JobDetailsStyle.selectedTextStyle}
-              inputSearchStyle={JobDetailsStyle.inputSearchStyle}
-              iconStyle={JobDetailsStyle.iconStyle}
-              data={Apartment_data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Invoice & proof of payment"
-              value={value2}
-              onChange={(item) => {
-                setValue2(item.value);
-              }}
-            />
-          </View>
-
-          {visible && (
-            <View>
-              <TouchableOpacity
-                style={JobDetailsStyle.textContainer}
-                onPress={() => {
-                  refRBSheet.current.open();
-                }}
-              >
-                <View style={JobDetailsStyle.bindfile}>
-                  <Image source={IMAGES.document} />
-                  <View>
-                    <Text style={JobDetailsStyle.pdfName}>
-                      {"Company document.pdf"}
-                    </Text>
-                    <Text style={JobDetailsStyle.pdfSize}>{"4.8 MB"}</Text>
-                  </View>
-                </View>
-                <Entypo
-                  name="dots-three-vertical"
-                  size={20}
-                  style={JobDetailsStyle.doticon}
-                />
-              </TouchableOpacity>
-
-              <View style={JobDetailsStyle.textContainer}>
-                <View style={JobDetailsStyle.bindfile}>
-                  <Image source={IMAGES.document} />
-                  <View>
-                    <Text style={JobDetailsStyle.pdfName}>
-                      {"Company document.pdf"}
-                    </Text>
-                    <Text style={JobDetailsStyle.pdfSize}>{"4.8 MB"}</Text>
-                  </View>
-                </View>
-                <Entypo
-                  name="dots-three-vertical"
-                  size={20}
-                  style={JobDetailsStyle.doticon}
-                />
-              </View>
-            </View>
-          )}
-
-          <View>
-            <Dropdown
-              style={JobDetailsStyle.dropdown}
-              placeholderStyle={[
-                JobDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_BlackColor },
-              ]}
-              selectedTextStyle={JobDetailsStyle.selectedTextStyle}
-              inputSearchStyle={JobDetailsStyle.inputSearchStyle}
-              iconStyle={JobDetailsStyle.iconStyle}
-              data={Apartment_data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Proof of work completed"
-              value={value3}
-              onChange={(item) => {
-                setValue3(item.value);
-              }}
-            />
-          </View>
-
-          <View style={JobDetailsStyle.buttonview}>
-            <CustomSingleButton
-              disabled={isLoading ? true : false}
-              leftImage={IMAGES.uploadIcon}
-              isLeftImage={true}
-              borderColor={_COLORS.Kodie_TransparentColor}
-              _ButtonText={"Upload"}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-            />
-          </View>
-        </View> */}
-
-        {/* <RBSheet
-          ref={refRBSheet}
-          height={200}
-          customStyles={{
-            wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: JobDetailsStyle.bottomModal_container,
-          }}
-        >
-          <UploadImageData
-            heading_Text={"Upload  documents"}
-            onPress={toggleView}
-          />
-        </RBSheet> */}
       </ScrollView>
     </SafeAreaView>
   );

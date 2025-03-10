@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const PropertyImagesStyle = StyleSheet.create({
   mainContainer: {
@@ -17,8 +17,8 @@ export const PropertyImagesStyle = StyleSheet.create({
   },
   slider_view: {
     flex: 0.5,
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
     marginVertical: 25,
   },
   dotStyle: {
@@ -46,8 +46,8 @@ export const PropertyImagesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -61,9 +61,7 @@ export const PropertyImagesStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  btnView: {
-    // marginTop: 2,
-  },
+  btnView: {},
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,
@@ -72,14 +70,13 @@ export const PropertyImagesStyle = StyleSheet.create({
     elevation: 10,
   },
 
-
   videoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 300, // Adjust according to your layout
-      },
-    video: {
+    height: 300,
+  },
+  video: {
     width: 300,
-    height: 300, // Adjust height based on the aspect ratio
-      },
+    height: 300,
+  },
 });

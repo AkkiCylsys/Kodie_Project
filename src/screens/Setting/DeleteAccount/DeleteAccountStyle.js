@@ -4,7 +4,6 @@ import {_COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
 export const DeleteAccountStyle = StyleSheet.create({
   container: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    // height: "100%",
   },
   headingview: {
     flexDirection: 'row',
@@ -26,7 +25,7 @@ export const DeleteAccountStyle = StyleSheet.create({
   },
   Pointsview: {
     marginTop: 15,
-    marginHorizontal:16
+    marginHorizontal: 16,
   },
   textpoint: {
     fontSize: 10,
@@ -35,7 +34,7 @@ export const DeleteAccountStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_ExtraLightGrayColor,
     opacity: 0.7,
-    marginLeft:30
+    marginLeft: 30,
   },
   logoutview: {
     flexDirection: 'row',
@@ -67,7 +66,6 @@ export const DeleteAccountStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     fontSize: 15,
-    // textAlign: 'center',
   },
   downarrowimg: {
     width: 12,
@@ -91,8 +89,6 @@ export const DeleteAccountStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    // marginBottom: 50,
-    // marginBottom: 250,
   },
   inputContainer: {
     marginTop: 15,
@@ -128,9 +124,7 @@ export const DeleteAccountStyle = StyleSheet.create({
     marginTop: 10,
   },
   simpleinputview: {
-    // height: 50,
     borderWidth: 1,
-    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -167,19 +161,19 @@ export const DeleteAccountStyle = StyleSheet.create({
   },
   simpleinputview: {
     height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 5,
   },
   oldnumbertext: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     marginHorizontal: 8,
-    marginVertical:11,
+    marginVertical: 11,
   },
   IconView: {
     borderWidth: 1,
@@ -187,7 +181,6 @@ export const DeleteAccountStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 32,
-    // marginTop: 10,
     height: 35,
     padding: 5,
     alignItems: 'center',

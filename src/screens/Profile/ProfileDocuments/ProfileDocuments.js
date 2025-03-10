@@ -32,7 +32,6 @@ const ProfileDocuments = props => {
   const [otherDocument, setOtherDocument] = useState([]);
   const [otherDocumentLength, setOtherDocumentLength] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // company document states here  ...
   const [companyDocument, setCompanyDocument] = useState([]);
   const [companyDocumentLength, setCompanyDocumentLength] = useState('');
   const [licenseDocument, setLicenseDocument] = useState([]);
@@ -57,8 +56,7 @@ const ProfileDocuments = props => {
     getUploadedDocumentsByModule('Licenses');
     getUploadedDocumentsByModule('Certifications');
     getUploadedDocumentsByModule('Insurance_and_indemnity');
-    // getUploadedDocumentsByModule('Other_documents');
-  }, [isfocused,companyDocumentId,folderId]);
+  }, [isfocused, companyDocumentId, folderId]);
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
     const getDocumentUrl = 'get/documents';
@@ -177,7 +175,6 @@ const ProfileDocuments = props => {
               setOtherDocumentLength(response?.data?.data.length);
               console.log('otherDocumentLength..', otherDocumentLength);
               break;
-            // Add cases for other module names if needed
             default:
               break;
           }
@@ -194,42 +191,36 @@ const ProfileDocuments = props => {
     {
       id: '1',
       folderHeading: 'Identity documents',
-      // totalFile: '12 Files',
       totalFile: identifyDocumentIdLength,
       moduleName: 'Identity_documents',
     },
     {
       id: '2',
       folderHeading: 'Proof of address',
-      // totalFile: '13 Files',
       totalFile: proofIdAddressLength,
       moduleName: 'Proof_of_address',
     },
     {
       id: '3',
       folderHeading: 'Banking documents',
-      // totalFile: '15 Files',
       totalFile: bankingDocumentLength,
       moduleName: 'Banking_documents',
     },
     {
       id: '4',
       folderHeading: 'Employment documents',
-      // totalFile: '15 Files',
       totalFile: employmentDocumentLength,
       moduleName: 'Employment_documents',
     },
     {
       id: '5',
       folderHeading: 'Screening documents',
-      // totalFile: '15 Files',
       totalFile: screeningDocumentLength,
       moduleName: 'Screening_documents',
     },
     {
       id: '6',
       folderHeading: 'Other documents',
-      // totalFile: '15 Files',
       totalFile: otherDocumentLength,
       moduleName: 'Other_documents',
     },
@@ -245,14 +236,12 @@ const ProfileDocuments = props => {
       id: '2',
       folderHeading: 'License documents',
       totalFile: licenseDocumentLength,
-      // moduleName: 'License_documents',
       moduleName: 'Licenses',
     },
     {
       id: '3',
       folderHeading: 'Certification documents',
       totalFile: licenseDocumentLength,
-      // moduleName: 'Certification_documents',
       moduleName: 'Certifications',
     },
     {
@@ -280,7 +269,6 @@ const ProfileDocuments = props => {
         style={ProfileDocumentStyle.folderView}
         onPress={() => {
           setFolderId(item.id);
-          // alert(item.id);
         }}>
         <View style={ProfileDocumentStyle.folder_icon}>
           <Ionicons
@@ -288,17 +276,11 @@ const ProfileDocuments = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          {/* <Entypo
-            name="dots-three-vertical"
-            size={25}
-            color={_COLORS.Kodie_GrayColor}
-          /> */}
         </View>
         <View>
           <Text style={ProfileDocumentStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          {/* <Text style={ProfileDocumentStyle.files_text}>{'12 files'}</Text> */}
           <Text
             style={
               ProfileDocumentStyle.files_text
@@ -320,17 +302,11 @@ const ProfileDocuments = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          {/* <Entypo
-            name="dots-three-vertical"
-            size={25}
-            color={_COLORS.Kodie_GrayColor}
-          /> */}
         </View>
         <View>
           <Text style={ProfileDocumentStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          {/* <Text style={ProfileDocumentStyle.files_text}>{'12 files'}</Text> */}
           <Text
             style={
               ProfileDocumentStyle.files_text
@@ -376,7 +352,6 @@ const ProfileDocuments = props => {
               setSelectedTab(false);
               setSelectedTabId(0);
               setFolderId(null);
-              // alert(selectedTabId);
             }}
             RightButtonText={'Company documents'}
             RightButtonbackgroundColor={
@@ -398,7 +373,6 @@ const ProfileDocuments = props => {
               setSelectedTab(true);
               setSelectedTabId(1);
               setCompanyDocumentId(null);
-              // alert(selectedTabId);
             }}
           />
         </View>
@@ -470,7 +444,6 @@ const ProfileDocuments = props => {
               <FlatList
                 data={folderData}
                 scrollEnabled
-                // horizontal={true}
                 numColumns={2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{}}
@@ -512,7 +485,7 @@ const ProfileDocuments = props => {
                   : companyDocumentId == 4
                   ? 'INSURANCE_INDEMNITY'
                   : companyDocumentId == 5
-                  ? '' // manish ne bola hai chhodne ko ..... from banked side
+                  ? ''
                   : companyDocumentId == 6
                   ? 'OTHER_DOCUMENTS'
                   : null
@@ -542,7 +515,6 @@ const ProfileDocuments = props => {
               <FlatList
                 data={CompanyfolderData}
                 scrollEnabled
-                // horizontal={true}
                 numColumns={2}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{}}
@@ -553,17 +525,6 @@ const ProfileDocuments = props => {
           )}
         </View>
       )}
-      {/* <View style={ProfileDocumentStyle.saveBackButton}>
-        <View style={ProfileDocumentStyle.secondview}>
-          <CustomSingleButton
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={'Save and back'}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            disabled={isLoading ? true : false}
-          />
-        </View>
-      </View> */}
     </View>
   );
 };

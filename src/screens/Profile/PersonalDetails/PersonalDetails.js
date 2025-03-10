@@ -4,26 +4,20 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
-import TopHeader from '../../../components/Molecules/Header/Header';
 import PersonalDetailStyle from './PersonalDetailStyle';
 import {Divider} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {_goBack} from '../../../services/CommonServices';
-import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import UploadImageData from '../../../components/Molecules/UploadImage/UploadImage';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
-import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
-import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
@@ -34,7 +28,6 @@ import axiosInstance from '../../../services/axiosInstance';
 
 const PersonalDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [fullName, setFullName] = useState(
     loginData?.Account_details[0]?.UAD_FIRST_NAME,
   );
@@ -73,10 +66,6 @@ const PersonalDetails = props => {
       language: 'en',
     });
     CheckIOSMapPermission();
-    // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
-    // setEmail(loginData?.Login_details?.email);
-    // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
-    // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
   }, []);
 
   const goBack = () => {
@@ -90,7 +79,6 @@ const PersonalDetails = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
@@ -107,7 +95,6 @@ const PersonalDetails = props => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
-        // alert("You can use the location");
         getAddressWithCordinates();
       } else {
         console.log('location permission denied');
@@ -174,16 +161,12 @@ const PersonalDetails = props => {
         setLocation(json.results[0].formatted_address);
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
-
-        //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
-  //   Api intrigation....
   const Updateprofile = async () => {
     const formData = new FormData();
     if (ImageName && typeof ImageName === 'string') {
@@ -204,7 +187,7 @@ const PersonalDetails = props => {
     formData.append('latitude', latitude);
     console.log('formData', formData);
     const url = Config.BASE_URL;
-    const updateProfile_url ='profile/updateProfile';
+    const updateProfile_url = 'profile/updateProfile';
     console.log('Request URL:', updateProfile_url);
     setIsLoading(true);
     try {
@@ -366,7 +349,6 @@ const PersonalDetails = props => {
                     onFocus={() => {
                       setIsSearch(true);
                     }}
-                    // editable={false}
                     placeholder="Enter new location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />

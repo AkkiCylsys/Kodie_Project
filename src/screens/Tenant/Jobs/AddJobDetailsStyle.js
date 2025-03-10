@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-// import { _COLORS, FONTFAMILY } from "../../../../../../../Themes";
 import { _COLORS,FONTFAMILY } from "../../../Themes";
 export const AddJobDetailsStyle = StyleSheet.create({
   mainContainer: {
@@ -14,13 +13,11 @@ export const AddJobDetailsStyle = StyleSheet.create({
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginTop: 10,
     marginHorizontal: 16,
   },
   btn_main_view:{
     flexDirection: "row",
     marginLeft: 10,
-    // marginTop: 10,
     borderWidth: 1,
     paddingHorizontal: 8,
     paddingVertical: 5,

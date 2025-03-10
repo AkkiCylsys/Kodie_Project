@@ -6,7 +6,6 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   flat_MainView: {
-    // flex: 1,
     flexDirection: 'row',
   },
   locationText: {
@@ -33,19 +32,19 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
   summaryView: {
     marginHorizontal: 16,
   },
-  summaryText:{
+  summaryText: {
     fontSize: 12,
     fontFamily: FONTFAMILY?.K_Regular,
     color: _COLORS?.Kodie_BlackColor,
     marginVertical: 15,
     alignSelf: 'center',
-    textAlign:"center",
-    marginHorizontal:42
+    textAlign: 'center',
+    marginHorizontal: 42,
   },
   readMoreTextContainer: {
     borderBottomWidth: 1,
     borderColor: _COLORS.Kodie_GreenColor,
-    alignSelf: 'flex-start', // This makes the border span only the width of the text
+    alignSelf: 'flex-start',
     marginTop: 16,
   },
   readMoreText: {
@@ -66,16 +65,14 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
     marginVertical: 10,
   },
   textContainer: {
-    // flex:1,
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 10,
-    // borderWidth:1
   },
   pdfInfo: {
-    flex:1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding:10,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
   },
   pdfName: {
     flex: 0.5,
@@ -92,13 +89,13 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
   pdfIcon: {
     width: 45,
     height: 45,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   crossIcon: {
     flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-    position: "absolute",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    position: 'absolute',
     top: 20,
     right: 5,
     zIndex: 1,
@@ -113,7 +110,7 @@ export const PropertyViewApplicationStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
     textAlign: 'center',
-    lineHeight: 18,  // Optional: improves readability
-    marginHorizontal: 10,  // Optional: provides padding from the edges
+    lineHeight: 18,
+    marginHorizontal: 10,
   },
 });

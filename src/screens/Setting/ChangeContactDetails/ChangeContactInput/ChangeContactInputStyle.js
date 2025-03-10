@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY, IMAGES } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../../Themes';
 export const ChangeContactInputStyle = StyleSheet.create({
   maincontainer: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height: "100%",
+    height: '100%',
   },
   firstview: {
     marginHorizontal: 15,
@@ -16,36 +16,35 @@ export const ChangeContactInputStyle = StyleSheet.create({
   numbercodefirstview: {
     height: 50,
     borderWidth: 0.3,
-    width: "100%",
+    width: '100%',
     borderRadius: 8,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
-    // marginTop: 15,
   },
 
   bindview: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 5,
   },
   oldnumbertext: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     marginHorizontal: 8,
-    marginVertical:11,
+    marginVertical: 11,
   },
 
   numbercode: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,
-    fontWeight: "400",
+    fontWeight: '400',
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   downarrowimg: {
@@ -60,7 +59,7 @@ export const ChangeContactInputStyle = StyleSheet.create({
   Vectorimg: {
     width: 15,
     height: 17,
-    tintColor: "#CED5D7",
+    tintColor: '#CED5D7',
   },
   secondview: {
     marginTop: 12,
@@ -68,9 +67,9 @@ export const ChangeContactInputStyle = StyleSheet.create({
   },
   simpleinputNewPhoneview: {
     height: 55,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 5,
     borderWidth: 1,
     borderRadius: 12,
@@ -79,21 +78,19 @@ export const ChangeContactInputStyle = StyleSheet.create({
   },
   simpleinputview: {
     height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 5,
   },
   old_inputview: {
     height: 50,
     borderWidth: 1,
-    // borderColor: _COLORS.Kodie_DarkGreenColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: 'row',
     alignItems: 'center',
-    // width: "90%",
     justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
@@ -101,6 +98,5 @@ export const ChangeContactInputStyle = StyleSheet.create({
     flex: 1,
     color: _COLORS.Kodie_BlackColor,
   },
-  error_text: { color: "red", marginLeft: 10,marginTop:5 },
-
+  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
 });

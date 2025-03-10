@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS,FONTFAMILY } from "../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../Themes';
 export const PreviousComponentStyle = StyleSheet.create({
   startRating: {
     paddingHorizontal: 1,
@@ -31,59 +31,47 @@ export const PreviousComponentStyle = StyleSheet.create({
   },
 
   verifirdview: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 8,
   },
   verifiedtext: {
     color: _COLORS.Kodie_GreenColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 5,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 3,
   },
 
-  //   --------------------
   mainview: {
     flex: 1,
     marginHorizontal: 15,
     marginVertical: 5,
   },
-  mainbindview: {
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // marginHorizontal: 5,
-  },
-  databindview: {
-    // flexDirection: "row",
-  },
-  menuiconview: {
-    // flexDirection: "row",
-    // alignSelf: "center",
-  },
+  mainbindview: {},
+  databindview: {},
+  menuiconview: {},
   heartimg: {
     marginRight: 10,
   },
   namebindview: {
     flex: 1,
-    flexDirection: "row",
-    // justifyContent: "space-evenly",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   ratingbindview: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   iconbindview: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   imageview: {
     flex: 1,
-    flexDirection: "row",
-    // justifyContent: "space-between",
+    flexDirection: 'row',
   },
 
-  Container: { flex: 1, flexDirection: "row", justifyContent: "space-evenly" },
+  Container: {flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'},
   textStyle: {
     fontSize: 12,
     color: _COLORS.Kodie_GrayColor,

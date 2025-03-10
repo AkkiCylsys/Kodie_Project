@@ -5,7 +5,6 @@ import { _goBack } from "../../../services/CommonServices";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _COLORS, IMAGES } from "../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
 import RBSheet from "react-native-raw-bottom-sheet";

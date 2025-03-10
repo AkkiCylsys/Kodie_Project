@@ -3,19 +3,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
   FlatList,
   Platform,
 } from 'react-native';
 
 import IndividualProfileStyle from './IndividualProfileStyle';
-import PhoneInput from 'react-native-phone-number-input';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {MultiSelect} from 'react-native-element-dropdown';
 import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
-import {Divider} from 'react-native-paper';
-import {IMAGES} from '../../../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
@@ -40,11 +35,8 @@ const IndividualInProfile = ({
   handleMap,
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [website, setWebsite] = useState('');
-  // accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-  //   ? accountDetails?.UAD_WEBSITE
-  //   : '',
+
   const isvisible = useIsFocused();
 
   const [servicesValue, setservicesValue] = useState([]);
@@ -149,13 +141,9 @@ const IndividualInProfile = ({
     axios
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
-        // console.log('kodie_describeYouself_Data', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          // console.log(
-          //   'kodie_describeYouself_Data....',
-          //   response?.data?.lookup_details,
-          // );
+
           setKodieDescribeYourselfData(response?.data?.lookup_details);
         } else {
           console.error(
@@ -240,13 +228,11 @@ const IndividualInProfile = ({
     setIsLoading(true);
     const url = Config.BASE_URL;
 
-    const apiUrl =
-      `getAccount_details/${loginData.Login_details.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData.Login_details.user_account_id}`;
 
     axiosInstance
       .get(apiUrl)
       .then(response => {
-        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         const initialJobTypeIds = response?.data?.data[0]
           ?.UAD_CATEGORY_SERVICE_YOU_OFFER

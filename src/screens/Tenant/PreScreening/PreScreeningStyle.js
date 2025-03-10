@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY, IMAGES } from "../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes';
 
 export const PreScreeningStyle = StyleSheet.create({
   mainContainer: {
@@ -12,11 +12,11 @@ export const PreScreeningStyle = StyleSheet.create({
   },
   userDetailView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginVertical: 16,
-    alignItems: "center",
+    alignItems: 'center',
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -25,32 +25,30 @@ export const PreScreeningStyle = StyleSheet.create({
   },
   slider_view: {
     flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
     marginBottom: 25,
   },
   userImagebindView: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   userName: {
-    marginTop: "10%",
+    marginTop: '10%',
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    marginLeft: "3%",
+    marginLeft: '3%',
   },
 
-  ratingmainview: {
-    // alignSelf: "center",
-  },
+  ratingmainview: {},
   ratingview1: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   VerifiedView: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingTop: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   ratingtext: {
     color: _COLORS.Kodie_BlackColor,
@@ -82,14 +80,14 @@ export const PreScreeningStyle = StyleSheet.create({
     marginHorizontal: 32,
   },
   apartment_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   dividerstyle: {},
   share_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   propety_details_view_Heading: {
     fontSize: 18,
@@ -97,7 +95,7 @@ export const PreScreeningStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     marginBottom: 10,
   },
-  share_sty: { marginRight: 10 },
+  share_sty: {marginRight: 10},
   apartment_text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -112,8 +110,8 @@ export const PreScreeningStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   rentalleaseview: {
     marginTop: 15,
@@ -127,8 +125,8 @@ export const PreScreeningStyle = StyleSheet.create({
     marginVertical: 10,
   },
   propety_details_view: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
   },
   down_Arrow_icon: {
@@ -139,8 +137,8 @@ export const PreScreeningStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -169,12 +167,11 @@ export const PreScreeningStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   commontext: {
-    // flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  datePickerView: { flexDirection: "row" },
+  datePickerView: {flexDirection: 'row'},
   availableButtonText: {
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Regular,
@@ -186,7 +183,6 @@ export const PreScreeningStyle = StyleSheet.create({
     marginBottom: 80,
   },
   commontext: {
-    // flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -214,7 +210,6 @@ export const PreScreeningStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   jobDetailsView: {
@@ -234,16 +229,16 @@ export const PreScreeningStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
-  jobD_: { height: 50 },
-  locationView: { flexDirection: "row" },
+  jobD_: {height: 50},
+  locationView: {flexDirection: 'row'},
   LocationText: {
     fontSize: 12,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_MediumGrayColor,
   },
@@ -252,7 +247,7 @@ export const PreScreeningStyle = StyleSheet.create({
   },
   DetailsView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 5,
     marginLeft: 15,
   },
@@ -264,17 +259,17 @@ export const PreScreeningStyle = StyleSheet.create({
   },
   item: {
     padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   selectedStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 20,
     backgroundColor: _COLORS.Kodie_BlackColor,
-    shadowColor: "#000",
+    shadowColor: '#000',
     marginTop: 8,
     marginRight: 12,
     borderWidth: 1,
@@ -285,7 +280,7 @@ export const PreScreeningStyle = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 1.41,
 
     elevation: 2,
@@ -299,17 +294,17 @@ export const PreScreeningStyle = StyleSheet.create({
   dividericonpreferance: {
     marginVertical: 10,
   },
-  DetailsIcon: { height: 30, width: 30 },
+  DetailsIcon: {height: 30, width: 30},
   details_text: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 5,
   },
   Details_Tab: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginVertical: 10,
   },

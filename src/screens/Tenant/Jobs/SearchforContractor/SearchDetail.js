@@ -9,7 +9,6 @@ import ContractorsComponent from "../../../../components/Molecules/ContractorsCo
 
 const SearchDetail = (props) => {
   let SearchDataDetail = props?.route?.params?.SearchDataDetail;
-  const [expanded, setExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   console.log("...............", SearchDataDetail);
   const uniqueJobTypes = [
@@ -39,9 +38,6 @@ const SearchDetail = (props) => {
       />
 
       <DividerIcon
-      // IsShowIcon
-      // iconName={expanded ? "chevron-up" : "chevron-down"}
-      // onPress={toggleItems}
       />
     </View>
   );

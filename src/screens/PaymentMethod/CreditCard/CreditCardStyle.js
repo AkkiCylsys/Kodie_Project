@@ -59,7 +59,6 @@ export const CreditCardStyle = StyleSheet.create({
         marginVertical:30,
       },
       Textstyle:{
-        // alignItems:"center",
         alignSelf:"center",
       },
       job_Details_txt: {
@@ -85,14 +84,12 @@ export const CreditCardStyle = StyleSheet.create({
         marginVertical: 10,
       },
       modalMainText2: {
-        // fontFamily: FONTFAMILY.K_Medium,
         fontSize: 14,
         color: _COLORS.Kodie_LightGrayColor,
         textAlign: "center",
         alignSelf: "center",
         justifyContent:"center",
         textAlign:"center"
-        // marginVertical: 10,
       },
       modalSubText: {
         fontFamily: FONTFAMILY.K_Regular,

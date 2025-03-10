@@ -5,7 +5,6 @@ import {_COLORS, IMAGES} from '../../Themes';
 import TopHeader from '../../components/Molecules/Header/Header';
 import {PartnersStyle} from './PartnersStyle';
 import {_goBack} from '../../services/CommonServices';
-import {Divider} from 'react-native-paper';
 import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
 
 const slides = [
@@ -56,7 +55,6 @@ const Partners = props => {
           <View style={PartnersStyle.imgttitlebindview}>
             <Image source={item.image} style={PartnersStyle.img} />
             <Text style={PartnersStyle.title}>{item.title}</Text>
-            {/* <View style={PartnersStyle.hrline}></View> */}
             <DividerIcon />
           </View>
           <Text style={PartnersStyle.text}>{item.text}</Text>
@@ -84,7 +82,7 @@ const Partners = props => {
           onDone={onDone}
           autoPlay={true}
           autoPlayTimeout={3000}
-          dotStyle={PartnersStyle.dotStyle} // Customize the inactive dot style
+          dotStyle={PartnersStyle.dotStyle}
           activeDotStyle={PartnersStyle.activeDotStyle}
         />
       </SafeAreaView>

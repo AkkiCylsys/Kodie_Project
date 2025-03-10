@@ -7,21 +7,17 @@ import {
   FlatList,
   Alert,
   Linking,
-  Platform,
 } from 'react-native';
 import {ViewApplicationSummaryStyle} from './ViewApplicationSummaryStyle';
 
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 import RowTexts from '../../../../../components/Molecules/RowTexts/RowTexts';
 import ToggleButton from '../../../../../components/Molecules/ToggleButton/ToggleButton';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import moment from 'moment';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 import {
   getLandlordDetailsByAcceptingId,
@@ -30,9 +26,6 @@ import {
 } from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
-import {back} from 'react-native/Libraries/Animated/Easing';
-import {fontFamily, fontSize} from '../../../../../Themes/FontStyle/FontStyle';
-import {color} from 'react-native-reanimated';
 
 const occupantData = [
   {
@@ -91,7 +84,7 @@ const ViewApplicationSummary = props => {
       handleAcceptLanlordToggle();
 
       if (accpetingLandlordId !== null) {
-        handleGetLandLordDeatils(); // Invoke the function here
+        handleGetLandLordDeatils();
       }
     }, [accpetingLandlordId]),
   );
@@ -101,8 +94,6 @@ const ViewApplicationSummary = props => {
     'tenantQuestDetails in second obj....',
     JSON.stringify(tenantQuestDetails[1]?.children),
   );
-
-  // Validation....
 
   const handleApplicationSumReject = text => {
     setApplicationSumReasonOfReject(text);
@@ -146,31 +137,7 @@ const ViewApplicationSummary = props => {
     }
   };
 
-  // const handleFinalAcceptOffer = () => {
-  //   if (
-  //     !occupantButtonId ||
-  //     !applicationSumAcceptButtonId ||
-  //     !referenceAcceptButtonId
-  //   ) {
-  //     Alert.alert(
-  //       'Error',
-  //       'Please choose an Accept or Reject option for all sections.',
-  //     );
-  //   } else if (applicationSumReasonOfReject == '') {
-  //     setApplicationSumReasonOfRejectError(
-  //       'Please enter Reaseon for rejection',
-  //     );
-  //   } else if (occupantReasonOfReject == '') {
-  //     setOccupantReasonOfRejectError('Please enter Reason for rejection');
-  //   } else if (referenceReasonOfReject == '') {
-  //     setReferenceReasonOfRejectError('Please enter Reason for rejection');
-  //   } else {
-  //     handleSubmit();
-  //   }
-  // };
-
   const handleFinalAcceptOffer = () => {
-    // Check if any of the sections haven't been selected (accept or reject)
     if (
       !occupantButtonId ||
       !applicationSumAcceptButtonId ||
@@ -183,7 +150,6 @@ const ViewApplicationSummary = props => {
       return;
     }
 
-    // If 'Reject' is selected for any section, check for corresponding reason
     if (
       applicationSumAcceptButtonId === 556 &&
       applicationSumReasonOfReject === ''
@@ -204,7 +170,6 @@ const ViewApplicationSummary = props => {
       return;
     }
 
-    // If all validations pass, submit the form
     handleSubmit();
   };
 
@@ -234,7 +199,7 @@ const ViewApplicationSummary = props => {
   let occupantDataList = [];
   if (occupantDataListString) {
     try {
-      occupantDataList = JSON.parse(occupantDataListString); // Parse the JSON string
+      occupantDataList = JSON.parse(occupantDataListString);
     } catch (error) {
       console.error('Error parsing JSON:', error);
     }
@@ -242,12 +207,12 @@ const ViewApplicationSummary = props => {
   console.log('occupantDataList....', occupantDataList);
 
   const leaseholderDataString =
-    tenantQuestDetails[0]?.children[2]?.sub_children[3]?.tqm_Question_value; // Access the specific object
+    tenantQuestDetails[0]?.children[2]?.sub_children[3]?.tqm_Question_value;
 
   let leaseholderDataList = [];
   if (leaseholderDataString) {
     try {
-      leaseholderDataList = JSON.parse(leaseholderDataString); // Parse the JSON string
+      leaseholderDataList = JSON.parse(leaseholderDataString);
     } catch (error) {
       console.error('Error parsing JSON:', error);
     }
@@ -263,10 +228,8 @@ const ViewApplicationSummary = props => {
 
   if (employeeReferencesDataString) {
     try {
-      // Attempt to parse the string into JSON if it exists
       employeeReferencesList = JSON.parse([employeeReferencesDataString]);
     } catch (error) {
-      // Log the error in case of invalid JSON
       console.error('Error parsing JSON:', error);
     }
   }
@@ -280,20 +243,13 @@ const ViewApplicationSummary = props => {
 
   if (ReferencesDataString) {
     try {
-      // Attempt to parse the string into JSON if it exists
       ReferencesList = JSON.parse(ReferencesDataString);
     } catch (error) {
-      // Log the error in case of invalid JSON
       console.error('Error parsing JSON:', error);
     }
   }
 
-  // You can use ReferencesList here for further processing
   console.log('ReferencesList:', ReferencesList);
-
-  // employeeReferencesList will either contain the parsed data or remain an empty array
-
-  // Api intrigation ....
 
   const handleGetLandLordDeatils = async () => {
     setIsLoading(true);
@@ -335,12 +291,9 @@ const ViewApplicationSummary = props => {
     console.log('AcceptLanlord', res);
 
     setOccupantButtonData(res?.lookup_details);
-    // setOccupantButtonId(res.lookup_details[0].lookup_key);
 
-    // setApplicationSumAcceptButtonId(res.lookup_details[0].lookup_key);
     setApplicationSumAcceptButtonData(res?.lookup_details);
 
-    // setReferenceAcceptButtonId(res.lookup_details[0].lookup_key);
     setReferenceAcceptButtonData(res?.lookup_details);
 
     setIsLoading(false);
@@ -445,9 +398,6 @@ const ViewApplicationSummary = props => {
   };
 
   const handleSubmit = async () => {
-    // if (!validateSelections()) return;
-
-    // Proceed with your API call here
     console.log('Submitting with selections:', {
       occupantButtonId,
       applicationSumAcceptButtonId,
@@ -456,7 +406,6 @@ const ViewApplicationSummary = props => {
     accpetingLandlordId == null
       ? handleSaveLandlordAcceptingDetails()
       : handleUpdateLandlordAcceptingDetails();
-    // Make your API call here
   };
 
   const handleToggle = key => {
@@ -465,75 +414,20 @@ const ViewApplicationSummary = props => {
 
   const handleApplicationSumToggle = key => {
     setApplicationSumAcceptButtonId(key);
-    // alert(key)
   };
   const handleReferencesToggle = key => {
     setReferenceAcceptButtonId(key);
   };
 
-  // For contact
-  // const openEmailClient = emailAddress => {
-  //   const mailtoUrl = `mailto:${emailAddress}`;
-
-  //   Linking.openURL(mailtoUrl).catch(err => {
-  //     // Handle any errors
-  //     console.error('Error opening email client:', err);
-  //     Alert.alert(
-  //       'Error',
-  //       'There was a problem opening your email client. Please try again later.',
-  //     );
-  //   });
-  // };
-
   const openEmailClient = emailAddress => {
-    const mailtoUrl = `mailto:${emailAddress}`; // Only the recipient email address
+    const mailtoUrl = `mailto:${emailAddress}`;
 
-    // Open Gmail app or default email client
     Linking.openURL(mailtoUrl)
-      .then(() => {
-        // Optionally, show a success message or perform any additional actions
-        // Alert.alert('Success', 'Your Gmail client is opened.');
-      })
+      .then(() => {})
       .catch(err => {
-        // Handle any errors when opening the email client
         console.error('Error opening Gmail client:', err);
-        // Alert.alert('Error', 'There was a problem opening the Gmail client.');
       });
   };
-
-  // const openGmail = emailAddress => {
-  //   const gmailUrl = `googlegmail://co?to=${emailAddress}`;
-
-  //   if (Platform.OS === 'android') {
-  //     Linking.canOpenURL(gmailUrl)
-  //       .then(supported => {
-  //         if (supported) {
-  //           Linking.openURL(gmailUrl);
-  //         } else {
-  //           Alert.alert(
-  //             'Gmail app not available',
-  //             'Please install Gmail to use this feature.',
-  //           );
-  //         }
-  //       })
-  //       .catch(err => console.error('Error opening Gmail:', err));
-  //   } else {
-  //     // For iOS or if Gmail is not available, fallback to mailto
-  //     const mailtoUrl = `mailto:${emailAddress}`;
-  //     Linking.canOpenURL(mailtoUrl)
-  //       .then(supported => {
-  //         if (supported) {
-  //           Linking.openURL(mailtoUrl);
-  //         } else {
-  //           Alert.alert(
-  //             'Email client not available',
-  //             `Cannot open email client for ${emailAddress}`,
-  //           );
-  //         }
-  //       })
-  //       .catch(err => console.error('Error opening email client:', err));
-  //   }
-  // };
 
   const occupantRenderItem = ({item, index}) => {
     return (
@@ -571,10 +465,6 @@ const ViewApplicationSummary = props => {
             style={[ViewApplicationSummaryStyle.occupants_email, {width: 200}]}>
             {item?.emailAddress}
           </Text>
-          {/* <Text
-            style={[ViewApplicationSummaryStyle.occupants_email, {width: 200}]}>
-            {item?.confirmEmailAddress}
-          </Text> */}
         </View>
         <View style={{marginHorizontal: 5, alignSelf: 'center'}}>
           <CustomSingleButton
@@ -644,7 +534,6 @@ const ViewApplicationSummary = props => {
 
   return (
     <View style={ViewApplicationSummaryStyle?.mainContainer}>
-      {/* Application summary Data */}
       <View style={{marginHorizontal: 16}}>
         <TouchableOpacity
           style={ViewApplicationSummaryStyle.applicationSum_view}
@@ -674,7 +563,7 @@ const ViewApplicationSummary = props => {
                 {'Rental details'}
               </Text>
               <FlatList
-                data={filteredData} // Use the filtered data
+                data={filteredData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => (
                   <RowTexts
@@ -770,8 +659,8 @@ const ViewApplicationSummary = props => {
                       item?.tqm_Question_code === 'PETS_THEY'
                         ? item?.tqm_Question_value_data
                             ?.split(',')
-                            .map(pet => pet.trim()) // Trim spaces
-                            .join(', ') || '-' // Join with comma and space
+                            .map(pet => pet.trim())
+                            .join(', ') || '-'
                         : item?.tqm_Question_type === 'Dropdown'
                         ? item?.tqm_Question_value_data || '-'
                         : item?.tqm_Question_value === '1'
@@ -800,7 +689,6 @@ const ViewApplicationSummary = props => {
                 offerForMyPropData?.landlord_approve == 0) ? (
                 <View style={[ViewApplicationSummaryStyle?.acceptTextView]}>
                   <Text style={ViewApplicationSummaryStyle?.AcceptText}>
-                    {/* {applicationSumAcceptButtonId === 555 ? 'Accept' : 'Reject'} */}
                     {'Accepted'}
                   </Text>
                 </View>
@@ -808,10 +696,10 @@ const ViewApplicationSummary = props => {
                 <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                   {applicationSumAcceptButtonData.length > 0 && (
                     <ToggleButton
-                      tabValue={applicationSumAcceptButtonId} // This reflects the currently selected value
+                      tabValue={applicationSumAcceptButtonId}
                       setTabValue={newValue =>
                         handleApplicationSumToggle(newValue)
-                      } // Pass the new value here
+                      }
                       activeColor={_COLORS.Kodie_GreenColor}
                       inactiveColor={_COLORS.Kodie_WhiteColor}
                       activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -825,10 +713,10 @@ const ViewApplicationSummary = props => {
                       width={180}
                       firstTabValue={
                         applicationSumAcceptButtonData[0].lookup_key
-                      } // This is the value for the first tab
+                      }
                       secondTabValue={
                         applicationSumAcceptButtonData[1].lookup_key
-                      } // This is the value for the second tab
+                      }
                     />
                   )}
                 </View>
@@ -841,7 +729,6 @@ const ViewApplicationSummary = props => {
                 </Text>
                 <TextInput
                   value={applicationSumReasonOfReject}
-                  // onChangeText={text => setApplicationSumReasonOfReject(text)}
                   onChangeText={text => handleApplicationSumReject(text)}
                   onBlur={() => {
                     handleApplicationSumReject(applicationSumReasonOfReject);
@@ -864,7 +751,6 @@ const ViewApplicationSummary = props => {
         )}
       </View>
 
-      {/* Occupante Data  */}
       <View style={{marginHorizontal: 16}}>
         <View>
           <TouchableOpacity
@@ -921,7 +807,6 @@ const ViewApplicationSummary = props => {
                   }}
                 />
               </View>
-              {/* Leaseholders Data  */}
               <View>
                 <Text
                   style={[
@@ -971,7 +856,6 @@ const ViewApplicationSummary = props => {
                     offerForMyPropData?.landlord_approve == 0) ? (
                     <View style={ViewApplicationSummaryStyle?.acceptTextView}>
                       <Text style={ViewApplicationSummaryStyle?.AcceptText}>
-                        {/* {occupantButtonId === 555 ? 'Accept' : 'Reject'} */}
                         {'Accepted'}
                       </Text>
                     </View>
@@ -979,8 +863,8 @@ const ViewApplicationSummary = props => {
                     <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                       {occupantButtonData.length > 0 && (
                         <ToggleButton
-                          tabValue={occupantButtonId} // This reflects the currently selected value
-                          setTabValue={newValue => handleToggle(newValue)} // Pass the new value here
+                          tabValue={occupantButtonId}
+                          setTabValue={newValue => handleToggle(newValue)}
                           activeColor={_COLORS.Kodie_GreenColor}
                           inactiveColor={_COLORS.Kodie_WhiteColor}
                           activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -992,8 +876,8 @@ const ViewApplicationSummary = props => {
                             occupantButtonData[1].lookup_description
                           }
                           width={180}
-                          firstTabValue={occupantButtonData[0].lookup_key} // This is the value for the first tab
-                          secondTabValue={occupantButtonData[1].lookup_key} // This is the value for the second tab
+                          firstTabValue={occupantButtonData[0].lookup_key}
+                          secondTabValue={occupantButtonData[1].lookup_key}
                         />
                       )}
                     </View>
@@ -1028,7 +912,6 @@ const ViewApplicationSummary = props => {
           )}
         </View>
       </View>
-      {/* References Data */}
       <View style={{marginHorizontal: 16}}>
         <TouchableOpacity
           style={ViewApplicationSummaryStyle.applicationSum_view}
@@ -1112,7 +995,6 @@ const ViewApplicationSummary = props => {
                 offerForMyPropData?.landlord_approve == 0) ? (
                 <View style={ViewApplicationSummaryStyle?.acceptTextView}>
                   <Text style={ViewApplicationSummaryStyle?.AcceptText}>
-                    {/* {referenceAcceptButtonId === 555 ? 'Accept' : 'Reject'} */}
                     {'Accepted'}
                   </Text>
                 </View>
@@ -1120,8 +1002,8 @@ const ViewApplicationSummary = props => {
                 <View style={ViewApplicationSummaryStyle?.toggleButtonView}>
                   {referenceAcceptButtonData.length > 0 && (
                     <ToggleButton
-                      tabValue={referenceAcceptButtonId} // Current selected value
-                      setTabValue={newValue => handleReferencesToggle(newValue)} // Pass new value here
+                      tabValue={referenceAcceptButtonId}
+                      setTabValue={newValue => handleReferencesToggle(newValue)}
                       activeColor={_COLORS.Kodie_GreenColor}
                       inactiveColor={_COLORS.Kodie_WhiteColor}
                       activeTextColor={_COLORS.Kodie_WhiteColor}
@@ -1133,8 +1015,8 @@ const ViewApplicationSummary = props => {
                         referenceAcceptButtonData[1].lookup_description
                       }
                       width={180}
-                      firstTabValue={referenceAcceptButtonData[0].lookup_key} // First tab key
-                      secondTabValue={referenceAcceptButtonData[1].lookup_key} // Second tab key
+                      firstTabValue={referenceAcceptButtonData[0].lookup_key}
+                      secondTabValue={referenceAcceptButtonData[1].lookup_key}
                     />
                   )}
                 </View>
@@ -1167,42 +1049,7 @@ const ViewApplicationSummary = props => {
           </View>
         )}
       </View>
-      {/* <DividerIcon borderBottomWidth={2} /> */}
 
-      {/* This will open in Phase three */}
-      {/* <View style={{marginHorizontal: 16}}>
-        <Text style={ViewApplicationSummaryStyle.inspections}>
-          {'Tenant  screening report (recommended)'}
-        </Text>
-
-        <View style={ViewApplicationSummaryStyle.container}>
-          <View style={ViewApplicationSummaryStyle.pdfInfo}>
-            <FontAwesome
-              name="file-pdf-o"
-              size={35}
-              color={_COLORS.Kodie_BlackColor}
-              resizeMode={'contain'}
-            />
-            <View style={ViewApplicationSummaryStyle.textContainer}>
-              <Text style={ViewApplicationSummaryStyle.pdfName}>
-                {'Tenant  screening report.pdf'}
-              </Text>
-              <Text style={ViewApplicationSummaryStyle.pdfSize}>
-                {' '}
-                {'4.5 MB'}
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={ViewApplicationSummaryStyle.crossIcon}
-            onPress={() => {
-              // setFilePath();
-              // setFileKey();
-            }}>
-            <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
-          </TouchableOpacity>
-        </View>
-      </View> */}
       <DividerIcon
         borderBottomWidth={2}
         borderColor={_COLORS?.Kodie_deviderIconColor}
@@ -1240,13 +1087,11 @@ const ViewApplicationSummary = props => {
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             onPressRightButton={() => {
-              // handleSubmit();
               handleFinalAcceptOffer();
             }}
           />
         </View>
       )}
-      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

@@ -86,10 +86,8 @@ export const DocumentsStyle = StyleSheet.create({
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: "column",
     marginLeft: 10,
-    // borderWidth:1
   },
 
   pdfInfo: {
@@ -145,7 +143,6 @@ export const DocumentsStyle = StyleSheet.create({
   },
   folderView:{
     borderWidth: 1,
-    // marginLeft: 20,
     marginHorizontal:10,
     marginTop: 10,
     borderRadius: 15,

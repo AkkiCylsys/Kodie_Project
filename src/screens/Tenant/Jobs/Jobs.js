@@ -15,18 +15,16 @@ import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 const Jobs = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const userRole = loginData?.Account_details?.[0]?.user_role_id;
-  // const userRole = '3,4';
   const roleArray = userRole ? userRole.split(',') : [];
-  const hasTenantRole = roleArray.includes('2'); // Tenant role (2)
-  const hasLandlordRole = roleArray.includes('3'); // Landlord role (3)
-  const hasContractorRole = roleArray.includes('4'); // Contractor role (4)
+  const hasTenantRole = roleArray.includes('2');
+  const hasLandlordRole = roleArray.includes('3');
+  const hasContractorRole = roleArray.includes('4');
   const [activeTab, setActiveTab] = useState('Tab1');
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        // BackHandler.exitApp();
         props.navigation.navigate('Dashboard');
         return true;
       };
@@ -74,26 +72,10 @@ const Jobs = props => {
               },
             ])}
           </>
-          // <SearchForContractor
-          //   Search={SearchData => {
-          //     alert('dfgdsgddgdsdfd', JSON.stringify(SearchData));
-          //     props.navigation.navigate('SearchDetail', {
-          //       SearchDataDetail: SearchData,
-          //     });
-          //   }}
-          // />
         );
 
       case 'Tab3':
         return (
-          // <SearchforJob
-          //   SearchResultJob={Searchjob => {
-          //     // alert("Searchjob", JSON.stringify(Searchjob));
-          //     props.navigation.navigate('SearchJobResult', {
-          //       SearchDataDetail: Searchjob,
-          //     });
-          //   }}
-          // />
           <>
             {Alert.alert('Search for job', 'Coming soon', [
               {
@@ -167,7 +149,6 @@ const Jobs = props => {
           styleTab3={activeTab === 'Tab3' && JobsCss.activeTab}
         />
       </View>
-      {/* <View style={JobsCss.Line} /> */}
       <DividerIcon
         marginTop={1}
         marginBottom={1}

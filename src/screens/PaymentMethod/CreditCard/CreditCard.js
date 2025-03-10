@@ -82,7 +82,6 @@ const CreditCard = props => {
           _ButtonText={'Complete payment'}
           backgroundColor={_COLORS.Kodie_BlackColor}
           Text_Color={_COLORS.Kodie_WhiteColor}
-          // disabled={isLoading ? true : false}
           onPress={() => {
             refRBSheet.current.open();
           }}
@@ -120,7 +119,6 @@ const CreditCard = props => {
             }}
           />
           <CustomSingleButton
-            // disabled={isLoading ? true : false}
             _ButtonText={'Return home'}
             Text_Color={_COLORS.Kodie_BlackColor}
             height={48}

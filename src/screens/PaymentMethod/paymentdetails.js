@@ -1,19 +1,9 @@
 import React, {useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import TopHeader from '../../components/Molecules/Header/Header';
 import {_COLORS, IMAGES} from '../../Themes';
-import PayButton from '../../components/PayButton/PayButton';
 import {paymentdetailsStyle} from './paymentdetailsStyle';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
 import ApplePay from './ApplePay/ApplePay';
 import CreditCard from './CreditCard/CreditCard';
 const paymentdetails = props => {

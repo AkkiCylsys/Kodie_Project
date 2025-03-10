@@ -13,9 +13,7 @@ import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import {_COLORS} from '../../../../Themes';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -127,7 +125,10 @@ export default PropertyFeature = props => {
         : setLandArea(details?.land_area);
     } catch (err) {
       console.log(err);
-      Alert.alert('Request timed out' ,'The request took too long to complete. Please try again later.')
+      Alert.alert(
+        'Request timed out',
+        'The request took too long to complete. Please try again later.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -142,7 +143,6 @@ export default PropertyFeature = props => {
   ];
   const PreFriedly = `${selectedButtonFurnishedId}, ${selectedButtonStorageId}, ${selectedButtonGardenId}, ${selectedButtonDepositId}`;
   console.log(PreFriedly);
-  // Update count function
   const updateCount = (type, operation) => {
     if (operation === 'increase') {
       switch (type) {
@@ -338,9 +338,9 @@ export default PropertyFeature = props => {
       }
     } catch (error) {
       console.error('additional_features error:', error);
-      alert('Error fetching additional features'); // Better to have a more generic message for the alert
+      alert('Error fetching additional features');
     } finally {
-      setIsLoading(false); // Ensure setIsLoading(false) is called in both success and error cases
+      setIsLoading(false);
     }
   };
 
@@ -570,7 +570,6 @@ export default PropertyFeature = props => {
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
                   console.warn(item);
-                  // setAdditionalFeaturesKeyValue(item)
                 }}
                 tagBorderColor={_COLORS.Kodie_BlackColor}
                 selectedItemTextColor={_COLORS.Kodie_GreenColor}

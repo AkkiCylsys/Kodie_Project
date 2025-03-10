@@ -1,29 +1,27 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const CompanyContractorStyle = StyleSheet.create({
   mainConatainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     paddingHorizontal: 20,
-    // paddingTop:1,
-    // marginBottom: 20,
   },
   inputContainer: {
     marginTop: 5,
   },
 
   ButtonView: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginRight: 10,
     marginTop: 15,
     marginBottom: 250,
@@ -43,11 +41,11 @@ export const CompanyContractorStyle = StyleSheet.create({
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  errorText: { color: "red", marginLeft: 10 },
+  errorText: {color: 'red', marginLeft: 10},
   servicestext: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -81,7 +79,6 @@ export const CompanyContractorStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -96,7 +93,7 @@ export const CompanyContractorStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 15,
@@ -110,17 +107,17 @@ export const CompanyContractorStyle = StyleSheet.create({
     marginTop: 12,
   },
 
-  jobD_: { height: 100 },
+  jobD_: {height: 100},
 
   jobDetailsContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  cardHeight: { marginBottom: 8 },
+  cardHeight: {marginBottom: 8},
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   starIcon: {
     marginLeft: 15,
@@ -141,19 +138,19 @@ export const CompanyContractorStyle = StyleSheet.create({
   },
   servicesBoxView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginTop: 10,
   },
-  spaceView: { margin: 8 },
+  spaceView: {margin: 8},
   box_style: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
     margin: 5,
   },
-  box_Text_Style: { color: _COLORS.Kodie_MediumGrayColor },
+  box_Text_Style: {color: _COLORS.Kodie_MediumGrayColor},
   checkbox_View: {
     height: 18,
     width: 18,
@@ -178,20 +175,20 @@ export const CompanyContractorStyle = StyleSheet.create({
     marginLeft: 22,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontFamily: FONTFAMILY.K_Medium,
   },
   priority_container: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: "8%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: '8%',
     marginTop: 10,
   },
-  priority_view: { flexDirection: "row", justifyContent: "space-between" },
+  priority_view: {flexDirection: 'row', justifyContent: 'space-between'},
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -207,7 +204,7 @@ export const CompanyContractorStyle = StyleSheet.create({
   },
   itemView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 10,
     marginHorizontal: 10,
   },
@@ -216,7 +213,7 @@ export const CompanyContractorStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   item: {
-    flexDirection: "row",
+    flexDirection: 'row',
     backgroundColor: _COLORS.Kodie_BlackColor,
     borderRadius: 20,
     marginHorizontal: 5,
@@ -228,31 +225,31 @@ export const CompanyContractorStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   icon: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginRight: 5,
   },
   locationIconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     marginLeft: 10,
-    width: "15%",
+    width: '15%',
     height: 48,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   BtnContainer: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
     paddingVertical: 3,
     borderRadius: 10,
-    width: "30%",
+    width: '30%',
     height: 50,
     bottom: 0,
     right: 20,
     marginBottom: 20,
-    position: "absolute",
+    position: 'absolute',
   },
 });

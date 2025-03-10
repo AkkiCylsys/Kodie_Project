@@ -32,14 +32,12 @@ export default JobDocuments = props => {
   const isfocused = useIsFocused();
   useEffect(() => {
     getAllDocuments();
-    // getUploadedDocumentsByModule();
     getUploadedDocumentsByModule('Job_proposal');
     getUploadedDocumentsByModule('Job_Invoice');
     getUploadedDocumentsByModule('Job_Completed');
   }, [isfocused]);
 
   const JOB_ID = props.JOB_ID;
-  // alert(props.JOB_ID);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
@@ -81,7 +79,6 @@ export default JobDocuments = props => {
   const closeModal = () => {
     refRBSheet.current.close();
   };
-  // share doc....
   const shareDocFile = async () => {
     setTimeout(() => {
       Share.open({url: filePath})
@@ -92,19 +89,12 @@ export default JobDocuments = props => {
           err && console.log(err);
         });
     }, 300);
-    // try {
-    //   await Share.open({url: filePath});
-    // } catch (error) {
-    //   console.error('Error sharing PDF file:', error);
-    // }
   };
-  // delete Document...
   const deleteHandler = fileKey => {
     console.log('filekeyIn_delete....', fileKey);
     const dataToSend = {
       fileId: fileKey,
     };
-    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
     const delete_url = 'deletedocument';
     console.log('url...', delete_url);
@@ -128,7 +118,6 @@ export default JobDocuments = props => {
         setIsLoading(false);
       });
   };
-  // Download documents...
   const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
@@ -144,15 +133,12 @@ export default JobDocuments = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
           downloadImage();
         } else {
-          // If permission denied then show alert
           alert('Storage Permission Not Granted');
         }
       } catch (err) {
-        // To handle permission related exception
         console.warn(err);
       }
     }
@@ -163,7 +149,6 @@ export default JobDocuments = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -181,16 +166,13 @@ export default JobDocuments = props => {
     config(options)
       .fetch('GET', image_URL)
       .then(res => {
-        // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        // alert("Image Downloaded Successfully.");
         Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
       });
   };
 
-  //  dowonload for Ios And Android....
   const downloadviewFile = async () => {
     setIsLoading(true);
     const date = new Date();
@@ -228,7 +210,6 @@ export default JobDocuments = props => {
       if (isIOS) {
         FileViewer.open(res.data, {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -238,7 +219,6 @@ export default JobDocuments = props => {
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -253,18 +233,15 @@ export default JobDocuments = props => {
     }
   };
   const getExtention = fileName => {
-    // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
   const DocumentsData = ({item, index}) => {
-    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
         <View style={JobDocumentsStyle.container}>
           <View style={JobDocumentsStyle.pdfInfo}>
-            {/* <Image source={IMAGES.document} style={JobDocumentsStyle.pdfIcon} /> */}
             <FontAwesome
               name="file-pdf-o"
               size={35}
@@ -275,8 +252,6 @@ export default JobDocuments = props => {
               <Text style={JobDocumentsStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              {/* <Text style={JobDocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              {/* <Text style={JobDocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -300,10 +275,6 @@ export default JobDocuments = props => {
     return (
       <TouchableOpacity
         style={JobDocumentsStyle.folderView}
-        // onPress={() => {
-        //   props.navigation.navigate("DocumentDetails");
-        //   alert(item?.id)
-        // }}
         onPress={() => {
           console.log('item.id:', item.id);
           props?.JobDocumentDetails(item.id, item.moduleName, JOB_ID);
@@ -314,11 +285,6 @@ export default JobDocuments = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          {/* <Entypo
-            name="dots-three-vertical"
-            size={25}
-            color={_COLORS.Kodie_GrayColor}
-          /> */}
         </View>
         <View>
           <Text style={JobDocumentsStyle.propertyDocText}>
@@ -333,40 +299,9 @@ export default JobDocuments = props => {
     );
   };
 
-  // Api intrigation ......
-  // const getAllDocuments =async () => {
-  //   const url = Config.BASE_URL;
-  //   const getDocument_url =`get/document/${JOB_ID}`;
-  //   // const getDocument_url = url + `tanant_details/get/document/${15}`;
-  //   console.log('Request URL:', getDocument_url);
-  //   setIsLoading(true);
-  //  await axiosInstance
-  //     .get(getDocument_url)
-  //     .then(response => {
-  //       console.log('API Response getDocuments:', response.data);
-  //       if (response?.data?.success === true) {
-  //         // alert(response?.data?.message);
-  //         setUploadDocData(response?.data?.data);
-  //         console.log('getAlluploadDocData..', response?.data?.data);
-  //       } else {
-  //         alert(response?.data?.message);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('API failed AllDocuments', error);
-  //       setIsLoading(false);
-  //       // alert(error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
   const getAllDocuments = async () => {
     const url = Config.BASE_URL;
     const getDocument_url = 'get/documents';
-    // const getDocument_url = url + `tanant_details/get/document/${15}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
     const getAllDocPayload = {
@@ -378,7 +313,6 @@ export default JobDocuments = props => {
       .then(response => {
         console.log('API Response getDocuments:', response.data);
         if (response?.data?.status === true) {
-          // alert(response?.data?.message);
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
@@ -389,7 +323,6 @@ export default JobDocuments = props => {
       .catch(error => {
         console.error('API failed AllDocuments', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -451,7 +384,6 @@ export default JobDocuments = props => {
                 jobDocByjobcompletelength,
               );
               break;
-            // Add cases for other module names if needed
             default:
               break;
           }
@@ -529,15 +461,11 @@ export default JobDocuments = props => {
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
-            // downloadFile={downloadFile}
             downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              // navigation.navigate('ViewDocument', {
-              //   filePath: filePath,
-              // });
               downloadviewFile();
             }}
           />

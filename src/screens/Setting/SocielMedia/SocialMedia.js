@@ -50,7 +50,6 @@ const SocialMedia = props => {
         console.log('API Response SocialMedia Data:', response.data);
         if (response?.data?.status === true) {
           setSocialMediaData(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -117,7 +116,11 @@ const SocialMedia = props => {
             </View>
           </View>
           <View style={SocialMediaStyle.arrowiconview}>
-            <Entypo name={'chevron-small-right'} size={20} color={_COLORS.Kodie_DarkGrayColor} />
+            <Entypo
+              name={'chevron-small-right'}
+              size={20}
+              color={_COLORS.Kodie_DarkGrayColor}
+            />
           </View>
         </TouchableOpacity>
         <DividerIcon style={{marginBottom: 10}} />

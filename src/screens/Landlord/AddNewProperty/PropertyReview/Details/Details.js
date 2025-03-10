@@ -11,7 +11,7 @@ import {DetailsStyle} from './DetailsStyles';
 import {_goBack} from '../../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import {_COLORS, BANNERS, LABEL_STYLES, IMAGES} from '../../../../../Themes';
+import {_COLORS, IMAGES} from '../../../../../Themes';
 import {Config} from '../../../../../Config';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axiosInstance from '../../../../../services/axiosInstance';
@@ -63,7 +63,7 @@ export default Details = props => {
   const [isLoading, setIsLoading] = useState([]);
   const getPropertyDetails = () => {
     const url = Config.API_URL;
-    const getPropertyDetailsurl ='get_All_Property_details';
+    const getPropertyDetailsurl = 'get_All_Property_details';
     console.log('Request URL:', getPropertyDetailsurl);
     setIsLoading(true);
     axiosInstance
@@ -125,7 +125,7 @@ export default Details = props => {
         />
 
         <DividerIcon borderBottomWidth={1} color={_COLORS.Kodie_GrayColor} />
-        <View >
+        <View>
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Property details'}</Text>
 
@@ -139,7 +139,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View >
+        <View>
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
 
@@ -153,7 +153,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View >
+        <View>
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'External features'}</Text>
 
@@ -167,7 +167,7 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View >
+        <View>
           <View style={DetailsStyle.propety_details_view}>
             <Text style={DetailsStyle.propery_det}>{'Points of interest'}</Text>
 
@@ -181,29 +181,6 @@ export default Details = props => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        {/* <View style={DetailsStyle.btnView}>
-          <CustomSingleButton
-            _ButtonText={"Edit details"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={props.AddProperty}
-                   disabled={isLoading ? true : false}
-          />
-        </View> */}
-        {/* <TouchableOpacity
-          style={DetailsStyle.goBack_View}
-          onPress={() => {
-            props.navigation.navigate("PropertyImages");
-          }}
-        >
-          <View style={DetailsStyle.backIcon}>
-            <Ionicons
-              name="chevron-back"
-              size={22}
-              color={_COLORS.Kodie_MediumGrayColor}
-            />
-          </View>
-          <Text style={DetailsStyle.goBack_Text}>{"Go back"}</Text>
-        </TouchableOpacity> */}
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
     </View>

@@ -26,11 +26,10 @@ import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
-import {Config} from '../../../Config';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import axiosInstance from '../../../services/axiosInstance';
 
-const LandlordProfile = (props) => {
+const LandlordProfile = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -44,7 +43,6 @@ const LandlordProfile = (props) => {
   const [filteredSections, setFilteredSections] = useState([]);
   const refRBSheet = useRef();
 
-  // List of all sections you want to display
   const sections = [
     {
       id: 1,
@@ -130,7 +128,7 @@ const LandlordProfile = (props) => {
   ];
 
   useEffect(() => {
-    setFilteredSections(sections); // Initialize filtered sections
+    setFilteredSections(sections);
   }, []);
 
   useEffect(() => {
@@ -142,9 +140,7 @@ const LandlordProfile = (props) => {
   const fetchAccountDetails = async () => {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(
-        `getAccount_details/${userId}`,
-      );
+      const response = await axiosInstance.get(`getAccount_details/${userId}`);
       setAccountDetails(response?.data?.data[0]);
     } catch (error) {
       console.error('API Error:', error);
@@ -173,7 +169,7 @@ const LandlordProfile = (props) => {
   const handleSearch = query => {
     setSearchQuery(query);
     if (query === '') {
-      setFilteredSections(sections); // If search is cleared, show all sections
+      setFilteredSections(sections);
     } else {
       const lowerCaseQuery = query.toLowerCase();
       const filtered = sections.filter(section => {
@@ -185,11 +181,10 @@ const LandlordProfile = (props) => {
           .toLowerCase()
           .includes(lowerCaseQuery);
 
-        // Show sections that match any of the criteria
         return matchesText || matchesSubText || matchesCategory;
       });
 
-      setFilteredSections(filtered); // Set filtered sections based on the query
+      setFilteredSections(filtered);
     }
   };
 
@@ -232,8 +227,7 @@ const LandlordProfile = (props) => {
     <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
-          // navigation.goBack()
-          props.navigation.navigate('Dashboard')
+          props.navigation.navigate('Dashboard');
         }}
         MiddleText="Profile"
       />

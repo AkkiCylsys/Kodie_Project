@@ -1,34 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  FlatList,
-  Platform,
-} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {View, Text, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import CompanyInProfileStyle from './CompanyInProfileStyle';
-import PhoneInput from 'react-native-phone-number-input';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
-import { MultiSelect } from 'react-native-element-dropdown';
-import { _COLORS, FONTFAMILY, LABEL_STYLES } from '../../../../../Themes';
-import { Divider } from 'react-native-paper';
-import { IMAGES } from '../../../../../Themes';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
-import { Config } from '../../../../../Config';
+import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
-import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import axiosInstance from '../../../../../services/axiosInstance';
 const data = [
-  { lookup_key: 1, lookup_description: 'Item 1' },
-  { lookup_key: 2, lookup_description: 'Item 2' },
-  { lookup_key: 3, lookup_description: 'Item 3' },
-  { lookup_key: 4, lookup_description: 'Item 4' },
+  {lookup_key: 1, lookup_description: 'Item 1'},
+  {lookup_key: 2, lookup_description: 'Item 2'},
+  {lookup_key: 3, lookup_description: 'Item 3'},
+  {lookup_key: 4, lookup_description: 'Item 4'},
 ];
 
 const CompanyInProfile = ({
@@ -39,7 +27,6 @@ const CompanyInProfile = ({
   onChangeCompanyLocation,
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [companyName, setCompanyName] = useState('');
   const [website, setWebsite] = useState('');
   const [companyGSTNumber, setCompanyGSTNumber] = useState('');
@@ -68,9 +55,9 @@ const CompanyInProfile = ({
     }
   };
 
-  const jobType_render = ({ item }) => {
+  const jobType_render = ({item}) => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <ServicesBox
           images
           Services_Name={item.lookup_description}
@@ -78,23 +65,23 @@ const CompanyInProfile = ({
             item.lookup_key === 166
               ? 'cleaning-services'
               : item.lookup_key === 167
-                ? 'mower-bag'
-                : item.lookup_key === 168
-                  ? 'forklift'
-                  : item.lookup_key === 169
-                    ? 'tools'
-                    : 'MaterialIcons'
+              ? 'mower-bag'
+              : item.lookup_key === 168
+              ? 'forklift'
+              : item.lookup_key === 169
+              ? 'tools'
+              : 'MaterialIcons'
           }
           iconLibrary={
             item.lookup_key === 166
               ? 'MaterialIcons'
               : item.lookup_key === 167
-                ? 'MaterialCommunityIcons'
-                : item.lookup_key === 168
-                  ? 'MaterialCommunityIcons'
-                  : item.lookup_key === 169
-                    ? 'Entypo'
-                    : 'MaterialIcons'
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 168
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 169
+              ? 'Entypo'
+              : 'MaterialIcons'
           }
           iconColor={
             selectJobTypeid.includes(item.lookup_key)
@@ -140,7 +127,6 @@ const CompanyInProfile = ({
     axios
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
-        // console.log('kodie_describeYouself_Data', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
@@ -177,12 +163,12 @@ const CompanyInProfile = ({
           jobType === 166
             ? 'HOME_CLEANING'
             : jobType === 167
-              ? 'OUTDOOR_CLEANING'
-              : jobType === 168
-                ? 'HEAVY_LIFTING'
-                : jobType === 169
-                  ? 'FIXING_AND_MAINTENANCE'
-                  : null,
+            ? 'OUTDOOR_CLEANING'
+            : jobType === 168
+            ? 'HEAVY_LIFTING'
+            : jobType === 169
+            ? 'FIXING_AND_MAINTENANCE'
+            : null,
         P_TYPE: 'OPTION',
       };
 
@@ -231,25 +217,23 @@ const CompanyInProfile = ({
     setIsLoading(true);
     const url = Config.BASE_URL;
 
-    const apiUrl =
-      `getAccount_details/${loginData.Login_details.user_account_id}`;
+    const apiUrl = `getAccount_details/${loginData.Login_details.user_account_id}`;
 
     axiosInstance
       .get(apiUrl)
       .then(response => {
-        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         const initialJobTypeIds = response?.data?.data[0]
           ?.UAD_CATEGORY_SERVICE_YOU_OFFER
           ? response?.data?.data[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
-            ',',
-          ).map(Number)
+              ',',
+            ).map(Number)
           : [];
         const initialServiceIds = response?.data?.data[0]
           ?.UAD_SERVICE_YOU_PERFORM
           ? response?.data?.data[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
-            Number,
-          )
+              Number,
+            )
           : [];
         setSelectJobTypeid(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
@@ -284,7 +268,6 @@ const CompanyInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails CIP:', error);
       });
   };
@@ -430,7 +413,6 @@ const CompanyInProfile = ({
                   </View>
                   <TouchableOpacity
                     style={CompanyInProfileStyle.locationIconView}
-                    // onPress={onPressCompanylocation}>
                     onPress={() => {
                       alert('dsvjfvsjd');
                     }}>

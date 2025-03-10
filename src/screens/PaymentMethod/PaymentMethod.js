@@ -48,7 +48,6 @@ const PaymentMethod = props => {
             disabled={isLoading ? true : false}
             onPress={() => {
               props.navigation.navigate('PaymentScreen');
-              // props.navigation.navigate("paymentdetails")
             }}
           />
         </View>

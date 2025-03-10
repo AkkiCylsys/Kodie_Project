@@ -102,7 +102,6 @@ export default PersonContractor = props => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -148,11 +147,9 @@ export default PersonContractor = props => {
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
@@ -197,8 +194,6 @@ export default PersonContractor = props => {
   const handleBoxPress = lookup_key => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    // alert(selectJobTypeid);
-    // alert(isClick)
   };
   const handleServices = selectJobType => {
     const propertyData = {
@@ -234,7 +229,6 @@ export default PersonContractor = props => {
       })
       .catch(error => {
         console.error('Services error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -280,7 +274,7 @@ export default PersonContractor = props => {
       NOTES: note,
     };
     const url = Config.BASE_URL;
-    const PersonUrl ='invitecontractor_details';
+    const PersonUrl = 'invitecontractor_details';
     console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
@@ -311,8 +305,6 @@ export default PersonContractor = props => {
         setIsLoading(false);
       });
   };
-  // setEmailError(response?.data?.message);
-  // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
@@ -332,8 +324,9 @@ export default PersonContractor = props => {
       <ScrollView>
         <View style={PersonContractorStyle.card}>
           <View style={PersonContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'First name'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'First name'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={PersonContractorStyle.input}
@@ -348,8 +341,9 @@ export default PersonContractor = props => {
           </View>
 
           <View style={PersonContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Last name'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Last name'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={PersonContractorStyle.input}
@@ -394,21 +388,20 @@ export default PersonContractor = props => {
               value={servicesValue}
               onChange={item => {
                 setservicesValue(item.lookup_key);
-                // alert(item.lookup_key)
               }}
               renderItem={lookingServices_render}
             />
           </View>
           <View style={[PersonContractorStyle.inputContainer, {}]}>
-            <Text style={LABEL_STYLES.commontext}>{'Email'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Email'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={PersonContractorStyle.input}
               value={email}
               onChangeText={setEmail}
               onBlur={() => handlePersonEmail(email)}
-              // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
               keyboardType="email-address"
@@ -456,9 +449,7 @@ export default PersonContractor = props => {
                   backgroundColor: _COLORS.Kodie_WhiteColor,
                 },
               ]}
-              onPress={() => {
-                // handleOptionClick("Cancel");
-              }}>
+              onPress={() => {}}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
@@ -478,7 +469,6 @@ export default PersonContractor = props => {
               ]}
               onPress={() => {
                 handleSaveBtn();
-                // handleOptionClick("Save");
               }}>
               <Text
                 style={[

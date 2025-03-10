@@ -6,7 +6,6 @@ export const RenthistoryStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   container: {
-    // padding: 20,
     backgroundColor:_COLORS.Kodie_WhiteColor,
   },
   flatlistView: {
@@ -126,7 +125,6 @@ export const RenthistoryStyle = StyleSheet.create({
   datetext: {
     fontSize: 8,
     color:_COLORS.Kodie_GrayColor,
-    // textAlign: 'center',
   },
   subContainer: {
     marginHorizontal: 16,

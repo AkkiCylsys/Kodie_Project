@@ -25,11 +25,8 @@ export const CompanyDetailsStyle = StyleSheet.create({
     top: 100,
     right: 10,
     backgroundColor: '#F5F5F5',
-    // borderRadius: 12,
-    // padding: 10,
     width: 35,
     height: 35,
-    // borderWidth:1,
     borderRadius: 35 / 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -57,7 +54,6 @@ export const CompanyDetailsStyle = StyleSheet.create({
     height: 0.5,
   },
 
-  // tab menu css here ..
   tabmainview: {
     marginHorizontal: 16,
     marginTop: 16,
@@ -74,21 +70,17 @@ export const CompanyDetailsStyle = StyleSheet.create({
     width: 178,
     height: 38,
     borderWidth: 1,
-    // padding: 5,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
-    // backgroundColor: _COLORS.Kodie_LightGrayColor,
     marginTop: 12,
   },
   person_view: {
     backgroundColor: _COLORS.Kodie_GreenColor,
-    // padding:24,
     borderRadius: 4,
     height: 28,
     width: 80,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent:'space-evenly',
     justifyContent: 'center',
     marginRight: 2,
   },
@@ -97,18 +89,14 @@ export const CompanyDetailsStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
     alignSelf: 'center',
-    // lineHeight:18,
     letterSpacing: 0.2,
-    // marginLeft: 8,
   },
   company_text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
     alignSelf: 'center',
-    // marginLeft: 8,
     letterSpacing: 0.2,
-    // lineHeight:18,
   },
   card: {
     width: '100%',
@@ -119,8 +107,6 @@ export const CompanyDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    // marginBottom: 50,
-    // marginBottom: 250,
   },
   input: {
     height: 45,
@@ -139,12 +125,10 @@ export const CompanyDetailsStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
-    // margin: 10,
     marginVertical: 8,
     marginHorizontal: 5,
   },
   box_Text_Style: {color: _COLORS.Kodie_MediumGrayColor},
-  //   Dropdown Style..
   dropdown: {
     borderWidth: 1,
     height: 50,
@@ -168,14 +152,12 @@ export const CompanyDetailsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  //   ........
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -257,7 +239,6 @@ export const CompanyDetailsStyle = StyleSheet.create({
   logo: {
     width: 110,
     height: 110,
-    // resizeMode: "cover",
   },
   phoneinputbindview: {
     width: '98%',
@@ -291,15 +272,12 @@ export const CompanyDetailsStyle = StyleSheet.create({
   },
   simpleinputview: {
     flex: 1,
-    // height: 50,
     borderWidth: 1,
-    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: 'row',
     alignItems: 'center',
-    // width: "100%",
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginTop: 15,
@@ -314,14 +292,12 @@ export const CompanyDetailsStyle = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 10,
 
-    // borderWidth: 1,
     width: '30%',
     height: 50,
     bottom: 0,
     right: 20,
     marginBottom: 20,
     position: 'absolute',
-    //borderColor: Colors.appColor,
   },
   searchInput: {
     color: _COLORS.Kodie_BlackColor,

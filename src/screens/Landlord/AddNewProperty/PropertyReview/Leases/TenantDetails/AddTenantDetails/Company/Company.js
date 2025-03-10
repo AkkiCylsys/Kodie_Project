@@ -84,7 +84,6 @@ export default Company = props => {
   };
   // Validation for Phone Number
   const validateMobileNumber = text => {
-    // const mobileReg = /^\d{10}$/;
     const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
       setMobileNumberError('Phone number is required!');
@@ -107,10 +106,8 @@ export default Company = props => {
 
   // API bind person code here.....
   const Companyhandle = () => {
-    // const url = Config.API_URL;
-    // const PersonUrl = url + "user_signup";
     const url = Config.BASE_URL;
-    const CompanyUrl ='tanant_details/create/company';
+    const CompanyUrl = 'tanant_details/create/company';
     console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
@@ -120,9 +117,7 @@ export default Company = props => {
         setCompanyResponse(response?.data);
         console.log('Company Details_data response', response?.data);
         if (response?.data?.success === true) {
-          // props.navigation.navigate("LeaseSummary");
           alert(response?.data?.message);
-          // setIsLoading(false);
           setCompanyName('');
           setEmail('');
           setPhoneNumber('');
@@ -262,7 +257,6 @@ export default Company = props => {
               ]}
               onPress={() => {
                 handleSaveBtn();
-                // handleOptionClick("Save");
               }}>
               <Text
                 style={[

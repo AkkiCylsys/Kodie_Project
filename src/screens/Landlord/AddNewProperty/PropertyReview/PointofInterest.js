@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 
@@ -11,75 +11,92 @@ const PointofInterest = () => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
-        const { latitude, longitude } = position.coords;
-        fetchPointsOfInterest("27.149994", "79.499901");
+        const {latitude, longitude} = position.coords;
+        fetchPointsOfInterest('27.149994', '79.499901');
       },
       error => console.error(error),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   }, []);
 
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=point_of_interest&key=${GOOGLE_MAPS_API_KEY}`,
       );
 
       const poiData = categorizeData(response.data.results);
-      console.log(JSON.stringify(poiData))
+      console.log(JSON.stringify(poiData));
       setData(poiData);
     } catch (error) {
       console.error('Error fetching POIs:', error);
     }
   };
 
-  const categorizeData = (places) => {
+  const categorizeData = places => {
     const categories = {
       'Schools & Education': [],
       'Food & Entertainment': [],
-      'Health': [],
-      'Transport': []
+      Health: [],
+      Transport: [],
     };
 
     places.forEach(place => {
-      const { name, vicinity } = place;
-      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
-      if (place.types.includes('school') || place.types.includes('university')) {
-        categories['Schools & Education'].push({ name, distance });
-      } else if (place.types.includes('restaurant') || place.types.includes('food')) {
-        categories['Food & Entertainment'].push({ name, distance });
-      } else if (place.types.includes('hospital') || place.types.includes('health')) {
-        categories['Health'].push({ name, distance });
-      } else if (place.types.includes('bus_station') || place.types.includes('train_station')) {
-        categories['Transport'].push({ name, distance });
+      const {name, vicinity} = place;
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`;
+      if (
+        place.types.includes('school') ||
+        place.types.includes('university')
+      ) {
+        categories['Schools & Education'].push({name, distance});
+      } else if (
+        place.types.includes('restaurant') ||
+        place.types.includes('food')
+      ) {
+        categories['Food & Entertainment'].push({name, distance});
+      } else if (
+        place.types.includes('hospital') ||
+        place.types.includes('health')
+      ) {
+        categories['Health'].push({name, distance});
+      } else if (
+        place.types.includes('bus_station') ||
+        place.types.includes('train_station')
+      ) {
+        categories['Transport'].push({name, distance});
       }
     });
 
-    return Object.entries(categories).map(([category, items]) => ({ category, items }));
+    return Object.entries(categories).map(([category, items]) => ({
+      category,
+      items,
+    }));
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemName}>{item.name}</Text>
       <Text style={styles.itemDistance}>{item.distance}</Text>
     </View>
   );
 
-  const renderCategory = ({ item }) => (
+  const renderCategory = ({item}) => (
     <View style={styles.categoryContainer}>
       <Text style={styles.categoryTitle}>{item.category}</Text>
       <FlatList
         data={item.items}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        ListFooterComponent={<TouchableOpacity onPress={()=>{
-          // alert(JSON.stringify(item.items.length))
-          if(item.items.length >2){
-
-          }else{
-            // alert(JSON.stringify("No more data found!"))
-          }
-        }}><Text style={styles.viewMore}>View more...</Text></TouchableOpacity>}
+        ListFooterComponent={
+          <TouchableOpacity
+            onPress={() => {
+              if (item.items.length > 2) {
+              } else {
+              }
+            }}>
+            <Text style={styles.viewMore}>View more...</Text>
+          </TouchableOpacity>
+        }
       />
     </View>
   );
@@ -132,8 +149,5 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-
-//export default PointofInterest;
-
 
 export default PointofInterest;

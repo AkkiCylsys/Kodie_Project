@@ -19,8 +19,6 @@ import {
   IMAGES,
   FONTFAMILY,
 } from '../../../../Themes/index';
-import TopHeader from '../../../../components/Molecules/Header/Header';
-import RangeSlider from '../../../../components/Molecules/RangeSlider/RangeSlider';
 import {_goBack} from '../../../../services/CommonServices';
 import {Dropdown} from 'react-native-element-dropdown';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -28,10 +26,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
-import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
-import StepIndicator from 'react-native-step-indicator';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
@@ -47,12 +41,9 @@ import axiosInstance from '../../../../services/axiosInstance';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default SearchForContractor = props => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
   const [isClick, setIsClick] = useState(166);
-  const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   const [searchType, setSearchType] = useState([]);
@@ -62,12 +53,10 @@ export default SearchForContractor = props => {
   const [ratingThresholdData, setRatingThresholdData] = useState([]);
   const [ratingThresholdValue, setRatingThresholdValue] = useState([]);
   const [jobTypeData, setJobTypeData] = useState([]);
-  const [selectedServices, setSelectedServices] = useState([]);
   const [selectJobType, setSelectJobType] = useState(166);
   const [selectJobTypeid, setSelectJobTypeid] = useState('');
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
-  const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
@@ -76,11 +65,9 @@ export default SearchForContractor = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
 
   const searchForContractor = () => {};
 
-  // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
   };
@@ -344,7 +331,6 @@ export default SearchForContractor = props => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -390,23 +376,20 @@ export default SearchForContractor = props => {
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
     );
   };
-  // api intrigation.......
   const handleProperty_Type = () => {
     const propertyData = {
       account_id: loginData?.Login_details?.user_account_id,
     };
     const url = Config.BASE_URL;
-    const propertyType ='get_property_details_my_acc_id';
+    const propertyType = 'get_property_details_my_acc_id';
     console.log('Request URL:', propertyType);
     setIsLoading(true);
     axiosInstance
@@ -425,7 +408,6 @@ export default SearchForContractor = props => {
       })
       .catch(error => {
         console.error('property_type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -438,7 +420,7 @@ export default SearchForContractor = props => {
       latitude: latitude || property_value.latitude,
     };
     const url = Config.BASE_URL;
-    const SearchType ='search_for_contractor';
+    const SearchType = 'search_for_contractor';
     console.log('Request URL:', SearchType);
     setIsLoading(true);
     axiosInstance
@@ -461,7 +443,6 @@ export default SearchForContractor = props => {
       })
       .catch(error => {
         console.error('property_type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -584,13 +565,11 @@ export default SearchForContractor = props => {
           setServicesData(response?.data?.lookup_details);
         } else {
           console.error('Services_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Services error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -611,8 +590,7 @@ export default SearchForContractor = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
-
+            iscancel={() => setIsMap(false)}
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
@@ -633,11 +611,9 @@ export default SearchForContractor = props => {
             <TextInput
               style={{
                 backgroundColor: 'transparent',
-
                 width: '90%',
                 height: 45,
                 alignSelf: 'center',
-                //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
               placeholder={'Search Place'}
@@ -702,7 +678,6 @@ export default SearchForContractor = props => {
                 searchPlaceholder="Search..."
                 onChange={item => {
                   setservicesValue(item.lookup_key);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
               />
@@ -737,7 +712,6 @@ export default SearchForContractor = props => {
                 value={jobPriorityValue}
                 onChange={item => {
                   setJobPriorityValue(item.lookup_key);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={jobPriority_render}
               />
@@ -815,7 +789,6 @@ export default SearchForContractor = props => {
                 value={ratingThresholdValue}
                 onChange={item => {
                   setRatingThresholdValue(item.lookup_key);
-                  // alert(item.lookup_key);
                 }}
                 renderLeftIcon={() => (
                   <AntDesign

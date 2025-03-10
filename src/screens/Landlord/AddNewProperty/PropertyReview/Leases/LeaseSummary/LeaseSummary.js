@@ -7,7 +7,6 @@ import CustomSingleButton from '../../../../../../components/Atoms/CustomButton/
 import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import InviteTenantModal from '../../../../../../components/Molecules/InviteTenantModal/InviteTenantModal';
-import TenantDetails from '../TenantDetails/TenantDetails';
 import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import Logrentalpayment from '../Logrentalpayment/Logrentalpayment';
@@ -57,7 +56,6 @@ const tental_recipt_data = [
 export default LeaseSummary = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData...', loginData);
-  // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
   console.log('property_id in lease summary...', property_id);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,8 +77,7 @@ export default LeaseSummary = props => {
   };
   const lease_summary = () => {
     const url = Config.BASE_URL;
-    const lease_summary_url =
-     `property_lease_details/getAll/${property_id}`;
+    const lease_summary_url = `property_lease_details/getAll/${property_id}`;
     console.log('Request URL:', lease_summary_url);
     setIsLoading(true);
     axiosInstance
@@ -90,7 +87,6 @@ export default LeaseSummary = props => {
         if (response?.data?.success === true) {
           setLease_summary_data(response?.data?.data);
           console.log('lease_summaryData..', response?.data?.data);
-          // alert(JSON.stringify(response?.data?.data));
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -99,7 +95,6 @@ export default LeaseSummary = props => {
       .catch(error => {
         console.error('API failed lease_summary', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -107,8 +102,7 @@ export default LeaseSummary = props => {
   };
   const get_retal_receipt = () => {
     const url = Config.BASE_URL;
-    const retal_receip_url =
-     `property_lease_details/get/paymentdetails/${property_id}`;
+    const retal_receip_url = `property_lease_details/get/paymentdetails/${property_id}`;
     console.log('Request URL:', retal_receip_url);
     setIsLoading(true);
     axiosInstance
@@ -118,16 +112,13 @@ export default LeaseSummary = props => {
         if (response?.data?.success === true) {
           setRental_Receipt_data(response?.data?.data);
           console.log('rental receipt Data..', response?.data?.data);
-          // alert(JSON.stringify(response?.data?.data));
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed retal_receipt', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -135,7 +126,6 @@ export default LeaseSummary = props => {
   };
 
   const LeaseSummary_render = ({item}) => {
-    // alert(JSON.stringify(item?.UPLD_LEASE_KEY));
     setLease_key(item?.UPLD_LEASE_KEY);
     return (
       <View style={LeaseSummaryStyle.subContainer}>
@@ -150,10 +140,7 @@ export default LeaseSummary = props => {
                   }>{`${item.due_day} days`}</Text>
               </View>
               <Text style={LeaseSummaryStyle.date_cld_Text}>
-                {/* {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd  ")} 
-                 {moment(item?.UPLD_PAYMENT_DUE_DAY).format("LL")} */}
                 {moment(item?.UPLD_PAYMENT_DUE_DAY).format('dddd D MMMM YYYY')}
-                {/* {item?.UPLD_PAYMENT_DUE_DAY} */}
               </Text>
             </View>
             <View style={LeaseSummaryStyle.due_View}>
@@ -298,7 +285,6 @@ export default LeaseSummary = props => {
             <FlatList
               data={lease_summary_data}
               showsVerticalScrollIndicator={false}
-              // keyExtractor={(item,index) => item?.UPLD_LEASE_KEY.toString()}
               keyExtractor={(item, index) => index}
               renderItem={LeaseSummary_render}
             />
@@ -308,13 +294,6 @@ export default LeaseSummary = props => {
 
       <DividerIcon />
       <View style={LeaseSummaryStyle.subContainer}>
-        {/* <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
-        <Text style={LeaseSummaryStyle.invite_tenant_Text}>
-          {"Invite tenant to connect to this property"}
-        </Text> */}
-
-        {/* <TenantDetails /> */}
-
         {rental_Receipt_data.length > 0 ? (
           <>
             <Text style={LeaseSummaryStyle.heading_Text}>
@@ -325,7 +304,6 @@ export default LeaseSummary = props => {
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
-              // keyExtractor={(item,index) => item?.id}
               keyExtractor={(item, index) => index}
               renderItem={rental_recipt_render}
             />
@@ -375,7 +353,11 @@ export default LeaseSummary = props => {
           },
           container: LeaseSummaryStyle.bottomModal_container,
         }}>
-        <Logrentalpayment onClose={handleClose} lease_keys={lease_key} property_id={property_id}/>
+        <Logrentalpayment
+          onClose={handleClose}
+          lease_keys={lease_key}
+          property_id={property_id}
+        />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>

@@ -1,36 +1,34 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY, IMAGES } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../../Themes';
 
 export const ChangeNotifyStyle = StyleSheet.create({
   maincontainer: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height: "100%",
+    height: '100%',
   },
   headingview: {
-    // width: 306,
-    // height: 40,
     marginTop: 15,
-    alignItems: "center",
+    alignItems: 'center',
     marginHorizontal: 30,
   },
   alltext: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     fontFamily: FONTFAMILY.K_SemiBold,
-    textAlign:'center',
+    textAlign: 'center',
     color: _COLORS.Kodie_ExtraLightGrayColor,
   },
   numberview: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   firstnumbertext: {
-    color: "#212121",
+    color: '#212121',
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   totext: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_LightGrayColor,
   },
@@ -45,34 +43,32 @@ export const ChangeNotifyStyle = StyleSheet.create({
   },
 
   notifyview: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 20,
-    // marginVertical:30
   },
   notifytext: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     lineHeight: 20,
   },
   Dividerlinesecond: {
-    color: "#DBDBDB",
+    color: '#DBDBDB',
     height: 1.5,
   },
   buttonview: {
     marginHorizontal: 20,
-    // marginTop: 30,
   },
   toggle_con: {
     width: 45,
     height: 25,
     borderRadius: 20,
     padding: 5,
-    alignItems: "center",
-    borderWidth:1,
-    borderColor:_COLORS?.Kodie_GrayColor
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: _COLORS?.Kodie_GrayColor,
   },
   toggle_circle: {
     width: 15,

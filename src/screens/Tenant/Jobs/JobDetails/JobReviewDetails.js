@@ -5,8 +5,6 @@ import {
   Text,
   ScrollView,
   ImageBackground,
-  TouchableOpacity,
-  Image,
   SafeAreaView,
   Alert,
 } from 'react-native';
@@ -17,20 +15,10 @@ import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
 import {BANNERS, _COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import {Dropdown} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
-import Entypo from 'react-native-vector-icons/Entypo';
 import StepIndicator from 'react-native-step-indicator';
-import BiddingDetails from './BiddingDetails/Biddingdetails';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AddJobDetails from '../AddJobDetails';
 import Reviewjobdetails1 from '../../../CreateJob/ReviewJobDetails/Reviewjobdetails1';
-import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails';
 import JobDocuments from '../JobDocuments.js/JobDocuments';
-import {CommonActions} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const images = [
@@ -48,7 +36,6 @@ const Apartment_data = [
   {label: 'Farm', value: '6'},
 ];
 const JobReviewDetails = props => {
-  // const dispatch = useDispatch();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
   let jobDocTab = props?.route?.params?.jobDocTab;
@@ -77,17 +64,14 @@ const JobReviewDetails = props => {
   }, []);
   const handleImageFilePath = async imagesFilePath => {
     setImageFileData(imagesFilePath);
-    // console.log("imagesFilePath....sdfs.", imagesFilePath);
     console.log('imagesFilePath....sdfs.', imagesFilePath);
     console.log('images__imageFileData...', imageFileData);
-    // alert(JSON.stringify(imagesFilePath.length))
     console.log('length', imagesFilePath.length);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -139,10 +123,9 @@ const JobReviewDetails = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -207,7 +190,6 @@ const JobReviewDetails = props => {
           />
         );
       case 'Tab2':
-        // return <JodBiddingDetails JOB_ID={JOB_ID} />;
         return (
           <>
             {Alert.alert('Bids', 'Coming soon', [
@@ -259,8 +241,6 @@ const JobReviewDetails = props => {
   return (
     <SafeAreaView style={JobDetailsStyle.container}>
       <TopHeader
-        // isprofileImage
-        // IsNotification
         onPressLeftButton={() =>
           View_Job_Details
             ? props.navigation.navigate('DrawerNavigatorLeftMenu', {
@@ -275,7 +255,6 @@ const JobReviewDetails = props => {
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={3}
-            // onPress={onStepPress}
             renderStepIndicator={renderStepIndicator}
             labels={stepLabels}
             stepCount={4}
@@ -289,8 +268,11 @@ const JobReviewDetails = props => {
           imageFileData.image_file_path.length != 0 ? (
             <View style={JobDetailsStyle.slider_view}>
               <SliderBox
-                images={imageFileData?.image_file_path.filter(url =>
-                  url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png')
+                images={imageFileData?.image_file_path.filter(
+                  url =>
+                    url.endsWith('.jpg') ||
+                    url.endsWith('.jpeg') ||
+                    url.endsWith('.png'),
                 )}
                 sliderBoxHeight={200}
                 onCurrentImagePressed={index =>
@@ -298,8 +280,6 @@ const JobReviewDetails = props => {
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
-                // autoplay
-                // circleLoop
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
                 dotStyle={JobDetailsStyle.dotStyle}
@@ -310,12 +290,6 @@ const JobReviewDetails = props => {
               />
             </View>
           ) : null}
-          {/* {imageFileData.image_file_path &&
-          imageFileData.image_file_path != 0 ? (
-            <View style={JobDetailsStyle.bidsview}>
-              <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
-            </View>
-          ) : null} */}
         </ImageBackground>
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>

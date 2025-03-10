@@ -45,13 +45,11 @@ export default CompanyContractor = props => {
     setSelectedOption(option);
   };
 
-  //... Regex signup email validation
   const validateCompanyEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
-  // Validation for First Name....
   const validateCompanyName = text => {
     if (text === '') {
       setCompanyNameError('Organisation name is required!');
@@ -65,7 +63,6 @@ export default CompanyContractor = props => {
     setCompanyName(text);
   };
 
-  // Email validation define here....
   const handleCompanyEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
@@ -79,7 +76,6 @@ export default CompanyContractor = props => {
     }
   };
 
-  // Validation for Phone Number
   const validatePhoneNumber = text => {
     const mobileReg = /^\d{6}$/;
     if (text === '') {
@@ -91,7 +87,6 @@ export default CompanyContractor = props => {
     }
     setPhoneNumber(text);
   };
-  // Validation for Phone Number
   const validateMobileNumber = text => {
     const mobileReg = /^\d{10}$/;
     if (text === '') {
@@ -107,10 +102,7 @@ export default CompanyContractor = props => {
   const handleClosePopup = () => {
     props.onCloseSave();
   };
-  // API bind person code here.....
   const Companyhandle = () => {
-    // const url = Config.API_URL;
-    // const PersonUrl = url + "user_signup";
     const CompanyDetailsData = {
       User_USP_KEY: loginData.Login_details.user_id,
       User_Account_UDP_KEY: loginData.Login_details.user_account_id,
@@ -127,7 +119,7 @@ export default CompanyContractor = props => {
       NOTES: note,
     };
     const url = Config.BASE_URL;
-    const CompanyUrl ='invitecontractor_details';
+    const CompanyUrl = 'invitecontractor_details';
     console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
@@ -140,9 +132,7 @@ export default CompanyContractor = props => {
           response?.data?.success === true ||
           response?.data?.error == false
         ) {
-          // props.navigation.navigate("LeaseSummary");
           alert(response?.data?.message);
-          // setIsLoading(false);
           setCompanyName('');
           setEmail('');
           setPhoneNumber('');
@@ -180,7 +170,6 @@ export default CompanyContractor = props => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -226,11 +215,9 @@ export default CompanyContractor = props => {
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
@@ -275,8 +262,6 @@ export default CompanyContractor = props => {
   const handleBoxPress = lookup_key => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    // alert(selectJobTypeid);
-    // alert(isClick)
   };
   const handleServices = selectJobType => {
     const propertyData = {
@@ -312,7 +297,6 @@ export default CompanyContractor = props => {
       })
       .catch(error => {
         console.error('Services error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -345,8 +329,9 @@ export default CompanyContractor = props => {
       <ScrollView>
         <View style={CompanyContractorStyle.card}>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Organisation name'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Organisation name'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={CompanyContractorStyle.input}
@@ -394,14 +379,14 @@ export default CompanyContractor = props => {
               value={servicesValue}
               onChange={item => {
                 setservicesValue(item.lookup_key);
-                // alert(item.lookup_key)
               }}
               renderItem={lookingServices_render}
             />
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Email'}
-            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Email'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
               style={CompanyContractorStyle.input}
@@ -509,7 +494,6 @@ export default CompanyContractor = props => {
               ]}
               onPress={() => {
                 handleSaveBtn();
-                // handleOptionClick("Save");
               }}>
               <Text
                 style={[

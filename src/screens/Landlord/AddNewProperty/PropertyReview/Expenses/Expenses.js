@@ -5,7 +5,6 @@ import {_COLORS} from '../../../../../Themes';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AddExpensesDetails from './AddExpensesDetails/AddExpensesDetails';
-import PropertyExpenses from './PropertyExpenses/PropertyExpenses';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
@@ -24,7 +23,7 @@ export default Expenses = props => {
 
   const get_Expenses_Details = async () => {
     const url = Config.BASE_URL;
-    const Expenses_Details_url =`getAll/Expenses/${property_id}`;
+    const Expenses_Details_url = `getAll/Expenses/${property_id}`;
     console.log('Request URL:', Expenses_Details_url);
     await axiosInstance
       .get(Expenses_Details_url)
@@ -119,7 +118,8 @@ export default Expenses = props => {
                 <Text style={ExpensesStyle.Amount_Text}>
                   {item.UPED_PAID == 0 ? 'Amount due' : 'Amount paid'}
                 </Text>
-                <Text style={[ExpensesStyle.Accounting_Text,{ textAlign: 'right'}]}>
+                <Text
+                  style={[ExpensesStyle.Accounting_Text, {textAlign: 'right'}]}>
                   {item.UPED_TOTAL_AMOUNT}
                 </Text>
               </View>
@@ -130,10 +130,11 @@ export default Expenses = props => {
               <View style={ExpensesStyle.paid_Date_View}>
                 <Text style={ExpensesStyle.date_paid}>{'Date paid: '}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {/* {item.UPED_PAID == 0? moment(item.UPED_START_DATE.substring(0, 10)).format('DD-MMM'): '-'} */}
                   {item.UPED_PAID == 0
-    ? moment(item.UPED_START_DATE.substring(0, 10)).format('DD MMMM YYYY')
-    : '-'}
+                    ? moment(item.UPED_START_DATE.substring(0, 10)).format(
+                        'DD MMMM YYYY',
+                      )
+                    : '-'}
                 </Text>
               </View>
               <TouchableOpacity
@@ -192,7 +193,6 @@ export default Expenses = props => {
             <Text style={ExpensesStyle.heading_Text}>
               {'Property expenses'}
             </Text>
-            {/* <PropertyExpenses /> */}
             <FlatList
               data={Expenses_data}
               scrollEnabled

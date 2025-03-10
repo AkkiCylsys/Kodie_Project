@@ -18,7 +18,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
   },
-  errorText: {color: 'red', marginTop: 5,marginLeft:5},
+  errorText: {color: 'red', marginTop: 5, marginLeft: 5},
   mainreapeatview: {
     flex: 1,
     flexDirection: 'row',
@@ -29,7 +29,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
   bottomModal_container: {
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
-    // paddingHorizontal: 20,
     paddingVertical: 20,
     paddingBottom: 30,
   },
@@ -51,18 +50,15 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   divider: {
     marginHorizontal: 5,
-    // flex: 1,
     marginTop: 20,
   },
   dividersecond: {
-    // flex: 1,
     marginTop: 20,
   },
   alldayviewmain: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // marginHorizontal: 10,
     marginTop: 25,
   },
   alldayview: {
@@ -75,14 +71,10 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginLeft: 15,
     alignSelf: 'center',
   },
-  datetimeview: {
-    // marginHorizontal: 10,
-  },
+  datetimeview: {},
   dateview: {
     flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
     marginLeft: 37,
   },
   datetext: {
@@ -100,7 +92,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   secondmainview: {
     flex: 1,
-    marginTop:15
+    marginTop: 15,
   },
   addlocationmainview: {
     marginTop: 10,
@@ -120,8 +112,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // marginHorizontal: 5,
-    // padding: 5,
     flex: 1,
     marginTop: 25,
   },
@@ -169,7 +159,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
     marginLeft: 8,
-    // marginHorizontal: 15,
   },
   setcustometext: {
     fontSize: 14,
@@ -213,12 +202,11 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginTop: 24,
   },
-  // ....drop down
   jobDetailsView: {
     marginVertical: 12,
   },
   dropdown: {
-    flex:1,
+    flex: 1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -241,14 +229,12 @@ export const AddNewNoticeStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  // ...
   input: {
     height: 48,
     borderRadius: 6,
@@ -264,11 +250,10 @@ export const AddNewNoticeStyle = StyleSheet.create({
     height: 25,
     borderRadius: 20,
     padding: 5,
-    // marginTop: 18,
     alignItems: 'center',
-    alignSelf: 'center',  
-  borderWidth:1,
-  borderColor:_COLORS?.Kodie_GrayColor
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: _COLORS?.Kodie_GrayColor,
   },
   toggle_circle: {
     width: 18,
@@ -307,7 +292,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   firstview: {
     alignItems: 'flex-start',
-    // marginVertical: 10,
   },
   oldnumbertext: {
     fontSize: 13,
@@ -327,7 +311,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LightGrayColor,
-    color:_COLORS.Kodie_BlackColor
+    color: _COLORS.Kodie_BlackColor,
   },
   locationIconView: {
     borderWidth: 1,
@@ -393,7 +377,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
 
   textContainer: {
-    // flex:1,
     flexDirection: 'column',
     marginLeft: 10,
   },
@@ -409,7 +392,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    // width: 250,
   },
   pdfSize: {
     fontSize: 12,

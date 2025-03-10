@@ -48,7 +48,7 @@ import {Config} from '../../../Config';
 import moment from 'moment';
 import {_goBack} from '../../../services/CommonServices';
 import axiosInstance from '../../../services/axiosInstance';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 const AddNotices = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -122,7 +122,6 @@ const AddNotices = props => {
     }, [IsMap, IsSearch]),
   );
   console.log('uploadedFiles', JSON.stringify(uploadedFiles));
-  // For map screen.....
   const ConfirmAddress = () => {
     setIsMap(false);
   };
@@ -131,7 +130,6 @@ const AddNotices = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
@@ -148,7 +146,6 @@ const AddNotices = props => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
-        // alert("You can use the location");
         getAddressWithCordinates();
       } else {
         console.log('location permission denied');
@@ -232,13 +229,9 @@ const AddNotices = props => {
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
-        // alert(location)
-
-        //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
@@ -255,7 +248,6 @@ const AddNotices = props => {
         return [...prevSelectedUsers, user];
       }
     });
-    // Keyboard.dismiss()
   };
 
   const handleClosePopup = () => {
@@ -273,7 +265,6 @@ const AddNotices = props => {
     });
     CheckIOSMapPermission();
   }, []);
-  // calender..
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     setSelectedDate('');
@@ -288,13 +279,11 @@ const AddNotices = props => {
   };
   const apply_toggleToDateModal = () => {
     setModalToDateVisible(!isModalToDateVisible);
-    // console.log("date...", selectedDate);
   };
   const handleApply = value => {
     setSelectedCustemValue(value);
     refRBSheet1.current.close();
   };
-  // validation start
   const validateTitle = text => {
     if (text === '') {
       setTitleError('Notice title is required!');
@@ -365,9 +354,7 @@ const AddNotices = props => {
     setSelectedValues(tempSelectedValues);
     refRBSheet.current.close();
   };
-  // validation end
 
-  // Api calling start
   const handle_notice = async () => {
     setIsLoading(true);
     try {
@@ -376,10 +363,10 @@ const AddNotices = props => {
         P_TYPE: 'OPTION',
       };
       const response = await SignupLookupDetails(data);
-      setNoticeTypeData(response.lookup_details); // Assuming response structure
+      setNoticeTypeData(response.lookup_details);
     } catch (error) {
       console.error('API call setNoticeTypeData failed:', error.message);
-      alert(error.message); // Set error state for UI feedback
+      alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -392,10 +379,10 @@ const AddNotices = props => {
         P_TYPE: 'OPTION',
       };
       const response = await SignupLookupDetails(data);
-      setRepeatData(response.lookup_details); // Assuming response structure
+      setRepeatData(response.lookup_details);
     } catch (error) {
       console.error('API call setRepeatData failed:', error.message);
-      alert(error.message); // Set error state for UI feedback
+      alert(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -408,19 +395,18 @@ const AddNotices = props => {
         P_TYPE: 'OPTION',
       };
       const response = await SignupLookupDetails(data);
-      setNotification_type_Data(response.lookup_details); // Assuming response structure
+      setNotification_type_Data(response.lookup_details);
     } catch (error) {
       console.error(
         'API call setNotification_type_Data failed:',
         error.message,
       );
-      alert(error.message); // Set error state for UI feedback
+      alert(error.message);
     } finally {
       setIsLoading(false);
     }
   };
   const fetchResults = async searchQuery => {
-    // alert(searchQuery)
     setIsLoading(true);
 
     try {
@@ -445,7 +431,7 @@ const AddNotices = props => {
     } else {
       setResults([]);
     }
-  }, 100); // Delay in milliseconds
+  }, 100);
 
   useEffect(() => {
     debouncedFetchResults(query);
@@ -460,12 +446,10 @@ const AddNotices = props => {
       setTitleError('Notice title is required!');
     } else if (selectedDate.trim() === '') {
       setSelectedDateError('Select start date is required!');
-      // setSelectedFromTimeError('Select start time is required!');
     } else if (currentfromTime.trim() === '') {
       setSelectedFromTimeError('Select start time is required!');
     } else if (selectedToDate.trim() === '') {
       setSelectedToDateError('Select end date is required!');
-      // setSelectedToTimeError('Select end time is required!');
     } else if (currentToTime.trim() === '') {
       setSelectedToTimeError('Select end time is required!');
     } else {
@@ -500,7 +484,6 @@ const AddNotices = props => {
       }
     }
   };
-  // clearState ..
   const clearState = () => {
     setNoticeTypeDataValue(''),
       setNoticeTittle(''),
@@ -517,7 +500,6 @@ const AddNotices = props => {
       setCurrentfromTime(''),
       setCurrentToTime('');
   };
-  // alert(selectFile[0].name)
   const createNoticeReminder = async () => {
     const formData = new FormData();
     formData.append('account_id', loginData?.Login_details?.user_account_id);
@@ -542,13 +524,12 @@ const AddNotices = props => {
       console.log('pdfFile.....', pdfFile);
 
       formData.append('file_name', {
-        uri: pdfFile.uri[0].uri, // Assuming PDF file is accessed correctly
+        uri: pdfFile.uri[0].uri,
         name: pdfFile.uri[0].name,
         type: 'application/pdf',
       });
     }
 
-    // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
       console.log('file.....', file.uri);
@@ -556,7 +537,7 @@ const AddNotices = props => {
       formData.append('file_name', {
         uri: file.uri,
         name: filename,
-        type: 'image/jpeg', // Adjust MIME type as necessary
+        type: 'image/jpeg',
       });
     });
     console.log('FormData content:', formData);
@@ -583,7 +564,6 @@ const AddNotices = props => {
       clearState();
       setIsLoading(false);
     } catch (error) {
-      // alert(error);
       console.log('createNoticeReminder_error...', error);
     } finally {
       setIsLoading(false);
@@ -623,14 +603,12 @@ const AddNotices = props => {
           setNoticeAllData(response?.data?.data);
           setUploadedFiles(response?.data?.data?.image_path);
         } else {
-          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed getNoticesReminderDetails_url', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -661,13 +639,12 @@ const AddNotices = props => {
       console.log('pdfFile.....', pdfFile);
 
       formData.append('file_name', {
-        uri: pdfFile.uri[0].uri, // Assuming PDF file is accessed correctly
+        uri: pdfFile.uri[0].uri,
         name: pdfFile.uri[0].name,
         type: 'application/pdf',
       });
     }
 
-    // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
       console.log('pdfFile.....', file);
@@ -675,7 +652,7 @@ const AddNotices = props => {
       formData.append('file_name', {
         uri: file.uri,
         name: filename,
-        type: 'image/jpeg', // Adjust MIME type as necessary
+        type: 'image/jpeg',
       });
     });
     console.log('formData vdsfs', formData);
@@ -701,15 +678,12 @@ const AddNotices = props => {
       clearState();
       setIsLoading(false);
     } catch (error) {
-      // alert(error);
       console.log('update_createNoticeReminder_url...', error);
     } finally {
       setIsLoading(false);
     }
   };
-  // Api calling end
 
-  // render items
   const TypeOfNotices = item => {
     return (
       <View
@@ -821,7 +795,6 @@ const AddNotices = props => {
     return file.type.startsWith('image');
   };
 
-  // Function to check if a file is a PDF document
   const isDocument = file => {
     if (typeof file === 'string') {
       return file.endsWith('.pdf');
@@ -829,7 +802,6 @@ const AddNotices = props => {
     return file.type === 'document';
   };
 
-  // Filter images and PDF documents
   const images = uploadedFiles.filter(isImage);
   const documents = uploadedFiles.filter(isDocument);
 
@@ -892,7 +864,6 @@ const AddNotices = props => {
     );
   };
 
-  
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
@@ -917,16 +888,12 @@ const AddNotices = props => {
         <View
           style={{
             flex: 1,
-            // paddingHorizontal: 10,
             backgroundColor: 'transparent',
           }}>
           <MapScreen
             style={{
               height: '100%',
               width: '100%',
-              // borderRadius: 20,
-              // borderWidth: 1,
-              //borderColor: .greenAppColor,
               alignSelf: 'center',
               marginBottom: 10,
             }}
@@ -955,7 +922,6 @@ const AddNotices = props => {
                 width: '90%',
                 height: 45,
                 alignSelf: 'center',
-                //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
               placeholder={'Search Place'}
@@ -1015,7 +981,6 @@ const AddNotices = props => {
                 onChange={item => {
                   setNoticeTypeDataValue(item.lookup_key);
                   setShowNoticeTypeError(false);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={TypeOfNotices}
               />
@@ -1073,8 +1038,8 @@ const AddNotices = props => {
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={[
                     AddNewNoticeStyle.selectedTextStyle,
-                    { 
-                      width:'100%'
+                    {
+                      width: '100%',
                     },
                   ]}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1109,7 +1074,6 @@ const AddNotices = props => {
                 onPress={() => {
                   setToggleDay(!toggleDay);
                   setToggleDayValue(toggleDay ? 0 : 1);
-                  // alert(toggleDayValue);
                 }}
                 circleColorOff={_COLORS.Kodie_ExtraminLiteGrayColor}
                 circleColorOn={_COLORS.Kodie_GreenColor}
@@ -1123,7 +1087,6 @@ const AddNotices = props => {
               <View style={AddNewNoticeStyle.dateview}>
                 <CalendarModal
                   current={selectedDate}
-                  // SelectDate={selectedDate ? selectedDate : "Select Date"}
                   SelectDate={
                     selectedDate
                       ? moment(selectedDate).format('ddd, MMM DD YYYY')
@@ -1140,8 +1103,6 @@ const AddNotices = props => {
                   }}
                   calenderIcons
                   calenderIcon={toggleModal}
-                  // onDayPress={day => setSelectedDate(day.dateString)}
-                  // onChangeText={() => setSelectedDate(selectedDate)}
                   onDayPress={day => handleRequestDate(day.dateString)}
                   onChangeText={() => handleRequestDate(selectedDate)}
                   Visible={isModalVisible}
@@ -1189,7 +1150,6 @@ const AddNotices = props => {
                   }}>
                   <CalendarModal
                     current={selectedToDate}
-                    // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedToDate
                         ? moment(selectedToDate).format('ddd, MMM DD YYYY')
@@ -1248,36 +1208,29 @@ const AddNotices = props => {
               </View>
             </View>
 
-            {/* <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
-              {selectedDateError ? (
-                <Text style={[AddNewNoticeStyle.errorText]}>
-                  {selectedDateError}
-                </Text>
-              ) : null}
-              {selectedFromTimeError ? (
-                <Text
-                  style={[AddNewNoticeStyle.errorText,]}>
-                  {selectedFromTimeError}
-                </Text>
-              ) : null}
-            {/* </View> */}
-            {/* <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
-              {selectedToDateError ? (
-                <Text style={AddNewNoticeStyle.errorText}>
-                  {selectedToDateError}
-                </Text>
-              ) : null}
-              {selectedToTimeError ? (
-                <Text style={[AddNewNoticeStyle.errorText]}>
-                  {selectedToTimeError}
-                </Text>
-              ) : null}
-            {/* </View> */}
+            {selectedDateError ? (
+              <Text style={[AddNewNoticeStyle.errorText]}>
+                {selectedDateError}
+              </Text>
+            ) : null}
+            {selectedFromTimeError ? (
+              <Text style={[AddNewNoticeStyle.errorText]}>
+                {selectedFromTimeError}
+              </Text>
+            ) : null}
+
+            {selectedToDateError ? (
+              <Text style={AddNewNoticeStyle.errorText}>
+                {selectedToDateError}
+              </Text>
+            ) : null}
+            {selectedToTimeError ? (
+              <Text style={[AddNewNoticeStyle.errorText]}>
+                {selectedToTimeError}
+              </Text>
+            ) : null}
             <Divider style={AddNewNoticeStyle.dividerthird} />
             <View style={AddNewNoticeStyle.secondmainview}>
-              {/* <AddGuest /> */}
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Add guests'}</Text>
                 <View style={{flex: 1, flexDirection: 'row'}}>
@@ -1339,16 +1292,12 @@ const AddNotices = props => {
                     onFocus={() => {
                       setIsSearch(true);
                     }}
-                    // editable={false}
                     placeholder="Enter new location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                   <TouchableOpacity
                     style={AddNewNoticeStyle.locationIconView}
                     onPress={() => {
-                      // Platform.OS == 'ios'
-                      //   ? CheckIOSMapPermission
-                      //   : checkpermissionlocation();
                       setIsMap(true);
                     }}>
                     <Octicons
@@ -1362,7 +1311,6 @@ const AddNotices = props => {
               </View>
               <Divider style={AddNewNoticeStyle.dividerfourth} />
 
-              {/*seven part start here */}
               <View style={AddNewNoticeStyle.setnotificationview}>
                 <View style={AddNewNoticeStyle.notificationbind}>
                   <FontAwesome
@@ -1379,7 +1327,6 @@ const AddNotices = props => {
                   onPress={() => {
                     setToggleNotification(!toggleNotification);
                     setToggleNotificationValue(toggleNotification ? 1 : 0);
-                    // alert(toggle_lease_expire);
                   }}
                   circleColorOff={_COLORS.Kodie_ExtraminLiteGrayColor}
                   circleColorOn={_COLORS.Kodie_GreenColor}
@@ -1389,16 +1336,12 @@ const AddNotices = props => {
                   circleStyle={AddNewNoticeStyle.toggle_circle}
                 />
               </View>
-              {/*eight part start here */}
               <View style={AddNewNoticeStyle.setnoticeviewdrop}>
                 <Text style={AddNewNoticeStyle.Notificationtypetext}>
                   Set notification type
                 </Text>
                 <Dropdown
-                  style={[
-                    AddNewNoticeStyle.setnotificationdrop,
-                    {width:  130},
-                  ]}
+                  style={[AddNewNoticeStyle.setnotificationdrop, {width: 130}]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1411,12 +1354,10 @@ const AddNotices = props => {
                   value={notification_type_value}
                   onChange={item => {
                     setNotification_type_value(item.lookup_key);
-                    // alert(item.lookup_key)
                   }}
                   renderItem={NotificationRender}
                 />
               </View>
-              {/*nine part start here */}
               <View style={AddNewNoticeStyle.setcustomview}>
                 <Text style={AddNewNoticeStyle.setcustometext}>Set custom</Text>
                 <View style={{flexDirection: 'row'}}>
@@ -1459,7 +1400,6 @@ const AddNotices = props => {
                 <Text style={AddNewNoticeStyle.addattachment}>
                   Add attachment
                 </Text>
-                {/* Display uploaded images in a horizontal FlatList */}
                 {images.length > 0 && (
                   <FlatList
                     data={images}
@@ -1469,7 +1409,6 @@ const AddNotices = props => {
                     style={AddNewNoticeStyle.uploadedImagesContainer}
                   />
                 )}
-                {/* Display uploaded documents in a vertical FlatList */}
                 {documents.length > 0 && (
                   <FlatList
                     data={documents}

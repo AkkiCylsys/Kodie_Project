@@ -95,7 +95,6 @@ Container:{
     alignItems:'center',
     paddingTop:5,
     width: 70,
-    // marginTop:10,
   },
   toggle_con: {
     width: 48,

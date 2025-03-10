@@ -23,7 +23,6 @@ import DocumentPicker from 'react-native-document-picker';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
-// import RNFS from "react-native-fs";
 import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../Config';
 import Share from 'react-native-share';
@@ -35,11 +34,9 @@ import {useSelector} from 'react-redux';
 const JobDocumentDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData in Job documents details...', loginData);
-  // console.log("Account id..",loginData?.Login_details?.user_account_id)
   const user_Account_Id = loginData?.Login_details?.user_account_id;
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadDocData, setUploadDocData] = useState([]);
   const folderId = props.route.params?.folderId;
   const moduleName = props.route.params?.moduleName;
   const JOB_ID = props.route.params?.JOB_ID;
@@ -50,16 +47,13 @@ const JobDocumentDetails = props => {
   const [jobDocByModulename, setJobDocByModulename] = useState([]);
   const file = selectFile[0];
   const isVisible = useIsFocused();
-  //   alert(folderId);
-  // alert(moduleName);
-  // alert(JOB_ID);
+
   console.log('JOB_ID.........', JOB_ID);
   console.log('moduleName.........', moduleName);
 
   useEffect(() => {
     getUploadedDocumentsByModule();
   }, [isVisible]);
-  // share doc....
   const shareDocFile = async () => {
     setTimeout(() => {
       Share.open({url: filePath})
@@ -70,11 +64,6 @@ const JobDocumentDetails = props => {
           err && console.log(err);
         });
     }, 300);
-    // try {
-    //   await Share.open({url: filePath});
-    // } catch (error) {
-    //   console.error('Error sharing PDF file:', error);
-    // }
   };
   const closeModal = () => {
     refRBSheet.current.close();
@@ -82,21 +71,9 @@ const JobDocumentDetails = props => {
   const selectDoc = async () => {
     try {
       const doc = await DocumentPicker.pick({
-        type: [
-          DocumentPicker.types.pdf,
-          // DocumentPicker.types.doc,
-          // DocumentPicker.types.docx,
-          // DocumentPicker.types.images,
-        ],
-        // allowMultiSelection: true,
+        type: [DocumentPicker.types.pdf],
       });
-      //   const doc = await DocumentPicker.pickSingle({
-      //     type: [
-      //       DocumentPicker.types.pdf,
-      //       DocumentPicker.types.doc,
-      //       DocumentPicker.types.docx,
-      //     ],
-      //   });
+
       console.log('doc......', doc);
       setSelectFile(doc);
       await uploadDocument(doc);
@@ -113,7 +90,6 @@ const JobDocumentDetails = props => {
     const dataToSend = {
       fileId: fileKey,
     };
-    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
     const delete_url = 'deletedocument';
     console.log('url...', delete_url);
@@ -137,58 +113,8 @@ const JobDocumentDetails = props => {
         setIsLoading(false);
       });
   };
-  // const uploadDocument = async doc => {
-  //   // alert("upload");
-  //   console.log('uri....', doc[0].uri);
-  //   console.log('name....', doc[0].name.replace(/\s/g, ''));
-  //   console.log('type....', doc[0].type);
-  //   console.log('p_referral_key....', JOB_ID);
-  //   console.log('p_module_name....', moduleName);
-  //   const url = Config.BASE_URL;
-  //   const uploadDoc_url = 'uploadDocument';
-  //   console.log('Request URL:', uploadDoc_url);
-  //   setIsLoading(true);
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('documents', {
-  //       uri: doc[0].uri,
-  //       name: doc[0].name.replace(/\s/g, ''),
-  //       type: doc[0].type,
-  //     });
-  //     formData.append('p_referral_key', JOB_ID);
-  //     formData.append('p_module_name', moduleName);
-  //     // formData.append("p_sub_module_name", "Property documents");
-
-  //     const response = await axiosInstance.post(uploadDoc_url, formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //     console.log('API Response uploadDocument:', response.data);
-
-  //     if (response?.data?.status === true) {
-  //       Alert.alert("Success",response?.data?.message);
-  //       // props.navigation.pop();
-  //       getUploadedDocumentsByModule();
-  //     } else {
-  //       alert(response?.data?.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed uploadDocument', error);
-  //     // alert(error);
-  //     // Handle network errors more gracefully
-  //     // if (!error.response) {
-  //     //   alert("Network error. Please check your internet connection.");
-  //     // } else {
-  //     //   alert(error.response?.data?.message);
-  //     // }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const uploadDocument = async doc => {
-    // alert("upload");
     console.log('uri....', doc[0].uri);
     console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
@@ -207,7 +133,6 @@ const JobDocumentDetails = props => {
       });
       formData.append('p_account_id', user_Account_Id);
       formData.append('p_referral_key', JOB_ID);
-      // formData.append('p_module_name', moduleName);
       formData.append('p_module_name', 'Job');
       formData.append('p_sub_module_name', moduleName);
       formData.append('p_document_type', '1');
@@ -221,20 +146,12 @@ const JobDocumentDetails = props => {
 
       if (response?.data?.status === true) {
         Alert.alert('Success', response?.data?.message);
-        // props.navigation.pop();
         getUploadedDocumentsByModule();
       } else {
         alert(response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
-      // alert(error);
-      // Handle network errors more gracefully
-      // if (!error.response) {
-      //   alert("Network error. Please check your internet connection.");
-      // } else {
-      //   alert(error.response?.data?.message);
-      // }
     } finally {
       setIsLoading(false);
     }
@@ -265,7 +182,6 @@ const JobDocumentDetails = props => {
       });
   };
 
-  //  dowonload for Ios And Android....
   const downloadviewFile = async () => {
     setIsLoading(true);
     const date = new Date();
@@ -303,7 +219,6 @@ const JobDocumentDetails = props => {
       if (isIOS) {
         FileViewer.open(res.data, {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -313,7 +228,6 @@ const JobDocumentDetails = props => {
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -359,17 +273,11 @@ const JobDocumentDetails = props => {
     );
   };
   const GetuploadedDocumentrender = ({item, index}) => {
-    // setFileKey(item.PDUM_FILE_KEY);
-    // console.log('file keu for delete...',item.PDUM_FILE_KEY)
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
         <View style={JobDocumentDetailStyle.container}>
           <View style={JobDocumentDetailStyle.pdfInfo}>
-            {/* <Image
-              source={IMAGES.document}
-              style={JobDocumentDetailStyle.pdfIcon}
-            /> */}
             <FontAwesome
               name="file-pdf-o"
               size={35}
@@ -380,9 +288,6 @@ const JobDocumentDetails = props => {
               <Text style={JobDocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              {/* <Text style={JobDocumentDetailStyle.pdfSize}>
-                {'4.5 MB'}
-              </Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -405,7 +310,6 @@ const JobDocumentDetails = props => {
     );
   };
 
-  // const REMOTE_PATH = `http://e3.cylsys.com/upload/documents/${fileName}`;
   const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
@@ -421,15 +325,12 @@ const JobDocumentDetails = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
           downloadImage();
         } else {
-          // If permission denied then show alert
           alert('Storage Permission Not Granted');
         }
       } catch (err) {
-        // To handle permission related exception
         console.warn(err);
       }
     }
@@ -440,7 +341,6 @@ const JobDocumentDetails = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -458,9 +358,7 @@ const JobDocumentDetails = props => {
     config(options)
       .fetch('GET', image_URL)
       .then(res => {
-        // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        // alert("Image Downloaded Successfully.");
         Alert.alert('Success', 'File downloaded successfully.');
         setIsLoading(false);
         closeModal();
@@ -468,7 +366,6 @@ const JobDocumentDetails = props => {
   };
 
   const getExtention = fileName => {
-    // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
@@ -520,7 +417,6 @@ const JobDocumentDetails = props => {
             _ButtonText={'Upload'}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             onPress={() => {
-              // uploadDocument();
               selectDoc();
             }}
             disabled={isLoading ? true : false}
@@ -552,15 +448,11 @@ const JobDocumentDetails = props => {
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
-            // downloadFile={downloadFile}
             downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              // props.navigation.navigate('ViewDocument', {
-              //   filePath: filePath,
-              // });
               downloadviewFile();
             }}
           />

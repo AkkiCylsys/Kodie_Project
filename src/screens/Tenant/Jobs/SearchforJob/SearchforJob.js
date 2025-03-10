@@ -11,7 +11,7 @@ import {
   FlatList,
   Image,
   PermissionsAndroid,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {
@@ -37,7 +37,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-// import Geolocation from "react-native-geolocation-service";
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -45,8 +44,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {CreateJobFirstStyle} from '../../../CreateJob/CreateJobFirstScreenCss';
 import {useDispatch, useSelector} from 'react-redux';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
-//import Geolocation from '@react-native-community/geolocation';
-import Geolocation from 'react-native-geolocation-service';
 import axiosInstance from '../../../../services/axiosInstance';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
@@ -55,7 +52,6 @@ export default SearchForJob = props => {
   const [isClick, setIsClick] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
-  // const [searchTypeData, setSearchTypeData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
@@ -67,7 +63,6 @@ export default SearchForJob = props => {
   const [selectJobTypeid, setSelectJobTypeid] = useState('');
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
-  const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
@@ -76,7 +71,6 @@ export default SearchForJob = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
@@ -86,21 +80,16 @@ export default SearchForJob = props => {
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
   const handlePriceRangeChange = priceRange => {
-    // console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
-    // Do something with the price range in the parent component
   };
   const handlemaxRange = high => {
-    // console.log('High Range in Parent Component:', high);
     setMax(high);
   };
   const handleminRange = low => {
-    // console.log('Low Range in Parent Component:', low);
     setMin(low);
   };
   const searchForjob = () => {};
 
-  // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
     setLocation(currentLocation);
@@ -114,16 +103,12 @@ export default SearchForJob = props => {
 
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
-        // console.log('json location.......', json);
-        // console.log('current address...', json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -145,7 +130,6 @@ export default SearchForJob = props => {
 
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
@@ -166,13 +150,6 @@ export default SearchForJob = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    // setSelectJobType("");
-    // setservicesValue("");
-    // setAboutyourNeed("");
-    // setJobPriorityValue("");
-    // setProperty_value("");
-
-    // setRatingThresholdValue("");
   }, [selectJobType, priceRanges]);
   const populorServiceRender = ({item}) => {
     return (
@@ -298,7 +275,6 @@ export default SearchForJob = props => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -344,33 +320,26 @@ export default SearchForJob = props => {
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
     );
   };
-  // console.log('longitude,latitude', longitude, latitude);
-  // api intrigation.......
   const handleProperty_Type = () => {
     const propertyData = {
       account_id: loginData?.Login_details?.user_account_id,
     };
     const url = Config.BASE_URL;
-    const propertyType ='get_property_details_my_acc_id';
-    // console.log('Request URL:', propertyType);
+    const propertyType = 'get_property_details_my_acc_id';
     setIsLoading(true);
     axiosInstance
       .post(propertyType, propertyData)
       .then(response => {
-        // console.log('property_type', response.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
-          // console.log('propertyData....', response?.data?.property_details);
           setProperty_Data(response?.data?.property_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
@@ -380,12 +349,10 @@ export default SearchForJob = props => {
       })
       .catch(error => {
         console.error('property_type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
   const handleSearch = () => {
-    // console.log('jobPriorityValue', jobPriorityValue);
     const SearchData = {
       job_type: selectJobTypeid,
       job_perform: servicesValue,
@@ -396,18 +363,15 @@ export default SearchForJob = props => {
       max_budget: `${max}`,
     };
     const url = Config.BASE_URL;
-    const SearchType ='job/searchJobs';
+    const SearchType = 'job/searchJobs';
     console.log('property_Datadfvhdhfsffddf', SearchData);
-    // console.log('Request URL:', SearchType);
     setIsLoading(true);
     axiosInstance
       .post(SearchType, SearchData)
       .then(response => {
-        // console.log('property_type', response.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
           console.log('handleSearch....', response?.data?.data);
-          // setSearchTypeData(response?.data?.data);
 
           props.SearchResultJob?.({
             searchTypeData: response?.data?.data,
@@ -420,7 +384,6 @@ export default SearchForJob = props => {
       })
       .catch(error => {
         console.error('handleSearch error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -431,15 +394,12 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        // console.log('Job_priority', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          // console.log('Job_priorityData....', response?.data?.lookup_details);
           setJobPriorityData(response?.data?.lookup_details);
         } else {
           console.error('Job_priority_error:', response?.data?.error);
@@ -460,18 +420,12 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        // console.log('RatingThreshold...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          // console.log(
-          //   'RatingThresholdData....',
-          //   response?.data?.lookup_details,
-          // );
           setRatingThresholdData(response?.data?.lookup_details);
         } else {
           console.error('RatingThreshold_error:', response?.data?.error);
@@ -492,15 +446,12 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        // console.log('JobType...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          // console.log('JobTypeData....', response?.data?.lookup_details);
           setJobTypeData(response?.data?.lookup_details);
         } else {
           console.error('JobType_error:', response?.data?.error);
@@ -531,15 +482,12 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        // console.log('ServicesType...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          // console.log('ServicesTypeData....', response?.data?.lookup_details);
           setServicesData(response?.data?.lookup_details);
         } else {
           console.error('Services_error:', response?.data?.error);
@@ -570,13 +518,10 @@ export default SearchForJob = props => {
               alignSelf: 'center',
               marginBottom: 10,
             }}
-            iscancel={()=> setIsMap(false)}
-
+            iscancel={() => setIsMap(false)}
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
-            // Maplat={getLat}
-            // Maplng={getLong}
           />
           <View
             style={{
@@ -597,24 +542,12 @@ export default SearchForJob = props => {
                 width: '90%',
                 height: 45,
                 alignSelf: 'center',
-                //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
               placeholder={'Search Place'}
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          {/* <TouchableOpacity
-              style={CreateJobFirstStyle.c_locationBtn}
-              onPress={() => {
-              }}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}>
@@ -630,7 +563,6 @@ export default SearchForJob = props => {
             setIsSearch(false);
             setIsMap(true);
             setCurrentLocation(details.formatted_address);
-            // setLocation(details.formatted_address);
           }}
         />
       ) : (
@@ -672,7 +604,6 @@ export default SearchForJob = props => {
                 searchPlaceholder="Search..."
                 onChange={item => {
                   setservicesValue(item.lookup_key);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
               />
@@ -709,7 +640,6 @@ export default SearchForJob = props => {
                 value={jobPriorityValue}
                 onChange={item => {
                   setJobPriorityValue(item.lookup_key);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={jobPriority_render}
               />
@@ -741,31 +671,7 @@ export default SearchForJob = props => {
                 renderItem={property_Type_render}
               />
             </View>
-{/* 
-            <View style={CreateJobFirstStyle.locationContainer}>
-              <TextInput
-                style={CreateJobFirstStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-              <TouchableOpacity
-                style={CreateJobFirstStyle.locationIconView}
-                onPress={() => {
-                  setIsMap(true);
-                }}>
-                <Octicons
-                  name={'location'}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={CreateJobFirstStyle.locationIcon}
-                />
-              </TouchableOpacity>
-            </View> */}
+
             <Text style={[LABEL_STYLES.commontext, {marginTop: 20}]}>
               {'What is your budget for this job?'}
             </Text>

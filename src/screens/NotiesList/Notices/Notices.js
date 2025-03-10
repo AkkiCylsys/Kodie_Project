@@ -31,9 +31,6 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import moment from 'moment/moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
-import {Calendar} from 'react-native-calendars'; //calender
-import {debounce} from 'lodash';
-import {log} from 'react-native-reanimated';
 import axiosInstance from '../../../services/axiosInstance';
 const HorizontalData = [
   {filtername: 'All', filterId: 'All'},
@@ -78,7 +75,7 @@ const noticeData = [
   },
 ];
 const Notices = props => {
-  const [selectedDate, setSelectedDate] = useState(''); // calender state
+  const [selectedDate, setSelectedDate] = useState('');
   const isFocused = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse in notices.....', loginData);
@@ -107,11 +104,11 @@ const Notices = props => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [_selectedMonthId, set_selectedMonthId] = useState(
     new Date().getMonth() + 1,
-  ); // Initialize with current month ID
-  const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear()); // Initialize with current year
+  );
+  const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear());
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order is descending
+  const [sortOrder, setSortOrder] = useState('desc');
 
   const sortByDate = () => {
     const sortedData = [...noticeRemiderDetails].sort((a, b) => {
@@ -120,7 +117,7 @@ const Notices = props => {
       return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
     setNoticeRemiderDetails(sortedData);
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'); // Toggle sorting order
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
   const searchNoticesList = query => {
     setSearchQuery(query);
@@ -144,11 +141,11 @@ const Notices = props => {
     return `${startYear} - ${endYear}`;
   };
   const handleNextYears = () => {
-    set_selectedYear(_selectedYear + 12); // Move to the previous 12 years
+    set_selectedYear(_selectedYear + 12);
   };
 
   const handlePrevYears = () => {
-    set_selectedYear(_selectedYear - 12); // Move to the next 12 years
+    set_selectedYear(_selectedYear - 12);
   };
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -159,15 +156,14 @@ const Notices = props => {
 
   const selectMonth = month => {
     set_selectedMonthId(month);
-    toggleModal(); // Close the modal after selecting a month
+    toggleModal();
   };
   const selectYear = year => {
     set_selectedYear(year);
-    toggleYearModal(); // Close the modal after selecting a month
+    toggleYearModal();
   };
 
   const onDayPress = day => {
-    //......
     setSelectedDate(day.dateString);
   };
   useFocusEffect(
@@ -200,7 +196,6 @@ const Notices = props => {
           error,
         );
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -224,13 +219,12 @@ const Notices = props => {
         selectedFilter: selectedFilter,
       });
     }
-  }, [selectedFilter, _selectedMonthId, _selectedYear]); // Dependencies
+  }, [selectedFilter, _selectedMonthId, _selectedYear]);
 
-  // Using useFocusEffect to call fetchNotices when the screen is focused
   useFocusEffect(
     useCallback(() => {
-      fetchNotices(); // Fetch notices on screen focus
-    }, [fetchNotices]), // Dependency on fetchNotices
+      fetchNotices();
+    }, [fetchNotices]),
   );
 
   const handlePress = filterId => {
@@ -356,7 +350,6 @@ const Notices = props => {
     );
   };
 
-  // Api intrigation...
   const getNoticesReminderDeatilsByFilter = async ({monthId, year}) => {
     setIsLoading(true);
     try {
@@ -379,7 +372,7 @@ const Notices = props => {
       const response = await axiosInstance.post(
         NoticesReminderDeatilsByFilter_url,
         data,
-      ); // Use monthId and year received as parameters
+      );
       console.log(
         'NoticesReminderDeatilsByFilter_Data response...',
         response?.data,
@@ -412,17 +405,13 @@ const Notices = props => {
     console.log('noticedelete', noticedelete);
     const noticesDeleteData = {
       notices_reminder_id: noticeReminderid,
-      // notices_reminder_id: 24,
     };
-    // console.log('noticesDeleteData body.....', noticesDeleteData);
     try {
       const response = await axiosInstance.post(
         noticedelete,
         noticesDeleteData,
       );
-      // console.log('API Response:', response.data);
       if (response?.data?.status === true) {
-        // Alert.alert("notice Deleted", response?.data?.message);
         Alert.alert('Success', response?.data?.data);
         getNoticesReminderDeatilsByFilter({
           monthId: _selectedMonthId,
@@ -441,14 +430,14 @@ const Notices = props => {
     let newMonthId = _selectedMonthId - 1;
     let newYear = _selectedYear;
     if (newMonthId < 1) {
-      newMonthId = 12; // Set to December
-      newYear -= 1; // Decrement year
+      newMonthId = 12;
+      newYear -= 1;
     }
     set_selectedMonthId(newMonthId);
     set_selectedYear(newYear);
     await getNoticesReminderDeatilsByFilter({
-      monthId: newMonthId, // Pass newMonthId instead of _selectedMonthId
-      year: newYear, // Pass newYear instead of _selectedYear
+      monthId: newMonthId,
+      year: newYear,
     });
   };
 
@@ -456,14 +445,14 @@ const Notices = props => {
     let newMonthId = _selectedMonthId + 1;
     let newYear = _selectedYear;
     if (newMonthId > 12) {
-      newMonthId = 1; // Set to January
-      newYear += 1; // Increment year
+      newMonthId = 1;
+      newYear += 1;
     }
     set_selectedMonthId(newMonthId);
     set_selectedYear(newYear);
     await getNoticesReminderDeatilsByFilter({
-      monthId: newMonthId, // Pass newMonthId instead of _selectedMonthId
-      year: newYear, // Pass newYear instead of _selectedYear
+      monthId: newMonthId,
+      year: newYear,
     });
   };
 
@@ -494,7 +483,6 @@ const Notices = props => {
           <SearchBar
             marginTop={1}
             frontSearchIcon
-            // isFilterImage
             updownSearch
             height={40}
             placeholder="Search notices"
@@ -541,9 +529,7 @@ const Notices = props => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <View
-              // onPress={toggleModal}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 18,
@@ -554,9 +540,7 @@ const Notices = props => {
                 {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
               </Text>
             </View>
-            <View
-              // onPress={toggleYearModal}
-              style={{justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 18,

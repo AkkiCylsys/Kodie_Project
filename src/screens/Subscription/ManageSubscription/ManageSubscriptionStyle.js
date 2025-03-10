@@ -19,7 +19,6 @@ export const ManageSubscriptionStyle = StyleSheet.create({
     width: 17,
     resizeMode: "contain",
     marginTop: 4,
-    // alignSelf:'center'
   },
   Heading: {
     fontSize: 18,
@@ -94,11 +93,9 @@ export const ManageSubscriptionStyle = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     marginLeft: 10,
-    //borderWidth: 0.2,
     borderRadius: 8,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_BlackColor,
-    //backgroundColor:_COLORS.Kodie_MediumGrayColor,
     shadowOffset: { width: -2, height: 4 },
     shadowColor: _COLORS.Kodie_BlackColor,
     shadowOpacity: Platform.OS == "android" ? 0.7 : 0.3,

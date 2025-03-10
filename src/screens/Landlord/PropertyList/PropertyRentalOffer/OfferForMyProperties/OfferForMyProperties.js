@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  SafeAreaView,
   Image,
   FlatList,
-  ScrollView,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -21,15 +19,12 @@ import {
   offerForMyProperty,
 } from '../../../../../services/PropertyRentalOfferApi/OfferForMyPropertyApi';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {useSelector} from 'react-redux';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 import ListEmptyComponent from '../../../../../components/Molecules/ListEmptyComponent/ListEmptyComponent';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
 import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
-import {Config} from '../../../../../Config';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -59,7 +54,6 @@ const OfferForMyProperties = () => {
       handleOfferForProperty();
     }, [addressTypeValue?.property_id]),
   );
-  // APi intrigation..
   const handleAddressType = async () => {
     setIsLoading(true);
     const addressData = {
@@ -67,7 +61,6 @@ const OfferForMyProperties = () => {
     };
     try {
       const response = await addressType(addressData);
-      // console.log('response in addressData..', response);
       if (response?.success === true) {
         const propertyDetails = response?.property_details || [];
         const updatedPropertyDetails = [
@@ -87,10 +80,8 @@ const OfferForMyProperties = () => {
   const handleOfferForProperty = async () => {
     setIsLoading(true);
 
-    // Adjust the Filter logic
     const offerPropertyData = {
-      // Check if addressTypeValue has a location selected
-      Filter: addressTypeValue?.property_id ? 'AllData' : 'All', // Changed from latitude check to property_id
+      Filter: addressTypeValue?.property_id ? 'AllData' : 'All',
       account_id: loginData?.Login_details?.user_account_id,
       property_id: addressTypeValue?.property_id
         ? addressTypeValue?.property_id
@@ -106,13 +97,12 @@ const OfferForMyProperties = () => {
 
       if (response?.success == true) {
         setOfferPropertyData(response?.data || []);
-        setIsLoading(false); // Change to set loading false here to avoid multiple state updates
+        setIsLoading(false);
       }
-      // Update the state with the fetched data
     } catch (error) {
       console.error('Error fetching OfferForProperty:', error);
     } finally {
-      setIsLoading(false); // This will always run, ensure loading is false
+      setIsLoading(false);
     }
   };
 
@@ -125,7 +115,7 @@ const OfferForMyProperties = () => {
       bid_id: bid_id,
       tenant_id: tenant_id,
       landlord_id: landlord_id,
-      accepting_details: actionType, // Either ACCEPT or REJECT
+      accepting_details: actionType,
     };
 
     console.log('acceptingLandlordData:', acceptingLandlordData);
@@ -137,7 +127,6 @@ const OfferForMyProperties = () => {
       if (response?.success === true) {
         Alert.alert('Success', response?.data);
         handleOfferForProperty();
-        // navigation.navigate('Properties', { tab3: 'tab3' });
       }
     } catch (error) {
       if (error.response) {
@@ -169,8 +158,6 @@ const OfferForMyProperties = () => {
     setFilteredOfferPropertyData(filtered);
   };
 
-  // render item...
-
   const property_render = item => {
     const isSelected = addressTypeValue?.property_id === item.property_id;
     return (
@@ -201,7 +188,6 @@ const OfferForMyProperties = () => {
     );
   };
   const offerPropertyRender = ({item, index}) => {
-    // Check if screening conditions are met (disable right button if true)
     const isScreeningDisabled =
       item?.screening_one === 556 ||
       item?.screening_two === 556 ||
@@ -242,7 +228,6 @@ const OfferForMyProperties = () => {
                 marginLeft: 4,
                 backgroundColor: _COLORS.Kodie_redColor,
                 paddingVertical: 3,
-                // borderRadius: 8,
                 borderBottomLeftRadius: 8,
                 borderBottomRightRadius: 8,
                 marginBottom: 5,
@@ -261,16 +246,9 @@ const OfferForMyProperties = () => {
             </View>
           ) : null}
 
-          {/* Main Property Card */}
           <TouchableOpacity
             style={OfferForMyPropertiesStyle.SubContainer}
             onPress={() => {
-              // if (isScreeningDisabled) {
-              //   Alert.alert(
-              //     'Landlord Approved',
-              //     'The application has been approved by the landlord.',
-              //   );
-              // } else {
               navigation.navigate('PropertyViewApplication', {
                 propertyId: item?.property_id,
                 bid_id: item?.bid_id,
@@ -279,7 +257,6 @@ const OfferForMyProperties = () => {
                 accpetingLandlordId: item?.landlord_accepting_id,
                 offerForMyPropData: item,
               });
-              // }
             }}>
             <View>
               {item.image_path && item.image_path.length > 0 ? (
@@ -325,7 +302,6 @@ const OfferForMyProperties = () => {
                 </View>
               </View>
 
-              {/* Account details */}
               <View style={OfferForMyPropertiesStyle.flat_MainView}>
                 <MaterialCommunityIcons
                   name={'map-marker'}
@@ -384,58 +360,6 @@ const OfferForMyProperties = () => {
             </View>
           </TouchableOpacity>
 
-          {/* Buttons */}
-          {/* <View style={{marginTop: 20}}>
-            <RowButtons
-              leftButtonHeight={44}
-              RightButtonHeight={44}
-              LeftButtonText={'Reject application'}
-              RightButtonText={
-                item?.tenant_approve === 0
-                  ? 'Final approve'
-                  : 'Approve application'
-              }
-              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              onPressLeftButton={() => {
-                handleAcceptingLandlord({
-                  propertyId: item?.property_id,
-                  bid_id: item?.bid_id,
-                  tenant_id: item?.tenant_id,
-                  landlord_id: item?.landlord_id,
-                  actionType: 'REJECT',
-                });
-              }}
-              RightButtonbackgroundColor={
-                isScreeningDisabled || isApproveApplication
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonborderColor={
-                isScreeningDisabled || isApproveApplication
-                  ? _COLORS.Kodie_LightGrayColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonTextColor={
-                isScreeningDisabled || isApproveApplication
-                  ? _COLORS.Kodie_ExtraLightGrayColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              onPressRightButton={() => {
-                if (!isScreeningDisabled || !isApproveApplication) {
-                  handleAcceptingLandlord({
-                    propertyId: item?.property_id,
-                    bid_id: item?.bid_id,
-                    tenant_id: item?.tenant_id,
-                    landlord_id: item?.landlord_id,
-                    actionType: item?.tenant_approve === 0 ? 'FINAL' : 'ACCEPT',
-                  });
-                }
-              }}
-              RightButtonDisabled={isScreeningDisabled || isApproveApplication}
-            />
-          </View> */}
           <View style={{marginTop: 20}}>
             <RowButtons
               leftButtonHeight={44}
@@ -491,7 +415,6 @@ const OfferForMyProperties = () => {
               onPressRightButton={() => {
                 if (!isRightButtonDisabled) {
                   if (item?.tenant_approve === 0) {
-                    // Show confirmation alert for Final Approve
                     Alert.alert(
                       'Final approve',
                       'Are you sure you want to finalize this approval?',
@@ -500,7 +423,6 @@ const OfferForMyProperties = () => {
                         {
                           text: 'Confirm',
                           onPress: () => {
-                            // Proceed with the API call on confirmation
                             handleAcceptingLandlord({
                               propertyId: item?.property_id,
                               bid_id: item?.bid_id,
@@ -511,10 +433,9 @@ const OfferForMyProperties = () => {
                           },
                         },
                       ],
-                      {cancelable: false}, // Prevent closing by tapping outside
+                      {cancelable: false},
                     );
                   } else {
-                    // Handle normal approval
                     handleAcceptingLandlord({
                       propertyId: item?.property_id,
                       bid_id: item?.bid_id,
@@ -568,7 +489,6 @@ const OfferForMyProperties = () => {
           valueField="longitude"
           placeholder="Select property type"
           value={addressTypeValue}
-          search // Enable search functionality
           searchPlaceholder="Search..."
           onChange={item => {
             setAddressTypeValue({
@@ -577,7 +497,7 @@ const OfferForMyProperties = () => {
               location: item.location,
               property_id: item?.property_id,
             });
-            handleOfferForProperty(); // Update the list when a new property type is selected
+            handleOfferForProperty();
           }}
           onFocus={() => {
             handleOfferForProperty();
@@ -594,7 +514,6 @@ const OfferForMyProperties = () => {
           return <ListEmptyComponent EmptyText={"You don't have any offer."} />;
         }}
       />
-      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

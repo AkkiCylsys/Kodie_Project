@@ -1,25 +1,14 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../../services/CommonServices';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 
 import UserDetails from '../../../../../components/PropertyViewApplication/UserDetails/UserDetails';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import {UserDetailsStyle} from '../../../../../components/PropertyViewApplication/UserDetails/UserDetailsStyle';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 import {PropertyViewApplicationStyle} from './PropertyViewApplicationStyle';
-import RowTexts from '../../../../../components/Molecules/RowTexts/RowTexts';
-import PreRentalQuestionnaire from '../../../../../components/PropertyViewApplication/UserDetails/PreRentalQuestionnaire/PreRentalQuestionnaire';
 import {useSelector} from 'react-redux';
 import {
   PropertyViewApplicationService,
@@ -27,10 +16,7 @@ import {
 } from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {acceptingLandlord} from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 import ViewApplicationSummary from '../ViewApplicationSummary/ViewApplicationSummary';
-import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-import ReadMore from '@fawazahmed/react-native-read-more';
 
 const PropertyViewApplication = props => {
   const {
@@ -41,9 +27,7 @@ const PropertyViewApplication = props => {
     Pre_screening,
     accpetingLandlordId,
     offerForMyPropData,
-  } = props.route.params; // Accessing params from props
-
-  // Logging the values for debugging
+  } = props.route.params;
   console.log('accpetingLandlordId...', accpetingLandlordId);
   console.log('offerForMyPropData...', offerForMyPropData);
   console.log('bid_id..', bid_id);
@@ -90,7 +74,6 @@ const PropertyViewApplication = props => {
     const TenantQuestPayload = {
       p_account_id: tenant_id,
       p_property_id: propertyId,
-      // p_property_id: 1934,
     };
     try {
       const response = await QuestionDetailsForTenantQues(TenantQuestPayload);
@@ -100,16 +83,6 @@ const PropertyViewApplication = props => {
       );
       setTenantQuestDetails(response?.data?.[0].parent_json);
       setIsLoading(false);
-
-      // if (response?.data?.success === true) {
-      //   console.log(
-      //     'QuestionDetailsForTenantQues response....',
-      //     JSON.stringify(response?.data),
-      //   );
-      //   setTenantQuestDetails(response?.data[0]?.parent_json);
-      //   console.log("setTenantQuestDetails....",JSON.stringify(response?.data))
-
-      // }
     } catch (error) {
       console.error('Error fetching PropertyViewApplication:', error);
     } finally {
@@ -166,7 +139,9 @@ const PropertyViewApplication = props => {
             {tenantDetails?.property_type}
           </Text>
           <Text style={PropertyViewApplicationStyle.cityText}>
-            {tenantDetails?.city && tenantDetails?.city !=="null" ? tenantDetails?.city : tenantDetails?.state || ""}
+            {tenantDetails?.city && tenantDetails?.city !== 'null'
+              ? tenantDetails?.city
+              : tenantDetails?.state || ''}
           </Text>
           <View style={PropertyViewApplicationStyle.flat_MainView}>
             <MaterialCommunityIcons
@@ -185,27 +160,7 @@ const PropertyViewApplication = props => {
           marginTop={25}
           borderColor={_COLORS?.Kodie_deviderIconColor}
         />
-        {/* <View style={PropertyViewApplicationStyle.summaryView}>
-          <Text style={PropertyViewApplicationStyle.cityText}>
-            {'Offer summary'}
-          </Text>
-          <RowTexts
-            leftText={'Lease start date'}
-            rightText={'1 September 2023'}
-          />
-          <RowTexts leftText={'Length of lease'} rightText={'6 months'} />
-          <RowTexts
-            leftText={'Rental payment frequency'}
-            rightText={'Weekly'}
-          />
-          <RowTexts leftText={'Rental amount'} rightText={'$870'} />
-          <TouchableOpacity
-            style={PropertyViewApplicationStyle.readMoreTextContainer}>
-            <Text style={PropertyViewApplicationStyle.readMoreText}>
-              {'read more'}
-            </Text>
-          </TouchableOpacity>
-        </View> */}
+
         <Text
           style={PropertyViewApplicationStyle.summaryText}
           numberOfLines={3}
@@ -216,19 +171,6 @@ const PropertyViewApplication = props => {
           borderBottomWidth={2}
           borderColor={_COLORS?.Kodie_deviderIconColor}
         />
-        {/* <View style={PropertyViewApplicationStyle.summaryView}>
-          <Text style={PropertyViewApplicationStyle.cityText}>
-            {'Pre-rental questionnaire'}
-          </Text>
-        </View> */}
-        {/* <PreRentalQuestionnaire
-          accountId={loginData?.Login_details?.user_account_id}
-          propertyId={propertyId}
-          bid_id={bid_id}
-          tenant_id={tenant_id}
-          landlord_id={landlord_id}
-          acceptBiddingData={acceptBiddingData}
-        /> */}
 
         <View style={{}}>
           <ViewApplicationSummary
@@ -241,62 +183,7 @@ const PropertyViewApplication = props => {
             offerForMyPropData={offerForMyPropData}
           />
         </View>
-        {/* <DividerIcon borderBottomWidth={2} />
 
-        <View style={{marginHorizontal: 16}}>
-          <Text style={PropertyViewApplicationStyle.inspections}>
-            {'Tenant  screening report (recommended)'}
-          </Text>
-
-          <View style={PropertyViewApplicationStyle.container}>
-            <View style={PropertyViewApplicationStyle.pdfInfo}>
-              <FontAwesome
-                name="file-pdf-o"
-                size={35}
-                color={_COLORS.Kodie_BlackColor}
-                resizeMode={'contain'}
-              />
-              <View style={PropertyViewApplicationStyle.textContainer}>
-                <Text style={PropertyViewApplicationStyle.pdfName}>
-                  {'Tenant  screening report.pdf'}
-                </Text>
-                <Text style={PropertyViewApplicationStyle.pdfSize}>
-                  {' '}
-                  {'4.5 MB'}
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity
-              style={PropertyViewApplicationStyle.crossIcon}
-              onPress={() => {
-                // setFilePath();
-                // setFileKey();
-              }}>
-              <Entypo name="cross" size={25} color={_COLORS.Kodie_GrayColor} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <DividerIcon borderBottomWidth={2} />
-        <View style={{marginBottom: 20, marginHorizontal: 16}}>
-          <RowButtons
-            leftButtonHeight={44}
-            RightButtonHeight={44}
-            LeftButtonText={'Back'}
-            RightButtonText={'Done'}
-            leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            onPressLeftButton={() => {
-              alert('reject');
-            }}
-            RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-            RightButtonborderColor={_COLORS.Kodie_BlackColor}
-            RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-            onPressRightButton={() => {
-              alert('approve');
-            }}
-          />
-        </View> */}
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
     </SafeAreaView>

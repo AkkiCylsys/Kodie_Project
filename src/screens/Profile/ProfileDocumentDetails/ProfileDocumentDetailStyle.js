@@ -21,7 +21,6 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
-    // padding: 20,
     marginBottom: 20,
   },
   container: {
@@ -37,7 +36,6 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     marginLeft: 5,
-    // borderWidth:1
   },
 
   pdfInfo: {
@@ -84,7 +82,6 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_GrayColor,
   },
-  // dropdown..
   dropdown: {
     borderWidth: 1,
     height: 50,
@@ -108,14 +105,12 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  // ...
   itemView: {
     flex: 1,
     flexDirection: 'row',
@@ -134,8 +129,8 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     elevation: 10,
   },
   subContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginTop: 25,
   },

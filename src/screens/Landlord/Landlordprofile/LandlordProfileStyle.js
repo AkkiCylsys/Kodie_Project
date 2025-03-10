@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../../Themes/index";
+import {StyleSheet} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../../Themes/index';
 export const LandlordProfileStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -10,8 +10,8 @@ export const LandlordProfileStyle = StyleSheet.create({
     height: 95,
     borderRadius: 95 / 2,
     backgroundColor: _COLORS.Kodie_MostLiteGreyColor,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
     marginHorizontal: 16,
   },
@@ -19,16 +19,13 @@ export const LandlordProfileStyle = StyleSheet.create({
     height: 76,
     width: 76,
     borderRadius: 76 / 2,
-    // marginHorizontal: 16,
-    // justifyContent: "center",
-    // alignSelf: "center",
   },
   profilemainView: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   nameView: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     marginTop: 20,
   },
   nameText: {
@@ -42,10 +39,10 @@ export const LandlordProfileStyle = StyleSheet.create({
     color: _COLORS?.Kodie_ExtraLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  staricon: { 
-    flexDirection: "row", 
+  staricon: {
+    flexDirection: 'row',
     marginTop: 8,
-    alignItems:'center'
+    alignItems: 'center',
   },
   ratingText: {
     fontSize: 14,
@@ -59,9 +56,9 @@ export const LandlordProfileStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 5,
   },
-  star: { alignSelf: "center" },
+  star: {alignSelf: 'center'},
   contactIconView: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginHorizontal: 16,
     borderWidth: 1,
     paddingVertical: 5,
@@ -70,13 +67,13 @@ export const LandlordProfileStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_minLiteGrayColor,
     marginTop: 10,
   },
-  contactIcon: { height: 16, width: 16 },
+  contactIcon: {height: 16, width: 16},
   AllcontactsText: {
     fontSize: 17,
     paddingHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    marginTop:20
+    marginTop: 20,
   },
   bottomModal_container: {
     borderWidth: 0.5,
@@ -85,43 +82,42 @@ export const LandlordProfileStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-  popupcantainer:{
-    marginHorizontal:16,
-    marginTop:10,
-    flexDirection:"row",
-    justifyContent:"space-between"
+  popupcantainer: {
+    marginHorizontal: 16,
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  popuptext:{
-    fontSize:20,
+  popuptext: {
+    fontSize: 20,
     fontFamily: FONTFAMILY.K_SemiBold,
-    color: _COLORS.Kodie_BlackColor,color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_BlackColor,
   },
-  ViewBtn:{
-    justifyContent:"flex-end",
-    // marginLeft:100,
-    marginHorizontal:16,
-    flexDirection:"row",
-    marginTop:48,
-    alignItems:"flex-end"
+  ViewBtn: {
+    justifyContent: 'flex-end',
+    marginHorizontal: 16,
+    flexDirection: 'row',
+    marginTop: 48,
+    alignItems: 'flex-end',
   },
-  CancelBtn:{
-    borderWidth:0,
-    color:_COLORS.Kodie_BlackColor,
-    paddingHorizontal:15,
-    paddingVertical:10,
-    borderRadius:5,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium
-
+  CancelBtn: {
+    borderWidth: 0,
+    color: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
   },
-  LogoutBtn:{
-    backgroundColor:_COLORS.Kodie_BlackColor,
-    paddingHorizontal:15,
-    paddingVertical:10,
-    borderRadius:5,
-    color:_COLORS.Kodie_WhiteColor,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium,
-    alignSelf:'center'
-  }
+  LogoutBtn: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    color: _COLORS.Kodie_WhiteColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: 'center',
+  },
 });

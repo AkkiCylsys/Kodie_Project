@@ -6,29 +6,25 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
-import { DeleteAccountStyle } from './DeleteAccountStyle';
+import React, {useState, useRef, useEffect} from 'react';
+import {DeleteAccountStyle} from './DeleteAccountStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import { _COLORS, IMAGES, LABEL_STYLES, FONTFAMILY } from '../../../Themes';
-import { _goBack } from '../../../services/CommonServices';
-import { Config } from '../../../Config';
+import {_COLORS, IMAGES, LABEL_STYLES, FONTFAMILY} from '../../../Themes';
+import {_goBack} from '../../../services/CommonServices';
+import {Config} from '../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import PhoneInput from 'react-native-phone-number-input';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { accountDetailsServices } from '../../../services/AccoundDetailsServices/AccountDetailsServices';
+import {accountDetailsServices} from '../../../services/AccoundDetailsServices/AccountDetailsServices';
 import axiosInstance from '../../../services/axiosInstance';
-import { logoutActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +33,6 @@ const DeleteAccount = props => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [valid, setValid] = useState(false);
-  const [formattedValue, setFormattedValue] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
 
   const phoneInput = useRef(null);
@@ -62,7 +57,6 @@ const DeleteAccount = props => {
     }
   };
   const validateMobileNumber = text => {
-    // const mobileReg = /^[6-9]\d{9}$/;
     const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
       setPhoneNumberError('Phone number is required!');
@@ -76,17 +70,7 @@ const DeleteAccount = props => {
   const handleSubmit = async () => {
     if (email.trim() === '') {
       setEmailError('Email is required!');
-    }
-    //  else if (email.trim() !== '') {
-    //   if (!validateAccountEmail(email)) {
-    //     setEmailError(
-    //       'Hold on, this email appears to be invalid. Please enter a valid email address.',
-    //     );
-    //   } else {
-    //     DeleteAccount();
-    //   }
-    // }
-    else if (!validateAccountEmail(email)) {
+    } else if (!validateAccountEmail(email)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
@@ -106,7 +90,6 @@ const DeleteAccount = props => {
     }, 500);
   };
 
-
   // Api intrigation..
   const DeleteAccount = async () => {
     const dataToSend = {
@@ -119,11 +102,11 @@ const DeleteAccount = props => {
     console.log('url...', deleteAccount_url);
     setIsLoading(true);
     await axiosInstance
-      .delete(deleteAccount_url, { data: dataToSend })
+      .delete(deleteAccount_url, {data: dataToSend})
       .then(res => {
         console.log('res delete Account......', res);
         if (res?.data?.success === true) {
-          Alert.alert("Success",res?.data?.message);
+          Alert.alert('Success', res?.data?.message);
           handleLogout();
         }
       })
@@ -144,12 +127,11 @@ const DeleteAccount = props => {
       await getPersonalDetails();
     }
   };
-  
-  const getPersonalDetails = async () => {
-    setIsLoading(true);  // Start loading state
 
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
     try {
-      const response = await accountDetailsServices(loginData);  // Pass loginData from the current scope
+      const response = await accountDetailsServices(loginData);
 
       console.log('API Response: in delete page', response?.data?.data[0]);
 
@@ -158,18 +140,17 @@ const DeleteAccount = props => {
         Array.isArray(response?.data?.data) &&
         response?.data?.data?.length > 0
       ) {
-        setAccountDetails(response?.data?.data[0]);  // Set account details
-        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);  // Set phone number
+        setAccountDetails(response?.data?.data[0]);
+        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);
       } else {
-        console.error('Invalid response data format:', response?.data);  // Log invalid format
+        console.error('Invalid response data format:', response?.data);
       }
     } catch (error) {
-      console.error('API Error PersonalDetails contact:', error);  // Handle errors
+      console.error('API Error PersonalDetails contact:', error);
     } finally {
-      setIsLoading(false);  // Stop loading state
+      setIsLoading(false);
     }
   };
-
 
   return (
     <SafeAreaView style={DeleteAccountStyle.container}>
@@ -182,10 +163,6 @@ const DeleteAccount = props => {
         />
         <ScrollView>
           <View style={DeleteAccountStyle.headingview}>
-            {/* <Image
-            style={DeleteAccountStyle.helpimg}
-            source={IMAGES.helpCenter}
-          /> */}
             <EvilIcons
               name={'question'}
               color={_COLORS.Kodie_GreenColor}
@@ -212,8 +189,6 @@ const DeleteAccount = props => {
           </View>
 
           <View style={DeleteAccountStyle.logoutview}>
-            {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
-             */}
             <View style={DeleteAccountStyle.IconView}>
               <MaterialIcons
                 name={'logout'}
@@ -250,10 +225,11 @@ const DeleteAccount = props => {
               <TextInput
                 style={[
                   DeleteAccountStyle.input,
-                  { backgroundColor: _COLORS.Kodie_GrayColor },
+                  {backgroundColor: _COLORS.Kodie_GrayColor},
                 ]}
-                value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${phoneNumber || ''
-                  }`}
+                value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                  phoneNumber || ''
+                }`}
                 editable={false}
               />
             </View>
@@ -264,12 +240,11 @@ const DeleteAccount = props => {
               <TextInput
                 style={DeleteAccountStyle.input}
                 value={email}
-                // onChangeText={setEmail}
                 onChangeText={handleAccountEmail}
                 onBlur={() => handleAccountEmail(email)}
                 placeholder="Email"
                 placeholderTextColor="#999"
-                keyboardType='email-address'
+                keyboardType="email-address"
               />
             </View>
             {emailError ? (
@@ -284,11 +259,10 @@ const DeleteAccount = props => {
               disabled={isLoading ? true : false}
               onPress={() => {
                 handleSubmit();
-                // DeleteAccount()
               }}
             />
           </View>
-          <View style={{ marginBottom: 110 }}></View>
+          <View style={{marginBottom: 110}}></View>
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </KeyboardAvoidingView>

@@ -19,7 +19,6 @@ export default Person = props => {
     props.onClose();
   };
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginData.....', loginData);
   const property_id = props.property_id;
   const [firstName, setFirstName] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
@@ -33,7 +32,7 @@ export default Person = props => {
   const [selectedOption, setSelectedOption] = useState('Save');
   const [isLoading, setIsLoading] = useState(false);
   const [personResponse, setpersonResponse] = useState('');
- 
+
   const validatePersonEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -102,7 +101,7 @@ export default Person = props => {
       notes: note,
     };
     const url = Config.BASE_URL;
-    const PersonUrl ='tanant_details/create/person';
+    const PersonUrl = 'tanant_details/create/person';
     console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
@@ -134,8 +133,6 @@ export default Person = props => {
         setIsLoading(false);
       });
   };
-  // setEmailError(response?.data?.message);
-  // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
@@ -187,7 +184,6 @@ export default Person = props => {
               value={email}
               onChangeText={setEmail}
               onBlur={() => handlePersonEmail(email)}
-              // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
               keyboardType="email-address"
@@ -230,19 +226,17 @@ export default Person = props => {
                 PersonStyle.closeText,
                 PersonStyle.applyText,
                 {
-                  backgroundColor:
-                      _COLORS.Kodie_WhiteColor,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleClosePopup()
+                handleClosePopup();
               }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
-                    color: _COLORS.Kodie_BlackColor
-                       
+                    color: _COLORS.Kodie_BlackColor,
                   },
                 ]}>
                 {'Cancel'}
@@ -252,21 +246,18 @@ export default Person = props => {
               style={[
                 PersonStyle.applyText,
                 {
-                  backgroundColor:_COLORS.Kodie_BlackColor,
+                  backgroundColor: _COLORS.Kodie_BlackColor,
                 },
               ]}
               onPress={() => {
                 handleSaveBtn();
-                // handleOptionClick("Save");
               }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   PersonStyle.text,
                   {
-                    color:
-                      _COLORS.Kodie_WhiteColor
-                       
+                    color: _COLORS.Kodie_WhiteColor,
                   },
                 ]}>
                 {' Save'}

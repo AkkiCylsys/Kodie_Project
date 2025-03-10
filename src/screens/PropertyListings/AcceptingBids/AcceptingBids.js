@@ -5,59 +5,59 @@ import {
   ScrollView,
   Image,
   FlatList,
-} from "react-native";
-import React, { useState, useRef } from "react";
+} from 'react-native';
+import React, {useState, useRef} from 'react';
 import {
   _COLORS,
   LABEL_STYLES,
   IMAGES,
   FONTFAMILY,
   BANNERS,
-} from "../../../Themes";
-import { AcceptingBidsStyle } from "./AcceptingBidsStyle";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { _goBack } from "../../../services/CommonServices";
-import RBSheet from "react-native-raw-bottom-sheet";
-import BottomModalData from "../../../components/Molecules/BottomModal/BottomModalData";
-import Entypo from "react-native-vector-icons/Entypo";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+} from '../../../Themes';
+import {AcceptingBidsStyle} from './AcceptingBidsStyle';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {_goBack} from '../../../services/CommonServices';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import BottomModalData from '../../../components/Molecules/BottomModal/BottomModalData';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 const property_List2 = [
   {
-    id: "1",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
+    id: '1',
+    propertyName: 'Apartment',
+    name: 'Melbourne',
+    location: '8502 Preston Rd. Inglewood',
     image: BANNERS.apartment,
-    buttonName: "AVAILABLE: 1 OCT",
-    tanentname: "Jason Stathom",
-    rent: "$870.00",
-    badroom: "3",
-    bathroom: "2",
-    parking: "1",
-    day: "0 days",
-    hours: "6 hrs",
-    mint: "10 mins",
-    aspact_ratio: "86m2",
+    buttonName: 'AVAILABLE: 1 OCT',
+    tanentname: 'Jason Stathom',
+    rent: '$870.00',
+    badroom: '3',
+    bathroom: '2',
+    parking: '1',
+    day: '0 days',
+    hours: '6 hrs',
+    mint: '10 mins',
+    aspact_ratio: '86m2',
     availableDate: true,
     availablenow: false,
   },
   {
-    id: "2",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
+    id: '2',
+    propertyName: 'Apartment',
+    name: 'Melbourne',
+    location: '8502 Preston Rd. Inglewood',
     image: BANNERS.apartment,
-    buttonName: "AVAILABLE: NOW",
-    tanentname: "Jason Stathom",
-    rent: "$660.00",
-    badroom: "3",
-    bathroom: "2",
-    parking: "1",
-    day: "4 days",
-    hours: "6 hrs",
-    mint: "10 mins",
-    aspact_ratio: "86m2",
+    buttonName: 'AVAILABLE: NOW',
+    tanentname: 'Jason Stathom',
+    rent: '$660.00',
+    badroom: '3',
+    bathroom: '2',
+    parking: '1',
+    day: '4 days',
+    hours: '6 hrs',
+    mint: '10 mins',
+    aspact_ratio: '86m2',
     availableDate: false,
     availablenow: true,
   },
@@ -65,14 +65,12 @@ const property_List2 = [
 const AcceptingBids = () => {
   const [expandedItems, setExpandedItems] = useState([]);
   const refRBSheet = useRef();
-  const propertyData2_render = ({ item }) => {
+  const propertyData2_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
         <View style={AcceptingBidsStyle.flatListContainer}>
-          <View
-            style={[AcceptingBidsStyle.flat_MainView, { marginBottom: 10 }]}
-          >
+          <View style={[AcceptingBidsStyle.flat_MainView, {marginBottom: 10}]}>
             <TouchableOpacity style={AcceptingBidsStyle.bidsButton}>
               <Text style={AcceptingBidsStyle.bidsButtonText}>
                 Accepting bids
@@ -99,7 +97,7 @@ const AcceptingBids = () => {
               <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
               <View style={AcceptingBidsStyle.flat_MainView}>
                 <MaterialCommunityIcons
-                  name={"map-marker"}
+                  name={'map-marker'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
                 />
@@ -130,10 +128,9 @@ const AcceptingBids = () => {
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet.current.open();
-                  }}
-                >
+                  }}>
                   <MaterialCommunityIcons
-                    name={"dots-horizontal"}
+                    name={'dots-horizontal'}
                     size={22}
                     color={_COLORS.Kodie_MediumGrayColor}
                   />
@@ -149,8 +146,7 @@ const AcceptingBids = () => {
                       ? _COLORS.Kodie_mostLightGreenColor
                       : _COLORS.Kodie_LightGrayColor,
                   },
-                ]}
-              >
+                ]}>
                 <Text
                   style={[
                     AcceptingBidsStyle.buttonText,
@@ -161,8 +157,7 @@ const AcceptingBids = () => {
                         ? _COLORS.Kodie_GreenColor
                         : _COLORS.Kodie_MediumGrayColor,
                     },
-                  ]}
-                >
+                  ]}>
                   {item.buttonName}
                 </Text>
               </View>
@@ -170,10 +165,10 @@ const AcceptingBids = () => {
           </View>
           <DividerIcon
             IsShowIcon
-            iconName={isExpanded ? "chevron-up" : "chevron-down"}
+            iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+                setExpandedItems(expandedItems.filter(id => id !== item.id));
               } else {
                 setExpandedItems([...expandedItems, item.id]);
               }
@@ -219,16 +214,15 @@ const AcceptingBids = () => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: AcceptingBidsStyle.bottomModal_container,
-          }}
-        >
+          }}>
           <BottomModalData
-            onPress={() => props.navigation.navigate("ViewPropertyDetails")}
+            onPress={() => props.navigation.navigate('ViewPropertyDetails')}
           />
         </RBSheet>
       </>
@@ -238,24 +232,6 @@ const AcceptingBids = () => {
   return (
     <View>
       <ScrollView showsHorizontalScrollIndicator={false}>
-        {/* <View style={AcceptingBidsStyle.propertyRentMainView}>
-          <View style={AcceptingBidsStyle.LeftTextView}>
-            <Text style={AcceptingBidsStyle.LeftText}>Melbourne</Text>
-            <Text style={AcceptingBidsStyle.LeftTextRentText}>
-              Apartment; $300 to $1000; 3 Beds; 2 Baths; Garden; Pool ...
-            </Text>
-          </View>
-          <View style={AcceptingBidsStyle.payButtonMainView}>
-            <TouchableOpacity style={AcceptingBidsStyle.payButtonView}>
-              <Image source={IMAGES.filter} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <DividerIcon
-          borderBottomWidth={4}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        /> */}
-
         <FlatList data={property_List2} renderItem={propertyData2_render} />
       </ScrollView>
     </View>

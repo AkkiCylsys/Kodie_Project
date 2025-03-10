@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,10 +8,9 @@ import {
   Text,
 } from 'react-native';
 import PhoneInput from 'react-native-phone-number-input';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-// Custom flag component to display country code
-const CustomFlag = ({ countryCode }) => (
+const CustomFlag = ({countryCode}) => (
   <Text style={styles.countryCodeText}>{countryCode}</Text>
 );
 
@@ -30,7 +29,9 @@ const App = () => {
         <SafeAreaView style={styles.wrapper}>
           {showMessage && (
             <View style={styles.message}>
-              <Text>Country Code : {phoneInput.current?.getCountryCode() || ''}</Text>
+              <Text>
+                Country Code : {phoneInput.current?.getCountryCode() || ''}
+              </Text>
               <Text>Value : {value}</Text>
               <Text>Formatted Value : {formattedValue}</Text>
               <Text>Valid : {valid ? 'true' : 'false'}</Text>
@@ -41,18 +42,17 @@ const App = () => {
             defaultValue={value}
             defaultCode="IN"
             layout="first"
-            onChangeText={(text) => {
+            onChangeText={text => {
               setValue(text);
             }}
-            onChangeFormattedText={(text) => {
+            onChangeFormattedText={text => {
               setFormattedValue(text);
             }}
-            countryPickerProps={{ withAlphaFilter: true }}
+            countryPickerProps={{withAlphaFilter: true}}
             disabled={disabled}
             withDarkTheme
             withShadow
             autoFocus
-            // Use the custom flag component
             flagComponent={CustomFlag}
           />
           <TouchableOpacity
@@ -61,7 +61,8 @@ const App = () => {
               const checkValid = phoneInput.current?.isValidNumber(value);
               setShowMessage(true);
               setValid(checkValid ? checkValid : false);
-              let getNumberAfterPossiblyEliminatingZero = phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
+              let getNumberAfterPossiblyEliminatingZero =
+                phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
               console.log(getNumberAfterPossiblyEliminatingZero);
             }}>
             <Text style={styles.buttonText}>Check</Text>
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lighter,
   },
   wrapper: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
       width: 1,
       height: 5,
     },
-    shadowOpacity:Platform.OS =='android'? 0.34:null,
+    shadowOpacity: Platform.OS == 'android' ? 0.34 : null,
     shadowRadius: 6.27,
     elevation: 10,
   },
@@ -122,9 +122,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-  // Style for the custom country code component
   countryCodeText: {
-    fontSize: 20, // You can adjust the font size as needed
+    fontSize: 20,
   },
 });
 

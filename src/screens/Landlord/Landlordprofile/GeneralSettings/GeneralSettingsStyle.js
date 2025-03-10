@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const GeneralSettingsStyle = StyleSheet.create({
   mainContainer: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height:'100%',
+    height: '100%',
   },
   Headingview: {
     marginHorizontal: 20,
@@ -15,17 +15,14 @@ export const GeneralSettingsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     marginVertical: 15,
   },
-  componentview:{
-    flex:1.5,
-    // borderWidth:1,
-    // width:'90%',
-    // marginRight:30
+  componentview: {
+    flex: 1.5,
   },
 
-  rowview:{
-    flexDirection:'row',
-   justifyContent:'space-evenly',
-    marginHorizontal:20
+  rowview: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginHorizontal: 20,
   },
   dropdown: {
     height: 50,
@@ -49,41 +46,34 @@ export const GeneralSettingsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    // borderWidth: 1,
     marginRight: 15,
   },
-  textratemainview:{
-    flexDirection:'row',
-    marginVertical:20,
-    marginHorizontal:20
+  textratemainview: {
+    flexDirection: 'row',
+    marginVertical: 20,
+    marginHorizontal: 20,
   },
-  textratecomponentview:{
-    flex:2,
-    // borderWidth:1
-    // width:'75%'
+  textratecomponentview: {
+    flex: 2,
   },
-  rateview:{
-    flex:0.5,
-    borderWidth:1,
-    height:40,
-    // width:75,
-    // flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:10,
-    borderColor:_COLORS.Kodie_GrayColor
+  rateview: {
+    flex: 0.5,
+    borderWidth: 1,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
-  calenderview:{
-    marginVertical:10,
-    marginHorizontal:20
-    // marginRight:10
+  calenderview: {
+    marginVertical: 10,
+    marginHorizontal: 20,
   },
-  origanisationview:{
-    marginVertical:10,
-    marginHorizontal:20
-    // marginRight:10
+  origanisationview: {
+    marginVertical: 10,
+    marginHorizontal: 20,
   },
-  ratetext:{
-    color:_COLORS.Kodie_BlackColor
-  }
+  ratetext: {
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

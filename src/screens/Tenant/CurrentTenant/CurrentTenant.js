@@ -2,14 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
 import {CurrentTenantStyle} from './CurrentTenantStyle';
 import {_goBack} from '../../../services/CommonServices';
-import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import {_COLORS, IMAGES} from '../../../Themes/index';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import StarRating from 'react-native-star-rating';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import ManagingTenant from '../../../components/Molecules/ManagingTenant/ManagingTenant';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -43,7 +40,6 @@ const CurrentTenant = props => {
   useEffect(() => {
     getCurrentTenantList();
   }, []);
-  // Api intrigation..
   const getCurrentTenantList = async () => {
     const url = Config.BASE_URL;
     const currectTenantUrl ='tanant_details/getAll/tanant/manually';
