@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import {
   _COLORS,
-  LABEL_RejectConfirmCss,
-  IMAGES,
   BANNERS,
   LABEL_STYLES,
 } from "../../../Themes";

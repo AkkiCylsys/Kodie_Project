@@ -16,7 +16,6 @@ import {ViewRentalDetailsStyle} from './ViewRentalDetailsStyle';
 import {SliderBox} from 'react-native-image-slider-box';
 import {BANNERS, _COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -29,11 +28,9 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import ReadMore from '@fawazahmed/react-native-read-more';
 import moment from 'moment';
-import Geolocation from '@react-native-community/geolocation';
 import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
 import {useSelector} from 'react-redux';
 import {FavouriteServices} from '../../../../services/FavouriteServices/FavouriteServces';
-import {MapUrlTile} from 'react-native-maps';
 import {useFocusEffect} from '@react-navigation/native';
 import axiosInstance from '../../../../services/axiosInstance';
 
@@ -67,26 +64,13 @@ const ViewRentalDetails = props => {
   const GOOGLE_MAPS_API_KEY = 'AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw';
   useFocusEffect(
     useCallback(() => {
-      // Geolocation.getCurrentPosition(
-      //   position => {
-      //     const {latitude, longitude} = position.coords;
-      //     console.log(latitude, longitude, 'latitude,longitude');
-      // alert(property_Detail?.longitude)
       fetchPointsOfInterest(
         property_Detail?.latitude,
         property_Detail?.longitude,
       );
-      // fetchPointsOfInterest("33.8849","151.2052");
-      // fetchPointsOfInterest("27.149994", "79.499901");
-      //   },
-      //   error => console.error(error),
-      //   {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-      // );
 
-      return () => {
-        // Cleanup if necessary when the screen is unfocused
-      };
-    }, [property_Detail]), // Add necessary dependencies
+      return () => {};
+    }, [property_Detail]),
   );
 
   const handleFavouriteItem = async propertyId => {
@@ -113,14 +97,6 @@ const ViewRentalDetails = props => {
     }
   };
 
-  // will uncomment imn the future..
-  // const toggleLike = propertyId => {
-  //   setLikedItems(prevState => ({
-  //     ...prevState,
-  //     [propertyId]: !prevState[propertyId],
-  //   }));
-  //   handleFavouriteItem(propertyId);
-  // };
   const fetchPointsOfInterest = async (lat, lng) => {
     try {
       const response = await axios.get(
@@ -145,7 +121,7 @@ const ViewRentalDetails = props => {
 
     places.forEach(place => {
       const {name, vicinity} = place;
-      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`; // Mocking distance
+      const distance = `${(place.distance || Math.random() * 3).toFixed(1)}km`;
       if (
         place.types.includes('school') ||
         place.types.includes('university')
@@ -180,8 +156,6 @@ const ViewRentalDetails = props => {
       <View style={DetailsStyle.itemContainer}>
         <Text style={DetailsStyle.itemName}>{item.name}</Text>
         <Text style={DetailsStyle.itemDistance}>{item.distance}</Text>
-
-        {/* <DividerIcon marginTop={5}/> */}
       </View>
     </>
   );
@@ -198,7 +172,7 @@ const ViewRentalDetails = props => {
           keyExtractor={(item, index) => index.toString()}
         />
       ) : (
-        <Text style={DetailsStyle.itemName}>----</Text> // Display hyphen if no items
+        <Text style={DetailsStyle.itemName}>----</Text>
       )}
     </View>
   );
@@ -218,7 +192,7 @@ const ViewRentalDetails = props => {
     } catch (error) {
       console.error('Error parsing additional_key_features:', error);
     }
-  }, [additionalKeyFeaturesString,propertyId]);
+  }, [additionalKeyFeaturesString, propertyId]);
   const iconMapping = {
     Pool: {component: MaterialIcons, name: 'pool'},
     Garage: {component: MaterialCommunityIcons, name: 'garage'},
@@ -298,63 +272,59 @@ const ViewRentalDetails = props => {
     ? OnStreetParkingObj['On-street parking']
     : null;
 
-
-// Api intrigation here ....
-const fetchData = async () => {
-  try {
-    const detailData = {
-      property_id: propertyId,
-    };
-    console.log('detailData.............', detailData);
-    const url = Config.BASE_URL;
-    const property_Detailss ='get_property_details';
-    console.log('url..', property_Detailss);
-    setIsLoading(true);
-    const response = await axiosInstance.post(property_Detailss, detailData);
-    setIsLoading(false);
-    console.log('response_get_property_details...', response?.data);
-    if (response?.data?.success === true) {
-      setProperty_Details(response?.data?.property_details[0]);
-      console.log(
-        'type of property....',
-        response?.data?.property_details[0],
-      );
-      if (response?.data?.property_details[0]?.key_features) {
-        const parsedData = JSON.parse(
-          response?.data?.property_details[0]?.key_features.replace(
-            /\\/g,
-            '',
-          ),
+  const fetchData = async () => {
+    try {
+      const detailData = {
+        property_id: propertyId,
+      };
+      console.log('detailData.............', detailData);
+      const url = Config.BASE_URL;
+      const property_Detailss = 'get_property_details';
+      console.log('url..', property_Detailss);
+      setIsLoading(true);
+      const response = await axiosInstance.post(property_Detailss, detailData);
+      setIsLoading(false);
+      console.log('response_get_property_details...', response?.data);
+      if (response?.data?.success === true) {
+        setProperty_Details(response?.data?.property_details[0]);
+        console.log(
+          'type of property....',
+          response?.data?.property_details[0],
         );
-        setDetail(parsedData);
-        console.log('parsedData....', parsedData);
+        if (response?.data?.property_details[0]?.key_features) {
+          const parsedData = JSON.parse(
+            response?.data?.property_details[0]?.key_features.replace(
+              /\\/g,
+              '',
+            ),
+          );
+          setDetail(parsedData);
+          console.log('parsedData....', parsedData);
+        }
+        const additionalKeyFeatures =
+          response?.data?.property_details[0]?.additional_key_features[0];
+        setAdditionalKeyFeaturesString(additionalKeyFeatures);
+      } else {
+        console.error('propertyDetail_error:', response?.data?.error);
       }
-      const additionalKeyFeatures =
-        response?.data?.property_details[0]?.additional_key_features[0];
-      setAdditionalKeyFeaturesString(additionalKeyFeatures);
-    } else {
-      console.error('propertyDetail_error:', response?.data?.error);
+      const additionalFeatures_id =
+        response?.data?.property_details[0].additional_features_id;
+      console.log('additionalFeaturesid....', additionalFeatures_id);
+      const additionalFeaturesIds = additionalFeatures_id
+        .split(',')
+        .map(value => value.trim());
+      console.log('is_additionalFeaturesid....', additionalFeaturesIds);
+      setAddtionalFeaturesID(additionalFeaturesIds);
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
     }
-    const additionalFeatures_id =
-    response?.data?.property_details[0].additional_features_id;
-  console.log('additionalFeaturesid....', additionalFeatures_id);
-  const additionalFeaturesIds = additionalFeatures_id
-  .split(',')
-  .map(value => value.trim()); // ['1', '1', '1', '0']
-  console.log('is_additionalFeaturesid....', additionalFeaturesIds);
-  setAddtionalFeaturesID(additionalFeaturesIds);
+  };
 
-  } catch (error) {
-    console.error('Error:', error);
-    setIsLoading(false);
-  }
-};
-  
-  const available = property_Detail?.available; // Fallback to default date if not available
-  const availableDate = moment(available); // Convert to moment object
-  const currentDate = moment(); // Get current date
+  const available = property_Detail?.available;
+  const availableDate = moment(available);
+  const currentDate = moment();
 
-  // Determine if the available date is in the past or present
   const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
 
   return (
@@ -412,20 +382,15 @@ const fetchData = async () => {
             </Text>
           </View>
           <View style={ViewRentalDetailsStyle.shareIcon}>
-            {/* <View style={ViewRentalDetailsStyle.availableBtn}>
-              <Text style={ViewRentalDetailsStyle.availabletext}>
-              {`AVAILABLE: ${moment(property_Detail?.available).format('DD-MMM-YYYY')}`}
-              </Text>
-            </View> */}
             <View
               style={[
                 ViewRentalDetailsStyle.availableBtn,
                 {
                   backgroundColor: isAvailableNow
-                    ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
-                    : _COLORS.Kodie_LightOrange, // Use the color for future date
+                    ? _COLORS.Kodie_minDarkGreenColor
+                    : _COLORS.Kodie_LightOrange,
                   borderColor: isAvailableNow
-                    ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                    ? _COLORS.Kodie_minDarkGreenColor
                     : _COLORS.Kodie_LightOrange,
                 },
               ]}>
@@ -434,8 +399,8 @@ const fetchData = async () => {
                   ViewRentalDetailsStyle.availabletext,
                   {
                     color: isAvailableNow
-                      ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
-                      : _COLORS.Kodie_DarkOrange, // Text color for future date
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_DarkOrange,
                   },
                 ]}>
                 {isAvailableNow
@@ -450,22 +415,6 @@ const fetchData = async () => {
                 size={25}
               />
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                // setFavRental(!favRental);
-                toggleLike(propertyId);
-              }}>
-              <AntDesign
-                color={
-                  likedItems[propertyId]
-                    ? _COLORS.Kodie_GreenColor
-                    : _COLORS.Kodie_ExtraminLiteGrayColor
-                }
-                name={likedItems[propertyId] ? 'heart' : 'hearto'}
-                size={25}
-                style={{marginLeft:20}}
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
         <View style={ViewRentalDetailsStyle.locationView}>
@@ -726,58 +675,6 @@ const fetchData = async () => {
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
-              {/* <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Kitchen'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Lounge'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Dining Room'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                  {'Other'}
-                </Text>
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
-                  ]}>
-                  {'0'}
-                </Text>
-              </View>
-              <DividerIcon marginTop={8} /> */}
             </>
           ) : null}
           <View style={ViewRentalDetailsStyle.subContainer}>
@@ -885,7 +782,6 @@ const fetchData = async () => {
                   setSubmitApplicationBtn(false);
                   setSubmitApplicationBtnId(0);
                   Alert.alert('Submit application', 'Coming soon');
-                  // alert(selectPetFriendlyBtnId)
                 }}
                 onPressRightButton={() => {
                   setSubmitApplicationBtn(true);
@@ -895,7 +791,6 @@ const fetchData = async () => {
                     userid: property_Detail.landlord_user_id,
                     chatname: 'chatname',
                   });
-                  // alert(selectPetFriendlyBtnId)
                 }}
               />
             </View>

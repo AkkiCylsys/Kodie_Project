@@ -7,7 +7,6 @@ export const SearchResultCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   flat_MainView: {
-    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -106,7 +105,6 @@ export const SearchResultCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   LeftTextRentText: {
-    // flex:1,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
@@ -158,7 +156,6 @@ export const SearchResultCss = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 10,
-    // marginHorizontal: 1,
     padding: 0,
     margin: 0,
   },
@@ -197,44 +194,35 @@ export const SearchResultCss = StyleSheet.create({
     alignSelf: 'center',
   },
   availableBtn: {
-    flex:0.5,
+    flex: 0.5,
     marginHorizontal: 25,
-    // marginRight: Platform.OS == 'ios' ? 270 : 230,
-    // borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    // flex: 1,
     backgroundColor: _COLORS.Kodie_LightOrange,
     paddingVertical: 8,
     marginTop: 10,
   },
   circleIconView: {
-    width: 30,  // Set the width of the circle
-    height: 30, // Set the height of the circle
-    borderRadius: 15,  // Half of the width/height to make it a perfect circle
-    alignItems: 'center', // Center icon horizontally
-    justifyContent: 'center', // Center icon vertically
-    borderWidth:0.2,
-    borderColor:_COLORS?.Kodie_ExtraminLiteGrayColor
-
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0.2,
+    borderColor: _COLORS?.Kodie_ExtraminLiteGrayColor,
   },
-  bedCountView:{
+  bedCountView: {
     flexDirection: 'row',
     marginTop: 5,
     marginLeft: 23,
-    alignItems: 'center', // Center items vertically
+    alignItems: 'center',
   },
   bedcont: {
-    // fontSize: 14,
-    // color: _COLORS.Kodie_ExtraminLiteGrayColor,
-    // fontFamily: FONTFAMILY.K_Regular,
-    // alignSelf: 'center',
-    // marginLeft: 5,
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
-    marginLeft: 10, // Increased margin for spacing between icon and text
+    marginLeft: 10,
   },
   bedCountView: {
     flexDirection: 'row',

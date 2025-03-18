@@ -1,20 +1,20 @@
-import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../Themes/index";
+import {StyleSheet} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../Themes/index';
 export const InviteStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   shareMainView: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   searchandShareMainView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 5,
   },
   shareTextView: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   AllcontactsText: {
     fontSize: 16,
@@ -33,8 +33,8 @@ export const InviteStyles = StyleSheet.create({
     height: 95,
     borderRadius: 95 / 2,
     backgroundColor: _COLORS.Kodie_MostLiteGreyColor,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
     marginHorizontal: 16,
   },
@@ -45,12 +45,12 @@ export const InviteStyles = StyleSheet.create({
     borderRadius: 45 / 2,
     borderColor: _COLORS.Kodie_GreenColor,
     marginHorizontal: 10,
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 
   contactIconView: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginHorizontal: 16,
     borderWidth: 1,
     paddingVertical: 10,
@@ -58,9 +58,9 @@ export const InviteStyles = StyleSheet.create({
     borderRadius: 5,
     borderColor: _COLORS.Kodie_LightGrayColor,
     marginTop: 10,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
-  contactIcon: { height: 16, width: 16 },
+  contactIcon: {height: 16, width: 16},
 
   FlatlistContainer: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -68,24 +68,24 @@ export const InviteStyles = StyleSheet.create({
   },
 
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 5,
     paddingHorizontal: 8,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   profileView: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 5,
   },
   profileIcon: {
     width: 45,
     height: 45,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   textContainer: {
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 10,
   },
   profile_Heading: {
@@ -97,14 +97,12 @@ export const InviteStyles = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    // alignSelf: "center",
-    // marginTop:5
   },
   ArrowIcon: {
-    width: "18%",
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
+    width: '18%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
     borderWidth: 1,
     paddingVertical: 5,
     paddingHorizontal: 5,
@@ -116,6 +114,6 @@ export const InviteStyles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightGrayColor,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });

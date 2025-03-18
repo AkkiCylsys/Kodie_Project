@@ -15,7 +15,6 @@ import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices/CommonMethods';
 import {InviteStyles} from './InviteStyles';
 import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {_COLORS, IMAGES} from '../../Themes/index';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Contacts from 'react-native-contacts';
@@ -99,7 +98,7 @@ export default Invitefriend = props => {
   useEffect(() => {
     Platform.OS == 'ios'
       ? requestContactsPermissionIOS()
-      : requestContactsPermission(); // Request permission when component mounts
+      : requestContactsPermission();
     inviteFriend();
   }, []);
 
@@ -113,11 +112,6 @@ export default Invitefriend = props => {
           err && console.log(err);
         });
     }, 300);
-    // try {
-    //   await Share.open({url: inviteFriendPath});
-    // } catch (error) {
-    //   console.error('Error sharing PDF file:', error);
-    // }
   };
 
   const inviteFriend = () => {
@@ -152,7 +146,6 @@ export default Invitefriend = props => {
       .catch(error => {
         console.error('API failed invite_url', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -169,7 +162,6 @@ export default Invitefriend = props => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        // Permission granted, fetch contacts
         fetchContacts();
       } else {
         console.log('Contacts permission denied');
@@ -181,7 +173,6 @@ export default Invitefriend = props => {
   const requestContactsPermissionIOS = async () => {
     request(PERMISSIONS.IOS.CONTACTS)
       .then(result => {
-        // alert(JSON.stringify(result))
         switch (result) {
           case RESULTS.UNAVAILABLE:
             console.log(
@@ -221,9 +212,12 @@ export default Invitefriend = props => {
   };
   const handleSearch = query => {
     setSearchQuery(query);
-    const filtered = contacts.filter(contact =>
-      (contact.displayName && contact.displayName.toLowerCase().includes(query.toLowerCase())) ||
-      (contact.givenName && contact.givenName.toLowerCase().includes(query.toLowerCase()))
+    const filtered = contacts.filter(
+      contact =>
+        (contact.displayName &&
+          contact.displayName.toLowerCase().includes(query.toLowerCase())) ||
+        (contact.givenName &&
+          contact.givenName.toLowerCase().includes(query.toLowerCase())),
     );
     setFilteredContacts(filtered);
   };
@@ -234,7 +228,6 @@ export default Invitefriend = props => {
           <View style={InviteStyles.profileView}>
             {item.thumbnailPath ? (
               <Image
-                // source={IMAGES.Landlordprofile}
                 source={{uri: item.thumbnailPath}}
                 style={InviteStyles.usericon}
                 resizeMode="contain"
@@ -304,7 +297,6 @@ export default Invitefriend = props => {
       </View>
       <FlatList
         style={InviteStyles.FlatlistContainer}
-        // data={contacts}
         data={filteredContacts}
         scrollEnabled
         ListHeaderComponent={ListHeader}

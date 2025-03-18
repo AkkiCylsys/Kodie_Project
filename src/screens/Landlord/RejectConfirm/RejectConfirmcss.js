@@ -18,7 +18,6 @@ export const RejectConfirmCss = StyleSheet.create({
     margin: 0,
   },
   shadowContainer: {
-    // marginTop: 15,
     ...Platform.select({
       ios: {
         shadowColor: _COLORS.Kodie_GrayColor,

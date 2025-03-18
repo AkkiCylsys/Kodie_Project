@@ -22,22 +22,18 @@ const Properties = props => {
   const tab3 = props?.route?.params?.tab3;
   const openTab3 = props?.route?.params?.openTab3;
   console.log('tab3...', tab3);
-  // console.log('openTab3...', openTab3);
   const acceptLanlordPassed = props?.route?.params?.acceptLanlordPassed;
   console.log('acceptLanlordPassed...', acceptLanlordPassed);
   const routesLength = useNavigationState(state => state.routes.length);
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [activeTab, setActiveTab] = useState('Tab1');
-  const [Property_Data_List, setProperty_Data_List] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
   const isFocus = useIsFocused();
 
-  // Handle focus event to check tab selection
   useFocusEffect(
     React.useCallback(() => {
-      if (tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed')  {
+      if (tab3 === 'tab3' || acceptLanlordPassed === 'acceptLanlordPassed') {
         setActiveTab('Tab3');
       }
     }, [tab3, acceptLanlordPassed, openTab3]),
@@ -46,7 +42,6 @@ const Properties = props => {
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
-        // BackHandler.exitApp();
         props.navigation.navigate('Dashboard');
         return true;
       };
@@ -59,7 +54,6 @@ const Properties = props => {
   const handleOpenMap = value => {
     console.log('Opening map:', value);
     setOpenMap(value);
-    // Do something with the value, such as updating state
   };
 
   const checkTabs = () => {

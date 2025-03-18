@@ -55,7 +55,6 @@ export const PropertyList2Css = StyleSheet.create({
     padding: 12,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    // marginTop: 10,
   },
   placeholderStyle: {
     fontSize: 14,
@@ -254,7 +253,6 @@ flex:1
     width: 103,
   },
   btn_main_view: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
@@ -285,7 +283,6 @@ flex:1
     alignSelf:'center'
   },
   textDropdown: {
-    // marginLeft: 20,
   },
   dropdownMenu: {
     flex: 1,

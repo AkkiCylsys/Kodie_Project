@@ -9,7 +9,6 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 10,
-    // marginHorizontal: 1,
     padding: 0,
     margin: 0,
   },
@@ -20,7 +19,7 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     marginTop: 19,
   },
   propertyHeading: {
-    flex:1,
+    flex: 1,
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
@@ -46,7 +45,6 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    // marginVertical: 10,
     alignSelf: 'center',
     marginHorizontal: 16,
   },
@@ -56,7 +54,15 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     marginVertical: 5,
     marginLeft: 15,
   },
-  ViewIconStyle:{ height: 28, width: 28, borderRadius: 12,borderWidth:1,justifyContent:'center',alignSelf:'center',borderColor:_COLORS.Kodie_LiteWhiteColor },
+  ViewIconStyle: {
+    height: 28,
+    width: 28,
+    borderRadius: 12,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
   details_text: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
@@ -69,9 +75,7 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  subContainer: {
-    // marginHorizontal: 16,
-  },
+  subContainer: {},
   propety_details_view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -89,18 +93,15 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 16,
-    // marginTop: 10,
   },
   availableBtn: {
     marginHorizontal: 25,
-    // marginRight: 250,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    // flex: 1,
     backgroundColor: _COLORS.Kodie_minDarkGreenColor,
     paddingVertical: 5,
-    paddingHorizontal:6
+    paddingHorizontal: 6,
   },
   availabletext: {
     fontSize: 8,
@@ -108,19 +109,19 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',
   },
-  submitApplicationbtn:{
+  submitApplicationbtn: {
     marginHorizontal: 16,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 10,
     padding: 20,
     shadowColor: _COLORS.Kodie_GrayColor,
-    shadowOffset: {width: 1, height: 5}, // iOS shadow
-    shadowOpacity: 2, // iOS shadow
+    shadowOffset: {width: 1, height: 5},
+    shadowOpacity: 2,
     shadowRadius: 3,
     elevation: 1,
-    marginBottom:20,
-    backgroundColor:_COLORS.Kodie_WhiteColor
+    marginBottom: 20,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   readMore: {
     color: _COLORS.Kodie_GreenColor,
@@ -131,7 +132,6 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf:'center',
-    // textAlign:'center'
+    alignSelf: 'center',
   },
 });

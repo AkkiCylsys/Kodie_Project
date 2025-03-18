@@ -8,11 +8,9 @@ import {
   Image,
   BackHandler,
 } from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
 import {IMAGES, LABEL_STYLES} from '../../../../Themes';
 import {_COLORS} from '../../../../Themes';
 import {PropertyList2Css} from './PropertyList2Css';
-import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -21,10 +19,8 @@ import {SignupLookupDetails} from '../../../../APIs/AllApi';
 import RangeSlider from '../../../../components/Molecules/RangeSlider/RangeSlider';
 import {Config} from '../../../../Config';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import {
@@ -53,12 +49,10 @@ const PropertyList2 = props => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     [],
   );
-  const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
   const [selectPetFriendlyBtn, setSelectPetFriendlyBtn] = useState(false);
   const [selectPetFriendlyBtnId, setSelectPetFriendlyBtnId] = useState(0);
-  const [secureByDepositBtn, setSecureByDepositBtn] = useState(false);
   const [secureByDepositBtnId, setSecureByDepositBtnId] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [max, setMax] = useState(0);
@@ -130,7 +124,6 @@ const PropertyList2 = props => {
       };
     }, [IsMap, IsSearch]),
   );
-  // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
     setLocation(currentLocation);
@@ -140,7 +133,6 @@ const PropertyList2 = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region));
     console.log('Region....', JSON.stringify(Region));
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
@@ -152,10 +144,8 @@ const PropertyList2 = props => {
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -178,7 +168,6 @@ const PropertyList2 = props => {
         setUserCurrentCity(addressComponent2.long_name);
         console.log('UserCurrentCity....', UserCurrentCity);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
       })
       .catch(error => console.warn(error));
@@ -187,7 +176,6 @@ const PropertyList2 = props => {
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
-    // Do something with the price range in the parent component
   };
   const handlemaxRange = high => {
     console.log('High Range in Parent Component:', high);
@@ -206,7 +194,6 @@ const PropertyList2 = props => {
     setProteryTypeValueError(false);
   };
 
-  // renderItem....
   const additional_key_feature_render = item => {
     return (
       <View style={PropertyList2Css.item}>
@@ -226,7 +213,6 @@ const PropertyList2 = props => {
       </View>
     );
   };
-  // Api intrigation....
   const handle_property_Type = async () => {
     setIsLoading(true);
     const res = await SignupLookupDetails({
@@ -257,17 +243,14 @@ const PropertyList2 = props => {
           );
         } else {
           console.error('additional_features_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('additional_features error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
-  // Validation ...
   const handleLocation = text => {
     if (text === '') {
       setLocationError('Location is required!');
@@ -424,11 +407,8 @@ const PropertyList2 = props => {
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
-            // onRegionChangeComplete={onRegionChangeComplete}
             Maplat={latitude}
             Maplng={longitude}
-            // Maplat={getLat}
-            // Maplng={getLong}
             iscancel={() => {
               if (IsMap || IsSearch) {
                 setIsMap(false);
@@ -437,7 +417,6 @@ const PropertyList2 = props => {
               }
             }}
           />
-          {/* <MapComponent/> */}
           <View
             style={{
               flexDirection: 'row',
@@ -458,7 +437,6 @@ const PropertyList2 = props => {
                 width: '90%',
                 height: 45,
                 alignSelf: 'center',
-                //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
               placeholder={'Search Place'}
@@ -533,7 +511,6 @@ const PropertyList2 = props => {
               searchInputPlaceholderText="Search Items..."
               onChangeInput={item => {
                 console.warn(item);
-                // setAdditionalFeaturesKeyValue(item)
               }}
               tagBorderColor={_COLORS.Kodie_BlackColor}
               selectedItemTextColor={_COLORS.Kodie_GreenColor}
@@ -669,7 +646,6 @@ const PropertyList2 = props => {
             <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
               {'Additional features'}
             </Text>
-            {/* change request ui  */}
             <View style={PropertyList2Css.additionalFeatureView}>
               <View style={PropertyList2Css.featureItem}>
                 <Text
@@ -754,53 +730,11 @@ const PropertyList2 = props => {
               </View>
             </View>
 
-            {/* ....... */}
 
             <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 15}]}>
               {'Additional key features'}
             </Text>
-            {/* <MultiSelect
-              style={PropertyList2Css.dropdown}
-              placeholderStyle={PropertyList2Css.placeholderStyle}
-              selectedTextStyle={PropertyList2Css.selectedTextStyle}
-              inputSearchStyle={PropertyList2Css.inputSearchStyle}
-              iconStyle={PropertyList2Css.iconStyle}
-              data={additionalfeatureskey}
-              labelField="features_name"
-              valueField="paf_key"
-              placeholder="Search features "
-              activeColor={_COLORS.Kodie_MidLightGreenColor}
-              value={additionalfeatureskeyvalue}
-              search
-              searchPlaceholder="Search..."
-              onChange={item => {
-                setAdditionalFeaturesKeyValue(item);
-              }}
-              renderLeftIcon={() => (
-                <AntDesign
-                  style={PropertyList2Css.icon}
-                  color={_COLORS.Kodie_GrayColor}
-                  name="search1"
-                  size={20}
-                />
-              )}
-              renderRightIcon={() => <></>}
-              renderItem={additional_key_feature_render}
-              renderSelectedItem={(item, unSelect) => (
-                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                  <View style={PropertyList2Css.selectedStyle}>
-                    <Text style={PropertyList2Css.textSelectedStyle}>
-                      {item.features_name}
-                    </Text>
-                    <AntDesign
-                      color={_COLORS.Kodie_WhiteColor}
-                      name="close"
-                      size={15}
-                    />
-                  </View>
-                </TouchableOpacity>
-              )}
-            /> */}
+          
             <MultiSelect
               hideDropdown
               items={additionalfeatureskey}
@@ -814,7 +748,6 @@ const PropertyList2 = props => {
               searchInputPlaceholderText="Search Items..."
               onChangeInput={item => {
                 console.warn(item);
-                // setAdditionalFeaturesKeyValue(item)
               }}
               tagBorderColor={_COLORS.Kodie_BlackColor}
               selectedItemTextColor={_COLORS.Kodie_GreenColor}
@@ -852,7 +785,6 @@ const PropertyList2 = props => {
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
                 handleSearchForRental();
-                // navigation.navigate('ViewRentalDetails');
               }}
               disabled={isLoading ? true : false}
             />

@@ -1,16 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import {Config} from '../../../../Config';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useIsFocused} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
@@ -78,11 +68,9 @@ const Detail = [
 ];
 
 export default ViewPropertyDetails = props => {
-  // const propertyDelId = props?.route?.params?.propertyDelId;
   const propertyid = props?.route?.params?.propertyId;
 
   console.log(propertyid, 'viewpropertydetails id....');
-  // console.log(propertyDelId);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -95,11 +83,6 @@ export default ViewPropertyDetails = props => {
       <>
         <View style={DetailsStyle.DetailsView}>
           {Object.keys(item)[0] == 'Bedrooms' ? (
-            // (<Image
-            //     source={IMAGES.BedroomIcon}
-            //     style={DetailsStyle.DetailsIcon}
-            //   />)
-
             <MaterialCommunityIcons
               name="bed-double-outline"
               size={25}
@@ -107,10 +90,6 @@ export default ViewPropertyDetails = props => {
               resizeMode={'contain'}
             />
           ) : Object.keys(item)[0] == 'Bathrooms' ? (
-            // (
-            //   <Image source={IMAGES.Bathroom}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <MaterialCommunityIcons
               name="shower-head"
               size={25}
@@ -118,10 +97,6 @@ export default ViewPropertyDetails = props => {
               resizeMode={'contain'}
             />
           ) : Object.keys(item)[0] == 'Parking / garage spaces' ? (
-            // (
-            //   <Image source={IMAGES.Parking}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <Ionicons
               name="car-outline"
               size={25}
@@ -129,10 +104,6 @@ export default ViewPropertyDetails = props => {
               resizeMode={'contain'}
             />
           ) : (
-            // (
-            //   <Image source={IMAGES.Garden}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <Ionicons
               name="car-outline"
               size={25}
@@ -142,7 +113,6 @@ export default ViewPropertyDetails = props => {
           )}
           <Text style={DetailsStyle.details_text}>
             {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
-            {/* {`${key}: ${value}`} */}
           </Text>
         </View>
       </>
@@ -151,10 +121,6 @@ export default ViewPropertyDetails = props => {
   const renderItem = ({item}) => (
     <View style={DetailsStyle.DetailsView}>
       {item === 'Pool' ? (
-        // (
-        //   <Image source={IMAGES.Bathroom}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialIcons
           name="pool"
           size={25}
@@ -162,10 +128,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Garage' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="garage"
           size={25}
@@ -173,10 +135,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Balcony' ? (
-        //   (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="window-closed-variant"
           size={25}
@@ -184,10 +142,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Outdoor area' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -195,10 +149,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Ensuite' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="shower"
           size={25}
@@ -206,10 +156,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Dishwasher' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="dishwasher"
           size={25}
@@ -217,10 +163,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Study' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="bookshelf"
           size={25}
@@ -228,10 +170,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Built in robes' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="fireplace"
           size={25}
@@ -239,10 +177,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Air conditioning' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="air-conditioner"
           size={25}
@@ -250,10 +184,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Solar panels' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="solar-panel"
           size={25}
@@ -261,10 +191,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Heating' ? (
-        //   (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="fireplace"
           size={25}
@@ -272,10 +198,6 @@ export default ViewPropertyDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'High energy efficiency' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <SimpleLineIcons
           name="energy"
           size={25}
@@ -286,49 +208,14 @@ export default ViewPropertyDetails = props => {
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
-  // const fetchData = async () => {
-  //   try {
-  //     // Fetch property details
-  //     const detailData = { property_id: propertyid };
-  //     const url = Config.BASE_URL;
-  //     const property_Detailss = url + "get_property_details";
 
-  //     setIsLoading(true);
-  //     const response = await axios.post(property_Detailss, detailData);
-  //     setIsLoading(false);
-
-  //     if (response?.data?.status === true) {
-  //       setProperty_Details(response?.data?.data[0]);
-  //       console.log(response?.data?.data[0])
-  //       console.log(object);
-  //       // Fetch and process key features..........
-  //       if (response?.data?.data[0]?.key_features) {
-  //         const parsedData = JSON.parse(
-  //           response?.data?.data[0].key_features.replace(/\\/g, "")
-  //         );
-  //         setDetail(parsedData);
-  //       }
-  //       const additionalKeyFeatures =
-  //         response?.data?.data[0].additional_key_features[0];
-  //       setAdditionalKeyFeaturesString(additionalKeyFeatures);
-  //     } else {
-  //       console.error("propertyDetail_error:", response?.data?.error);
-  //       alert("Oops something went wrong! Please try again later.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert(error);
-  //     setIsLoading(false);
-  //   }
-  // };
   const fetchData = async () => {
     try {
-      // Fetch property details
       const detailData = {
         property_id: propertyid,
       };
       const url = Config.BASE_URL;
-      const property_Detailss ='get_property_details';
+      const property_Detailss = 'get_property_details';
 
       console.log('url..', property_Detailss);
       setIsLoading(true);
@@ -337,7 +224,6 @@ export default ViewPropertyDetails = props => {
       console.log('response_get_property_details...', response?.data);
       if (response?.data?.success === true) {
         setProperty_Details(response?.data?.property_details[0]);
-        // Fetch and process key features..........
         if (response?.data?.property_details[0].key_features) {
           const parsedData = JSON.parse(
             response?.data?.property_details[0].key_features.replace(/\\/g, ''),
@@ -357,8 +243,6 @@ export default ViewPropertyDetails = props => {
       setIsLoading(false);
     }
   };
-  // const additionalKeyFeaturesString =
-  //   property_Detail?.additional_key_features[0];
 
   useEffect(() => {
     fetchData();
@@ -369,8 +253,8 @@ export default ViewPropertyDetails = props => {
       console.error('Error parsing additional_key_features:', error);
     }
     const timeout = setTimeout(() => {
-      setNumColumns(2); // Change to the desired number of columns
-    }, 2000); // Change this delay as needed
+      setNumColumns(2);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [propertyid, additionalKeyFeaturesString]);
@@ -379,7 +263,6 @@ export default ViewPropertyDetails = props => {
     <View style={ViewDetailCss.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        // MiddleText={"8502 Preston Rd. Inglewood..."}
         MiddleText={property_Detail.location}
       />
       <ScrollView>
@@ -466,10 +349,9 @@ export default ViewPropertyDetails = props => {
             contentContainerStyle={{}}
             numColumns={numColumns}
             keyExtractor={item => item?.id}
-            // keyExtractor={(item, index) => index.toString()}
             renderItem={Detail_rander}
           />
-          <DividerIcon/>
+          <DividerIcon />
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <Text style={[DetailsStyle.propery_det]}>
               {'Additional key features'}
@@ -482,30 +364,12 @@ export default ViewPropertyDetails = props => {
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
           />
-          {/* </View> */}
           {property_Detail?.additional_key_features_id === '[]' ? null : (
             <DividerIcon
               borderBottomWidth={1}
               color={_COLORS.Kodie_GrayColor}
             />
           )}
-          {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <FlatList
-              data={Detail}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              // numColumns={2}
-              keyExtractor={item => item?.id}
-              // keyExtractor={(item, index) => index.toString()}
-              renderItem={Detail_rander}
-            />
-            <FlatList
-              data={additionalKeyFeatures}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View> */}
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.Container}>
@@ -547,9 +411,7 @@ export default ViewPropertyDetails = props => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
-            <Text style={ViewDetailCss.propery_det}>
-              {'External features'}
-            </Text>
+            <Text style={ViewDetailCss.propery_det}>{'External features'}</Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
               <AntDesign

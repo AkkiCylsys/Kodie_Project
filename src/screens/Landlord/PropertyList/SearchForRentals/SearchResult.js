@@ -2,14 +2,13 @@ import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
-  ScrollView,
   FlatList,
   Image,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
 } from 'react-native';
-import {_COLORS, LABEL_STYLES, BANNERS, IMAGES} from '../../../../Themes';
+import {_COLORS, BANNERS} from '../../../../Themes';
 import {SearchResultCss} from './SearchResultCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -81,12 +80,10 @@ export default SearchResult = props => {
 
   const propertyTypeArray = propertyType.split(',');
 
-  // Map over the array to get labels
   const propertyLabels = propertyTypeArray
     .map(type => getPropertyTypeLabel(type))
-    .filter(label => label) // Filter out empty labels
-    .join(', '); // Join labels into a single string
-
+    .filter(label => label)
+    .join(', ');
   useEffect(() => {
     additional_key_features();
   }, []);
@@ -95,7 +92,6 @@ export default SearchResult = props => {
     item.hasOwnProperty('Parking / garage spaces'),
   )['Parking / garage spaces'];
 
-  // Find the object with "On-street parking"
   const onStreetParking = AllCountsData.find(item =>
     item.hasOwnProperty('On-street parking'),
   )['On-street parking'];
@@ -118,7 +114,7 @@ export default SearchResult = props => {
       const response = await FavouriteServices(favourtiesPayload);
       console.log('response in FavouriteServices', response);
       if (response?.success === true) {
-        Alert.alert("Success",response?.message);
+        Alert.alert('Success', response?.message);
       }
     } catch (error) {
       console.error('Error fetchingFavouriteServices', error);
@@ -138,7 +134,6 @@ export default SearchResult = props => {
   const onClose = () => {
     refRBSheet.current.close();
   };
-  // Api intrigation...
   const additional_key_features = async () => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
@@ -167,32 +162,14 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
-    const available = item?.property_avaliable ? item?.property_avaliable : ''; // Fallback to default date if not available
-    const availableDate = moment(available); // Convert to moment object
+    const available = item?.property_avaliable ? item?.property_avaliable : '';
+    const availableDate = moment(available);
     const currentDate = moment();
-    // Determine if the available date is in the past or present
     const isAvailableNow = availableDate.isSameOrBefore(currentDate, 'day');
     console.log(item, 'details');
     const keyFeatures = JSON.parse(item.key_features);
     return (
       <>
-        {/* This is important comment we will uncomment this in the future */}
-
-        {/* <View style={[SearchResultCss.flat_MainView]}>
-          <TouchableOpacity style={SearchResultCss.bidsButton}>
-            <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
-          </TouchableOpacity>
-          <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
-          </View>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
-          </View>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
-          </View>
-        </View> */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('ViewRentalDetails', {
@@ -212,7 +189,6 @@ export default SearchResult = props => {
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
-                // autoplay={false}
                 circleLoop
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
@@ -226,7 +202,7 @@ export default SearchResult = props => {
           ) : (
             <View>
               <Image
-                source={BANNERS?.imageNotFound} // Set your default image path
+                source={BANNERS?.imageNotFound}
                 style={{width: '100%', height: 200, resizeMode: 'cover'}}
               />
             </View>
@@ -305,10 +281,10 @@ export default SearchResult = props => {
                 SearchResultCss.availableBtn,
                 {
                   backgroundColor: isAvailableNow
-                    ? _COLORS.Kodie_minDarkGreenColor // Use the color for 'AVAILABLE: NOW'
-                    : _COLORS.Kodie_LightOrange, // Use the color for future date
+                    ? _COLORS.Kodie_minDarkGreenColor
+                    : _COLORS.Kodie_LightOrange,
                   borderColor: isAvailableNow
-                    ? _COLORS.Kodie_minDarkGreenColor // Border color for 'AVAILABLE: NOW'
+                    ? _COLORS.Kodie_minDarkGreenColor
                     : _COLORS.Kodie_LightOrange,
                 },
               ]}>
@@ -317,8 +293,8 @@ export default SearchResult = props => {
                   SearchResultCss.availabletext,
                   {
                     color: isAvailableNow
-                      ? _COLORS.Kodie_GreenColor // Text color for 'AVAILABLE: NOW'
-                      : _COLORS.Kodie_DarkOrange, // Text color for future date
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_DarkOrange,
                   },
                 ]}>
                 {isAvailableNow
@@ -331,7 +307,6 @@ export default SearchResult = props => {
           <View style={SearchResultCss.bedCountView}>
             <View style={SearchResultCss.locationView}>
               <View style={SearchResultCss.circleIconView}>
-                {/* Circle view to hold the icon */}
                 <Ionicons
                   color={_COLORS.Kodie_GreenColor}
                   name="bed-outline"
@@ -347,7 +322,6 @@ export default SearchResult = props => {
             </View>
             <View style={SearchResultCss.locationView}>
               <View style={SearchResultCss.circleIconView}>
-                {/* Circle view to hold the icon */}
                 <MaterialCommunityIcons
                   color={_COLORS.Kodie_GreenColor}
                   name="shower-head"
@@ -364,7 +338,6 @@ export default SearchResult = props => {
             </View>
             <View style={SearchResultCss.locationView}>
               <View style={SearchResultCss.circleIconView}>
-                {/* Circle view to hold the icon */}
                 <Ionicons
                   color={_COLORS.Kodie_GreenColor}
                   name="car"
@@ -380,7 +353,6 @@ export default SearchResult = props => {
             </View>
             <View style={SearchResultCss.locationView}>
               <View style={SearchResultCss.circleIconView}>
-                {/* Circle view for icon */}
                 <MaterialCommunityIcons
                   color={_COLORS.Kodie_GreenColor}
                   name="floor-plan"
@@ -495,7 +467,6 @@ export default SearchResult = props => {
           searchRentalData={allSearchResult}
         />
       </RBSheet>
-      {/* </ScrollView> */}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
