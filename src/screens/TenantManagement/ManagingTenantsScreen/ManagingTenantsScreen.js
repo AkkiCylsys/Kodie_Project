@@ -142,7 +142,7 @@ const ManagingTenantsScreen = props => {
       />
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
       <ScrollView>
-        <View style={{marginHorizontal: 16}}>
+        <View style={ManagingTenantsScreenStyle.addbtn}>
           <CustomSingleButton
             _ButtonText={'+ Add tenant'}
             Text_Color={_COLORS.Kodie_WhiteColor}

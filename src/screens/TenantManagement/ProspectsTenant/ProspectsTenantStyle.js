@@ -5,6 +5,7 @@ export const ProspectsTenantStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  Viewcontainer:{marginHorizontal: 16},
   usericon: {
     height: 56,
     width: 56,
@@ -88,5 +89,11 @@ export const ProspectsTenantStyle = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
+  text0:{color: _COLORS?.Kodie_GrayColor},
+  Crossicon:{
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginHorizontal: 5,
+  }
 });
 

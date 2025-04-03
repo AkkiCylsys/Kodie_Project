@@ -274,7 +274,7 @@ const TenantDocumentsDetails = props => {
           renderItem={DocumentsData}
         />
       </View>
-      <View style={{marginHorizontal: 16}}>
+      <View style={TenantDocumentsDetailsStyle.Upload}>
         <Text style={TenantDocumentsDetailsStyle.upload_doc_text}>
           {'Upload documents'}
         </Text>
@@ -284,7 +284,7 @@ const TenantDocumentsDetails = props => {
           }
         </Text>
       </View>
-      <View style={{marginHorizontal: 16}}>
+      <View style={TenantDocumentsDetailsStyle.Upload}>
         <CustomSingleButton
           leftImage={IMAGES.uploadIcon}
           isLeftImage={true}

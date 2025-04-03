@@ -4,9 +4,8 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
-import {FONTFAMILY, _COLORS} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import {PreScreeningQuestinnaireStyle} from './PreScreeningQuesionnaireStyle';
 import UserDetails from '../../../../components/PropertyViewApplication/UserDetails/UserDetails';
 import TopHeader from '../../../../components/Molecules/Header/Header';

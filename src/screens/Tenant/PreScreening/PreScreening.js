@@ -178,7 +178,6 @@ const PreScreening = props => {
       });
   };
 
-  // API bind What rental lease term are you looking for Lookup key code here........
   const handleLeaseTerm = () => {
     const TenantData = {
       P_PARENT_CODE: 'RLT',
@@ -207,7 +206,6 @@ const PreScreening = props => {
       });
   };
 
-  // API bind How many people will be staying in the property? Lookup key code here........
   const handleStyingProperty = () => {
     const StyingPropertData = {
       P_PARENT_CODE: 'PST',
@@ -236,7 +234,6 @@ const PreScreening = props => {
       });
   };
 
-  // API bind How would you describe your employment status Lookup key code here........
   const handleDescribeStatus = () => {
     const DescribeStatustData = {
       P_PARENT_CODE: 'ES',
@@ -265,7 +262,6 @@ const PreScreening = props => {
       });
   };
 
-  // API bind What type of pets do you have? Lookup key code here........
   const handleTypesPets = () => {
     const PetsTypeData = {
       P_PARENT_CODE: 'TP',
@@ -397,7 +393,6 @@ const PreScreening = props => {
               </TouchableOpacity>
             </View>
             <DividerIcon marginTop={5} />
-            {/* Rental details hide code here.... */}
             {RentalDetails && (
               <View>
                 <Text style={LABEL_STYLES.commontext}>

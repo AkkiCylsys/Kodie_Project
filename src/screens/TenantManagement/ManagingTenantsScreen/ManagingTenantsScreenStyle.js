@@ -15,4 +15,5 @@ export const ManagingTenantsScreenStyle = StyleSheet.create({
     backgroundColor: "white",
     borderBottomWidth: 1,
   },
+  addbtn:{marginHorizontal: 16}
 });

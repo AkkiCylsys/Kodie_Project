@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
 import {ProspectsTenantStyle} from './ProspectsTenantStyle';
 import {_goBack} from '../../../services/CommonServices';
-import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes/index';
+import {_COLORS, IMAGES} from '../../../Themes/index';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
@@ -41,7 +41,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
               resizeMode={'cover'}
               style={ProspectsTenantStyle.usericon}
             />
-            <View style={{marginHorizontal: 16}}>
+            <View style={ProspectsTenantStyle.Viewcontainer}>
               <View style={ProspectsTenantStyle.flexRowView}>
                 <Text style={ProspectsTenantStyle.userName}>
                   {UAD_FIRST_NAME || 'N/A'}{' '}
@@ -66,7 +66,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
                 />
                 <Text style={ProspectsTenantStyle.ratingText}>
                   {'0.0'}
-                  <Text style={{color: _COLORS?.Kodie_GrayColor}}>{'(0)'}</Text>
+                  <Text style={ProspectsTenantStyle.text0}>{'(0)'}</Text>
                 </Text>
               </View>
             </View>
@@ -148,11 +148,7 @@ export default ProspectsTenant = ({TenantAllDetails}) => {
           container: ProspectsTenantStyle.bottomModal_container,
         }}>
         <TouchableOpacity
-          style={{
-            justifyContent: 'flex-end',
-            alignSelf: 'flex-end',
-            marginHorizontal: 5,
-          }}
+          style={ProspectsTenantStyle.Crossicon}
           onPress={() => {
             refRBSheet.current.close();
           }}>

@@ -97,4 +97,5 @@ export const TenantDocumentsDetailsStyle = StyleSheet.create({
         fontSize: 14,
         fontFamily: FONTFAMILY.K_SemiBold,
       },
+      Upload:{marginHorizontal: 16},
 })

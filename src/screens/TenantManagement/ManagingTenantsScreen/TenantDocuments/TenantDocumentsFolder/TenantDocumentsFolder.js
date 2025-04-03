@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
-import {TenantDocumentsFolderStyle} from './TenantDocumentsFolderStyle';
+import { Text, View, TouchableOpacity, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {_COLORS, FONTFAMILY} from '../../../../../Themes';
+import { TenantDocumentsFolderStyle } from './TenantDocumentsFolderStyle';
 const TenantDocumentsFolder = props => {
   const {onpress,propertyDocBypropertylength,propertyDocByLeaselength,propertyDocByTenantlength,propertyDocByInspectionlength}= props
   const folderData = [
@@ -76,4 +76,3 @@ const TenantDocumentsFolder = props => {
 
 export default TenantDocumentsFolder;
 
-const styles = StyleSheet.create({});

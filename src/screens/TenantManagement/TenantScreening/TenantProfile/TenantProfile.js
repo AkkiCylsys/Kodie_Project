@@ -24,9 +24,7 @@ const TenantProfile = props => {
         MiddleText={'View profile'}
       />
       <View
-        style={{
-          marginHorizontal: 16,
-        }}>
+        style={TenantProfileStyle.tenantsize}>
         <View style={TenantProfileStyle.container}>
           <View
             style={{
@@ -89,7 +87,7 @@ const TenantProfile = props => {
               />
               <Text style={TenantProfileStyle.username}>
                 {'4.6 '}
-                <Text style={{color: _COLORS?.Kodie_GrayColor}}>{'(231)'}</Text>
+                <Text style={TenantProfileStyle.text231}>{'(231)'}</Text>
               </Text>
             </View>
           </View>
@@ -119,7 +117,7 @@ const TenantProfile = props => {
         landlord_id={TenantDetails?.landlord_id}
         tenantProfile={'tenantProfile'}
       />
-      <View style={{marginHorizontal: 16, marginVertical: 10}}>
+      <View style={TenantProfileStyle.tenantBtn}>
         <CustomSingleButton
           _ButtonText={'Message tenant'}
           Text_Color={_COLORS.Kodie_WhiteColor}

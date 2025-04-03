@@ -6,6 +6,9 @@ export const TenantProfileStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS?.Kodie_WhiteColor,
   },
+  tenantsize:{
+    marginHorizontal: 16,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -16,11 +19,12 @@ export const TenantProfileStyle = StyleSheet.create({
     width: 56,
     borderRadius: 56 / 2,
     borderColor: _COLORS.Kodie_GrayColor,
-    borderWidth:1
+    borderWidth: 1,
   },
   userNameView: {
     marginLeft: 10,
   },
+  text231:{color: _COLORS?.Kodie_GrayColor},
   username: {
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -51,5 +55,9 @@ export const TenantProfileStyle = StyleSheet.create({
     color: _COLORS.Kodie_GreenColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,
+  },
+  tenantBtn: {
+    marginHorizontal: 16,
+    marginVertical: 10
   },
 });
